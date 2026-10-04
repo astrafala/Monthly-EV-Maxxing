@@ -6,10 +6,50 @@ A prop-firm evaluation ("challenge") works like an option. You pay a fee. If you
 
 | File | Contents |
 |---|---|
-| [`docs/The_Prop_Firm_Option_v4.pdf`](docs/The_Prop_Firm_Option_v4.pdf) | Current version, 76 pages. Part 1: the mathematics. Chapters 17–23: price-path simulations, every firm compared, the per-person maximum, and a rule audit for each firm. Chapters 24–32: the execution plan, a simulated sign-up diary, and month-by-month cash and odds. |
-| `docs/archive/` | Versions 1–3, superseded. Version 3 overstated some results: The5ers was too high, and it ran several accounts at FXIFY and GFT, which their duplicate-account rules do not allow. Version 4 corrects both. |
+| [`docs/The_Prop_Firm_Option_v5.pdf`](docs/The_Prop_Firm_Option_v5.pdf) | Current version, 87 pages. Part 1: the mathematics. Chapters 17–23: price-path simulations, every firm compared, the per-person maximum, and a rule audit for each firm. Part 2 (chapters 24–32): the execution plan, a simulated sign-up diary, and month-by-month cash and odds. **Part 3 (chapters 33–35, new in version 5):** firm reliability tiers, payout-refusal scenarios, two added firms, and the revised per-person plan. |
+| `docs/archive/` | Versions 1–4, superseded. Version 3 overstated some results: The5ers was too high, and it ran several accounts at FXIFY and GFT, which their duplicate-account rules do not allow. Version 4 corrected both. Version 4 assumed every payout is paid at every firm; six of its eleven firms have since had their TrustPilot ratings withheld for fake reviews. |
 
-## Key results (version 4)
+## Key results (version 5, 4 October 2026)
+
+### Firm reliability changes the plan
+
+Six of the eleven firms in the version 4 plan now show "This company's rating is unavailable due to a breach of our guidelines" and "We've removed a number of fake reviews for this company" on TrustPilot: Alpha Capital, BrightFunded, Blue Guardian, FunderPro, Maven and Goat Funded Trader (GFT). PropFirmMap grades all six D. Version 5 sorts firms into tiers:
+
+- **Tier A** (A or A+, clean TrustPilot record): FTMO, The5ers, FundingPips, FundedNext, FXIFY, and Topstep (futures).
+- **Tier B** (B+): Hola Prime and Fintokei (both new), and Apex (futures).
+- **Tier D**: the six flagged firms.
+
+Version 5 also adds two payout-refusal scenarios. In both, the first refused payout ends that firm:
+
+- **Tiered:** each payout is refused with probability 2% (tier A), 5% (B) or 15% (D).
+- **Harsh:** 5% (A), 10% (B) or 30% (D).
+
+Per person, steady month (months 3–12). Results are from 200 synthetic lives per version (`model/lockstep_portfolio_v5.log`):
+
+| Version | Accounts | All paid | Tiered refusals | Harsh refusals | Cash low (median / 1 in 20) |
+|---|---:|---:|---:|---:|---|
+| Tier A only | 11 | 52.1K | 39.1K | 27.0K | −24.2K / −62.0K |
+| Tier A + B (adds Fintokei 4, Hola Prime 2) | 17 | 74.0K | 49.5K | 33.4K | −34.8K / −74.6K |
+| **Recommended: A + B + one account at each tier-D firm** | **23** | **100.5K** | **61.7K** | **39.0K** | −44.0K / −96.8K |
+| All tiers at full caps | 31 | 135.5K | 62.9K | 38.2K | −60.0K / −142.7K |
+| Tier A + B + futures (Topstep 5, Apex 20 at 90% off) | 42 | 94.7K | 53.6K | 34.9K | −46.0K / −103.1K |
+| Version 4 full caps | 25 | 113.6K | 52.4K | 32.1K | −51.9K / −126.1K |
+
+Under refusal risk, spreading accounts across many firms beats stacking them at a few firms: each payout request is another chance to lose the whole firm. The refusal probabilities are judgements, not measurements. No firm publishes how often it refuses payouts.
+
+New programmes, EV per month per account (synthetic; `model/final_v5.json`):
+
+| Programme | EV per month |
+|---|---:|
+| Fintokei ProTrader 100K | 3,500 |
+| Hola Prime 2-Step Prime 100K, bi-weekly 80%, on USDJPY | 4,100 |
+| The5ers High Stakes 25K / 10K / 5K / 2.5K | 790 / 320 / 160 / 70 |
+| Topstep 50K | 960 |
+| Apex 50K EOD at 90% off | 550 |
+
+Hola Prime prohibits copying trades from other prop firms, so its accounts trade USDJPY, independently of the Nasdaq accounts. Each 10% fee discount adds 2–4% to an account's value (`model/discount_v5.json`).
+
+### The trade (unchanged since version 4)
 
 The plan:
 
@@ -19,7 +59,7 @@ The plan:
 - **Calendar:** entries Monday–Friday, 01:00–20:00 UTC. Flat by 20:30 UTC on Friday. No new trades around news releases.
 - **Funded accounts:** payout cycles at +10%.
 
-EV per month for one account slot. The slot buys a new evaluation as soon as the previous attempt ends. Figures are on synthetic zero-edge paths, 24,000 attempts per firm (from `model/final_v32.json`):
+EV per month for one account slot, version 4 firms. The slot buys a new evaluation as soon as the previous attempt ends. Figures are on synthetic zero-edge paths, 24,000 attempts per firm (from `model/final_v32.json`):
 
 | Programme (100K) | EV / month | | Programme (100K) | EV / month |
 |---|---:|---|---|---:|
@@ -33,7 +73,7 @@ EV per month for one account slot. The slot buys a new evaluation as soon as the
 
 Futures firms are much weaker on the same paths (Topstep 957, Lucid 373, Tradeify 274, Apex −1,072 per month).
 
-Per person: every account is run at once on one shared price path and one calendar, with every firm's rules applied, including its limits on duplicate and copied accounts. Results over 200 synthetic lives (from `model/lockstep_portfolio_v32.log`):
+Version 4 per-person results, every payout assumed paid. Every account is run at once on one shared price path and one calendar, with every firm's rules applied, including its limits on duplicate and copied accounts. Results over 200 synthetic lives (from `model/lockstep_portfolio_v32.log`):
 
 | Portfolio | EV/month, months 3–12 | First-year average | Ahead after 1 / 2 / 3 / 6 / 12 months | Lowest cash point (median / 1 in 20) |
 |---|---:|---:|---|---|
@@ -46,11 +86,12 @@ Per person: every account is run at once on one shared price path and one calend
 ## What the numbers assume
 
 - **No skill.** Trades are fair bets. The value comes from the fee-versus-payout structure, not from predicting prices.
-- **The firm pays as its rules say.** If each payout has a chance of being refused, value falls: by 10% at a 2% chance, 23% at 5%, 41% at 10% and 64% at 20%.
+- **The firm pays as its rules say.** If it might not, see the refusal scenarios above. The value lost depends on how many accounts sit at each firm.
 - **Trading costs as modelled.** At 1.5× the costs, value falls 4–11%; at 2×, 12–19%.
 - **Rules as published in October 2026.** Firms change their rules often. Check the firm-by-firm sheet (chapter 27) against each firm's current terms before every purchase.
 - **One person, their own accounts, their own money.** Accounts are copied only where a firm allows copying between your own accounts. There is no hedging across accounts and no account in anyone else's name.
-- **Large drawdowns are normal.** Even with one account per firm, the cash balance typically falls about 22K before it recovers.
+- **Large drawdowns are normal.** In the recommended version, the cash balance typically falls about 44K before it recovers; in 1 case in 20 it falls about 97K.
+- **Private use.** If several people traded the same written rules, the result would be prohibited group trading at several firms.
 - **This is research, not financial advice.**
 
 ## Layout
@@ -68,12 +109,15 @@ The main pipeline is in `model/`:
 | `multi.py` | | Synthetic zero-edge paths (Brownian-bridge highs and lows, weekends closed) and real-data alignment |
 | `acct_mc.py` | | Firm-rule engine: phases, daily and maximum loss, minimum and profitable days, best-day caps, payouts |
 | `pathfirm.py` | | Runs the rule engine on a price path, one trade at a time |
-| `firms_v3.py` | | Rule set for every programme modelled |
+| `firms_v3.py`, `firms_v5.py` | | Rule set for every programme modelled; version 5 adds Fintokei, Hola Prime, small The5ers accounts and the reliability tiers |
 | `final_v3.py` | `final_v32.json` | Per-firm results: 4 × 6,000 synthetic attempts plus 8,000 on the real path |
 | `sens_v32.py` | `sens_v32.json` | How results change with risk, stop, reward:risk, payout cycle and account size |
 | `lockstep.py`, `lockstep_portfolio.py` | `lockstep_portfolio_v32.*` | Whole portfolios on one shared path and calendar |
 | `weekly_v32.py`, `diary_v32.py`, `milestones_v3.py`, `robust_v32.py` | `*_v32.json` | Week-by-week cash, the sign-up diary, milestones, cost and refusal sensitivity |
-| `build_doc4.py` | `prop_firm_option_v4.html`, PDF | Builds the document (needs Playwright with Chromium) |
+| `final_v5.py` | `final_v5.json` | Per-account results for the programmes added in version 5 |
+| `lockstep_portfolio_v5.py` | `lockstep_portfolio_v5.*` | Version 5 portfolios by tier, with tiered and harsh refusal scenarios |
+| `discount_v5.py`, `instr_v5.py` | `discount_v5.json`, `instr_v5.json` | Value of a fee discount; which market an independent account should trade |
+| `build_doc4.py`, `build_doc5.py` | `prop_firm_option_v5.html`, PDF | Build the document (needs Playwright with Chromium); version 5 runs the version 4 build and adds Part 3 |
 | `fetch_data.py` | `*_1h.csv` | Downloads the hourly price history (not included; see below) |
 | `verify.py` | | Independent check: a pure coin-flip FTMO attempt, written from scratch |
 
@@ -93,7 +137,11 @@ python3 diary_v32.py "Full caps, staged start (25 accounts)" diary_staged_v32.js
 python3 diary_v32.py "One account per firm (11 firms)" diary_one_v32.json
 python3 robust_v32.py
 python3 milestones_v3.py
-python3 build_doc4.py                                   # writes prop_firm_option_v4.html and the PDF
+python3 final_v5.py best_v5.json final_v5.json
+python3 lockstep_portfolio_v5.py > lockstep_portfolio_v5.log
+python3 discount_v5.py
+python3 instr_v5.py
+python3 build_doc5.py                                   # writes prop_firm_option_v5.html and the PDF
 ```
 
 Synthetic-path results rebuild exactly without the price files: the hourly sigmas they use are stored in `model/sigma_v32.json`. Set `SIGMA_FROM_DATA=1` to recompute the sigmas from downloaded data instead. Real-path results need the price files. Yahoo Finance serves only about the last 730 days of hourly bars and its terms do not allow republishing them, so the files are not included, and a later download covers a different window and gives slightly different real-path numbers.

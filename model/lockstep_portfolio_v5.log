@@ -1,0 +1,176 @@
+== Tier A (5 firms, 11 accounts) [synth] lives=200 conflicts=0
+   mean monthly cash: [-4326.0, 46975.0, 53131.0, 55362.0, 58074.0, 50777.0, 49460.0, 52178.0, 50558.0, 52041.0, 49694.0, 50091.0]
+   EV/month (12-mo avg) 47001, months 3-12 avg 52137
+   P(ahead) 1/2/3/6/12 m: [0.28, 0.66, 0.81, 0.97, 1.0]
+   12m cash p05/p50/p95: [204304.0, 537190.0, 923215.0]
+   trough p50/p05: [-24247.0, -61989.0]
+   failed accounts per firm per month: {'FTMO': 9.8, 'FXIFY': 2.9, 'FundedNext': 2.3, 'FundingPips': 8.8, 'The5ers': 2.2}
+   payouts per firm per month: {'FXIFY': 5860, 'FundingPips': 23085, 'FTMO': 22684, 'FundedNext': 5477, 'The5ers': 4675}
+   order tickets per trading day 30.3
+   refusals 'tiered': EV/month (12-mo avg) 35776, months 3-12 avg 39131
+   refusals 'harsh': EV/month (12-mo avg) 25145, months 3-12 avg 27020
+== Tier A (5 firms, 11 accounts) [real] lives=40 conflicts=0
+   mean monthly cash: [3780.0, 63415.0, 76103.0, 53396.0, 65919.0, 74586.0, 88682.0, 67137.0, 78557.0, 53800.0, 62041.0, 38121.0]
+   EV/month (12-mo avg) 60461, months 3-12 avg 65834
+   P(ahead) 1/2/3/6/12 m: [0.38, 0.7, 0.85, 1.0, 1.0]
+   12m cash p05/p50/p95: [562346.0, 719115.0, 898595.0]
+   trough p50/p05: [-12300.0, -35073.0]
+   failed accounts per firm per month: {'FTMO': 6.1, 'FXIFY': 1.8, 'FundedNext': 1.8, 'FundingPips': 6.1, 'The5ers': 1.6}
+   payouts per firm per month: {'FTMO': 24549, 'FundedNext': 6064, 'The5ers': 4691, 'FXIFY': 6348, 'FundingPips': 28841}
+   order tickets per trading day 24.5
+   refusals 'tiered': EV/month (12-mo avg) 46712, months 3-12 avg 49839
+   refusals 'harsh': EV/month (12-mo avg) 31944, months 3-12 avg 33032
+== Tier A + B (7 firms, 17 accounts) [synth] lives=200 conflicts=0
+   mean monthly cash: [-7328.0, 68219.0, 72566.0, 76605.0, 81684.0, 72391.0, 72525.0, 78710.0, 70462.0, 74238.0, 68775.0, 72427.0]
+   EV/month (12-mo avg) 66773, months 3-12 avg 74038
+   P(ahead) 1/2/3/6/12 m: [0.3, 0.69, 0.86, 0.98, 1.0]
+   12m cash p05/p50/p95: [364644.0, 783736.0, 1212695.0]
+   trough p50/p05: [-34768.0, -74583.0]
+   failed accounts per firm per month: {'FTMO': 9.7, 'FXIFY': 2.9, 'Hola Prime': 5.5, 'FundedNext': 2.3, 'FundingPips': 8.7, 'Fintokei': 8.7, 'The5ers': 2.2}
+   payouts per firm per month: {'FXIFY': 5772, 'FundingPips': 23373, 'Fintokei': 18341, 'FTMO': 22844, 'FundedNext': 5477, 'Hola Prime': 9385, 'The5ers': 4648}
+   order tickets per trading day 44.5
+   refusals 'tiered': EV/month (12-mo avg) 45490, months 3-12 avg 49548
+   refusals 'harsh': EV/month (12-mo avg) 31195, months 3-12 avg 33417
+== Tier A + B (7 firms, 17 accounts) [real] lives=40 conflicts=0
+   mean monthly cash: [1199.0, 90147.0, 109236.0, 100280.0, 135160.0, 128429.0, 125556.0, 110450.0, 113249.0, 72794.0, 84316.0, 51464.0]
+   EV/month (12-mo avg) 93523, months 3-12 avg 103093
+   P(ahead) 1/2/3/6/12 m: [0.42, 0.7, 0.88, 1.0, 1.0]
+   12m cash p05/p50/p95: [844618.0, 1125739.0, 1443295.0]
+   trough p50/p05: [-21164.0, -78428.0]
+   failed accounts per firm per month: {'FTMO': 6.5, 'FXIFY': 1.9, 'FundedNext': 1.8, 'Hola Prime': 3.0, 'FundingPips': 5.8, 'Fintokei': 6.9, 'The5ers': 1.9}
+   payouts per firm per month: {'Hola Prime': 13870, 'FundingPips': 40399, 'FXIFY': 5998, 'Fintokei': 18227, 'FTMO': 22295, 'The5ers': 3871, 'FundedNext': 5065}
+   order tickets per trading day 36.3
+   refusals 'tiered': EV/month (12-mo avg) 63776, months 3-12 avg 68605
+   refusals 'harsh': EV/month (12-mo avg) 39472, months 3-12 avg 40619
+== Tier A + B + one account at each tier-D firm (13 firms, 23 accounts) [synth] lives=200 conflicts=0
+   mean monthly cash: [-10769.0, 89061.0, 96385.0, 103073.0, 109169.0, 97263.0, 95102.0, 106311.0, 98524.0, 97572.0, 101139.0, 100422.0]
+   EV/month (12-mo avg) 90271, months 3-12 avg 100496
+   P(ahead) 1/2/3/6/12 m: [0.33, 0.67, 0.88, 1.0, 1.0]
+   12m cash p05/p50/p95: [582311.0, 1092606.0, 1627274.0]
+   trough p50/p05: [-44036.0, -96828.0]
+   failed accounts per firm per month: {'FTMO': 9.7, 'FXIFY': 2.9, 'Alpha Capital': 2.7, 'BrightFunded': 2.0, 'Blue Guardian': 3.1, 'GFT': 2.3, 'FunderPro': 2.9, 'Hola Prime': 5.5, 'FundedNext': 2.3, 'FundingPips': 8.5, 'Fintokei': 8.6, 'Maven': 2.3, 'The5ers': 2.1}
+   payouts per firm per month: {'FXIFY': 5929, 'GFT': 4859, 'FundingPips': 24372, 'Alpha Capital': 5579, 'Fintokei': 18419, 'FTMO': 22815, 'FundedNext': 5477, 'FunderPro': 5785, 'Maven': 3196, 'Hola Prime': 9385, 'Blue Guardian': 5766, 'The5ers': 5049, 'BrightFunded': 4244}
+   order tickets per trading day 57.8
+   refusals 'tiered': EV/month (12-mo avg) 56563, months 3-12 avg 61712
+   refusals 'harsh': EV/month (12-mo avg) 36283, months 3-12 avg 39005
+== Tier A + B + one account at each tier-D firm (13 firms, 23 accounts) [real] lives=40 conflicts=0
+   mean monthly cash: [-1864.0, 109918.0, 135523.0, 119867.0, 157331.0, 166453.0, 174600.0, 147555.0, 135184.0, 100377.0, 102589.0, 68311.0]
+   EV/month (12-mo avg) 117987, months 3-12 avg 130779
+   P(ahead) 1/2/3/6/12 m: [0.38, 0.72, 0.85, 1.0, 1.0]
+   12m cash p05/p50/p95: [1061525.0, 1406358.0, 1933869.0]
+   trough p50/p05: [-28594.0, -101485.0]
+   failed accounts per firm per month: {'FTMO': 6.2, 'FXIFY': 1.8, 'FundedNext': 1.7, 'Hola Prime': 3.0, 'Alpha Capital': 1.7, 'BrightFunded': 1.5, 'Blue Guardian': 2.4, 'GFT': 1.3, 'FunderPro': 1.8, 'FundingPips': 5.7, 'Fintokei': 6.7, 'Maven': 1.7, 'The5ers': 1.8}
+   payouts per firm per month: {'GFT': 5267, 'Hola Prime': 13375, 'Maven': 3941, 'FundingPips': 37784, 'FXIFY': 6006, 'Fintokei': 19950, 'Blue Guardian': 5224, 'FunderPro': 5803, 'Alpha Capital': 5557, 'FTMO': 22663, 'The5ers': 4139, 'BrightFunded': 3772, 'FundedNext': 5534}
+   order tickets per trading day 46.1
+   refusals 'tiered': EV/month (12-mo avg) 75460, months 3-12 avg 81417
+   refusals 'harsh': EV/month (12-mo avg) 45610, months 3-12 avg 47572
+== The same + The5ers small accounts (13 firms, 33 accounts) [synth] lives=200 conflicts=0
+   mean monthly cash: [-11859.0, 90149.0, 100439.0, 105861.0, 111356.0, 99653.0, 96089.0, 111667.0, 104823.0, 101480.0, 100523.0, 98300.0]
+   EV/month (12-mo avg) 92373, months 3-12 avg 103019
+   P(ahead) 1/2/3/6/12 m: [0.32, 0.66, 0.85, 0.99, 1.0]
+   12m cash p05/p50/p95: [569790.0, 1099298.0, 1648941.0]
+   trough p50/p05: [-45973.0, -102442.0]
+   failed accounts per firm per month: {'FTMO': 9.7, 'FXIFY': 2.9, 'Alpha Capital': 2.6, 'BrightFunded': 2.1, 'Blue Guardian': 3.1, 'GFT': 2.3, 'FunderPro': 2.9, 'Hola Prime': 5.6, 'FundedNext': 2.3, 'FundingPips': 8.5, 'Fintokei': 8.6, 'Maven': 2.2, 'The5ers': 23.2}
+   payouts per firm per month: {'FXIFY': 5989, 'GFT': 4808, 'FundingPips': 24721, 'Alpha Capital': 5630, 'The5ers': 8482, 'Fintokei': 18466, 'FTMO': 22603, 'FundedNext': 5508, 'FunderPro': 5685, 'Maven': 3301, 'Hola Prime': 9370, 'Blue Guardian': 5558, 'BrightFunded': 4091}
+   order tickets per trading day 84.1
+   refusals 'tiered': EV/month (12-mo avg) 56586, months 3-12 avg 61843
+   refusals 'harsh': EV/month (12-mo avg) 34493, months 3-12 avg 37048
+== The same + The5ers small accounts (13 firms, 33 accounts) [real] lives=40 conflicts=0
+   mean monthly cash: [-4340.0, 109299.0, 143577.0, 119079.0, 150356.0, 153562.0, 167442.0, 145748.0, 129161.0, 98125.0, 102621.0, 70947.0]
+   EV/month (12-mo avg) 115465, months 3-12 avg 128062
+   P(ahead) 1/2/3/6/12 m: [0.35, 0.68, 0.82, 1.0, 1.0]
+   12m cash p05/p50/p95: [964545.0, 1415308.0, 1740177.0]
+   trough p50/p05: [-29985.0, -105160.0]
+   failed accounts per firm per month: {'FTMO': 6.5, 'FXIFY': 2.0, 'FundedNext': 1.7, 'Hola Prime': 3.1, 'Alpha Capital': 1.7, 'BrightFunded': 1.6, 'Blue Guardian': 2.3, 'GFT': 1.4, 'FunderPro': 1.9, 'FundingPips': 6.1, 'Fintokei': 6.7, 'Maven': 1.6, 'The5ers': 18.7}
+   payouts per firm per month: {'Hola Prime': 13323, 'Maven': 3875, 'FXIFY': 5424, 'FTMO': 22465, 'Alpha Capital': 5608, 'FunderPro': 5732, 'FundingPips': 34549, 'Blue Guardian': 5250, 'GFT': 4830, 'The5ers': 8268, 'Fintokei': 18844, 'FundedNext': 5839, 'BrightFunded': 4073}
+   order tickets per trading day 68.1
+   refusals 'tiered': EV/month (12-mo avg) 70883, months 3-12 avg 76232
+   refusals 'harsh': EV/month (12-mo avg) 42689, months 3-12 avg 44639
+== All tiers at full caps (13 firms, 31 accounts) [synth] lives=200 conflicts=0
+   mean monthly cash: [-18622.0, 114648.0, 129001.0, 138833.0, 150341.0, 132367.0, 128842.0, 142461.0, 129170.0, 130244.0, 137165.0, 136882.0]
+   EV/month (12-mo avg) 120944, months 3-12 avg 135531
+   P(ahead) 1/2/3/6/12 m: [0.32, 0.69, 0.86, 0.98, 1.0]
+   12m cash p05/p50/p95: [795809.0, 1467187.0, 2118231.0]
+   trough p50/p05: [-60012.0, -142690.0]
+   failed accounts per firm per month: {'FTMO': 9.6, 'FXIFY': 2.9, 'Alpha Capital': 7.9, 'BrightFunded': 8.2, 'Blue Guardian': 12.1, 'GFT': 2.3, 'FunderPro': 2.9, 'Hola Prime': 5.5, 'FundedNext': 2.3, 'FundingPips': 8.5, 'Fintokei': 8.6, 'Maven': 2.2, 'The5ers': 2.1}
+   payouts per firm per month: {'FXIFY': 5966, 'GFT': 4906, 'FundingPips': 24382, 'Alpha Capital': 16881, 'Fintokei': 18501, 'Maven': 3311, 'FTMO': 22905, 'FundedNext': 5477, 'FunderPro': 5853, 'The5ers': 5065, 'Hola Prime': 9385, 'Blue Guardian': 23096, 'BrightFunded': 16823}
+   order tickets per trading day 75.6
+   refusals 'tiered': EV/month (12-mo avg) 57507, months 3-12 avg 62931
+   refusals 'harsh': EV/month (12-mo avg) 34666, months 3-12 avg 38240
+== All tiers at full caps (13 firms, 31 accounts) [real] lives=40 conflicts=0
+   mean monthly cash: [-9583.0, 130254.0, 175425.0, 141997.0, 200428.0, 219263.0, 225961.0, 186451.0, 172888.0, 114454.0, 125437.0, 85721.0]
+   EV/month (12-mo avg) 147391, months 3-12 avg 164803
+   P(ahead) 1/2/3/6/12 m: [0.35, 0.68, 0.82, 1.0, 1.0]
+   12m cash p05/p50/p95: [1324567.0, 1750811.0, 2471476.0]
+   trough p50/p05: [-42818.0, -135981.0]
+   failed accounts per firm per month: {'FTMO': 6.2, 'FXIFY': 1.8, 'FundedNext': 1.7, 'Hola Prime': 3.1, 'Alpha Capital': 5.2, 'BrightFunded': 5.9, 'Blue Guardian': 9.4, 'GFT': 1.3, 'FunderPro': 1.9, 'FundingPips': 5.7, 'Fintokei': 6.6, 'Maven': 1.7, 'The5ers': 1.7}
+   payouts per firm per month: {'GFT': 5069, 'Hola Prime': 12952, 'Maven': 3992, 'FundingPips': 37997, 'FXIFY': 5995, 'Fintokei': 20246, 'Blue Guardian': 21056, 'FunderPro': 5639, 'Alpha Capital': 16476, 'FTMO': 22559, 'The5ers': 4223, 'BrightFunded': 15131, 'FundedNext': 5318}
+   order tickets per trading day 60.3
+   refusals 'tiered': EV/month (12-mo avg) 75137, months 3-12 avg 81377
+   refusals 'harsh': EV/month (12-mo avg) 43840, months 3-12 avg 46403
+== Tier A + B + futures (9 firms, 42 accounts) [synth] lives=200 conflicts=0
+   mean monthly cash: [-10635.0, 81585.0, 89764.0, 98824.0, 100576.0, 93221.0, 95980.0, 99986.0, 88055.0, 92941.0, 94443.0, 93603.0]
+   EV/month (12-mo avg) 84862, months 3-12 avg 94739
+   P(ahead) 1/2/3/6/12 m: [0.32, 0.69, 0.87, 0.98, 1.0]
+   12m cash p05/p50/p95: [543691.0, 977167.0, 1542584.0]
+   trough p50/p05: [-46022.0, -103120.0]
+   failed accounts per firm per month: {'FTMO': 9.6, 'FXIFY': 2.9, 'Apex': 73.1, 'Hola Prime': 5.5, 'FundedNext': 2.3, 'FundingPips': 8.7, 'Fintokei': 8.5, 'Topstep': 45.0, 'The5ers': 2.2}
+   payouts per firm per month: {'FXIFY': 6114, 'FundingPips': 23067, 'Fintokei': 18926, 'FTMO': 22571, 'FundedNext': 5477, 'Topstep': 9332, 'The5ers': 4726, 'Hola Prime': 9385, 'Apex': 19391}
+   order tickets per trading day 87.0
+   refusals 'tiered': EV/month (12-mo avg) 48513, months 3-12 avg 53612
+   refusals 'harsh': EV/month (12-mo avg) 31587, months 3-12 avg 34913
+== Tier A + B + futures (9 firms, 42 accounts) [real] lives=40 conflicts=0
+   mean monthly cash: [-16371.0, 85352.0, 92042.0, 88226.0, 146386.0, 174626.0, 166992.0, 163608.0, 142119.0, 110330.0, 107256.0, 85781.0]
+   EV/month (12-mo avg) 112195, months 3-12 avg 127736
+   P(ahead) 1/2/3/6/12 m: [0.3, 0.62, 0.62, 1.0, 1.0]
+   12m cash p05/p50/p95: [1020923.0, 1356808.0, 1636317.0]
+   trough p50/p05: [-50376.0, -141758.0]
+   failed accounts per firm per month: {'Topstep': 23.3, 'Apex': 80.6, 'FTMO': 6.6, 'FXIFY': 2.3, 'FundedNext': 1.7, 'Hola Prime': 3.5, 'FundingPips': 6.2, 'Fintokei': 6.7, 'The5ers': 1.9}
+   payouts per firm per month: {'Apex': 14202, 'Hola Prime': 11996, 'FundingPips': 38682, 'FXIFY': 4871, 'FundedNext': 5813, 'Topstep': 13327, 'The5ers': 4074, 'FTMO': 22165, 'Fintokei': 23685}
+   order tickets per trading day 75.7
+   refusals 'tiered': EV/month (12-mo avg) 65782, months 3-12 avg 73659
+   refusals 'harsh': EV/month (12-mo avg) 40148, months 3-12 avg 44345
+== Version 4 one per firm (11 firms) [synth] lives=200 conflicts=0
+   mean monthly cash: [-6978.0, 41677.0, 49525.0, 52384.0, 52547.0, 47920.0, 44889.0, 52739.0, 47000.0, 47196.0, 48877.0, 48135.0]
+   EV/month (12-mo avg) 43826, months 3-12 avg 49121
+   P(ahead) 1/2/3/6/12 m: [0.31, 0.7, 0.9, 0.98, 1.0]
+   12m cash p05/p50/p95: [307438.0, 531491.0, 729980.0]
+   trough p50/p05: [-21869.0, -46966.0]
+   failed accounts per firm per month: {'FTMO': 2.4, 'Alpha Capital': 2.6, 'BrightFunded': 2.1, 'Blue Guardian': 3.0, 'FXIFY': 2.9, 'GFT': 2.2, 'FunderPro': 2.9, 'FundedNext': 2.3, 'FundingPips': 2.1, 'Maven': 2.2, 'The5ers': 2.2}
+   payouts per firm per month: {'FXIFY': 6042, 'GFT': 4969, 'FundingPips': 6118, 'Alpha Capital': 5696, 'FTMO': 5825, 'FundedNext': 5477, 'FunderPro': 5726, 'Maven': 3313, 'Blue Guardian': 5805, 'The5ers': 4884, 'BrightFunded': 4132}
+   order tickets per trading day 27.5
+   refusals 'tiered': EV/month (12-mo avg) 29500, months 3-12 avg 32661
+   refusals 'harsh': EV/month (12-mo avg) 21250, months 3-12 avg 23446
+== Version 4 one per firm (11 firms) [real] lives=40 conflicts=0
+   mean monthly cash: [-3909.0, 52927.0, 52631.0, 41470.0, 59152.0, 71807.0, 70651.0, 64661.0, 65544.0, 43302.0, 48442.0, 30909.0]
+   EV/month (12-mo avg) 49799, months 3-12 avg 54857
+   P(ahead) 1/2/3/6/12 m: [0.35, 0.6, 0.8, 1.0, 1.0]
+   12m cash p05/p50/p95: [453420.0, 597406.0, 820621.0]
+   trough p50/p05: [-13942.0, -37523.0]
+   failed accounts per firm per month: {'FTMO': 1.5, 'Alpha Capital': 1.7, 'BrightFunded': 1.5, 'Blue Guardian': 2.4, 'FXIFY': 1.9, 'GFT': 1.2, 'FunderPro': 1.8, 'FundedNext': 1.7, 'FundingPips': 1.5, 'Maven': 1.8, 'The5ers': 1.7}
+   payouts per firm per month: {'FTMO': 6274, 'FundedNext': 6548, 'BrightFunded': 3732, 'Maven': 3635, 'Alpha Capital': 5130, 'The5ers': 4872, 'FXIFY': 5959, 'GFT': 5808, 'FunderPro': 5761, 'FundingPips': 7723, 'Blue Guardian': 4321}
+   order tickets per trading day 22.1
+   refusals 'tiered': EV/month (12-mo avg) 34820, months 3-12 avg 37515
+   refusals 'harsh': EV/month (12-mo avg) 26153, months 3-12 avg 27878
+== Version 4 full caps (11 firms, 25 accounts) [synth] lives=200 conflicts=0
+   mean monthly cash: [-16417.0, 92395.0, 112594.0, 119346.0, 125571.0, 112855.0, 106523.0, 122517.0, 108351.0, 105234.0, 112030.0, 110954.0]
+   EV/month (12-mo avg) 100996, months 3-12 avg 113598
+   P(ahead) 1/2/3/6/12 m: [0.3, 0.67, 0.84, 0.97, 1.0]
+   12m cash p05/p50/p95: [674735.0, 1221337.0, 1762866.0]
+   trough p50/p05: [-51869.0, -126074.0]
+   failed accounts per firm per month: {'FTMO': 9.7, 'Alpha Capital': 7.9, 'BrightFunded': 8.4, 'Blue Guardian': 12.0, 'FXIFY': 2.9, 'GFT': 2.2, 'FunderPro': 2.9, 'FundedNext': 2.3, 'FundingPips': 8.6, 'Maven': 2.3, 'The5ers': 2.1}
+   payouts per firm per month: {'FXIFY': 6158, 'GFT': 4940, 'FundingPips': 24229, 'Alpha Capital': 17021, 'Maven': 3210, 'FTMO': 23003, 'FundedNext': 5430, 'FunderPro': 5718, 'The5ers': 5004, 'Blue Guardian': 23335, 'BrightFunded': 16326}
+   order tickets per trading day 61.5
+   refusals 'tiered': EV/month (12-mo avg) 47553, months 3-12 avg 52449
+   refusals 'harsh': EV/month (12-mo avg) 28674, months 3-12 avg 32066
+== Version 4 full caps (11 firms, 25 accounts) [real] lives=40 conflicts=0
+   mean monthly cash: [-5702.0, 123758.0, 130925.0, 89445.0, 133912.0, 160685.0, 169139.0, 150634.0, 154253.0, 97335.0, 103432.0, 72042.0]
+   EV/month (12-mo avg) 114988, months 3-12 avg 126180
+   P(ahead) 1/2/3/6/12 m: [0.38, 0.62, 0.8, 1.0, 1.0]
+   12m cash p05/p50/p95: [1069920.0, 1363449.0, 1851888.0]
+   trough p50/p05: [-32072.0, -89256.0]
+   failed accounts per firm per month: {'FTMO': 5.8, 'Alpha Capital': 5.2, 'BrightFunded': 6.0, 'Blue Guardian': 9.8, 'FXIFY': 2.0, 'GFT': 1.2, 'FunderPro': 1.8, 'FundedNext': 1.7, 'FundingPips': 5.9, 'Maven': 1.7, 'The5ers': 1.7}
+   payouts per firm per month: {'GFT': 5871, 'FTMO': 25261, 'FundedNext': 6550, 'BrightFunded': 15719, 'Maven': 3829, 'FXIFY': 6014, 'FunderPro': 6081, 'FundingPips': 30986, 'Alpha Capital': 15463, 'The5ers': 4773, 'Blue Guardian': 17946}
+   order tickets per trading day 49.2
+   refusals 'tiered': EV/month (12-mo avg) 61220, months 3-12 avg 64899
+   refusals 'harsh': EV/month (12-mo avg) 37129, months 3-12 avg 38535

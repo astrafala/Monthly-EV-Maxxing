@@ -1,0 +1,93 @@
+{
+ "FTMO 2-Step": {
+  "fee": 632,
+  "EV_month": 4189.506709846454,
+  "EV_month_10off": 4330.456986315086,
+  "gain_per_10pct": 140.95027646863218,
+  "gain_pct": 0.03364364499938897
+ },
+ "FundingPips 2-Step Flex (95%)": {
+  "fee": 499.0,
+  "EV_month": 6154.420770224063,
+  "EV_month_10off": 6259.513245416304,
+  "gain_per_10pct": 105.09247519224118,
+  "gain_pct": 0.01707593275076236
+ },
+ "The5ers High Stakes": {
+  "fee": 491.0,
+  "EV_month": 3807.3305497428646,
+  "EV_month_10off": 3899.6677688741747,
+  "gain_per_10pct": 92.33721913131012,
+  "gain_pct": 0.024252482920755672
+ },
+ "FXIFY Two-Phase": {
+  "fee": 480.0,
+  "EV_month": 5003.567270955401,
+  "EV_month_10off": 5125.644247093647,
+  "gain_per_10pct": 122.07697613824621,
+  "gain_pct": 0.024397988380585187
+ },
+ "FundedNext Stellar 2-Step": {
+  "fee": 549.99,
+  "EV_month": 4311.283068025863,
+  "EV_month_10off": 4418.811915080391,
+  "gain_per_10pct": 107.52884705452834,
+  "gain_pct": 0.024941263507377586
+ },
+ "Fintokei ProTrader": {
+  "fee": 549,
+  "EV_month": 3467.2078044667546,
+  "EV_month_10off": 3572.2249530328536,
+  "gain_per_10pct": 105.01714856609897,
+  "gain_pct": 0.030288680254701453
+ },
+ "Hola Prime 2-Step Prime (bi-weekly 80%)": {
+  "fee": 599.0,
+  "EV_month": 3567.4785467091633,
+  "EV_month_10off": 3699.7732388969525,
+  "gain_per_10pct": 132.29469218778922,
+  "gain_pct": 0.03708352845171979
+ },
+ "Alpha Capital Pro 10%": {
+  "fee": 497.0,
+  "EV_month": 4570.475758750425,
+  "EV_month_10off": 4706.104485710237,
+  "gain_per_10pct": 135.6287269598124,
+  "gain_pct": 0.029674969110194672
+ },
+ "BrightFunded 2-Step Classic": {
+  "fee": 580.0,
+  "EV_month": 3299.7577777207475,
+  "EV_month_10off": 3404.306579428126,
+  "gain_per_10pct": 104.54880170737852,
+  "gain_pct": 0.0316837806742269
+ },
+ "Blue Guardian 2-Step": {
+  "fee": 497.0,
+  "EV_month": 4131.329487776922,
+  "EV_month_10off": 4288.241158714356,
+  "gain_per_10pct": 156.91167093743388,
+  "gain_pct": 0.03798091423152705
+ },
+ "FunderPro Classic": {
+  "fee": 431.0,
+  "EV_month": 4149.126576000947,
+  "EV_month_10off": 4270.2028014644875,
+  "gain_per_10pct": 121.07622546354014,
+  "gain_pct": 0.02918113565487728
+ },
+ "Maven 2-Step": {
+  "fee": 440.0,
+  "EV_month": 2423.354850999305,
+  "EV_month_10off": 2519.1717570783157,
+  "gain_per_10pct": 95.81690607901055,
+  "gain_pct": 0.039538949914619016
+ },
+ "GFT 2-Step Standard": {
+  "fee": 524.0,
+  "EV_month": 3693.602034861866,
+  "EV_month_10off": 3796.251245270648,
+  "gain_per_10pct": 102.64921040878198,
+  "gain_pct": 0.027791085623175664
+ }
+}

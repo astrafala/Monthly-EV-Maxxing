@@ -11,7 +11,7 @@ Every fee, pass, failure and payout is written to a ledger with its date.
 """
 import heapq, random, math, json, copy, inspect, sys
 import numpy as np
-import acct_mc as A, pathfirm as PF, firms_v3 as FV
+import acct_mc as A, pathfirm as PF, firms_v5 as F5
 
 # ---------------------------------------------------------------- generator versions of the rule engine
 _ns = dict(A.__dict__)
@@ -103,7 +103,11 @@ def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stag
         assert data.startswith("synth"), "gold slots are simulated on synthetic paths only"
         mk["XAUUSD"] = Market("XAUUSD", gold_data)          # independent path: gold is not the Nasdaq
         assert mk["XAUUSD"].M["T"] == mk["US100"].M["T"]
-    GROUP = {"US100": "NQ", "MNQ_fut": "NQ", "XAUUSD": "XAU"}
+    if any(sp.get("instr") == "USDJPY" for sp in slots):
+        assert data.startswith("synth"), "yen slots are simulated on synthetic paths only"
+        mk["USDJPY"] = Market("USDJPY", f"synth{(int(data[5:]) if len(data) > 5 else 11) + 60}")
+        assert mk["USDJPY"].M["T"] == mk["US100"].M["T"]
+    GROUP = {"US100": "NQ", "MNQ_fut": "NQ", "XAUUSD": "XAU", "USDJPY": "JPY"}
     T = mk["US100"].M["T"]
     # one calendar for everybody: clock 0 = 22:00 UTC on a random day early in the path
     h0 = mk["US100"].M["h0"]
@@ -112,11 +116,12 @@ def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stag
     t_end = months * 30.44 * DAY
     ledger = []; gens = {}; pend = {}; heap = []; info = {}
     for sid, sp in enumerate(slots):
-        F = (FV.cfd_firms() if sp["kind"] == "cfd" else FV.futures_firms())[sp["firm"]]
+        F = (F5.cfd_firms(sp.get("size", 100_000)) if sp["kind"] == "cfd" else F5.futures_firms())[sp["firm"]]
+        if sp.get("override"): F = dict(F, **sp["override"])
         instr = sp.get("instr") or ("US100" if sp["kind"] == "cfd" else "MNQ_fut")
         srng = random.Random(seed * 1000 + sid)
         g = g_slot(sid, F, sp["L"], sp["k"], sp["X1"], sp["X"], srng, t_end, ledger, sp.get("start_day", 0) * DAY)
-        info[sid] = dict(F=F, instr=instr, rng=srng, s=m * mk[instr].M["sig"], cost=mk[instr].M["cost"], flat_daily=F.get("flat_daily"))
+        info[sid] = dict(F=F, instr=instr, rng=srng, s=(sp.get("m") or m) * mk[instr].M["sig"], cost=mk[instr].M["cost"], flat_daily=F.get("flat_daily"))
         gens[sid] = g
         req = next(g)
         _push(sid, req, heap, pend, mk, info, base)

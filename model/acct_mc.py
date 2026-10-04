@@ -112,6 +112,7 @@ def run_stage(st, tr, rng, firm, clock, eval_phase=True, fund=None):
     trail_dll = st.get("dll_trailing", False)
     best = st.get("best"); cap_day = best * A if best else None
     max_rule = firm.get("max_risk_rule")
+    bs = firm.get("buffer_scale", 1.0)                 # safety margins below are in dollars of a 100K account
     x = 0.0; H = 0.0; floor = -dd
     day = int(clock // DAY); day_ref = 0.0; day_peak = 0.0; day_pnl = 0.0
     days_traded = set(); best_day = 0.0; day_profits = {}
@@ -142,11 +143,11 @@ def run_stage(st, tr, rng, firm, clock, eval_phase=True, fund=None):
             return True, clock + st.get("review", 1) * DAY
         if x <= floor + 1e-6:
             return False, clock
-        room_floor = x - floor - 100.0
+        room_floor = x - floor - 100.0 * bs
         room_day = 1e18
         if dll:
             ref = day_peak if trail_dll else day_ref
-            room_day = dll - (ref - x) - 200.0
+            room_day = dll - (ref - x) - 200.0 * bs
         room_cap = 1e18
         if cap_day is not None:
             room_cap = cap_day - day_pnl
@@ -185,6 +186,7 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
     qdays = 0; cyc_best = 0.0; cyc_profit_start = 0.0; refunded = False
     caps = fd.get("caps"); maxp = fd.get("max_payouts")
     pdn = fd.get("profit_days"); cyc_pdays = 0          # funded profitable-days rule per payout cycle
+    bs = firm.get("buffer_scale", 1.0)
     def _fcap():
         if not pdn: return None
         need = pdn[0] - cyc_pdays
@@ -232,7 +234,10 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
                 cash = fd["split"] * amt
                 if npay == 0 and fd.get("eval_share"):
                     cash += fd["eval_share"] * sum(s["target"] for s in firm["phases"])
-                if not refunded and npay + 1 >= fd.get("refund_after", 1) and fd.get("refund", 0):
+                rsplit = fd.get("refund_split")
+                if rsplit and fd.get("refund", 0):
+                    if npay < rsplit: cash += fd["refund"] / rsplit      # fee returned in equal parts with the first payouts
+                elif not refunded and npay + 1 >= fd.get("refund_after", 1) and fd.get("refund", 0):
                     cash += fd["refund"]; refunded = True
                 paid += cash; npay += 1; x -= amt; day_ref -= amt; day_peak -= amt
                 cyc_pdays = 0; day_pnl = 0.0
@@ -256,11 +261,11 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
         # ---- futures-style: stop for the day once the day qualifies
         if fd.get("q_days") and day_pnl >= fd["q_min"]:
             clock = (day + 1) * DAY + 0.01; continue
-        room_floor = x - floor - 100.0
+        room_floor = x - floor - 100.0 * bs
         room_day = 1e18
         if dll:
             ref = day_peak if trail_dll else day_ref
-            room_day = dll - (ref - x) - 200.0
+            room_day = dll - (ref - x) - 200.0 * bs
         l = min(tr.L, room_floor, room_day, firm.get("max_risk_rule") or 1e18)
         if room_day < 0.1 * tr.L and room_floor >= 0.1 * tr.L:
             clock = (day + 1) * DAY + 0.01; continue

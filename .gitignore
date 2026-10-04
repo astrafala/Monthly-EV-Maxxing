@@ -3,3 +3,4 @@ model/*.csv
 __pycache__/
 *.pyc
 *.png
+model/*.pdf
