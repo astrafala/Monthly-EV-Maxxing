@@ -1,0 +1,167 @@
+<!-- 8 NEW -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 8</span>
+  <h1>Time: how long an attempt takes</h1>
+  <p>Expected value per attempt is only half the story. If one plan earns $1,400 per attempt and needs 86 weeks, and another earns $1,400 and needs 3 weeks, the second is worth almost thirty times more per month. This chapter derives how long each phase takes and which choices make it faster.</p>
+  <h2>8.1 How many trades a phase needs</h2>
+  <p>Take fair trades that risk L and aim for k &times; L (reward-to-risk 1 : k). Each trade adds a random amount with mean zero and variance k &times; L<sup>2</sup>. A second fair-game identity (Wald's) says the expected squared final result equals the expected number of trades times the variance per trade. The final result is +A with probability B &divide; (A + B) and &minus;B otherwise, so its expected square is A &times; B.</p>
+  <div class="formula"><span class="lbl">Expected number of trades in a phase</span>N = A &times; B &divide; (k &times; L<sup>2</sup>)</div>
+  <p>FTMO Phase 1 (A = B = $10,000) with 1% risk and 1 : 1 needs about 100 trades. With 1.5% risk and 1 : 3 it needs about 10,000 &times; 10,000 &divide; (3 &times; 1,500<sup>2</sup>) &asymp; <strong>15 trades</strong>.</p>
+  <h2>8.2 How long one trade takes</h2>
+  <p>A bracket closes when price moves a distance s against you or k &times; s in your favour. If the price moves with volatility &sigma; per hour (its typical one-hour move), the same identity applied to price gives:</p>
+  <div class="formula"><span class="lbl">Expected duration of one bracket</span>T<sub>trade</sub> &asymp; k &times; s<sup>2</sup> &divide; &sigma;<sup>2</sup> &nbsp;&nbsp; hours</div>
+  <p>A stop of one hourly move (s = &sigma;) at 1 : 1 takes about one active hour. A stop of three hourly moves takes about nine.</p>
+  <h2>8.3 Time and cost of a whole phase</h2>
+  <p>Multiply the two. The reward-to-risk ratio k cancels:</p>
+  <div class="formula"><span class="lbl">Phase time and phase cost</span>Time &asymp; A &times; B &times; s<sup>2</sup> &divide; (L<sup>2</sup> &times; &sigma;<sup>2</sup>) &nbsp;&nbsp;&nbsp;&nbsp; Cost &asymp; A &times; B &times; c &divide; (k &times; L &times; s)</div>
+  <p>Here c is the round-trip cost as a fraction of price. These two lines contain every lever:</p>
+  <table>
+    <thead><tr><th>Lever</th><th>Effect on time</th><th>Effect on cost</th><th>Limit</th></tr></thead>
+    <tbody>
+      <tr><td>Risk per trade L</td><td>Falls with L<sup>2</sup>: 1.5% is 2.25&times; faster than 1%</td><td>Falls with L</td><td>Firm guidance: FTMO suggests 1&ndash;1.5%</td></tr>
+      <tr><td>Stop distance s</td><td>Rises with s<sup>2</sup></td><td>Falls with s</td><td>The trade-off you optimise</td></tr>
+      <tr><td>Reward-to-risk k</td><td>No effect</td><td>Falls with k</td><td>Overshoot near the target; real-data drift at far targets</td></tr>
+      <tr><td>Instrument</td><td colspan="2">Sets the price of speed: cost c against movement &sigma;</td><td>Chapter 9</td></tr>
+      <tr><td>Leverage</td><td colspan="2">None, unless it forces a wider stop than you want (Section 9.3)</td><td>Rarely binds</td></tr>
+    </tbody>
+  </table>
+  <h2>8.4 The speed&ndash;cost trade-off</h2>
+  <p>A tighter stop finishes the phase sooner but costs more per dollar risked. If the expected value per attempt falls roughly in a straight line with cost, EV &asymp; EV<sub>0</sub> &minus; &beta;&#8202;/&#8202;s, and time grows like s<sup>2</sup>, then EV per unit time is (EV<sub>0</sub> &minus; &beta;/s) &divide; s<sup>2</sup>. Setting its derivative to zero gives s = 1.5 &beta; &divide; EV<sub>0</sub>, where EV is one third of EV<sub>0</sub>.</p>
+  <div class="box key"><h4>The surprising rule</h4>When time is what matters, the best stop is tight enough that trading costs eat about <strong>two thirds</strong> of the no-cost expected value. Fixed waiting times (minimum days, reviews, the 14-day payout calendar) push the optimum back towards wider stops, because once those waits dominate, more speed buys little. Chapter 10 finds the real optimum by simulation.</div>
+  <h2>8.5 Fixed waits you cannot trade away</h2>
+  <ul>
+    <li><strong>Minimum trading days</strong>: 4 per phase at FTMO, 3 at FundingPips and The5ers, 5 at FundedNext.</li>
+    <li><strong>Reviews</strong>: about 1 day between phases and 1&ndash;3 days for identity checks and the contract before funding.</li>
+    <li><strong>The payout calendar</strong>: FTMO's first payout comes 14 days after your first funded trade, then every 14 days. FundingPips offers weekly payouts at a 60% split. FundedNext's first cycle is 21 days. Crypto firms such as Breakout and HyroTrader pay on demand.</li>
+  </ul>
+  <p>These waits set a floor. Even the fastest pass cannot produce an FTMO payout much sooner than about 25 days after purchase: 4 + 4 minimum trading days, about 4 days of reviews, then 14 days to the first payout date.</p>
+</section>
+
+<!-- 9 NEW -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 9</span>
+  <h1>Instruments, leverage and platforms</h1>
+  <h2>9.1 The one number that ranks instruments</h2>
+  <p>From Section 8.3, for a fixed time budget, the cost you pay is proportional to c &divide; &sigma;: the trading cost compared with how far the instrument moves. Over a full trading week this becomes:</p>
+  <div class="formula"><span class="lbl">Instrument efficiency</span>Efficiency = typical weekly move &divide; round-trip trading cost &nbsp;&nbsp;&nbsp; (higher = faster for the same cost)</div>
+  <p>Weekly movement already includes trading hours. An instrument that trades 24/7 gets credit for its weekend movement automatically, so "crypto trades all week" is already counted.</p>
+  {{FIG_EFF}}
+  <table>
+    <thead><tr><th>Instrument (platform)</th><th class="n">Weekly move</th><th class="n">Round-trip cost</th><th class="n">Efficiency</th><th class="n">Max leverage</th><th class="n">Hours/week</th></tr></thead>
+    <tbody>
+      <tr><td>Nasdaq 100 micro futures (futures firms)</td><td class="n">3.08%</td><td class="n">0.0027%</td><td class="n">1,141</td><td class="n">&ndash;</td><td class="n">~110</td></tr>
+      <tr class="hl"><td>US100 CFD (FTMO, zero commission)</td><td class="n">3.08%</td><td class="n">0.0064%</td><td class="n">481</td><td class="n">1:50</td><td class="n">~110</td></tr>
+      <tr><td>USDJPY (FTMO)</td><td class="n">1.35%</td><td class="n">0.0051%</td><td class="n">265</td><td class="n">1:100</td><td class="n">~118</td></tr>
+      <tr><td>Gold XAUUSD (FTMO)</td><td class="n">2.78%</td><td class="n">0.0108%</td><td class="n">257</td><td class="n">1:30</td><td class="n">~110</td></tr>
+      <tr><td>US500 CFD (FTMO)</td><td class="n">2.32%</td><td class="n">0.0096%</td><td class="n">242</td><td class="n">1:50</td><td class="n">~110</td></tr>
+      <tr><td>EURUSD (FTMO)</td><td class="n">0.91%</td><td class="n">0.0062%</td><td class="n">147</td><td class="n">1:100</td><td class="n">~118</td></tr>
+      <tr><td>GBPUSD (FTMO)</td><td class="n">0.91%</td><td class="n">0.0076%</td><td class="n">120</td><td class="n">1:100</td><td class="n">~118</td></tr>
+      <tr><td>ETHUSD CFD (FTMO, 0.0325%/side commission)</td><td class="n">9.52%</td><td class="n">0.105%</td><td class="n">91</td><td class="n">1:3.3</td><td class="n">168</td></tr>
+      <tr><td>BTCUSD CFD (FTMO)</td><td class="n">5.89%</td><td class="n">0.093%</td><td class="n">63</td><td class="n">1:3.3</td><td class="n">168</td></tr>
+      <tr><td>BTC (Breakout/Kraken, 0.04%/side)</td><td class="n">5.89%</td><td class="n">0.10%</td><td class="n">59</td><td class="n">1:5</td><td class="n">168</td></tr>
+      <tr><td>BTC perp (HyroTrader/Bybit, taker 0.055%/side)</td><td class="n">5.89%</td><td class="n">0.12%</td><td class="n">49</td><td class="n">up to 1:100</td><td class="n">168</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">Weekly move: standard deviation of weekly returns, hourly data 2023&ndash;26. Costs: published FTMO spreads (US100 1.66 pts, gold $0.52, EURUSD raw spread plus $3/lot commission), exchange fees for crypto firms, plus an allowance for slippage. Futures: about $1.70 per micro contract round trip. Check your own platform: Chapter 18.</p>
+  <h2>9.2 Crypto: trading 24/7 does not help</h2>
+  <p>Bitcoin moves about six times as much as EURUSD in a week, partly because it trades on weekends. But on prop platforms it costs fifteen to twenty times as much per trade, because crypto carries percentage commissions (0.0325% per side at FTMO, 0.04% at Breakout, 0.055% taker at Bybit). Its efficiency ends up between a half and a tenth of the alternatives. Chapter 10 confirms it: the best crypto set-up found earns about a fifth of the Nasdaq plan per month.</p>
+  <h2>9.3 What leverage actually does</h2>
+  <p>Leverage does not make trades resolve faster. Time depends on how far price must travel (the stop distance) compared with how fast it moves. Leverage only limits position size, and so sets the <em>tightest</em> stop you can use for a given risk:</p>
+  <div class="formula"><span class="lbl">Tightest stop allowed by leverage &lambda;</span>s<sub>min</sub> = risk per trade &divide; (&lambda; &times; account size) &nbsp;&nbsp;&nbsp; 1.5% risk at 1:50 &rarr; 0.03%; at 1:3.3 &rarr; 0.45%</div>
+  <p>For indices, metals and currencies the limit is far below any sensible stop. For crypto at FTMO (1:3.3), 0.45% is just above one hourly Bitcoin move, so leverage would block the fastest crypto stops. Costs make those stops unattractive anyway.</p>
+  <h2>9.4 Overnight financing</h2>
+  <p>Positions held through the daily rollover pay (or occasionally earn) financing on their full size. With tight stops the position is large, so even one night can cost several percent of the risk on index and gold CFDs. Fast plans close most trades within hours, which keeps this small. The simulations charge it on every rollover crossed.</p>
+  <h2>9.5 Futures</h2>
+  <p>Futures are the cheapest instrument of all, but futures prop firms use trailing drawdowns, small accounts ($2,000 allowance on 50K), payout ladders and consistency rules (Chapter 11). Their value per account is small, though attempts are quick and some firms allow many accounts at once.</p>
+</section>
+
+<!-- 10 NEW -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 10</span>
+  <h1>Maximising expected value per month</h1>
+  <h2>10.1 Method</h2>
+  <p>For each instrument we measured, on real hourly data, how long random-direction brackets of each size actually take (including waiting for trading hours and weekends) and how often they cross the rollover. Those measured durations then drive a full simulation of each firm's contract with calendar time:</p>
+  <ul>
+    <li>Daily loss limits, minimum days and reviews.</li>
+    <li>Payout calendars and refunds.</li>
+    <li>A daily guard that stops trading before the daily limit can be breached.</li>
+  </ul>
+  <p>Every set-up was simulated 1,200&ndash;4,000 times. The trades are assumed to have <strong>no edge</strong>: the small win-rate deviations seen in the data were treated as noise. The result is <em>expected value per month per account slot</em> = expected value per attempt &divide; average length of an attempt.</p>
+  <h2>10.2 Stop size</h2>
+  {{FIG_STOP}}
+  <p>The best stop is short: about <strong>0.5&ndash;1 hourly move</strong>, which is 40&ndash;85 Nasdaq points. At 0.75 hourly moves, costs take roughly 40% of the no-cost value, which matches the trade-off of Section 8.4 once the fixed payout waits are included. Very wide stops (the earlier plan used about six hourly moves on EURUSD) are thirty times slower.</p>
+  <h2>10.3 Reward-to-risk, risk per trade and payout policy</h2>
+  <table>
+    <thead><tr><th>FTMO 2-Step, US100</th><th class="n">EV per attempt</th><th class="n">Days per attempt</th><th class="n">EV per month</th></tr></thead>
+    <tbody>
+      <tr><td>Stop 1 hourly move, 1 : 1, risk 1.5%</td><td class="n">+$880</td><td class="n">22</td><td class="n">$1,236</td></tr>
+      <tr><td>Stop 1 hourly move, 1 : 2, risk 1.5%</td><td class="n">+$1,469</td><td class="n">22</td><td class="n">$2,029</td></tr>
+      <tr><td>Stop 1 hourly move, 1 : 3, risk 1.5%</td><td class="n">+$1,402</td><td class="n">20</td><td class="n">$2,122</td></tr>
+      <tr><td>Stop 0.75 hourly moves, 1 : 3, risk 1.0%</td><td class="n">+$1,234</td><td class="n">25</td><td class="n">$1,503</td></tr>
+      <tr class="hl"><td>Stop 0.75 hourly moves, 1 : 3, risk 1.5%</td><td class="n">+$1,355</td><td class="n">18</td><td class="n">$2,351</td></tr>
+      <tr><td>Same, funded target +$3,000 per cycle instead of +$10,000</td><td class="n">+$1,526</td><td class="n">25</td><td class="n">$1,892</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li><strong>Reward-to-risk 1 : 2 or 1 : 3</strong> beats 1 : 1 by a wide margin. As Section 8.3 predicts, it costs no time and cuts the number of trades.</li>
+    <li><strong>1.5% risk</strong> beats 1%, also as predicted (time falls with L<sup>2</sup>). Both are inside FTMO's 1&ndash;1.5% guidance; this plan does not go above it.</li>
+    <li><strong>Funded payout policy.</strong> Aim for a large profit per 14-day cycle (+$10,000) rather than a small one. Fewer cycles mean the account resolves sooner. The first cycle still aims for +$1,000 to secure the fee refund.</li>
+  </ul>
+  <h2>10.4 Instrument</h2>
+  <table>
+    <thead><tr><th>FTMO 2-Step, best set-up per instrument</th><th class="n">EV per month per slot</th></tr></thead>
+    <tbody>
+      <tr class="hl"><td>US100 (Nasdaq CFD)</td><td class="n">$2,350&ndash;2,500</td></tr>
+      <tr><td>Gold (XAUUSD)</td><td class="n">$2,071</td></tr>
+      <tr><td>USDJPY</td><td class="n">$1,814</td></tr>
+      <tr><td>US500</td><td class="n">$1,467</td></tr>
+      <tr><td>EURUSD</td><td class="n">$1,179</td></tr>
+      <tr><td>GBPUSD</td><td class="n">$781</td></tr>
+      <tr><td>ETHUSD CFD</td><td class="n">$299</td></tr>
+      <tr><td>BTCUSD CFD</td><td class="n">$83</td></tr>
+    </tbody>
+  </table>
+  <h2>10.5 Firm</h2>
+  {{FIG_FIRMS_MONTH}}
+  <table>
+    <thead><tr><th>Firm and programme (100K, US100 plan)</th><th class="n">EV per attempt</th><th class="n">Days per attempt</th><th class="n">EV per month</th><th class="n">Median days to first payout</th></tr></thead>
+    <tbody>
+      <tr><td>The5ers High Stakes</td><td class="n">+$1,869</td><td class="n">18</td><td class="n">$3,183</td><td class="n">23</td></tr>
+      <tr><td>FundingPips 2-Step, bi-weekly 80%</td><td class="n">+$1,743</td><td class="n">18</td><td class="n">$2,967</td><td class="n">23</td></tr>
+      <tr><td>FTMO 1-Step</td><td class="n">+$1,755</td><td class="n">19</td><td class="n">$2,859</td><td class="n">23</td></tr>
+      <tr><td>FundedNext Stellar 2-Step</td><td class="n">+$1,866</td><td class="n">21</td><td class="n">$2,676</td><td class="n">34</td></tr>
+      <tr><td>FundingPips 2-Step, weekly 60%</td><td class="n">+$1,171</td><td class="n">14</td><td class="n">$2,503</td><td class="n">16</td></tr>
+      <tr class="hl"><td>FTMO 2-Step</td><td class="n">+$1,429</td><td class="n">18</td><td class="n">$2,444</td><td class="n">27</td></tr>
+      <tr><td>Apex 50K EOD (futures, MNQ, $500 risk)</td><td class="n">+$148</td><td class="n">10</td><td class="n">$462</td><td class="n">13</td></tr>
+      <tr><td>HyroTrader 2-Step (BTC, 3% risk)</td><td class="n">+$571</td><td class="n">36</td><td class="n">$479</td><td class="n">28</td></tr>
+      <tr><td>Topstep 50K (futures, MNQ, $500 risk)</td><td class="n">+$76</td><td class="n">7</td><td class="n">$349</td><td class="n">12</td></tr>
+      <tr><td>Breakout 2-Step (BTC)</td><td class="n">&minus;$250</td><td class="n">75</td><td class="n">&minus;$102</td><td class="n">78</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">&plusmn;$170&ndash;210 on EV per attempt for the CFD firms (4,000 simulations each). The same Nasdaq costs were assumed at every CFD firm; their real spreads may differ. Futures values are per 50K account.</p>
+  <p>The CFD firms with an 8% Phase 1 target (The5ers, FundingPips) come out ahead of FTMO 2-Step's 10%. The FTMO 1-Step's 90% split and resetting floor also beat it. The weekly 60% payout option pays sooner but less. The crypto firms and Breakout's 6% drawdown with a 10% Phase 2 target are poor contracts.</p>
+  <h2>10.6 Check on real prices</h2>
+  <p>We re-ran the winning FTMO set-up on the actual 2024&ndash;26 Nasdaq price path, with every bracket resolved on real bars:</p>
+  <table>
+    <thead><tr><th>Real-path test, FTMO 2-Step (1,500 attempts each)</th><th class="n">EV per attempt</th><th class="n">Days</th><th class="n">EV per month</th></tr></thead>
+    <tbody>
+      <tr class="hl"><td>US100, stop 0.75 hourly moves, 1 : 3, 1.5% risk</td><td class="n">+$2,076 &plusmn; 372</td><td class="n">19</td><td class="n">$3,281</td></tr>
+      <tr><td>Same, trading costs &times; 1.5</td><td class="n">+$1,596 &plusmn; 322</td><td class="n">18</td><td class="n">$2,688</td></tr>
+      <tr><td>US100, stop 1 hourly move, 1 : 2</td><td class="n">+$1,675 &plusmn; 355</td><td class="n">22</td><td class="n">$2,289</td></tr>
+      <tr><td>EURUSD, stop 1 hourly move, 1 : 3</td><td class="n">+$1,214 &plusmn; 282</td><td class="n">18</td><td class="n">$2,004</td></tr>
+    </tbody>
+  </table>
+  <p>Real prices came out above the zero-edge model. Part of that is favourable noise: in this sample, far targets were hit slightly more often than fair odds. Plan with the zero-edge numbers, about <strong>$2,400 per month per FTMO 2-Step slot</strong>.</p>
+  <h2>10.7 What one account slot looks like over a year</h2>
+  <table>
+    <thead><tr><th>One FTMO 100K slot, fast plan, rebuying after each attempt</th><th class="n">1 month</th><th class="n">3 months</th><th class="n">6 months</th><th class="n">12 months</th></tr></thead>
+    <tbody>
+      <tr><td>Chance of being ahead</td><td class="n">5%</td><td class="n">36%</td><td class="n">69%</td><td class="n">88%</td></tr>
+      <tr><td>Average result</td><td class="n">&minus;$1,757</td><td class="n">+$1,088</td><td class="n">+$7,781</td><td class="n">+$23,110</td></tr>
+      <tr><td>Median result</td><td class="n">&minus;$1,896</td><td class="n">&minus;$1,560</td><td class="n">+$5,344</td><td class="n">+$20,584</td></tr>
+      <tr><td>Bad case (10th percentile)</td><td class="n">&minus;$3,160</td><td class="n">&minus;$5,056</td><td class="n">&minus;$6,616</td><td class="n">&minus;$1,272</td></tr>
+      <tr><td>Good case (90th percentile)</td><td class="n">&minus;$632</td><td class="n">+$13,008</td><td class="n">+$23,872</td><td class="n">+$49,648</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">2,000 simulated years. Fees are counted when paid; payouts are counted at the end of each attempt (slightly pessimistic timing). About 1.6 attempts per month per slot, so roughly $1,000 a month in fees.</p>
+</section>

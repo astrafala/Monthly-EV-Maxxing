@@ -1,0 +1,14 @@
+GBPUSD        m=1    k=1 p=0.4933 (fair 0.5000) hrs=   5.8 kappa=876.58% fin=27.62% edge/trade=-905.55%
+GBPUSD        m=1    k=2 p=0.3365 (fair 0.3333) hrs=   7.8 kappa=876.58% fin=43.17% edge/trade=-918.79%
+GBPUSD        m=1.5  k=1 p=0.5042 (fair 0.5000) hrs=   8.8 kappa=584.38% fin=33.10% edge/trade=-616.64%
+GBPUSD        m=1.5  k=2 p=0.3506 (fair 0.3333) hrs=  13.6 kappa=584.38% fin=52.56% edge/trade=-631.75%
+GBPUSD        m=2    k=1 p=0.5035 (fair 0.5000) hrs=  12.1 kappa=438.29% fin=36.43% edge/trade=-474.02%
+GBPUSD        m=2    k=2 p=0.3448 (fair 0.3333) hrs=  19.3 kappa=438.29% fin=57.19% edge/trade=-492.06%
+GBPUSD        m=3    k=1 p=0.4995 (fair 0.5000) hrs=  21.6 kappa=292.19% fin=42.68% edge/trade=-334.97%
+GBPUSD        m=3    k=2 p=0.3441 (fair 0.3333) hrs=  37.3 kappa=292.19% fin=74.62% edge/trade=-363.58%
+GBPUSD        m=4    k=1 p=0.5035 (fair 0.5000) hrs=  33.4 kappa=219.14% fin=49.73% edge/trade=-268.18%
+GBPUSD        m=4    k=2 p=0.3450 (fair 0.3333) hrs=  60.5 kappa=219.14% fin=90.59% edge/trade=-306.24%
+GBPUSD        m=6    k=1 p=0.5019 (fair 0.5000) hrs=  66.5 kappa=146.10% fin=66.44% edge/trade=-212.16%
+GBPUSD        m=6    k=2 p=0.3519 (fair 0.3333) hrs= 125.4 kappa=146.10% fin=125.79% edge/trade=-266.33%
+GBPUSD        m=9    k=1 p=0.4896 (fair 0.5000) hrs= 136.6 kappa=97.40% fin=91.77% edge/trade=-191.24%
+GBPUSD        m=9    k=2 p=0.3430 (fair 0.3333) hrs= 261.8 kappa=97.40% fin=175.15% edge/trade=-269.64%

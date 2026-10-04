@@ -1,0 +1,14 @@
+USDJPY        m=1    k=1 p=0.5051 (fair 0.5000) hrs=   5.8 kappa=427.47% fin=19.61% edge/trade=-446.06%
+USDJPY        m=1    k=2 p=0.3222 (fair 0.3333) hrs=   8.8 kappa=427.47% fin=33.88% edge/trade=-464.68%
+USDJPY        m=1.5  k=1 p=0.4929 (fair 0.5000) hrs=   9.6 kappa=284.98% fin=24.41% edge/trade=-310.81%
+USDJPY        m=1.5  k=2 p=0.3410 (fair 0.3333) hrs=  16.1 kappa=284.98% fin=43.38% edge/trade=-326.06%
+USDJPY        m=2    k=1 p=0.4993 (fair 0.5000) hrs=  15.4 kappa=213.74% fin=30.89% edge/trade=-244.77%
+USDJPY        m=2    k=2 p=0.3306 (fair 0.3333) hrs=  25.3 kappa=213.74% fin=51.68% edge/trade=-266.23%
+USDJPY        m=3    k=1 p=0.5035 (fair 0.5000) hrs=  28.1 kappa=142.49% fin=38.95% edge/trade=-180.75%
+USDJPY        m=3    k=2 p=0.3395 (fair 0.3333) hrs=  48.7 kappa=142.49% fin=67.91% edge/trade=-208.55%
+USDJPY        m=4    k=1 p=0.5041 (fair 0.5000) hrs=  45.9 kappa=106.87% fin=47.35% edge/trade=-153.40%
+USDJPY        m=4    k=2 p=0.3417 (fair 0.3333) hrs=  76.0 kappa=106.87% fin=79.63% edge/trade=-183.98%
+USDJPY        m=6    k=1 p=0.5006 (fair 0.5000) hrs=  84.3 kappa=71.25% fin=58.69% edge/trade=-129.81%
+USDJPY        m=6    k=2 p=0.3340 (fair 0.3333) hrs= 152.1 kappa=71.25% fin=105.61% edge/trade=-176.65%
+USDJPY        m=9    k=1 p=0.5040 (fair 0.5000) hrs= 172.2 kappa=47.50% fin=79.77% edge/trade=-126.47%
+USDJPY        m=9    k=2 p=0.3387 (fair 0.3333) hrs= 289.0 kappa=47.50% fin=133.69% edge/trade=-179.57%

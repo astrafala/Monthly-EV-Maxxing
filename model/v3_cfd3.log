@@ -1,0 +1,54 @@
+Alpha Capital Pro 10%               100000 synth m=0.75 k=3 L=1500 X1=10000 X=10000 EV=   1485± 135 days= 11.1 EV/mo=  4084 P=0.291 Vf=  6816 tf= 16.2 slotU=  9589 t1= 24.4
+Alpha Capital Pro 10%               100000 synth m=0.75 k=3 L=1500 X1=7000 X=15000 EV=   1432± 137 days= 11.1 EV/mo=  3929 P=0.292 Vf=  6608 tf= 16.4 slotU=  9129 t1= 24.3
+Alpha Capital Pro 10%               100000 synth m=0.75 k=3 L=1500 X1=7000 X=10000 EV=   1430± 132 days= 11.5 EV/mo=  3788 P=0.287 Vf=  6716 tf= 18.1 slotU=  8388 t1= 24.3
+Alpha Capital Pro 10%               100000 synth m=0.75 k=3 L=1500 X1=5000 X=15000 EV=   1425± 139 days= 11.7 EV/mo=  3720 P=0.291 Vf=  6592 tf= 18.3 slotU=  8116 t1= 24.4
+Alpha Capital Pro 10%               100000 synth m=0.75 k=3 L=1500 X1=5000 X=10000 EV=   1441± 130 days= 12.1 EV/mo=  3625 P=0.287 Vf=  6760 tf= 20.4 slotU=  7513 t1= 24.3
+Alpha Capital Pro 10%               100000 synth m=0.75 k=3 L=1500 X1=4000 X=8000 EV=   1438± 125 days= 13.0 EV/mo=  3364 P=0.291 Vf=  6644 tf= 23.0 slotU=  6549 t1= 24.2
+FTMO 1-Step                         100000 synth m=0.75 k=3 L=1500 X1=5000 X=10000 EV=   1636± 138 days= 15.1 EV/mo=  3291 P=0.316 Vf=  7020 tf= 21.4 slotU=  7367 t1= 23.6
+FTMO 1-Step                         100000 synth m=0.75 k=3 L=1500 X1=7000 X=10000 EV=   1464± 131 days= 14.2 EV/mo=  3144 P=0.317 Vf=  6452 tf= 18.5 slotU=  7571 t1= 23.3
+FTMO 1-Step                         100000 synth m=0.75 k=3 L=1500 X1=4000 X=8000 EV=   1701± 134 days= 16.6 EV/mo=  3122 P=0.317 Vf=  7213 tf= 25.7 slotU=  6369 t1= 23.7
+FTMO 1-Step                         100000 synth m=0.75 k=3 L=1500 X1=7000 X=15000 EV=   1343± 128 days= 13.6 EV/mo=  3005 P=0.317 Vf=  6085 tf= 16.7 slotU=  7720 t1= 23.4
+FTMO 1-Step                         100000 synth m=0.75 k=3 L=1500 X1=10000 X=10000 EV=   1307± 133 days= 13.2 EV/mo=  3002 P=0.316 Vf=  5993 tf= 15.3 slotU=  8216 t1= 24.2
+FTMO 1-Step                         100000 synth m=0.75 k=3 L=1500 X1=5000 X=15000 EV=   1408± 127 days= 14.3 EV/mo=  2992 P=0.324 Vf=  6150 tf= 18.5 slotU=  7167 t1= 23.6
+FTMO 2-Step                         100000 synth m=0.75 k=3 L=1500 X1=5000 X=15000 EV=   1502± 150 days= 12.4 EV/mo=  3701 P=0.282 Vf=  7563 tf= 19.3 slotU=  8404 t1= 26.1
+FTMO 2-Step                         100000 synth m=0.75 k=3 L=1500 X1=5000 X=10000 EV=   1557± 142 days= 13.1 EV/mo=  3628 P=0.288 Vf=  7589 tf= 21.3 slotU=  7718 t1= 26.1
+FTMO 2-Step                         100000 synth m=0.75 k=3 L=1500 X1=10000 X=10000 EV=   1340± 140 days= 11.5 EV/mo=  3550 P=0.285 Vf=  6911 tf= 16.0 slotU=  8908 t1= 26.1
+FTMO 2-Step                         100000 synth m=0.75 k=3 L=1500 X1=7000 X=10000 EV=   1413± 135 days= 12.3 EV/mo=  3490 P=0.293 Vf=  6973 tf= 18.2 slotU=  8047 t1= 26.1
+FTMO 2-Step                         100000 synth m=0.75 k=3 L=1500 X1=7000 X=15000 EV=   1295± 134 days= 11.5 EV/mo=  3420 P=0.278 Vf=  6936 tf= 16.7 slotU=  8472 t1= 26.1
+FTMO 2-Step                         100000 synth m=0.75 k=3 L=1500 X1=4000 X=8000 EV=   1471± 130 days= 13.7 EV/mo=  3271 P=0.286 Vf=  7348 tf= 23.7 slotU=  6591 t1= 26.1
+FXIFY Two-Phase                     100000 synth m=0.75 k=3 L=1500 X1=7000 X=15000 EV=   1602± 142 days= 10.6 EV/mo=  4598 P=0.292 Vf=  7119 tf= 16.9 slotU=  9867 t1= 22.5
+FXIFY Two-Phase                     100000 synth m=0.75 k=3 L=1500 X1=10000 X=10000 EV=   1541± 142 days= 10.3 EV/mo=  4549 P=0.295 Vf=  6847 tf= 15.9 slotU= 10022 t1= 22.5
+FXIFY Two-Phase                     100000 synth m=0.75 k=3 L=1500 X1=5000 X=10000 EV=   1647± 142 days= 11.6 EV/mo=  4320 P=0.281 Vf=  7560 tf= 21.3 slotU=  8380 t1= 22.4
+FXIFY Two-Phase                     100000 synth m=0.75 k=3 L=1500 X1=7000 X=10000 EV=   1502± 134 days= 10.8 EV/mo=  4251 P=0.282 Vf=  7023 tf= 18.1 slotU=  8948 t1= 22.5
+FXIFY Two-Phase                     100000 synth m=0.75 k=3 L=1500 X1=5000 X=15000 EV=   1518± 138 days= 11.0 EV/mo=  4202 P=0.291 Vf=  6867 tf= 18.5 slotU=  8591 t1= 22.4
+FXIFY Two-Phase                     100000 synth m=0.75 k=3 L=1500 X1=4000 X=8000 EV=   1679± 140 days= 12.7 EV/mo=  4017 P=0.295 Vf=  7314 tf= 23.9 slotU=  7247 t1= 22.5
+FundedNext Stellar 2-Step           100000 synth m=0.75 k=3 L=1500 X1=5000 X=10000 EV=   2292± 157 days= 16.1 EV/mo=  4341 P=0.335 Vf=  8475 tf= 24.9 slotU=  8341 t1= 34.8
+FundedNext Stellar 2-Step           100000 synth m=0.75 k=3 L=1500 X1=7000 X=15000 EV=   2032± 153 days= 14.3 EV/mo=  4329 P=0.324 Vf=  7968 tf= 20.3 slotU=  9397 t1= 34.8
+FundedNext Stellar 2-Step           100000 synth m=0.75 k=3 L=1500 X1=7000 X=10000 EV=   2062± 155 days= 14.7 EV/mo=  4273 P=0.319 Vf=  8199 tf= 22.1 slotU=  8920 t1= 34.8
+FundedNext Stellar 2-Step           100000 synth m=0.75 k=3 L=1500 X1=10000 X=10000 EV=   1920± 152 days= 13.7 EV/mo=  4272 P=0.322 Vf=  7667 tf= 18.7 slotU=  9694 t1= 34.8
+FundedNext Stellar 2-Step           100000 synth m=0.75 k=3 L=1500 X1=5000 X=15000 EV=   2060± 153 days= 15.1 EV/mo=  4148 P=0.332 Vf=  7860 tf= 22.2 slotU=  8498 t1= 34.8
+FundedNext Stellar 2-Step           100000 synth m=0.75 k=3 L=1500 X1=4000 X=8000 EV=   2142± 146 days= 16.7 EV/mo=  3902 P=0.329 Vf=  8191 tf= 27.4 slotU=  7239 t1= 34.8
+FundingPips 2-Step (bi-weekly 80%)  100000 synth m=0.75 k=3 L=1500 X1=10000 X=10000 EV=   1727± 145 days= 11.6 EV/mo=  4539 P=0.325 Vf=  6935 tf= 16.4 slotU=  9834 t1= 24.0
+FundingPips 2-Step (bi-weekly 80%)  100000 synth m=0.75 k=3 L=1500 X1=7000 X=10000 EV=   1759± 141 days= 12.3 EV/mo=  4338 P=0.329 Vf=  6947 tf= 18.5 slotU=  8778 t1= 24.1
+FundingPips 2-Step (bi-weekly 80%)  100000 synth m=0.75 k=3 L=1500 X1=7000 X=15000 EV=   1647± 145 days= 11.7 EV/mo=  4285 P=0.333 Vf=  6540 tf= 16.4 slotU=  9181 t1= 24.0
+FundingPips 2-Step (bi-weekly 80%)  100000 synth m=0.75 k=3 L=1500 X1=5000 X=15000 EV=   1572± 146 days= 12.0 EV/mo=  3974 P=0.327 Vf=  6429 tf= 17.8 slotU=  8209 t1= 24.1
+FundingPips 2-Step (bi-weekly 80%)  100000 synth m=0.75 k=3 L=1500 X1=5000 X=10000 EV=   1601± 130 days= 12.6 EV/mo=  3860 P=0.324 Vf=  6574 tf= 19.9 slotU=  7557 t1= 24.0
+FundingPips 2-Step (bi-weekly 80%)  100000 synth m=0.75 k=3 L=1500 X1=4000 X=8000 EV=   1746± 141 days= 13.9 EV/mo=  3834 P=0.325 Vf=  7002 tf= 23.6 slotU=  6922 t1= 24.0
+FundingPips 2-Step (monthly 100%)   100000 synth m=0.75 k=3 L=1500 X1=7000 X=15000 EV=   2187± 177 days= 16.0 EV/mo=  4149 P=0.328 Vf=  8287 tf= 30.0 slotU=  6760 t1= 40.0
+FundingPips 2-Step (monthly 100%)   100000 synth m=0.75 k=3 L=1500 X1=10000 X=10000 EV=   2050± 173 days= 15.3 EV/mo=  4076 P=0.329 Vf=  7846 tf= 27.8 slotU=  6837 t1= 40.0
+FundingPips 2-Step (monthly 100%)   100000 synth m=0.75 k=3 L=1500 X1=5000 X=15000 EV=   2295± 186 days= 17.6 EV/mo=  3969 P=0.334 Vf=  8468 tf= 34.1 slotU=  6141 t1= 40.0
+FundingPips 2-Step (monthly 100%)   100000 synth m=0.75 k=3 L=1500 X1=7000 X=10000 EV=   2208± 173 days= 17.2 EV/mo=  3896 P=0.320 Vf=  8559 tf= 34.7 slotU=  6063 t1= 40.0
+FundingPips 2-Step (monthly 100%)   100000 synth m=0.75 k=3 L=1500 X1=5000 X=10000 EV=   2216± 166 days= 19.0 EV/mo=  3559 P=0.329 Vf=  8357 tf= 38.8 slotU=  5287 t1= 40.0
+FundingPips 2-Step (monthly 100%)   100000 synth m=0.75 k=3 L=1500 X1=4000 X=8000 EV=   2245± 165 days= 21.2 EV/mo=  3216 P=0.330 Vf=  8395 tf= 45.4 slotU=  4551 t1= 40.0
+GFT 2-Step Standard                 100000 synth m=0.75 k=3 L=1500 X1=7000 X=10000 EV=   1490± 136 days= 12.9 EV/mo=  3516 P=0.283 Vf=  7116 tf= 25.7 slotU=  6227 t1= 22.6
+GFT 2-Step Standard                 100000 synth m=0.75 k=3 L=1500 X1=4000 X=8000 EV=   1577± 135 days= 13.9 EV/mo=  3448 P=0.288 Vf=  7291 tf= 28.9 slotU=  5772 t1= 22.5
+GFT 2-Step Standard                 100000 synth m=0.75 k=3 L=1500 X1=5000 X=10000 EV=   1460± 131 days= 13.1 EV/mo=  3396 P=0.287 Vf=  6907 tf= 26.0 slotU=  5962 t1= 22.5
+GFT 2-Step Standard                 100000 synth m=0.75 k=3 L=1500 X1=10000 X=10000 EV=   1404± 136 days= 13.0 EV/mo=  3285 P=0.288 Vf=  6683 tf= 25.4 slotU=  5828 t1= 22.9
+GFT 2-Step Standard                 100000 synth m=0.75 k=3 L=1500 X1=7000 X=15000 EV=   1369± 129 days= 12.7 EV/mo=  3284 P=0.290 Vf=  6527 tf= 24.3 slotU=  5917 t1= 22.7
+GFT 2-Step Standard                 100000 synth m=0.75 k=3 L=1500 X1=5000 X=15000 EV=   1346± 126 days= 12.9 EV/mo=  3180 P=0.294 Vf=  6360 tf= 24.7 slotU=  5648 t1= 22.5
+The5ers High Stakes                 100000 synth m=0.75 k=3 L=1500 X1=10000 X=10000 EV=   1657± 146 days= 11.3 EV/mo=  4467 P=0.303 Vf=  7082 tf= 16.1 slotU= 10350 t1= 24.3
+The5ers High Stakes                 100000 synth m=0.75 k=3 L=1500 X1=7000 X=15000 EV=   1491± 143 days= 11.1 EV/mo=  4099 P=0.294 Vf=  6741 tf= 16.0 slotU=  9661 t1= 24.3
+The5ers High Stakes                 100000 synth m=0.75 k=3 L=1500 X1=7000 X=10000 EV=   1542± 133 days= 11.5 EV/mo=  4072 P=0.288 Vf=  7045 tf= 18.1 slotU=  9004 t1= 24.2
+The5ers High Stakes                 100000 synth m=0.75 k=3 L=1500 X1=5000 X=15000 EV=   1467± 137 days= 11.6 EV/mo=  3860 P=0.291 Vf=  6731 tf= 18.0 slotU=  8524 t1= 24.3
+The5ers High Stakes                 100000 synth m=0.75 k=3 L=1500 X1=5000 X=10000 EV=   1513± 131 days= 12.0 EV/mo=  3837 P=0.287 Vf=  6969 tf= 20.0 slotU=  8018 t1= 24.3
+The5ers High Stakes                 100000 synth m=0.75 k=3 L=1500 X1=4000 X=8000 EV=   1598± 128 days= 13.2 EV/mo=  3698 P=0.294 Vf=  7112 tf= 23.2 slotU=  7137 t1= 24.3

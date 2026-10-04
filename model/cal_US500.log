@@ -1,0 +1,14 @@
+US500         m=1    k=1 p=0.5035 (fair 0.5000) hrs=   5.8 kappa=466.16% fin=47.53% edge/trade=-512.98%
+US500         m=1    k=2 p=0.3367 (fair 0.3333) hrs=   8.4 kappa=466.16% fin=80.49% edge/trade=-545.62%
+US500         m=1.5  k=1 p=0.4988 (fair 0.5000) hrs=   9.4 kappa=310.77% fin=62.40% edge/trade=-373.42%
+US500         m=1.5  k=2 p=0.3417 (fair 0.3333) hrs=  16.1 kappa=310.77% fin=127.71% edge/trade=-435.95%
+US500         m=2    k=1 p=0.4971 (fair 0.5000) hrs=  14.3 kappa=233.08% fin=80.67% edge/trade=-314.32%
+US500         m=2    k=2 p=0.3292 (fair 0.3333) hrs=  25.8 kappa=233.08% fin=163.75% edge/trade=-398.05%
+US500         m=3    k=1 p=0.5016 (fair 0.5000) hrs=  27.8 kappa=155.39% fin=123.58% edge/trade=-278.64%
+US500         m=3    k=2 p=0.3166 (fair 0.3333) hrs=  52.2 kappa=155.39% fin=233.90% edge/trade=-394.30%
+US500         m=4    k=1 p=0.4966 (fair 0.5000) hrs=  46.5 kappa=116.54% fin=156.30% edge/trade=-273.52%
+US500         m=4    k=2 p=0.3292 (fair 0.3333) hrs=  89.2 kappa=116.54% fin=312.63% edge/trade=-430.40%
+US500         m=6    k=1 p=0.5006 (fair 0.5000) hrs=  99.0 kappa=77.69% fin=234.58% edge/trade=-312.15%
+US500         m=6    k=2 p=0.3353 (fair 0.3333) hrs= 182.9 kappa=77.69% fin=438.33% edge/trade=-515.43%
+US500         m=9    k=1 p=0.5034 (fair 0.5000) hrs= 203.0 kappa=51.80% fin=326.99% edge/trade=-378.09%
+US500         m=9    k=2 p=0.3314 (fair 0.3333) hrs= 372.2 kappa=51.80% fin=539.05% edge/trade=-591.42%

@@ -1,0 +1,952 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>The Prop Firm Option</title>
+<style>
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400 800;
+  font-stretch: 100% 125%;
+  font-display: swap;
+  src: url(fonts/k3kQo8UDI-1M0wlSfdfoLnnA.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400 800;
+  font-stretch: 100% 125%;
+  font-display: swap;
+  src: url(fonts/k3kQo8UDI-1M0wlSfdnoLg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/-F63fjptAgt5VM-kVkqdyU8n1iEq129k.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/-F63fjptAgt5VM-kVkqdyU8n1i8q1w.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/-F6qfjptAgt5VM-kVkqdyU8n3twJwl5FgtIU.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(fonts/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/vEFH2_tTDB4M7-auWDN0ahZJW1ge6NmXq2ZbF8zBfb98SUr5aX2AzA.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/vEFH2_tTDB4M7-auWDN0ahZJW1ge6NmXq2ZbF8zBfb98SUr0aX2AzA.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/vEFH2_tTDB4M7-auWDN0ahZJW1ge6NmXq2ZbF8zBfb98SUr6aX0.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(fonts/vEFI2_tTDB4M7-auWDN0ahZJW1gY8tenXg.woff2) format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(fonts/vEFI2_tTDB4M7-auWDN0ahZJW1gV8tenXg.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(fonts/vEFI2_tTDB4M7-auWDN0ahZJW1gb8tc.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+:root{
+  --ink:#15191f; --muted:#5b6370; --rule:#d5dae2; --tint:#f1f4f8; --accent:#1d4ed8;
+  --flag:#a8361c; --ok:#1d6f47; --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --neg:#e34948;
+}
+@page { size: A4; margin: 20mm 19mm 22mm 19mm; }
+@page:first { margin: 0; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: "Source Serif 4", Georgia, serif; font-size: 10.4pt; line-height: 1.52; color: var(--ink); margin: 0; }
+h1, h2, h3, h4 { font-family: "Archivo", Arial, sans-serif; line-height: 1.15; margin: 0; break-after: avoid; text-wrap: balance; }
+h1 { font-size: 22pt; font-weight: 800; font-stretch: 110%; margin: 0 0 4mm; }
+h2 { font-size: 14.5pt; font-weight: 750; font-stretch: 106%; margin: 7mm 0 2.5mm; }
+h3 { font-size: 11.2pt; font-weight: 700; margin: 5mm 0 1.5mm; }
+p { margin: 0 0 2.6mm; orphans: 3; widows: 3; }
+ul, ol { margin: 0 0 3mm; padding-left: 5.5mm; }
+li { margin: 0 0 1.2mm; }
+a { color: var(--accent); text-decoration: none; }
+.chapter { break-before: page; }
+.part { break-before: page; height: 250mm; display: flex; flex-direction: column; justify-content: center; gap: 6mm; }
+.part .num { font-family: "IBM Plex Mono", monospace; font-size: 10pt; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.part h1 { font-size: 34pt; }
+.part p { max-width: 130mm; font-size: 12pt; color: var(--muted); }
+.eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 8pt; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 1.5mm; }
+.formula { font-family: "Source Serif 4", Georgia, serif; font-style: italic; font-size: 11pt; background: var(--tint); border-left: 2.5pt solid var(--accent); padding: 3mm 5mm; margin: 3mm 0 3.5mm; break-inside: avoid; line-height: 1.6; }
+.formula .lbl { font-style: normal; font-family: "IBM Plex Mono", monospace; font-size: 8pt; color: var(--muted); display: block; margin-bottom: 1mm; letter-spacing: .06em; text-transform: uppercase; }
+.box { border: 0.8pt solid var(--rule); padding: 3.5mm 5mm; margin: 3mm 0 4mm; break-inside: avoid; }
+.box h4 { font-size: 9.5pt; font-weight: 700; margin: 0 0 1.5mm; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.box.key { border-color: var(--accent); }
+.box.warn { border-color: var(--flag); }
+.box.warn h4 { color: var(--flag); }
+table { border-collapse: collapse; width: 100%; margin: 2.5mm 0 4mm; font-family: "Archivo", Arial, sans-serif; font-size: 8.6pt; break-inside: auto; }
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
+th, td { border-bottom: 0.6pt solid var(--rule); padding: 1.6mm 2mm; text-align: left; vertical-align: top; }
+th { font-weight: 650; color: var(--muted); font-size: 7.8pt; letter-spacing: .02em; border-bottom: 1pt solid var(--ink); }
+td.n, th.n { text-align: right; white-space: nowrap; }
+td.n { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; font-size: 8.2pt; }
+tr.hl td { background: var(--tint); font-weight: 600; }
+table.small { font-size: 7.6pt; } table.small td.n { font-size: 7.4pt; }
+.cap { font-family: "Archivo", Arial, sans-serif; font-size: 8.3pt; color: var(--muted); margin: -1mm 0 4mm; }
+figure { margin: 3mm 0 4mm; break-inside: avoid; }
+figure svg { width: 100%; height: auto; display: block; }
+figcaption { font-family: "Archivo", Arial, sans-serif; font-size: 8.3pt; color: var(--muted); margin-top: 1.5mm; }
+.mono { font-family: "IBM Plex Mono", monospace; font-size: 9pt; }
+.pill { font-family: "IBM Plex Mono", monospace; font-size: 7pt; padding: 0 1.6mm; border: 0.6pt solid currentColor; border-radius: 2mm; white-space: nowrap; }
+.pill.bad { color: var(--flag); } .pill.good { color: var(--ok); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+.toc { list-style: none; padding: 0; margin: 0; font-family: "Archivo", Arial, sans-serif; font-size: 9.6pt; }
+.toc li { display: flex; gap: 3mm; padding: 1.1mm 0; border-bottom: 0.5pt dotted var(--rule); margin: 0; }
+.toc li .t { flex: 1; } .toc li.p { font-weight: 750; padding-top: 3mm; border-bottom: 0.8pt solid var(--ink); }
+.toc .n { font-family: "IBM Plex Mono", monospace; color: var(--muted); width: 9mm; }
+.cover { height: 297mm; padding: 34mm 24mm 24mm; display: flex; flex-direction: column; gap: 7mm; background: #0f1d3a; color: #eef2fa; }
+.cover .eyebrow { color: #9fb2d8; }
+.cover h1 { font-size: 40pt; color: #ffffff; font-stretch: 115%; line-height: 1.02; margin: 0; }
+.cover .sub { font-size: 14pt; color: #c9d4ea; max-width: 140mm; }
+.cover .grow { flex: 1; }
+.cover .disc { font-family: "Archivo", Arial, sans-serif; font-size: 8.3pt; color: #b7c3dc; border-top: 0.6pt solid #3a4c74; padding-top: 4mm; line-height: 1.5; }
+.cover .curve { margin: 4mm 0; }
+.check li { list-style: none; position: relative; padding-left: 6mm; }
+.check li::before { content: ""; position: absolute; left: 0; top: 1.3mm; width: 3mm; height: 3mm; border: 0.8pt solid var(--ink); }
+.k { font-family: "IBM Plex Mono", monospace; font-size: 8.5pt; }
+</style></head><body>
+
+<!-- ================================================================ COVER -->
+<section class="cover">
+  <span class="eyebrow">Mathematics and execution &middot; October 2026</span>
+  <h1>The Prop Firm Option</h1>
+  <p class="sub">Why a funded-account challenge has positive expected value for a trader with no predictive skill, exactly how large that value is, and how to run it inside the firm's rules.</p>
+  <div class="curve"><svg viewBox="0 0 600 210" xmlns="http://www.w3.org/2000/svg"><line x1="0" x2="600" y1="20" y2="20" stroke="#7fd1b0" stroke-width="1" stroke-dasharray="4 4"/><line x1="0" x2="600" y1="190" y2="190" stroke="#f08a7a" stroke-width="1" stroke-dasharray="4 4"/><text x="600.0" y="14.0" font-size="9" text-anchor="end" fill="#9fd8bf" style="font-family:'IBM Plex Mono',monospace" font-weight="400">target +$10,000</text><text x="600.0" y="204.0" font-size="9" text-anchor="end" fill="#f3a497" style="font-family:'IBM Plex Mono',monospace" font-weight="400">floor &minus;$10,000</text><polyline points="0.0,105.0 6.0,95.7 12.0,86.3 18.0,77.0 24.0,86.3 30.0,95.6 36.0,86.3 42.0,95.6 48.0,105.0 54.0,95.6 60.0,86.3 66.0,95.6 72.0,105.0 78.0,114.3 84.0,105.0 90.0,95.6 96.0,105.0 102.0,114.3 108.0,123.7 114.0,133.1 120.0,142.4 126.0,151.8 132.0,161.1 138.0,170.4 144.0,161.1 150.0,151.8 156.0,142.4 162.0,151.8 168.0,161.1 174.0,151.8 180.0,142.4 186.0,151.8 192.0,161.1 198.0,151.8 204.0,142.4 210.0,133.1 216.0,142.4 222.0,133.1 228.0,123.7 234.0,133.1 240.0,123.7 246.0,133.1 252.0,142.4 258.0,151.8 264.0,142.4 270.0,151.8 276.0,142.4 282.0,133.1 288.0,142.4 294.0,151.8 300.0,161.1 306.0,170.4 312.0,179.8 318.0,189.1 324.0,179.8 330.0,170.4 336.0,161.1 342.0,151.8 348.0,161.1 354.0,170.4 360.0,161.1 366.0,151.8 372.0,161.1 378.0,151.8 384.0,142.4 390.0,151.8 396.0,142.4 402.0,151.8 408.0,161.1 414.0,170.4 420.0,179.8 426.0,189.1 432.0,190.0" fill="none" stroke="#f08a7a" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,95.7 12.0,86.3 18.0,95.7 24.0,105.0 30.0,95.7 36.0,105.0 42.0,114.3 48.0,105.0 54.0,95.7 60.0,105.0 66.0,95.7 72.0,86.3 78.0,95.7 84.0,105.0 90.0,95.7 96.0,86.3 102.0,95.7 108.0,105.0 114.0,114.3 120.0,105.0 126.0,114.3 132.0,123.7 138.0,133.1 144.0,142.4 150.0,133.1 156.0,123.7 162.0,133.1 168.0,123.7 174.0,114.4 180.0,105.0 186.0,114.4 192.0,123.7 198.0,133.1 204.0,142.4 210.0,151.8 216.0,161.1 222.0,151.8 228.0,142.4 234.0,133.1 240.0,142.4 246.0,133.1 252.0,142.4 258.0,133.1 264.0,142.4 270.0,151.8 276.0,142.4 282.0,151.8 288.0,161.1 294.0,170.4 300.0,179.8 306.0,189.2 312.0,179.8 318.0,170.4 324.0,179.8 330.0,170.4 336.0,179.8 342.0,189.2 348.0,190.0" fill="none" stroke="#f08a7a" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,114.3 12.0,105.0 18.0,114.3 24.0,105.0 30.0,95.7 36.0,86.3 42.0,77.0 48.0,67.6 54.0,77.0 60.0,86.3 66.0,95.6 72.0,105.0 78.0,95.6 84.0,105.0 90.0,95.6 96.0,105.0 102.0,114.3 108.0,123.7 114.0,133.1 120.0,123.7 126.0,114.3 132.0,105.0 138.0,114.3 144.0,123.7 150.0,133.1 156.0,142.4 162.0,133.1 168.0,123.7 174.0,133.1 180.0,142.4 186.0,133.1 192.0,142.4 198.0,133.1 204.0,123.7 210.0,133.1 216.0,142.4 222.0,151.8 228.0,142.4 234.0,133.1 240.0,123.7 246.0,133.1 252.0,142.4 258.0,151.8 264.0,142.4 270.0,151.8 276.0,142.4 282.0,133.1 288.0,142.4 294.0,151.8 300.0,161.1 306.0,151.8 312.0,142.4 318.0,151.8 324.0,161.1 330.0,151.8 336.0,142.4 342.0,151.8 348.0,142.4 354.0,151.8 360.0,142.4 366.0,151.8 372.0,142.4 378.0,151.8 384.0,142.4 390.0,133.1 396.0,142.4 402.0,151.8 408.0,161.1 414.0,170.4 420.0,179.8 426.0,170.4 432.0,161.1 438.0,151.8 444.0,142.4 450.0,133.1 456.0,123.7 462.0,114.3 468.0,123.7 474.0,133.1 480.0,123.7 486.0,133.1 492.0,123.7 498.0,133.1 504.0,142.4 510.0,151.8 516.0,142.4 522.0,133.1 528.0,123.7 534.0,133.1 540.0,123.7 546.0,114.3 552.0,123.7 558.0,133.1 564.0,142.4 570.0,133.1 576.0,123.7 582.0,114.3 588.0,123.7 594.0,114.3 600.0,105.0" fill="none" stroke="#c9d4ea" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,95.7 12.0,105.0 18.0,95.7 24.0,105.0 30.0,114.3 36.0,105.0 42.0,114.3 48.0,105.0 54.0,114.3 60.0,123.7 66.0,133.1 72.0,123.7 78.0,114.4 84.0,123.7 90.0,133.1 96.0,123.7 102.0,133.1 108.0,142.4 114.0,133.1 120.0,123.7 126.0,114.4 132.0,123.7 138.0,114.4 144.0,105.0 150.0,95.7 156.0,86.3 162.0,77.0 168.0,67.6 174.0,77.0 180.0,86.3 186.0,77.0 192.0,86.3 198.0,77.0 204.0,67.6 210.0,58.3 216.0,67.6 222.0,77.0 228.0,67.6 234.0,58.3 240.0,67.6 246.0,77.0 252.0,67.6 258.0,77.0 264.0,86.3 270.0,95.7 276.0,105.0 282.0,95.7 288.0,105.0 294.0,95.7 300.0,105.0 306.0,114.4 312.0,123.7 318.0,114.4 324.0,105.0 330.0,114.4 336.0,123.7 342.0,114.4 348.0,123.7 354.0,133.1 360.0,142.4 366.0,133.1 372.0,123.7 378.0,133.1 384.0,123.7 390.0,133.1 396.0,142.4 402.0,133.1 408.0,123.7 414.0,133.1 420.0,123.7 426.0,114.4 432.0,123.7 438.0,133.1 444.0,123.7 450.0,114.4 456.0,105.0 462.0,95.7 468.0,105.0 474.0,114.4 480.0,123.7 486.0,133.1 492.0,142.4 498.0,133.1 504.0,142.4 510.0,133.1 516.0,123.7 522.0,114.4 528.0,123.7 534.0,114.4 540.0,123.7 546.0,133.1 552.0,123.7 558.0,114.4 564.0,105.0 570.0,95.7 576.0,86.3 582.0,95.7 588.0,105.0 594.0,114.4 600.0,105.0" fill="none" stroke="#c9d4ea" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,114.3 12.0,123.7 18.0,114.3 24.0,123.7 30.0,114.3 36.0,123.7 42.0,114.3 48.0,105.0 54.0,114.3 60.0,123.7 66.0,114.3 72.0,105.0 78.0,114.3 84.0,105.0 90.0,95.7 96.0,86.3 102.0,95.7 108.0,86.3 114.0,95.7 120.0,86.3 126.0,77.0 132.0,86.3 138.0,77.0 144.0,86.3 150.0,95.6 156.0,86.3 162.0,95.6 168.0,105.0 174.0,95.6 180.0,105.0 186.0,95.6 192.0,105.0 198.0,114.3 204.0,123.7 210.0,114.3 216.0,105.0 222.0,95.6 228.0,86.3 234.0,95.6 240.0,86.3 246.0,77.0 252.0,86.3 258.0,77.0 264.0,67.6 270.0,58.2 276.0,48.9 282.0,58.2 288.0,67.6 294.0,58.2 300.0,67.6 306.0,58.2 312.0,67.6 318.0,76.9 324.0,86.3 330.0,95.6 336.0,105.0 342.0,114.3 348.0,123.7 354.0,114.3 360.0,105.0 366.0,95.6 372.0,105.0 378.0,95.6 384.0,105.0 390.0,95.6 396.0,105.0 402.0,95.6 408.0,105.0 414.0,95.6 420.0,105.0 426.0,95.6 432.0,86.3 438.0,95.6 444.0,105.0 450.0,114.3 456.0,123.7 462.0,133.0 468.0,142.4 474.0,133.0 480.0,142.4 486.0,133.0 492.0,123.7 498.0,133.0 504.0,142.4 510.0,151.8 516.0,161.1 522.0,170.4 528.0,179.8 534.0,189.1 540.0,190.0" fill="none" stroke="#f08a7a" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,95.7 12.0,86.3 18.0,95.7 24.0,86.3 30.0,77.0 36.0,86.3 42.0,95.6 48.0,86.3 54.0,95.6 60.0,105.0 66.0,114.3 72.0,105.0 78.0,95.6 84.0,105.0 90.0,95.6 96.0,105.0 102.0,114.3 108.0,105.0 114.0,114.3 120.0,123.7 126.0,133.1 132.0,123.7 138.0,133.1 144.0,142.4 150.0,151.8 156.0,161.1 162.0,170.4 168.0,179.8 174.0,189.1 180.0,179.8 186.0,189.1 192.0,190.0" fill="none" stroke="#f08a7a" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,114.3 12.0,105.0 18.0,114.3 24.0,123.7 30.0,114.3 36.0,105.0 42.0,95.7 48.0,86.3 54.0,77.0 60.0,67.6 66.0,77.0 72.0,67.6 78.0,77.0 84.0,86.3 90.0,95.6 96.0,105.0 102.0,95.6 108.0,86.3 114.0,77.0 120.0,67.6 126.0,58.2 132.0,67.6 138.0,76.9 144.0,86.3 150.0,95.6 156.0,86.3 162.0,95.6 168.0,86.3 174.0,95.6 180.0,86.3 186.0,76.9 192.0,67.6 198.0,76.9 204.0,86.3 210.0,76.9 216.0,86.3 222.0,76.9 228.0,67.6 234.0,58.2 240.0,67.6 246.0,58.2 252.0,67.6 258.0,76.9 264.0,86.3 270.0,76.9 276.0,67.6 282.0,58.2 288.0,67.6 294.0,76.9 300.0,67.6 306.0,76.9 312.0,86.3 318.0,76.9 324.0,67.6 330.0,58.2 336.0,67.6 342.0,58.2 348.0,67.6 354.0,76.9 360.0,67.6 366.0,58.2 372.0,67.6 378.0,76.9 384.0,67.6 390.0,76.9 396.0,86.3 402.0,95.6 408.0,105.0 414.0,95.6 420.0,86.3 426.0,76.9 432.0,86.3 438.0,95.6 444.0,86.3 450.0,95.6 456.0,105.0 462.0,95.6 468.0,86.3 474.0,76.9 480.0,67.6 486.0,58.2 492.0,67.6 498.0,58.2 504.0,67.6 510.0,76.9 516.0,67.6 522.0,76.9 528.0,67.6 534.0,58.2 540.0,67.6 546.0,58.2 552.0,67.6 558.0,58.2 564.0,48.9 570.0,39.5 576.0,30.2 582.0,20.8 588.0,20.0" fill="none" stroke="#7fd1b0" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,95.7 12.0,86.3 18.0,77.0 24.0,67.6 30.0,58.2 36.0,48.9 42.0,58.2 48.0,67.6 54.0,76.9 60.0,86.3 66.0,95.6 72.0,86.3 78.0,76.9 84.0,86.3 90.0,76.9 96.0,67.6 102.0,76.9 108.0,67.6 114.0,76.9 120.0,86.3 126.0,76.9 132.0,67.6 138.0,58.2 144.0,67.6 150.0,76.9 156.0,86.3 162.0,76.9 168.0,86.3 174.0,95.6 180.0,105.0 186.0,114.3 192.0,105.0 198.0,95.6 204.0,105.0 210.0,114.3 216.0,123.7 222.0,114.3 228.0,123.7 234.0,133.0 240.0,123.7 246.0,114.3 252.0,123.7 258.0,114.3 264.0,105.0 270.0,95.6 276.0,86.3 282.0,76.9 288.0,86.3 294.0,76.9 300.0,86.3 306.0,95.6 312.0,86.3 318.0,95.6 324.0,86.3 330.0,76.9 336.0,67.6 342.0,58.2 348.0,67.6 354.0,58.2 360.0,67.6 366.0,76.9 372.0,86.3 378.0,95.6 384.0,105.0 390.0,114.3 396.0,123.7 402.0,114.3 408.0,105.0 414.0,95.6 420.0,105.0 426.0,114.3 432.0,123.7 438.0,133.0 444.0,123.7 450.0,133.0 456.0,142.4 462.0,151.8 468.0,161.1 474.0,151.8 480.0,142.4 486.0,133.1 492.0,123.7 498.0,133.1 504.0,123.7 510.0,114.3 516.0,105.0 522.0,114.3 528.0,123.7 534.0,133.1 540.0,123.7 546.0,133.1 552.0,123.7 558.0,114.3 564.0,105.0 570.0,95.6 576.0,105.0 582.0,95.6 588.0,105.0 594.0,95.6 600.0,86.3" fill="none" stroke="#c9d4ea" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,114.3 12.0,105.0 18.0,95.7 24.0,105.0 30.0,95.7 36.0,86.3 42.0,95.7 48.0,105.0 54.0,95.7 60.0,86.3 66.0,77.0 72.0,67.6 78.0,77.0 84.0,86.3 90.0,77.0 96.0,86.3 102.0,95.6 108.0,86.3 114.0,77.0 120.0,67.6 126.0,58.2 132.0,67.6 138.0,76.9 144.0,67.6 150.0,58.2 156.0,48.9 162.0,58.2 168.0,48.9 174.0,39.5 180.0,30.2 186.0,20.8 192.0,20.0" fill="none" stroke="#7fd1b0" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,95.7 12.0,86.3 18.0,95.7 24.0,86.3 30.0,95.7 36.0,105.0 42.0,95.7 48.0,86.3 54.0,95.7 60.0,86.3 66.0,77.0 72.0,67.6 78.0,77.0 84.0,67.6 90.0,58.2 96.0,67.6 102.0,76.9 108.0,86.3 114.0,95.6 120.0,86.3 126.0,76.9 132.0,86.3 138.0,95.6 144.0,105.0 150.0,114.3 156.0,105.0 162.0,114.3 168.0,105.0 174.0,114.3 180.0,105.0 186.0,114.3 192.0,105.0 198.0,114.3 204.0,105.0 210.0,114.3 216.0,105.0 222.0,114.3 228.0,123.7 234.0,133.0 240.0,142.4 246.0,133.0 252.0,142.4 258.0,151.8 264.0,142.4 270.0,133.1 276.0,123.7 282.0,114.3 288.0,105.0 294.0,95.6 300.0,86.3 306.0,95.6 312.0,86.3 318.0,77.0 324.0,86.3 330.0,95.6 336.0,86.3 342.0,77.0 348.0,86.3 354.0,77.0 360.0,86.3 366.0,77.0 372.0,86.3 378.0,77.0 384.0,86.3 390.0,95.6 396.0,86.3 402.0,77.0 408.0,86.3 414.0,95.6 420.0,105.0 426.0,95.6 432.0,105.0 438.0,95.6 444.0,105.0 450.0,95.6 456.0,86.3 462.0,77.0 468.0,67.6 474.0,77.0 480.0,67.6 486.0,58.2 492.0,67.6 498.0,58.2 504.0,67.6 510.0,76.9 516.0,86.3 522.0,76.9 528.0,86.3 534.0,76.9 540.0,86.3 546.0,76.9 552.0,86.3 558.0,95.6 564.0,105.0 570.0,95.6 576.0,105.0 582.0,114.3 588.0,105.0 594.0,114.3 600.0,105.0" fill="none" stroke="#c9d4ea" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,114.3 12.0,105.0 18.0,95.7 24.0,105.0 30.0,95.7 36.0,86.3 42.0,77.0 48.0,67.6 54.0,58.2 60.0,48.9 66.0,58.2 72.0,48.9 78.0,58.2 84.0,48.9 90.0,58.2 96.0,67.6 102.0,76.9 108.0,67.6 114.0,58.2 120.0,67.6 126.0,76.9 132.0,86.3 138.0,76.9 144.0,67.6 150.0,58.2 156.0,67.6 162.0,58.2 168.0,67.6 174.0,58.2 180.0,67.6 186.0,58.2 192.0,67.6 198.0,58.2 204.0,67.6 210.0,58.2 216.0,67.6 222.0,76.9 228.0,86.3 234.0,95.6 240.0,105.0 246.0,114.3 252.0,123.7 258.0,133.0 264.0,123.7 270.0,114.3 276.0,123.7 282.0,114.3 288.0,105.0 294.0,114.3 300.0,105.0 306.0,114.3 312.0,123.7 318.0,114.3 324.0,123.7 330.0,133.0 336.0,123.7 342.0,133.0 348.0,142.4 354.0,133.0 360.0,123.7 366.0,133.0 372.0,123.7 378.0,114.3 384.0,105.0 390.0,95.6 396.0,105.0 402.0,95.6 408.0,86.3 414.0,95.6 420.0,86.3 426.0,95.6 432.0,105.0 438.0,114.3 444.0,105.0 450.0,95.6 456.0,105.0 462.0,95.6 468.0,105.0 474.0,95.6 480.0,86.3 486.0,95.6 492.0,86.3 498.0,95.6 504.0,86.3 510.0,95.6 516.0,105.0 522.0,114.3 528.0,105.0 534.0,95.6 540.0,86.3 546.0,76.9 552.0,67.6 558.0,76.9 564.0,67.6 570.0,76.9 576.0,86.3 582.0,76.9 588.0,86.3 594.0,76.9 600.0,67.6" fill="none" stroke="#c9d4ea" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,95.7 12.0,86.3 18.0,77.0 24.0,67.6 30.0,58.2 36.0,67.6 42.0,76.9 48.0,86.3 54.0,95.6 60.0,105.0 66.0,114.3 72.0,123.7 78.0,133.0 84.0,123.7 90.0,133.0 96.0,123.7 102.0,133.0 108.0,142.4 114.0,151.8 120.0,161.1 126.0,170.4 132.0,179.8 138.0,170.4 144.0,161.1 150.0,170.4 156.0,161.1 162.0,151.8 168.0,161.1 174.0,170.4 180.0,179.8 186.0,170.4 192.0,161.1 198.0,151.8 204.0,142.4 210.0,151.8 216.0,142.4 222.0,133.1 228.0,142.4 234.0,151.8 240.0,142.4 246.0,133.1 252.0,142.4 258.0,133.1 264.0,123.7 270.0,114.3 276.0,123.7 282.0,114.3 288.0,123.7 294.0,114.3 300.0,105.0 306.0,114.3 312.0,123.7 318.0,114.3 324.0,105.0 330.0,114.3 336.0,105.0 342.0,114.3 348.0,123.7 354.0,133.1 360.0,142.4 366.0,151.8 372.0,161.1 378.0,170.4 384.0,179.8 390.0,170.4 396.0,161.1 402.0,151.8 408.0,142.4 414.0,151.8 420.0,142.4 426.0,133.1 432.0,123.7 438.0,133.1 444.0,123.7 450.0,133.1 456.0,142.4 462.0,151.8 468.0,142.4 474.0,151.8 480.0,142.4 486.0,151.8 492.0,161.1 498.0,170.4 504.0,161.1 510.0,151.8 516.0,161.1 522.0,151.8 528.0,161.1 534.0,170.4 540.0,179.8 546.0,170.4 552.0,179.8 558.0,170.4 564.0,179.8 570.0,189.1 576.0,179.8 582.0,170.4 588.0,179.8 594.0,189.1 600.0,190.0" fill="none" stroke="#f08a7a" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,95.7 12.0,86.3 18.0,95.7 24.0,105.0 30.0,95.7 36.0,105.0 42.0,95.7 48.0,105.0 54.0,95.7 60.0,105.0 66.0,95.7 72.0,105.0 78.0,95.7 84.0,105.0 90.0,114.3 96.0,123.7 102.0,114.3 108.0,105.0 114.0,114.3 120.0,105.0 126.0,95.7 132.0,86.3 138.0,77.0 144.0,67.6 150.0,58.2 156.0,48.9 162.0,39.5 168.0,30.2 174.0,39.5 180.0,48.9 186.0,39.5 192.0,30.2 198.0,20.8 204.0,30.2 210.0,20.8 216.0,30.2 222.0,20.8 228.0,20.0" fill="none" stroke="#7fd1b0" stroke-opacity="0.75" stroke-width="1.2"/><polyline points="0.0,105.0 6.0,95.7 12.0,86.3 18.0,77.0 24.0,86.3 30.0,95.6 36.0,105.0 42.0,95.6 48.0,105.0 54.0,95.6 60.0,105.0 66.0,95.6 72.0,105.0 78.0,114.3 84.0,105.0 90.0,95.6 96.0,105.0 102.0,114.3 108.0,105.0 114.0,95.6 120.0,105.0 126.0,114.3 132.0,105.0 138.0,114.3 144.0,123.7 150.0,133.1 156.0,142.4 162.0,151.8 168.0,142.4 174.0,151.8 180.0,142.4 186.0,151.8 192.0,142.4 198.0,151.8 204.0,142.4 210.0,151.8 216.0,161.1 222.0,151.8 228.0,142.4 234.0,133.1 240.0,142.4 246.0,133.1 252.0,142.4 258.0,151.8 264.0,142.4 270.0,151.8 276.0,142.4 282.0,133.1 288.0,123.7 294.0,114.3 300.0,105.0 306.0,114.3 312.0,105.0 318.0,114.3 324.0,123.7 330.0,114.3 336.0,123.7 342.0,133.1 348.0,123.7 354.0,114.3 360.0,105.0 366.0,114.3 372.0,123.7 378.0,133.1 384.0,142.4 390.0,151.8 396.0,161.1 402.0,170.4 408.0,161.1 414.0,151.8 420.0,142.4 426.0,133.1 432.0,142.4 438.0,133.1 444.0,123.7 450.0,114.3 456.0,123.7 462.0,133.1 468.0,142.4 474.0,133.1 480.0,142.4 486.0,151.8 492.0,142.4 498.0,151.8 504.0,161.1 510.0,151.8 516.0,142.4 522.0,133.1 528.0,142.4 534.0,151.8 540.0,142.4 546.0,151.8 552.0,161.1 558.0,151.8 564.0,161.1 570.0,170.4 576.0,161.1 582.0,170.4 588.0,161.1 594.0,170.4 600.0,179.8" fill="none" stroke="#c9d4ea" stroke-opacity="0.75" stroke-width="1.2"/><text x="4.0" y="99.0" font-size="9" text-anchor="start" fill="#c9d4ea" style="font-family:'IBM Plex Mono',monospace" font-weight="400">start</text></svg></div>
+  <div class="grow"></div>
+  <p class="sub" style="font-size:11pt">Part 1 &middot; The mathematics, from zero<br>Part 2 &middot; Execution, step by step</p>
+  <div class="disc">Educational analysis, not financial advice. Prop-firm accounts are simulated and payouts ("rewards") are paid at the firm's discretion under its terms. Every figure in this document assumes the firm pays. In the execution plan about three attempts in four lose their full fee, and individual results vary enormously. Firms change rules and prices often; check the current terms before acting. Prop firms require traders to be adults (18+). Do not use money you cannot afford to lose.</div>
+</section>
+
+<!-- ================================================================ CONTENTS -->
+<section class="chapter">
+  <span class="eyebrow">Contents</span>
+  <h1>What is in this document</h1>
+  <ul class="toc">
+    <li class="p"><span class="n"></span><span class="t">Key results at a glance</span></li>
+    <li class="p"><span class="n">I</span><span class="t">Part 1 &middot; The mathematics</span></li>
+    <li><span class="n">1</span><span class="t">The contract you are buying</span></li>
+    <li><span class="n">2</span><span class="t">Probability from zero: expected value, fair games, and one trade as one bet</span></li>
+    <li><span class="n">3</span><span class="t">Reaching a target before a floor (the gambler's ruin)</span></li>
+    <li><span class="n">4</span><span class="t">The challenge, step by step</span></li>
+    <li><span class="n">5</span><span class="t">What a funded account is worth</span></li>
+    <li><span class="n">6</span><span class="t">Putting it together: the value of one attempt</span></li>
+    <li><span class="n">7</span><span class="t">Trading costs</span></li>
+    <li><span class="n">8</span><span class="t">Other firms and other rule types</span></li>
+    <li><span class="n">9</span><span class="t">Variance, bankroll and Kelly</span></li>
+    <li><span class="n">10</span><span class="t">Hedging</span></li>
+    <li><span class="n">11</span><span class="t">Testing it on real market data</span></li>
+    <li><span class="n">12</span><span class="t">Errors in the earlier "Convex Edge" documents</span></li>
+    <li><span class="n">13</span><span class="t">What the mathematics cannot tell you</span></li>
+    <li class="p"><span class="n">II</span><span class="t">Part 2 &middot; Execution</span></li>
+    <li><span class="n">14</span><span class="t">Which plan, and why not the fastest one</span></li>
+    <li><span class="n">15</span><span class="t">Before you start</span></li>
+    <li><span class="n">16</span><span class="t">The plan on one page</span></li>
+    <li><span class="n">17</span><span class="t">Position sizing, step by step</span></li>
+    <li><span class="n">18</span><span class="t">Stop, target and direction</span></li>
+    <li><span class="n">19</span><span class="t">The daily routine</span></li>
+    <li><span class="n">20</span><span class="t">Phase 1 and Phase 2</span></li>
+    <li><span class="n">21</span><span class="t">The funded account and payouts</span></li>
+    <li><span class="n">22</span><span class="t">Several accounts, bankroll and realistic income</span></li>
+    <li><span class="n">23</span><span class="t">Records, tax, and checking that the maths holds</span></li>
+    <li><span class="n">24</span><span class="t">Final checklist</span></li>
+    <li class="p"><span class="n">A&ndash;C</span><span class="t">Appendices: formula sheet and glossary, every account type modelled, method and sources</span></li>
+  </ul>
+</section>
+
+<!-- ================================================================ KEY RESULTS -->
+<section class="chapter">
+  <span class="eyebrow">Summary</span>
+  <h1>Key results at a glance</h1>
+  <p>All figures are for the FTMO 100K 2-Step Challenge (fee &euro;540, about $632) unless stated. "Zero skill" means the direction of every trade is no better than a coin flip. Every figure assumes FTMO pays every payout it owes.</p>
+  <table>
+    <thead><tr><th>Quantity</th><th class="n">Value</th><th>Where it comes from</th></tr></thead>
+    <tbody>
+      <tr><td>Chance a zero-skill trader passes Phase 1 (+10% before &minus;10%)</td><td class="n">50%</td><td>Ch. 3: target and floor are the same distance away</td></tr>
+      <tr><td>Chance of passing Phase 2 (+5% before &minus;10%)</td><td class="n">66.7%</td><td>Ch. 3: 10 &divide; (10 + 5)</td></tr>
+      <tr><td>Chance of reaching a funded account</td><td class="n">33.3%</td><td>Ch. 4: &frac12; &times; &#8532;</td></tr>
+      <tr><td>Average total paid out by a funded account</td><td class="n">$8,000 + refund</td><td>Ch. 5: 80% &times; the $10,000 loss allowance</td></tr>
+      <tr class="hl"><td>Expected value per attempt, no costs (exact)</td><td class="n">+$2,235</td><td>Ch. 6</td></tr>
+      <tr><td>Expected value with realistic costs (simulation)</td><td class="n">+$2,081</td><td>Ch. 7</td></tr>
+      <tr><td>Same strategy on real EURUSD data 2023&ndash;26</td><td class="n">+$1,743 &plusmn; $196</td><td>Ch. 11</td></tr>
+      <tr class="hl"><td>Rule-compliant plan (1% risk per trade), real data</td><td class="n">+$1,398 &plusmn; $193</td><td>Ch. 11, Part 2</td></tr>
+      <tr><td>Chance one attempt makes money (compliant plan)</td><td class="n">26%</td><td>Ch. 9</td></tr>
+      <tr><td>Average length of one compliant attempt</td><td class="n">&asymp; 86 weeks</td><td>Ch. 22: slow, because risk per trade is small</td></tr>
+      <tr><td>The earlier PDFs' own protocol on real data</td><td class="n">&minus;$173 &plusmn; $79</td><td>Ch. 11&ndash;12</td></tr>
+    </tbody>
+  </table>
+  <div class="box key"><h4>Five ideas to keep</h4>
+  <ol>
+    <li><strong>A trade with no skill is a fair bet.</strong> A trade with stop S and target T wins with probability S &divide; (S + T). Real EURUSD data agrees to within about one percentage point.</li>
+    <li><strong>Your chance of passing is fixed by the rules, not by your sizing.</strong> It equals the distance to the floor divided by the distance between floor and target. Sizing and reward-to-risk only change how many trades it takes, and therefore how much you pay in costs.</li>
+    <li><strong>The value comes from the loss allowance.</strong> FTMO lets you lose up to $10,000 of its simulated money and never asks for it back. In a fair game, the profits you withdraw over the account's life average the same $10,000, of which you keep 80%.</li>
+    <li><strong>Costs and quitting are what destroy the edge.</strong> Many small trades with tight stops, and abandoning live accounts, are how most traders turn a positive contract into a loss.</li>
+    <li><strong>The real risk is the counterparty.</strong> Payouts are discretionary, the fastest version of the strategy is the pattern the firm's rules prohibit, and firms can fail. Part 2 therefore follows the firm's own risk guidance, which makes the plan slow.</li>
+  </ol></div>
+</section>
+
+<!-- ================================================================ PART 1 -->
+<section class="part">
+  <span class="num">Part 1</span>
+  <h1>The mathematics</h1>
+  <p>Everything is built from two facts: a fair game stays fair however you play it, and money paid out has to come from somewhere. No prior knowledge of probability or trading is assumed.</p>
+</section>
+
+<!-- 1 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 1</span>
+  <h1>The contract you are buying</h1>
+  <p>A proprietary trading firm ("prop firm") sells evaluations. You pay a fee and receive a <strong>simulated</strong> trading account. Nothing you trade reaches a real market and you can never lose more than the fee. If you meet the firm's targets without breaking its loss limits, you get a "funded" account, still simulated, on which the firm pays you a share of the profits you make. Those payments are called <em>rewards</em> or <em>payouts</em>.</p>
+  <p>We use FTMO's 100K 2-Step Challenge as the worked example throughout. Chapter 8 extends the analysis to 37 account types at 16 firms.</p>
+  <table>
+    <thead><tr><th>Stage</th><th>You must reach</th><th>You fail if</th><th>Other rules</th></tr></thead>
+    <tbody>
+      <tr><td>Phase 1 (Challenge)</td><td>$110,000 (+$10,000)</td><td>Equity &le; $90,000, or you lose $5,000 in one day</td><td>At least 4 trading days; no time limit</td></tr>
+      <tr><td>Phase 2 (Verification)</td><td>$105,000 (+$5,000), starting again from $100,000</td><td>Same: floor $90,000, $5,000 per day</td><td>At least 4 trading days; no time limit</td></tr>
+      <tr><td>Funded (FTMO Account)</td><td>No target</td><td>Same floor and daily limit</td><td>You keep 80% of withdrawn profit; first payout after 14 days, then every 14 days; the &euro;540 fee is refunded with your first payout</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">Source: FTMO trading objectives and FAQ, October 2026. The maximum loss is <em>static</em>: the floor stays at $90,000 however high the balance goes.</p>
+  <h3>Words you need</h3>
+  <ul>
+    <li><strong>Balance</strong> is the account value counting only closed trades. <strong>Equity</strong> also counts the open trade's floating profit or loss. FTMO's limits are checked on equity, in real time.</li>
+    <li><strong>Maximum loss (the floor).</strong> If equity touches $90,000 the account is closed. We call the distance from the current balance down to the floor <span class="k">B</span> (it starts at $10,000).</li>
+    <li><strong>Daily loss limit.</strong> You may not lose more than $5,000 (5% of the starting balance) within one day, measured from the balance at midnight Prague time, open trades included.</li>
+    <li><strong>Profit target.</strong> The distance from the current balance up to the target is called <span class="k">A</span>.</li>
+    <li><strong>Profit split.</strong> The share of withdrawn profit you keep: 80% at FTMO (90% through its scaling plan).</li>
+    <li><strong>Stop-loss and take-profit.</strong> Orders that close a trade automatically at a loss of S dollars or a profit of T dollars. A trade with both attached is called a <strong>bracket</strong>. Its <strong>reward-to-risk ratio (RR)</strong> is T : S.</li>
+  </ul>
+  <h3>Why this is an option, and what kind</h3>
+  <p>Your worst case is losing the fee. Your best case has no fixed ceiling. A payoff with a capped downside and an open upside is what finance calls an <em>option</em>, and the fee is its price. The question this document answers is whether the option is worth more than its price to someone who cannot predict the market. Chapters 2 to 6 show that it is, and by how much. Note what this does <em>not</em> say. The value does not come from "volatility" in general, and it does not depend on trading in any clever way. Chapter 5 shows exactly where it comes from.</p>
+</section>
+
+<!-- 2 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 2</span>
+  <h1>Probability from zero</h1>
+  <h2>2.1 Probability and expected value</h2>
+  <p>A <strong>probability</strong> is a number between 0 and 1 saying how often something happens in the long run. A fair coin lands heads with probability &frac12;.</p>
+  <p>The <strong>expected value</strong> (EV) of a bet is the average result per bet if you repeated it many times. You get it by multiplying each outcome by its probability and adding up.</p>
+  <div class="formula"><span class="lbl">Expected value</span>EV = p<sub>1</sub> &times; outcome<sub>1</sub> + p<sub>2</sub> &times; outcome<sub>2</sub> + &hellip;</div>
+  <p><em>Example.</em> You win $10 on heads and lose $10 on tails: EV = &frac12; &times; 10 + &frac12; &times; (&minus;10) = 0. You win $20 on heads and lose $10 on tails: EV = &frac12; &times; 20 &minus; &frac12; &times; 10 = +$5.</p>
+  <p>Expected values <strong>add up</strong>. The EV of ten bets is the sum of their ten EVs, whether or not the bets are connected to each other. This one fact will matter a lot in Chapter 10 (hedging).</p>
+  <h2>2.2 Fair games</h2>
+  <p>A bet is <strong>fair</strong> when its EV is zero. A game made of fair bets has a remarkable property: <strong>no way of choosing your bets can change the fact that your expected total is zero.</strong> You can bet big or small, stop when ahead, double after losses. If every individual bet is fair, the expected result of the whole sequence is still zero. Mathematicians call such a process a <em>martingale</em>, and the formal version of this fact is the <em>optional stopping theorem</em>. Its conditions (bets of bounded size, and a stopping rule that ends the game in finite expected time) are all met by the rules in this document.</p>
+  <h2>2.3 One trade is one bet</h2>
+  <p>Suppose you buy EURUSD and attach a stop 50 pips below and a target 50 pips above. If you have no information about direction, the price is as likely to reach either level first. The bet wins $T or loses $S. What is the probability <em>p</em> of winning?</p>
+  <p>With no skill, the price process has no drift, so the trade is a fair bet before costs: its EV must be zero.</p>
+  <div class="formula"><span class="lbl">Win probability of a zero-skill bracket</span>p &times; T &minus; (1 &minus; p) &times; S = 0 &nbsp;&nbsp;&rArr;&nbsp;&nbsp; p = S &divide; (S + T)</div>
+  <table>
+    <thead><tr><th>Risk : reward</th><th class="n">Stop S</th><th class="n">Target T</th><th class="n">Win probability S/(S+T)</th></tr></thead>
+    <tbody>
+      <tr><td>1 : 0.1</td><td class="n">$5,000</td><td class="n">$500</td><td class="n">90.9%</td></tr>
+      <tr><td>1 : 1</td><td class="n">$5,000</td><td class="n">$5,000</td><td class="n">50.0%</td></tr>
+      <tr><td>1 : 2</td><td class="n">$5,000</td><td class="n">$10,000</td><td class="n">33.3%</td></tr>
+      <tr><td>1 : 3</td><td class="n">$5,000</td><td class="n">$15,000</td><td class="n">25.0%</td></tr>
+    </tbody>
+  </table>
+  <p>Higher reward always comes with lower probability, in exactly the proportion that keeps the bet fair. A big target is not "better" and a small one is not "safer". They are the same bet with a different shape.</p>
+  <h2>2.4 Does real data agree?</h2>
+  <p>We tested this on every hour of EURUSD from 18 December 2023 to 2 October 2026. Each test trade picks a random direction and a random entry hour on a weekday, then follows the real price until the stop or target is hit. The results below are before costs.</p>
+  <table>
+    <thead><tr><th>Stop / target (pips)</th><th class="n">Fair value S/(S+T)</th><th class="n">Measured win rate</th><th class="n">95% range</th></tr></thead>
+    <tbody>
+      <tr><td>25 / 25</td><td class="n">50.0%</td><td class="n">50.4%</td><td class="n">&plusmn;0.7</td></tr>
+      <tr><td>50 / 50</td><td class="n">50.0%</td><td class="n">50.3%</td><td class="n">&plusmn;0.7</td></tr>
+      <tr><td>55 / 55</td><td class="n">50.0%</td><td class="n">49.7%</td><td class="n">&plusmn;0.6</td></tr>
+      <tr><td>100 / 100</td><td class="n">50.0%</td><td class="n">50.0%</td><td class="n">&plusmn;0.7</td></tr>
+      <tr><td>78 / 39 (1 : 0.5)</td><td class="n">66.7%</td><td class="n">67.6%</td><td class="n">&plusmn;0.5</td></tr>
+      <tr><td>39 / 78 (1 : 2)</td><td class="n">33.3%</td><td class="n">32.1%</td><td class="n">&plusmn;0.5</td></tr>
+      <tr><td>25 / 100 (1 : 4)</td><td class="n">20.0%</td><td class="n">20.3%</td><td class="n">&plusmn;0.5</td></tr>
+    </tbody>
+  </table>
+  <p>The formula holds closely. Symmetric brackets come out at 50% within noise. There is a small tilt in this sample: far targets (1 : 2) hit about one point less often than fair, and near targets slightly more often, which is mild short-term mean reversion. That is one reason Part 2 uses 1 : 1. The earlier documents claimed an "effective win rate" of 48.5%. The data does not support it. The only systematic drag is the trading cost, which Chapter 7 handles separately.</p>
+</section>
+
+<!-- 3 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 3</span>
+  <h1>Reaching a target before a floor</h1>
+  <p>Each challenge phase asks one question: starting from your current balance, will you reach the target (A dollars above) before you hit the floor (B dollars below)? This is the oldest problem in probability, known as the <em>gambler's ruin</em>.</p>
+  <h2>3.1 The answer in one line</h2>
+  <p>Let <em>P</em> be the probability of reaching the target first. The game ends in one of two places: +A with probability P, or &minus;B with probability 1 &minus; P. Every trade is fair, so by Section 2.2 the expected final result must be zero, no matter how you traded:</p>
+  <div class="formula"><span class="lbl">Gambler's ruin, exact</span>P &times; A &minus; (1 &minus; P) &times; B = 0 &nbsp;&nbsp;&rArr;&nbsp;&nbsp; P = B &divide; (A + B)</div>
+  <p>For FTMO Phase 1, A = B = $10,000, so P = 10,000 &divide; 20,000 = <strong>50%</strong>. For Phase 2, A = $5,000 and B = $10,000, so P = 10,000 &divide; 15,000 = <strong>66.7%</strong>.</p>
+  <h2>3.2 Checking it by hand</h2>
+  <p>Take a tiny version: steps of $1, target +2, floor &minus;2. From 0 you need two net wins before two net losses. Call P<sub>x</sub> the chance of passing from x. Then P<sub>2</sub> = 1, P<sub>&minus;2</sub> = 0, and every middle point is the average of its neighbours: P<sub>x</sub> = &frac12;P<sub>x+1</sub> + &frac12;P<sub>x&minus;1</sub>. The only numbers that are "the average of their neighbours" lie on a straight line, so P<sub>x</sub> = (x + 2) &divide; 4 and P<sub>0</sub> = &frac12;, exactly as the formula says.</p>
+  <h2>3.3 The value of the phase is a straight line</h2>
+  <p>The same argument works from any balance x between the floor and the target:</p>
+  <div class="formula"><span class="lbl">Pass probability from balance x</span>P(x) = (x + B) &divide; (A + B) &nbsp;&nbsp;&nbsp;(x measured from the starting balance)</div>
+  <figure><svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg"><line x1="54" x2="580" y1="184.0" y2="184.0" stroke="#d5dae2" stroke-width="0.8"/><text x="48.0" y="187.0" font-size="8" text-anchor="end" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">0%</text><line x1="54" x2="580" y1="141.5" y2="141.5" stroke="#d5dae2" stroke-width="0.8"/><text x="48.0" y="144.5" font-size="8" text-anchor="end" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">25%</text><line x1="54" x2="580" y1="99.0" y2="99.0" stroke="#d5dae2" stroke-width="0.8"/><text x="48.0" y="102.0" font-size="8" text-anchor="end" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">50%</text><line x1="54" x2="580" y1="56.5" y2="56.5" stroke="#d5dae2" stroke-width="0.8"/><text x="48.0" y="59.5" font-size="8" text-anchor="end" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">75%</text><line x1="54" x2="580" y1="14.0" y2="14.0" stroke="#d5dae2" stroke-width="0.8"/><text x="48.0" y="17.0" font-size="8" text-anchor="end" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">100%</text><text x="54.0" y="198.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">floor</text><text x="185.5" y="198.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">-5k</text><text x="317.0" y="198.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">0</text><text x="448.5" y="198.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+5k</text><text x="580.0" y="198.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">target</text><text x="317.0" y="216.0" font-size="8.5" text-anchor="middle" fill="#5b6370" style="font-family:Archivo,Arial,sans-serif" font-weight="400">balance relative to start, Phase 1</text><line x1="54.0" y1="184" x2="580.0" y2="14" stroke="#2a78d6" stroke-width="2.2"/><circle cx="185.5" cy="141.5" r="4" fill="#fff" stroke="#2a78d6" stroke-width="2"/><text x="192.5" y="153.5" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">25%</text><circle cx="317.0" cy="99.0" r="4" fill="#fff" stroke="#2a78d6" stroke-width="2"/><text x="324.0" y="111.0" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">50%</text><circle cx="448.5" cy="56.5" r="4" fill="#fff" stroke="#2a78d6" stroke-width="2"/><text x="455.5" y="68.5" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">75%</text><circle cx="56.6" cy="183.2" r="4" fill="#fff" stroke="#2a78d6" stroke-width="2"/><text x="63.6" y="195.2" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">0.5%</text></svg><figcaption>Figure 3.1 &middot; Chance of passing Phase 1 from each balance. It is a straight line from 0 at the floor to 1 at the target, whatever the sizing.</figcaption></figure>
+  <p>At &minus;$9,900 in Phase 1, with only $100 left above the floor, your chance is 100 &divide; 20,000 = 0.5%. You can only risk $100 there, and the formula already accounts for that: it is the room left above the floor that sets the probability.</p>
+  <h2>3.4 What does not change the answer</h2>
+  <p>Look at what the formula does not contain: no bet size, no reward-to-risk ratio, no number of trades, no volatility. <strong>As long as every trade is fair and the account ends exactly on the target or exactly on the floor, the pass probability is B &divide; (A + B).</strong> Sizing up after losses, sizing down near the floor, 1 : 1 versus 1 : 3: none of it moves the number. Sizing only changes how many trades it takes, and Chapter 7 shows that the number of trades is what you pay for in costs.</p>
+  <p>This also means the earlier documents' central claim, that the challenge pays off because "variance is rewarded" (Jensen's inequality), is the wrong explanation. With no time limit, more variance does not raise the pass probability at all. Variance only helps when there is a deadline.</p>
+  <h2>3.5 What does change it: overshoot</h2>
+  <p>The formula assumes the account lands exactly on a barrier. If your last winning trade carries you <em>past</em> the target, the extra profit is wasted, and the pass probability falls. If your last losing trade carries you <em>past</em> the floor (a price gap through your stop), the firm absorbs the extra loss, and the pass probability rises.</p>
+  <div class="formula"><span class="lbl">Gambler's ruin with overshoot</span>P = (B + O<sub>floor</sub>) &divide; (A + O<sub>target</sub> + B)</div>
+  <p><em>Example.</em> The earlier documents traded a fixed &plusmn;$4,800 at 1 : 1. Two wins reach only +$9,600, which is short of the $10,000 target, so a third net win is needed and the account effectively has to reach +$14,400. Then P &asymp; 10,000 &divide; (14,400 + 10,000) = <strong>41%</strong> instead of 50%. Choosing a fixed size without looking at the target costs nine percentage points.</p>
+  <div class="box key"><h4>Rule from Chapter 3</h4>Size every trade so that a win lands exactly on the target and a loss lands no lower than the floor. Under that rule the pass probability is fixed at B &divide; (A + B), and the only thing left to optimise is cost.</div>
+</section>
+
+<!-- 4 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 4</span>
+  <h1>The challenge, step by step</h1>
+  <p>The cheapest way to land exactly on a barrier is to use as few trades as possible. Within FTMO's $5,000 daily loss limit that means risking up to $5,000 per trade and aiming the take-profit straight at the target. Mathematicians call this <strong>bold play</strong>. Here is the complete tree.</p>
+  <figure><svg viewBox="0 0 620 270" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="20" width="130" height="36" rx="3" fill="#f1f4f8" stroke="#d5dae2"/><text x="75.0" y="35.0" font-size="9" text-anchor="middle" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="700">Phase 1 · $0</text><text x="75.0" y="48.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">risk 5k / win 10k</text><rect x="10" y="120" width="130" height="36" rx="3" fill="#f1f4f8" stroke="#d5dae2"/><text x="75.0" y="135.0" font-size="9" text-anchor="middle" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="700">Phase 1 · −$5k</text><text x="75.0" y="148.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">risk 5k / win 15k</text><rect x="10" y="220" width="130" height="36" rx="3" fill="#fdeeee" stroke="#d5dae2"/><text x="75.0" y="235.0" font-size="9" text-anchor="middle" fill="#e34948" style="font-family:Archivo,Arial,sans-serif" font-weight="700">Fail</text><text x="75.0" y="248.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">lose fee</text><line x1="75" y1="56" x2="75" y2="120" stroke="#e34948" stroke-width="1.2"/><circle cx="75" cy="120" r="2.2" fill="#e34948"/><text x="78.0" y="85.0" font-size="7.8" text-anchor="start" fill="#e34948" style="font-family:'IBM Plex Mono',monospace" font-weight="400">2/3 lose</text><line x1="75" y1="156" x2="75" y2="220" stroke="#e34948" stroke-width="1.2"/><circle cx="75" cy="220" r="2.2" fill="#e34948"/><text x="78.0" y="185.0" font-size="7.8" text-anchor="start" fill="#e34948" style="font-family:'IBM Plex Mono',monospace" font-weight="400">3/4 lose</text><rect x="240" y="20" width="130" height="36" rx="3" fill="#f1f4f8" stroke="#d5dae2"/><text x="305.0" y="35.0" font-size="9" text-anchor="middle" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="700">Phase 2 · $0</text><text x="305.0" y="48.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">risk 5k / win 5k</text><rect x="240" y="120" width="130" height="36" rx="3" fill="#f1f4f8" stroke="#d5dae2"/><text x="305.0" y="135.0" font-size="9" text-anchor="middle" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="700">Phase 2 · −$5k</text><text x="305.0" y="148.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">risk 5k / win 10k</text><rect x="240" y="220" width="130" height="36" rx="3" fill="#fdeeee" stroke="#d5dae2"/><text x="305.0" y="235.0" font-size="9" text-anchor="middle" fill="#e34948" style="font-family:Archivo,Arial,sans-serif" font-weight="700">Fail</text><text x="305.0" y="248.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">lose fee</text><line x1="140" y1="38" x2="240" y2="38" stroke="#1baf7a" stroke-width="1.2"/><circle cx="240" cy="38" r="2.2" fill="#1baf7a"/><text x="193.0" y="35.0" font-size="7.8" text-anchor="start" fill="#1baf7a" style="font-family:'IBM Plex Mono',monospace" font-weight="400">1/3 win</text><line x1="140" y1="138" x2="240" y2="46" stroke="#1baf7a" stroke-width="1.2"/><circle cx="240" cy="46" r="2.2" fill="#1baf7a"/><text x="193.0" y="89.0" font-size="7.8" text-anchor="start" fill="#1baf7a" style="font-family:'IBM Plex Mono',monospace" font-weight="400">1/4 win</text><line x1="305" y1="56" x2="305" y2="120" stroke="#e34948" stroke-width="1.2"/><circle cx="305" cy="120" r="2.2" fill="#e34948"/><text x="308.0" y="85.0" font-size="7.8" text-anchor="start" fill="#e34948" style="font-family:'IBM Plex Mono',monospace" font-weight="400">1/2 lose</text><line x1="305" y1="156" x2="305" y2="220" stroke="#e34948" stroke-width="1.2"/><circle cx="305" cy="220" r="2.2" fill="#e34948"/><text x="308.0" y="185.0" font-size="7.8" text-anchor="start" fill="#e34948" style="font-family:'IBM Plex Mono',monospace" font-weight="400">2/3 lose</text><rect x="470" y="20" width="140" height="36" rx="3" fill="#f1f4f8" stroke="#d5dae2"/><text x="540.0" y="35.0" font-size="9" text-anchor="middle" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="700">Funded</text><text x="540.0" y="48.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">worth ≈ $8,600</text><line x1="370" y1="38" x2="470" y2="38" stroke="#1baf7a" stroke-width="1.2"/><circle cx="470" cy="38" r="2.2" fill="#1baf7a"/><text x="423.0" y="35.0" font-size="7.8" text-anchor="start" fill="#1baf7a" style="font-family:'IBM Plex Mono',monospace" font-weight="400">1/2 win</text><line x1="370" y1="138" x2="470" y2="46" stroke="#1baf7a" stroke-width="1.2"/><circle cx="470" cy="46" r="2.2" fill="#1baf7a"/><text x="423.0" y="89.0" font-size="7.8" text-anchor="start" fill="#1baf7a" style="font-family:'IBM Plex Mono',monospace" font-weight="400">1/3 win</text><text x="540.0" y="80.0" font-size="8.5" text-anchor="middle" fill="#5b6370" style="font-family:Archivo,Arial,sans-serif" font-weight="400">P(funded)</text><text x="540.0" y="96.0" font-size="10" text-anchor="middle" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="600">= ½ × ⅔ = ⅓</text><text x="540.0" y="124.0" font-size="8.5" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">EV = −$632 + ⅓ × $8,602</text><text x="540.0" y="140.0" font-size="11" text-anchor="middle" fill="#2a78d6" style="font-family:'IBM Plex Mono',monospace" font-weight="700">= +$2,235</text><text x="75.0" y="12.0" font-size="8.5" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">P(pass) = 1/2</text><text x="305.0" y="12.0" font-size="8.5" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">P(pass) = 2/3</text></svg><figcaption>Figure 4.1 &middot; Bold play through both phases. Each trade risks the daily limit and aims exactly at the target.</figcaption></figure>
+  <h2>4.1 Phase 1</h2>
+  <table>
+    <thead><tr><th>Where you are</th><th>Trade</th><th class="n">Win chance</th><th>If it wins</th><th>If it loses</th></tr></thead>
+    <tbody>
+      <tr><td>Day 1, at $0</td><td>Risk $5,000, target $10,000 (1 : 2)</td><td class="n">1/3</td><td>Pass</td><td>Balance &minus;$5,000</td></tr>
+      <tr><td>Day 2, at &minus;$5,000</td><td>Risk $5,000, target $15,000 (1 : 3)</td><td class="n">1/4</td><td>Pass</td><td>Floor: fail</td></tr>
+    </tbody>
+  </table>
+  <div class="formula">P(pass Phase 1) = 1/3 + (2/3) &times; (1/4) = 1/3 + 1/6 = <strong>1/2</strong></div>
+  <p>Check it with plain 1 : 1 trades of $5,000 instead. Two wins in a row pass (&frac14;). Two losses in a row fail (&frac14;). One of each brings you back to $0 (&frac12;), where you start again. So P = &frac14; + &frac12;P, which gives P = &frac12;. It is the same answer, as Chapter 3 promised. Bold play just gets there in at most two trades.</p>
+  <h2>4.2 Phase 2</h2>
+  <table>
+    <thead><tr><th>Where you are</th><th>Trade</th><th class="n">Win chance</th><th>If it wins</th><th>If it loses</th></tr></thead>
+    <tbody>
+      <tr><td>Day 1, at $0</td><td>Risk $5,000, target $5,000 (1 : 1)</td><td class="n">1/2</td><td>Pass</td><td>Balance &minus;$5,000</td></tr>
+      <tr><td>Day 2, at &minus;$5,000</td><td>Risk $5,000, target $10,000 (1 : 2)</td><td class="n">1/3</td><td>Pass</td><td>Floor: fail</td></tr>
+    </tbody>
+  </table>
+  <div class="formula">P(pass Phase 2) = 1/2 + (1/2) &times; (1/3) = <strong>2/3</strong> &nbsp;&nbsp;&nbsp;&nbsp; P(funded) = 1/2 &times; 2/3 = <strong>1/3</strong></div>
+  <h2>4.3 Details the tree hides</h2>
+  <ul>
+    <li><strong>Minimum trading days.</strong> If you pass on day 1 or 2, you still need 4 trading days. Place a tiny trade (for example 0.01 lots with a 5-pip stop) on the remaining days. It changes nothing measurable.</li>
+    <li><strong>The daily limit includes open losses.</strong> Keep each stop a little under $5,000 (the real-data test used $4,850) so spread and slippage cannot breach the limit.</li>
+    <li><strong>Phases are independent.</strong> Phase 2 starts again from $100,000, so its 2/3 does not depend on how Phase 1 went.</li>
+    <li><strong>This is the theoretical optimum, not the Part 2 plan.</strong> Risking the full daily limit on one trade aimed at the target is what FTMO's conduct rules call overexposure or a one-sided bet (Chapter 14). Part 2 reaches the same pass probabilities with 1% trades, more slowly.</li>
+  </ul>
+</section>
+
+<!-- 5 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 5</span>
+  <h1>What a funded account is worth</h1>
+  <p>Once funded, there is no target. You trade, withdraw profits every 14 days, keep 80%, and the account continues until equity hits the $90,000 floor. How much do you expect to collect in total?</p>
+  <h2>5.1 An accounting identity</h2>
+  <p>Follow the money. Every dollar withdrawn from the account came either from trading profit or from the balance going down. Over the whole life of the account:</p>
+  <div class="formula"><span class="lbl">Funded-account identity (always true)</span>Total withdrawn = Total trading profit + (Starting balance &minus; Final balance)</div>
+  <p>The account ends when the balance reaches the floor, so Starting &minus; Final = $10,000. With zero skill, total trading profit is a sum of fair bets, whose expected value is zero (Section 2.2; the stopping conditions hold because the account is reset to $100,000 at every payout, which guarantees it ends in finite expected time). Taking expectations:</p>
+  <div class="formula"><span class="lbl">Expected payout of a funded account</span>E[total withdrawn] = 0 + $10,000 = $10,000 &nbsp;&nbsp;&rArr;&nbsp;&nbsp; you receive 80% &times; $10,000 = <strong>$8,000</strong> (minus costs)</div>
+  <p>In words: <strong>the firm's expected payout equals the loss allowance it gives you.</strong> You keep 80% of every dollar you withdraw, and the firm pays every dollar of loss down to the floor. In a fair game, the dollars won balance the dollars lost, and the losses stop at exactly $10,000. This is the true source of the option's value. It does not depend on how you trade.</p>
+  <h2>5.2 Simulated check: trading style does not matter</h2>
+  <table>
+    <thead><tr><th>Funded-account trading style</th><th class="n">Avg paid, no costs</th><th class="n">Avg paid, 1.4% costs</th><th class="n">Chance of any payout</th></tr></thead>
+    <tbody>
+      <tr><td>Bold: risk $5k, aim +$500 first, then +$5k cycles</td><td class="n">$8,779 &plusmn; 137</td><td class="n">$8,340</td><td class="n">95%</td></tr>
+      <tr><td>1% risk, 1 : 1, every day</td><td class="n">$8,579 &plusmn; 136</td><td class="n">$7,080</td><td class="n">79%</td></tr>
+      <tr><td>5% risk, 1 : 2, every day</td><td class="n">$8,171 &plusmn; 241</td><td class="n">$7,541</td><td class="n">27%</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">20,000 simulated funded accounts per row. Each figure is $8,000 plus the refunded fee times the chance of at least one payout (the refund only arrives with a first payout). Costs reduce the payout most for the style that trades most.</p>
+  <h2>5.3 Why the earlier "expected maximum = $10,000" claim is false</h2>
+  <p>The earlier documents argued that a fair walk with a floor $10,000 below reaches an expected maximum of $10,000. The chance that it ever climbs m dollars before the floor is 10,000 &divide; (10,000 + m), which falls so slowly that the expected maximum is <em>infinite</em>. The correct reason the payout averages $10,000 is the identity in 5.1, which depends on withdrawing profits. It also shows that their simulated averages of $10,271 (which would mean $12,839 withdrawn) and 13.6% &times; $22,000 (which would mean $8,985 to you per funded account) are impossible with zero skill.</p>
+  <h2>5.4 The refund and the first payout</h2>
+  <p>The &euro;540 fee comes back with your first payout, so it pays to make the first payout very likely. Aim first for a small profit h. The chance of reaching +h before the floor is 10,000 &divide; (10,000 + h). With h = $500 that is 95.2%. Once you reach +$500, stop trading until the payout date, collect $400 plus the refund, then continue normally. The refund adds about 0.95 &times; $632 &asymp; <strong>$600</strong> to the funded value, for a total of about <strong>$8,600</strong>.</p>
+</section>
+
+<!-- 6 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 6</span>
+  <h1>Putting it together</h1>
+  <div class="formula"><span class="lbl">Value of one attempt</span>EV = &minus;Fee + P(pass 1) &times; P(pass 2) &times; Funded value<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= &minus;$632 + &frac12; &times; &#8532; &times; $8,602 = &minus;$632 + $2,867 = <strong>+$2,235</strong></div>
+  <h2>6.1 Every possible outcome of one attempt</h2>
+  <p>With bold play in the funded account, each payout cycle after the first pays $4,000 with probability 2/3 and ends the account with probability 1/3 (the same tree as Phase 2). That makes the full distribution exact:</p>
+  <table>
+    <thead><tr><th>Outcome</th><th class="n">Probability</th><th class="n">Net result</th></tr></thead>
+    <tbody>
+      <tr><td>Fail Phase 1</td><td class="n">50.0%</td><td class="n">&minus;$632</td></tr>
+      <tr><td>Pass Phase 1, fail Phase 2</td><td class="n">16.7%</td><td class="n">&minus;$632</td></tr>
+      <tr><td>Funded, but bust before the first payout</td><td class="n">1.6%</td><td class="n">&minus;$632</td></tr>
+      <tr><td>First payout ($400 + refund), then bust</td><td class="n">10.6%</td><td class="n">+$400</td></tr>
+      <tr><td>&hellip; plus one $4,000 cycle</td><td class="n">7.1%</td><td class="n">+$4,400</td></tr>
+      <tr><td>&hellip; plus two cycles</td><td class="n">4.7%</td><td class="n">+$8,400</td></tr>
+      <tr><td>&hellip; plus three cycles</td><td class="n">3.1%</td><td class="n">+$12,400</td></tr>
+      <tr><td>&hellip; plus four or more</td><td class="n">6.3%</td><td class="n">+$16,400 and up</td></tr>
+      <tr class="hl"><td>Expected value</td><td class="n">100%</td><td class="n">+$2,235</td></tr>
+    </tbody>
+  </table>
+  <figure><svg viewBox="0 0 600 170" xmlns="http://www.w3.org/2000/svg"><text x="112.0" y="23.8" font-size="8.8" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Lose fee</text><rect x="120" y="12.0" width="409.5" height="17.7" rx="2" fill="#e34948"/><text x="535.5" y="23.8" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">68.2%</text><text x="112.0" y="49.5" font-size="8.8" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">+$400</text><rect x="120" y="37.7" width="63.5" height="17.7" rx="2" fill="#2a78d6"/><text x="189.5" y="49.5" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">10.6%</text><text x="112.0" y="75.2" font-size="8.8" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">+$4,400</text><rect x="120" y="63.3" width="42.3" height="17.7" rx="2" fill="#2a78d6"/><text x="168.3" y="75.2" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">7.0%</text><text x="112.0" y="100.8" font-size="8.8" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">+$8,400</text><rect x="120" y="89.0" width="28.2" height="17.7" rx="2" fill="#2a78d6"/><text x="154.2" y="100.8" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">4.7%</text><text x="112.0" y="126.5" font-size="8.8" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">+$12,400</text><rect x="120" y="114.7" width="18.8" height="17.7" rx="2" fill="#2a78d6"/><text x="144.8" y="126.5" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">3.1%</text><text x="112.0" y="152.2" font-size="8.8" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">+$16,400 or more</text><rect x="120" y="140.3" width="37.6" height="17.7" rx="2" fill="#2a78d6"/><text x="163.6" y="152.2" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">6.3%</text></svg><figcaption>Figure 6.1 &middot; One FTMO 100K attempt under bold play, no costs. The expected value is positive, but the most likely single outcome is losing the fee.</figcaption></figure>
+  <p>The EV is large, but the typical outcome is a loss: 68% of attempts lose the whole fee. The value sits in a long right tail. That shape is why Chapter 9 (bankroll) matters as much as the EV itself.</p>
+  <h2>6.2 If it is this good, why does the firm survive?</h2>
+  <p>On a perfect zero-skill trader, FTMO expects to pay out about $2,870 for every $632 fee. Firms survive for three reasons.</p>
+  <ul>
+    <li><strong>Most customers are far worse than random.</strong> Industry estimates put real Phase 1 pass rates at 10&ndash;15%, against 46&ndash;50% for a low-cost coin flip. The difference is mostly trading costs from many small trades with tight stops (Chapter 7), plus abandoning live accounts.</li>
+    <li><strong>Rules remove convexity where it is cheap to remove</strong>: trailing drawdowns, consistency rules, payout caps (Chapter 8).</li>
+    <li><strong>Payouts are discretionary</strong>, and the conduct rules target exactly the fastest version of the strategy (Chapter 13).</li>
+  </ul>
+</section>
+
+<!-- 7 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 7</span>
+  <h1>Trading costs</h1>
+  <p>Every trade pays the <strong>spread</strong> (the gap between buying and selling price), a <strong>commission</strong>, and sometimes <strong>slippage</strong> (being filled worse than your stop price). Costs are the only thing in this model that turns fair bets into losing ones.</p>
+  <h2>7.1 Measuring cost per trade</h2>
+  <p>For EURUSD on FTMO, a realistic all-in cost is about 0.75 pip per round trip: roughly 0.15 pip of raw spread, 0.5 pip of commission (about $5 per standard lot) and 0.1 pip of average slippage. What matters is the cost <em>relative to the stop</em>. We call this ratio &kappa; (kappa):</p>
+  <div class="formula"><span class="lbl">Cost ratio</span>&kappa; = cost in pips &divide; stop distance in pips &nbsp;&nbsp;&nbsp; e.g. 0.75 &divide; 55 &asymp; 1.4%</div>
+  <p>A trade risking $1,000 with a 55-pip stop costs about $14. The same $1,000 risk with a 10-pip stop needs 5.5 times the position size, so it costs about $75 (&kappa; = 7.5%).</p>
+  <h2>7.2 Costs as a drift</h2>
+  <p>A cost of c dollars per trade turns the fair bet into one with EV = &minus;c. The pass formula becomes, approximately:</p>
+  <div class="formula"><span class="lbl">Pass probability with costs</span>P &asymp; (B &minus; expected total cost) &divide; (A + B)</div>
+  <h2>7.3 Why the number of trades is what you pay for</h2>
+  <p>With fair trades of size L (risk L, target L), the expected number of trades to finish a phase is A &times; B &divide; L<sup>2</sup>. Each costs about &kappa; &times; L, so:</p>
+  <div class="formula"><span class="lbl">Expected total cost of a phase</span>Cost &asymp; &kappa; &times; L &times; (A &times; B &divide; L<sup>2</sup>) = &kappa; &times; A &times; B &divide; L</div>
+  <table>
+    <thead><tr><th>Phase 1 with &kappa; = 1.4%</th><th class="n">Risk per trade L</th><th class="n">Expected trades</th><th class="n">Expected cost</th><th class="n">P(pass)</th></tr></thead>
+    <tbody>
+      <tr><td>Bold play (Chapter 4)</td><td class="n">$5,000</td><td class="n">&asymp; 1.7</td><td class="n">&asymp; $180</td><td class="n">48.9%</td></tr>
+      <tr><td>Part 2 plan</td><td class="n">$1,000</td><td class="n">&asymp; 100</td><td class="n">&asymp; $1,400</td><td class="n">&asymp; 44&ndash;45%</td></tr>
+      <tr><td>Scalper, 10-pip stops (&kappa; = 7.5%)</td><td class="n">$500</td><td class="n">&asymp; 400</td><td class="n">&asymp; $15,000</td><td class="n">&asymp; 0%</td></tr>
+    </tbody>
+  </table>
+  <p>The scalper's expected costs exceed the whole loss allowance. This one line explains most of the gap between the textbook 50% and the industry's 10&ndash;15%.</p>
+  <h2>7.4 How to keep costs low</h2>
+  <ul>
+    <li><strong>Wide stops.</strong> A stop around one day's typical range (about 55&ndash;65 pips on EURUSD in 2024&ndash;26) keeps &kappa; near 1&ndash;1.5%.</li>
+    <li><strong>Liquid instruments and hours.</strong> EURUSD during the London and New York sessions has the tightest spreads.</li>
+    <li><strong>Avoid scheduled news.</strong> Rate decisions, US payrolls and CPI cause slippage on stops.</li>
+    <li><strong>Swap.</strong> Holding overnight earns or pays a small interest charge. With ~1&ndash;2 day trades it is minor, but check your platform's swap table.</li>
+  </ul>
+  <p>With &kappa; &asymp; 1.4% applied to every trade, the simulated EV of the bold plan falls from +$2,272 to <strong>+$2,081</strong> (100,000 simulated attempts).</p>
+</section>
+
+<!-- 8 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 8</span>
+  <h1>Other firms and other rule types</h1>
+  <p>Every challenge can be valued with the same two tools: a pass probability for each phase, and the identity for the funded account. What changes between firms is the shape of the floor and the payout rules.</p>
+  <h2>8.1 Static floor</h2>
+  <p>FTMO 2-Step and most forex/CFD 2-Steps work as in Chapters 3&ndash;5: P = B &divide; (A + B) per phase, funded value &asymp; split &times; B.</p>
+  <h2>8.2 End-of-day (EOD) trailing drawdown</h2>
+  <p>The floor rises whenever a day closes at a new high, and stays there. If you can pass in a single day, the floor never moves and you get the static answer. Firms add <strong>consistency rules</strong> ("your best day may not exceed X% of total profit") to force several profitable days, each of which lifts the floor.</p>
+  <h2>8.3 Intraday trailing drawdown</h2>
+  <p>The floor follows your highest <em>live equity</em>, including unrealised profit. With prices that move continuously, the best possible chance of reaching A before a drawdown of D from the peak is:</p>
+  <div class="formula"><span class="lbl">Intraday trailing, any strategy</span>P = e<sup>&minus;A/D</sup> &nbsp;&nbsp;&nbsp;(for driftless prices, the peak reached before a drawdown of D is exponentially distributed with mean D)</div>
+  <figure><svg viewBox="0 0 600 190" xmlns="http://www.w3.org/2000/svg"><text x="202.0" y="20.9" font-size="8.6" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Static floor</text><rect x="210" y="10.0" width="302.2" height="15.7" rx="2" fill="#2a78d6"/><text x="518.2" y="20.9" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">40.0%</text><text x="202.0" y="44.6" font-size="8.6" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">EOD trailing, one-day pass allowed</text><rect x="210" y="33.7" width="302.2" height="15.7" rx="2" fill="#2a78d6"/><text x="518.2" y="44.6" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">40.0%</text><text x="202.0" y="68.3" font-size="8.6" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">EOD trailing + $1,000 daily limit</text><rect x="210" y="57.4" width="302.2" height="15.7" rx="2" fill="#2a78d6"/><text x="518.2" y="68.3" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">40.0%</text><text x="202.0" y="92.0" font-size="8.6" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">EOD trailing + best day ≤ 50%</text><rect x="210" y="81.1" width="247.1" height="15.7" rx="2" fill="#eb6834"/><text x="463.1" y="92.0" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">32.7%</text><text x="202.0" y="115.7" font-size="8.6" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">EOD trailing + best day ≤ 40%</text><rect x="210" y="104.9" width="226.7" height="15.7" rx="2" fill="#eb6834"/><text x="442.7" y="115.7" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">30.0%</text><text x="202.0" y="139.4" font-size="8.6" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">EOD trailing + best day ≤ 30%</text><rect x="210" y="128.6" width="215.3" height="15.7" rx="2" fill="#eb6834"/><text x="431.3" y="139.4" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">28.5%</text><text x="202.0" y="163.1" font-size="8.6" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Intraday trailing (e^−A/D)</text><rect x="210" y="152.3" width="168.5" height="15.7" rx="2" fill="#eb6834"/><text x="384.5" y="163.1" font-size="8.5" text-anchor="start" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">22.3%</text><text x="210.0" y="187.0" font-size="8" text-anchor="start" fill="#5b6370" style="font-family:Archivo,Arial,sans-serif" font-weight="400">maximum pass probability, $3,000 target, $2,000 drawdown</text></svg><figcaption>Figure 8.1 &middot; How each rule type changes the best achievable pass probability (dynamic programming; intraday is the continuous-price bound).</figcaption></figure>
+  <h2>8.4 Funded accounts with locks and caps</h2>
+  <p>Futures firms typically start the funded floor at the same trailing distance, then "lock" it at the starting balance plus about $100 once you are far enough ahead. They also cap payouts (for example Apex closes the account after six payouts). The identity still holds, so the funded value is split &times; (expected start minus final balance). Locks and caps reduce it, typically to around $1,500 on a $2,000 allowance, and to about $700 when the trail is intraday.</p>
+  <h2>8.5 The ranking</h2>
+  <p>We valued 37 account types at 16 firms the same way: zero skill, best sizing for each rule set, 1% trading costs, payouts honoured. The full table is in Appendix B.</p>
+  <figure><svg viewBox="0 0 600 442" xmlns="http://www.w3.org/2000/svg"><line x1="246.5" x2="246.5" y1="6" y2="424.4" stroke="#d5dae2" stroke-width="0.7"/><text x="246.5" y="436.4" font-size="7.5" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">$0</text><line x1="329.2" x2="329.2" y1="6" y2="424.4" stroke="#d5dae2" stroke-width="0.7"/><text x="329.2" y="436.4" font-size="7.5" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">$1,000</text><line x1="411.8" x2="411.8" y1="6" y2="424.4" stroke="#d5dae2" stroke-width="0.7"/><text x="411.8" y="436.4" font-size="7.5" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">$2,000</text><line x1="494.4" x2="494.4" y1="6" y2="424.4" stroke="#d5dae2" stroke-width="0.7"/><text x="494.4" y="436.4" font-size="7.5" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">$3,000</text><text x="224.0" y="14.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">FTMO · 1-Step</text><rect x="246.5" y="8.0" width="286.3" height="7.7" fill="#2a78d6"/><text x="598.0" y="14.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$3,465</text><text x="224.0" y="25.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Blue Guardian · Instant</text><rect x="246.5" y="19.2" width="259.5" height="7.7" fill="#2a78d6"/><text x="598.0" y="25.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$3,141</text><text x="224.0" y="36.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Goat Funded · Instant GOAT</text><rect x="246.5" y="30.4" width="254.7" height="7.7" fill="#2a78d6"/><text x="598.0" y="36.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$3,082</text><text x="224.0" y="47.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">The5ers · High Stakes 2-Step</text><rect x="246.5" y="41.6" width="205.7" height="7.7" fill="#2a78d6"/><text x="598.0" y="47.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$2,490</text><text x="224.0" y="59.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">FundedNext · Stellar 2-Step</text><rect x="246.5" y="52.8" width="205.5" height="7.7" fill="#2a78d6"/><text x="598.0" y="59.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$2,486</text><text x="224.0" y="70.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">FundingPips · 2-Step</text><rect x="246.5" y="64.0" width="204.7" height="7.7" fill="#2a78d6"/><text x="598.0" y="70.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$2,477</text><text x="224.0" y="81.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Alpha Capital · Alpha Pro 10% †</text><rect x="246.5" y="75.2" width="183.0" height="7.7" fill="#2a78d6"/><text x="598.0" y="81.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$2,215</text><text x="224.0" y="92.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">FTMO · 2-Step</text><rect x="246.5" y="86.4" width="175.3" height="7.7" fill="#2a78d6"/><text x="598.0" y="92.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$2,122</text><text x="224.0" y="103.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Goat Funded · 2-Step Standard †</text><rect x="246.5" y="97.6" width="162.3" height="7.7" fill="#2a78d6"/><text x="598.0" y="103.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$1,964</text><text x="224.0" y="115.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">FundedNext · Stellar Lite</text><rect x="246.5" y="108.8" width="136.0" height="7.7" fill="#2a78d6"/><text x="598.0" y="115.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$1,646</text><text x="224.0" y="126.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Blue Guardian · 2-Step Pro †</text><rect x="246.5" y="120.0" width="128.6" height="7.7" fill="#2a78d6"/><text x="598.0" y="126.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$1,556</text><text x="224.0" y="137.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Maven · 2-Step †</text><rect x="246.5" y="131.2" width="123.1" height="7.7" fill="#2a78d6"/><text x="598.0" y="137.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$1,490</text><text x="224.0" y="148.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Alpha Capital · Alpha Pro 8% †</text><rect x="246.5" y="142.4" width="121.7" height="7.7" fill="#2a78d6"/><text x="598.0" y="148.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$1,473</text><text x="224.0" y="159.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">FundedNext · Stellar 1-Step</text><rect x="246.5" y="153.6" width="113.6" height="7.7" fill="#2a78d6"/><text x="598.0" y="159.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$1,374</text><text x="224.0" y="171.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">FundingPips · 1-Step</text><rect x="246.5" y="164.8" width="109.6" height="7.7" fill="#2a78d6"/><text x="598.0" y="171.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$1,326</text><text x="224.0" y="182.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">FundingPips · Zero (instant)</text><rect x="246.5" y="176.0" width="97.5" height="7.7" fill="#2a78d6"/><text x="598.0" y="182.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$1,180</text><text x="224.0" y="193.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">E8 Markets · E8 One (6% DD) †</text><rect x="246.5" y="187.2" width="89.2" height="7.7" fill="#2a78d6"/><text x="598.0" y="193.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$1,079</text><text x="224.0" y="204.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Lucid · Direct 50K (instant)</text><rect x="246.5" y="198.4" width="77.5" height="7.7" fill="#2a78d6"/><text x="598.0" y="204.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$938</text><text x="224.0" y="215.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Goat Funded · 3-Step GOAT †</text><rect x="246.5" y="209.6" width="63.4" height="7.7" fill="#2a78d6"/><text x="598.0" y="215.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$767</text><text x="224.0" y="227.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">FundingPips · 2-Step Pro</text><rect x="246.5" y="220.8" width="60.0" height="7.7" fill="#2a78d6"/><text x="598.0" y="227.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$726</text><text x="224.0" y="238.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Apex · 50K EOD</text><rect x="246.5" y="232.0" width="43.4" height="7.7" fill="#2a78d6"/><text x="598.0" y="238.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$525</text><text x="224.0" y="249.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Bulenox · 50K Opt.2 (EOD)</text><rect x="246.5" y="243.2" width="41.5" height="7.7" fill="#2a78d6"/><text x="598.0" y="249.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$502</text><text x="224.0" y="260.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Lucid · Flex 50K</text><rect x="246.5" y="254.4" width="36.9" height="7.7" fill="#2a78d6"/><text x="598.0" y="260.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$446</text><text x="224.0" y="271.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Tradeify · Growth 50K</text><rect x="246.5" y="265.6" width="35.9" height="7.7" fill="#2a78d6"/><text x="598.0" y="271.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$435</text><text x="224.0" y="283.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Tradeify · Lightning 25K (instant)</text><rect x="246.5" y="276.8" width="32.6" height="7.7" fill="#2a78d6"/><text x="598.0" y="283.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$394</text><text x="224.0" y="294.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Lucid · Pro 50K</text><rect x="246.5" y="288.0" width="32.1" height="7.7" fill="#2a78d6"/><text x="598.0" y="294.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$389</text><text x="224.0" y="305.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Topstep · Combine 50K (Standard)</text><rect x="246.5" y="299.2" width="31.0" height="7.7" fill="#2a78d6"/><text x="598.0" y="305.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$375</text><text x="224.0" y="316.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Topstep · Combine 50K (No-Activation)</text><rect x="246.5" y="310.4" width="30.0" height="7.7" fill="#2a78d6"/><text x="598.0" y="316.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$363</text><text x="224.0" y="327.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">My Funded Futures · Flex 50K</text><rect x="246.5" y="321.6" width="25.5" height="7.7" fill="#2a78d6"/><text x="598.0" y="327.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$309</text><text x="224.0" y="339.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Tradeify · Select 50K</text><rect x="246.5" y="332.8" width="22.3" height="7.7" fill="#2a78d6"/><text x="598.0" y="339.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$270</text><text x="224.0" y="350.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">The5ers · Futures Basecamp 50K †</text><rect x="246.5" y="344.0" width="18.3" height="7.7" fill="#2a78d6"/><text x="598.0" y="350.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$222</text><text x="224.0" y="361.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Apex · 50K Intraday</text><rect x="246.5" y="355.2" width="7.6" height="7.7" fill="#2a78d6"/><text x="598.0" y="361.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$92</text><text x="224.0" y="372.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Bulenox · 50K Opt.1 (intraday)</text><rect x="246.5" y="366.4" width="2.6" height="7.7" fill="#2a78d6"/><text x="598.0" y="372.6" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$31</text><text x="224.0" y="383.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Maven · 3-Step †</text><rect x="246.5" y="377.6" width="1.1" height="7.7" fill="#2a78d6"/><text x="598.0" y="383.8" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$14</text><text x="224.0" y="395.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Take Profit Trader · PRO 50K</text><rect x="246.5" y="388.8" width="0.8" height="7.7" fill="#2a78d6"/><text x="598.0" y="395.0" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">+$2</text><text x="224.0" y="406.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">My Funded Futures · Rapid 50K</text><rect x="244.4" y="400.0" width="2.2" height="7.7" fill="#e34948"/><text x="598.0" y="406.2" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">&minus;$26</text><text x="224.0" y="417.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Alpha Capital · Alpha Three †</text><rect x="243.3" y="411.2" width="3.2" height="7.7" fill="#e34948"/><text x="598.0" y="417.4" font-size="7.4" text-anchor="end" fill="#15191f" style="font-family:'IBM Plex Mono',monospace" font-weight="400">&minus;$39</text></svg><figcaption>Figure 8.2 &middot; Expected value per attempt, zero skill, 1% costs, payouts honoured. † rule set partly inferred.</figcaption></figure>
+  <ul>
+    <li><strong>Static 10% 2-Steps</strong> (FundedNext, FundingPips, The5ers, FTMO): +$2,000 to +$2,500 per attempt.</li>
+    <li><strong>FTMO 1-Step</strong> ranks first (+$3,465): its trailing floor resets with each payout and the split is 90%.</li>
+    <li><strong>Futures evaluations</strong> are cheap and return the most per dollar of fee, but each is worth only $300&ndash;$550.</li>
+    <li><strong>Intraday trailing</strong> accounts and <strong>3-step</strong> programmes are worth close to nothing, or less.</li>
+    <li><strong>Instant-funding</strong> values are upper estimates: their payout caps and consistency rules were not fully modelled.</li>
+  </ul>
+</section>
+
+<!-- 9 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 9</span>
+  <h1>Variance, bankroll and Kelly</h1>
+  <p>A positive EV only shows up after many attempts. Because most attempts lose the fee and a few pay a lot, you need enough money to survive the losing runs.</p>
+  <figure><svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg"><line x1="48" x2="470" y1="186.0" y2="186.0" stroke="#d5dae2" stroke-width="0.8"/><text x="42.0" y="189.0" font-size="8" text-anchor="end" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">0%</text><line x1="48" x2="470" y1="142.5" y2="142.5" stroke="#d5dae2" stroke-width="0.8"/><text x="42.0" y="145.5" font-size="8" text-anchor="end" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">25%</text><line x1="48" x2="470" y1="99.0" y2="99.0" stroke="#d5dae2" stroke-width="0.8"/><text x="42.0" y="102.0" font-size="8" text-anchor="end" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">50%</text><line x1="48" x2="470" y1="55.5" y2="55.5" stroke="#d5dae2" stroke-width="0.8"/><text x="42.0" y="58.5" font-size="8" text-anchor="end" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">75%</text><line x1="48" x2="470" y1="12.0" y2="12.0" stroke="#d5dae2" stroke-width="0.8"/><text x="42.0" y="15.0" font-size="8" text-anchor="end" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">100%</text><text x="48.0" y="200.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">1</text><text x="132.4" y="200.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">3</text><text x="216.8" y="200.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">5</text><text x="301.2" y="200.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">10</text><text x="385.6" y="200.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">20</text><text x="470.0" y="200.0" font-size="8" text-anchor="middle" fill="#5b6370" style="font-family:'IBM Plex Mono',monospace" font-weight="400">50</text><text x="259.0" y="216.0" font-size="8.5" text-anchor="middle" fill="#5b6370" style="font-family:Archivo,Arial,sans-serif" font-weight="400">attempts bought</text><polyline points="48.0,138.3 132.4,104.4 216.8,74.1 301.2,47.7 385.6,24.8 470.0,13.0" fill="none" stroke="#2a78d6" stroke-width="2"/><circle cx="48.0" cy="138.3" r="3.5" fill="#fff" stroke="#2a78d6" stroke-width="1.8"/><circle cx="132.4" cy="104.4" r="3.5" fill="#fff" stroke="#2a78d6" stroke-width="1.8"/><circle cx="216.8" cy="74.1" r="3.5" fill="#fff" stroke="#2a78d6" stroke-width="1.8"/><circle cx="301.2" cy="47.7" r="3.5" fill="#fff" stroke="#2a78d6" stroke-width="1.8"/><circle cx="385.6" cy="24.8" r="3.5" fill="#fff" stroke="#2a78d6" stroke-width="1.8"/><circle cx="470.0" cy="13.0" r="3.5" fill="#fff" stroke="#2a78d6" stroke-width="1.8"/><text x="478.0" y="10.0" font-size="8.8" text-anchor="start" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Bold plan 99%</text><polyline points="48.0,140.6 132.4,103.7 216.8,81.8 301.2,51.1 385.6,29.6 470.0,14.3" fill="none" stroke="#eb6834" stroke-width="2"/><circle cx="48.0" cy="140.6" r="3.5" fill="#fff" stroke="#eb6834" stroke-width="1.8"/><circle cx="132.4" cy="103.7" r="3.5" fill="#fff" stroke="#eb6834" stroke-width="1.8"/><circle cx="216.8" cy="81.8" r="3.5" fill="#fff" stroke="#eb6834" stroke-width="1.8"/><circle cx="301.2" cy="51.1" r="3.5" fill="#fff" stroke="#eb6834" stroke-width="1.8"/><circle cx="385.6" cy="29.6" r="3.5" fill="#fff" stroke="#eb6834" stroke-width="1.8"/><circle cx="470.0" cy="14.3" r="3.5" fill="#fff" stroke="#eb6834" stroke-width="1.8"/><text x="478.0" y="27.3" font-size="8.8" text-anchor="start" fill="#15191f" style="font-family:Archivo,Arial,sans-serif" font-weight="400">Part 2 plan 99%</text></svg><figcaption>Figure 9.1 &middot; Chance of being ahead after buying n FTMO 100K attempts (real EURUSD data, bootstrap).</figcaption></figure>
+  <table>
+    <thead><tr><th>Attempts bought</th><th class="n">1</th><th class="n">3</th><th class="n">5</th><th class="n">10</th><th class="n">20</th><th class="n">50</th></tr></thead>
+    <tbody>
+      <tr><td>Chance of being ahead, bold plan</td><td class="n">27%</td><td class="n">47%</td><td class="n">64%</td><td class="n">79%</td><td class="n">93%</td><td class="n">99%</td></tr>
+      <tr><td>Chance of being ahead, Part 2 plan</td><td class="n">26%</td><td class="n">47%</td><td class="n">60%</td><td class="n">78%</td><td class="n">90%</td><td class="n">99%</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">Bootstrap from 6,000 (bold) and 3,000 (Part 2) simulated attempts on real EURUSD data.</p>
+  <h2>9.1 Risk of ruin</h2>
+  <p>If you start with a fixed amount and buy attempts until you either run out of fees or complete 100 attempts, the chance of running out (bold plan, real data) is 53% with 3 fees ($1,896), 35% with 5 fees ($3,160), 11% with 10 fees ($6,320) and 1.2% with 20 fees ($12,640). The Part 2 plan is riskier per attempt, because more of its attempts lose: 22% ruin with 10 fees and 5% with 20.</p>
+  <h2>9.2 The Kelly criterion, done correctly</h2>
+  <p>The Kelly criterion picks the bet size that makes your wealth grow fastest over time. For a bet with mean gain &mu; and variance &sigma;<sup>2</sup> per unit staked, the growth-optimal stake is roughly &mu; &divide; &sigma;<sup>2</sup> of your wealth. For a fixed-size bet such as one challenge, this inverts: the bankroll at which buying one attempt is growth-optimal is about &sigma;<sup>2</sup> &divide; &mu;.</p>
+  <div class="formula"><span class="lbl">Bankroll for one attempt at full Kelly</span>W &asymp; &sigma;<sup>2</sup> &divide; &mu; &nbsp;&nbsp;&nbsp; exact log-growth on the real-data outcomes: &asymp; <strong>$4,100</strong> (bold) and &asymp; <strong>$6,000</strong> (Part 2)</div>
+  <p>The earlier documents computed &mu; &divide; &sigma;<sup>2</sup> = 1.4 &times; 10<sup>&minus;5</sup>, treated it as a fraction of wealth, and concluded you need $40 million. The units are wrong: &mu; &divide; &sigma;<sup>2</sup> is "per dollar", not a percentage. Half-Kelly (about $8,000&ndash;12,000) is a sensible minimum for someone who wants smaller swings.</p>
+</section>
+
+<!-- 10 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 10</span>
+  <h1>Hedging</h1>
+  <p>The idea is to take opposite positions in two accounts, at the same firm, at two firms, or against a personal brokerage account, so that one account's loss is the other's gain.</p>
+  <h2>10.1 Hedging cannot create value</h2>
+  <p>Expected values add (Section 2.1). The expected total of several accounts is the sum of their individual EVs, however their results are linked. If each account is worth +$2,235, a hedged pair is worth exactly +$4,470. If each were worth &minus;$100, hedging would lock in &minus;$200. A hedge changes only the <em>spread</em> of outcomes.</p>
+  <h2>10.2 The values are straight lines, so a hedge can be exact</h2>
+  <p>With a static floor, the value of each stage is a straight line in its own balance (Section 3.3):</p>
+  <table>
+    <thead><tr><th>Stage (no costs)</th><th class="n">Value at start</th><th class="n">Value per $1 of balance (slope)</th></tr></thead>
+    <tbody>
+      <tr><td>Funded account</td><td class="n">$8,602</td><td class="n">0.80</td></tr>
+      <tr><td>Phase 2</td><td class="n">$5,735</td><td class="n">8,602 &divide; 15,000 = 0.573</td></tr>
+      <tr><td>Phase 1</td><td class="n">$2,867</td><td class="n">5,735 &divide; 20,000 = 0.287</td></tr>
+    </tbody>
+  </table>
+  <p>Holding an opposite position equal to the slope makes the total value constant. For example, two Phase 1 accounts with opposite positions (equal target and floor distances) always produce exactly one pass, and a personal account holding 0.287&times; the opposite exposure locks in $2,867 &minus; $632 per attempt. Mathematically, hedging turns the lottery of Chapter 6 into a near-certain cash flow.</p>
+  <h2>10.3 Why it does not work in practice</h2>
+  <ul>
+    <li><strong>It is prohibited.</strong> FTMO's forbidden-practices page bans opposite positions across accounts, explicitly including "accounts held with various operators/providers", with forfeiture of rewards and termination of all agreements. Most firms have equivalent clauses.</li>
+    <li><strong>It cannot protect against a refused payout.</strong> Against your own brokerage account, the paths where the prop account wins are exactly the paths where your real money lost. If that payout is refused, the loss is real, up to $8,000 per funded account, where the unhedged loss would only have been the fee.</li>
+  </ul>
+  <p>Hedging is therefore covered here only to explain the mathematics. It is not part of the execution plan.</p>
+</section>
+
+<!-- 11 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 11</span>
+  <h1>Testing it on real market data</h1>
+  <h2>11.1 Method</h2>
+  <p>Data: hourly EURUSD bars, 18 December 2023 to 2 October 2026 (730 trading days). Each simulated attempt starts on a random date and opens each trade at a random weekday hour between 07:00 and 16:00 UTC, in a random direction. Brackets resolve on real highs and lows. When one hourly bar touches both stop and target, a coin flip decides (this cannot bias the result). Costs are 0.75 pip per round trip. FTMO's daily and maximum loss limits, minimum days, 14-day payout cycles, 80% split and refund are all applied. Funded accounts run until they hit the floor. When the data runs out it wraps to the start.</p>
+  <h2>11.2 Results</h2>
+  <table>
+    <thead><tr><th>Strategy</th><th class="n">EV per attempt</th><th class="n">P(pass 1)</th><th class="n">P(funded)</th><th class="n">P(profit)</th><th class="n">Avg length</th></tr></thead>
+    <tbody>
+      <tr><td>Bold play (Chapter 4), 6,000 attempts</td><td class="n">+$1,764 &plusmn; 161</td><td class="n">46.4%</td><td class="n">29.5%</td><td class="n">28.0%</td><td class="n">&asymp; 6 weeks</td></tr>
+      <tr class="hl"><td>Part 2 plan: 1% risk, 1 : 1, 3,000 attempts</td><td class="n">+$1,398 &plusmn; 193</td><td class="n">45.0%</td><td class="n">27.2%</td><td class="n">26.1%</td><td class="n">&asymp; 86 weeks</td></tr>
+      <tr><td>Same with 1 : 2 targets</td><td class="n">+$1,368 &plusmn; 209</td><td class="n">38.2%</td><td class="n">23.2%</td><td class="n">22.2%</td><td class="n">&asymp; 44 weeks</td></tr>
+      <tr><td>Earlier PDFs' protocol (&plusmn;$4,800, 1 : 1, quit after 2 losses, daily flatten)</td><td class="n">&minus;$173 &plusmn; 79</td><td class="n">14.6%</td><td class="n">8.2%</td><td class="n">3.5%</td><td class="n">&ndash;</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">&plusmn; values are 95% confidence ranges. "Avg length" counts market time from purchase to the end of the attempt (failure, or the funded account hitting its floor).</p>
+  <p>The real-data figures sit a little below the cost-only model (+$2,081 for bold play). The gap comes from the safety buffer kept above the floor, hourly resolution, and the mild mean reversion seen in Section 2.4. The sign and size are confirmed.</p>
+  <h2>11.3 Why the earlier protocol loses</h2>
+  <table>
+    <thead><tr><th>Earlier protocol variant</th><th class="n">EV per attempt</th><th class="n">P(funded)</th></tr></thead>
+    <tbody>
+      <tr><td>As written: quit Phase 1 after 2 full losses, flatten before New York close</td><td class="n">&minus;$70 &plusmn; 90</td><td class="n">8.8%</td></tr>
+      <tr><td>Quit rule kept, no daily flatten</td><td class="n">+$404 &plusmn; 165</td><td class="n">14.8%</td></tr>
+      <tr><td>No quit rule, daily flatten kept</td><td class="n">+$884 &plusmn; 152</td><td class="n">22.1%</td></tr>
+      <tr><td>Neither</td><td class="n">+$672 &plusmn; 178</td><td class="n">19.9%</td></tr>
+    </tbody>
+  </table>
+  <p>The quit rule is the main damage. A live account is always worth (x + B) &divide; (A + B) of the next stage's value (Section 3.3), so abandoning it throws that value away. After a win-win-loss-loss sequence, for instance, you are back at $0 with a full 50% chance, and the rule tells you to quit. The fixed &plusmn;$4,800 size adds the overshoot loss of Section 3.5.</p>
+</section>
+
+<!-- 12 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 12</span>
+  <h1>Errors in the earlier "Convex Edge" documents</h1>
+  <p>For readers coming from the earlier "FTMO Convex-EV" / "Convex Edge" PDFs, this is what changes and why.</p>
+  <table class="small">
+    <thead><tr><th style="width:36%">Earlier claim</th><th>Correct statement</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>The edge comes from variance via Jensen's inequality; EV rises with &sigma;<sup>2</sup>.</td><td>With no deadline, the pass probability is B/(A+B) for any &sigma;. The edge is the loss allowance (Chapter 5).</td><td><span class="pill bad">wrong mechanism</span></td></tr>
+      <tr><td>A fair walk's expected maximum before the floor equals the floor distance.</td><td>It is infinite. The funded value follows from the withdrawal identity.</td><td><span class="pill bad">false</span></td></tr>
+      <tr><td>Funded payout $10,271 at 80% split; EV +$3,223 / +$2,502.</td><td>Implies $12,839 withdrawn against a $10,000 allowance, which is impossible. The EV formula also refunded the fee to every funded account, including those that never got paid.</td><td><span class="pill bad">impossible</span></td></tr>
+      <tr><td>13.6% &times; $22,000 naive EV.</td><td>$8,985 per funded account, above the $8,000 ceiling.</td><td><span class="pill bad">impossible</span></td></tr>
+      <tr><td>1:1 is the only RR that makes a symmetric walk.</td><td>Every fair bracket is a martingale. RR matters only through overshoot.</td><td><span class="pill bad">false</span></td></tr>
+      <tr><td>Fixed &plusmn;$4,800 trades at 1:1.</td><td>Overshoots the target and cuts Phase 1 from 50% to 41%.</td><td><span class="pill bad">costly</span></td></tr>
+      <tr><td>A constant ~$30 cost per trade regardless of size creates a "trap" near the floor.</td><td>Costs scale with lot size. With proportional costs there is no trap, and dynamic sizing does not change the pass probability.</td><td><span class="pill bad">model bug</span></td></tr>
+      <tr><td>Effective win rate of 48.5% (spread asymmetry plus mean reversion).</td><td>Measured 49.7&ndash;50.4% for symmetric brackets. The spread asymmetry is the spread cost, so it was counted twice.</td><td><span class="pill bad">not in data</span></td></tr>
+      <tr><td>Quit Phase 1 after two consecutive full losses.</td><td>Throws away live value. On real data, removing it moves the protocol from &minus;$70 to +$884.</td><td><span class="pill bad">main loss</span></td></tr>
+      <tr><td>Kelly implies a $40M bankroll.</td><td>Units error. About $4,100 for bold play, $6,000 for the Part 2 plan.</td><td><span class="pill bad">10,000&times; off</span></td></tr>
+      <tr><td>RR table shows 1:1.5 as best.</td><td>The table's own maximum was 1:0.5; the differences are simulation noise.</td><td><span class="pill bad">noise</span></td></tr>
+      <tr><td>Use 1:2 on the funded account for more EV.</td><td>Funded value is split &times; B for any RR.</td><td><span class="pill bad">irrelevant</span></td></tr>
+      <tr><td>Abandoned accounts free up allocation.</td><td>They remain open and count toward the cap.</td><td><span class="pill bad">false</span></td></tr>
+      <tr><td>"Defensibility": vary lots, rotate sessions, add decoy trades, stagger purchases.</td><td>These disguise a pattern the terms prohibit. If discovered, they justify forfeiture. Part 2 follows the rules instead.</td><td><span class="pill bad">removed</span></td></tr>
+      <tr><td>$4,600&ndash;5,000 per month from four accounts.</td><td>The fast version is the prohibited one. The compliant version earns roughly $70 per account-slot per month (Chapter 22).</td><td><span class="pill bad">overstated</span></td></tr>
+      <tr><td>Zero-skill play is positive EV if payouts are honoured.</td><td>Correct, and by more per attempt than the earlier documents said.</td><td><span class="pill good">correct</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 13 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 13</span>
+  <h1>What the mathematics cannot tell you</h1>
+  <p>Every number so far assumes the firm pays what it owes. That assumption is the weakest link, and no model can price it.</p>
+  <ul>
+    <li><strong>Payouts are discretionary.</strong> Funded accounts are simulated, and "rewards" are paid under terms that let the firm refuse them for practices it considers non-genuine.</li>
+    <li><strong>Conduct rules.</strong> FTMO lists "overleveraging, overexposure, one-sided bets, account rolling" and hedging across accounts as forbidden, and recommends risking 1&ndash;1.5% per trade. The bold plan of Chapter 4 matches the prohibited pattern.</li>
+    <li><strong>Firm failure.</strong> About 80&ndash;100 prop firms closed in 2024&ndash;25. True Forex Funds closed owing about $1.2 million; The Funded Trader admitted to more than $2 million in denied payouts; MyForexFunds was shut by a CFTC action in 2023.</li>
+    <li><strong>Rule changes.</strong> Fees, splits and limits change often. Each change moves the numbers in this document.</li>
+    <li><strong>Behaviour.</strong> The maths assumes you follow the plan exactly through long losing runs. Skipping trades, sizing up to "win it back" or quitting live accounts all lower the result.</li>
+    <li><strong>Model limits.</strong> The real-data test covers 2.8 years of one currency pair. A different period could show more or less mean reversion. Costs differ between platforms.</li>
+  </ul>
+  <div class="formula"><span class="lbl">Break-even payout refusal rate (FTMO 2-Step, 1% costs)</span>EV &ge; 0 as long as fewer than about 77% of owed payouts are refused</div>
+  <p>That looks comfortable, but refusals are not independent coin flips. A refusal usually comes with the account closed and the person barred, which ends all future attempts. The realistic protection is to trade in a way that does not breach the terms at all. That is the purpose of Part 2.</p>
+</section>
+
+<!-- ================================================================ PART 2 -->
+<section class="part">
+  <span class="num">Part 2</span>
+  <h1>Execution</h1>
+  <p>A plan that uses the mathematics of Part 1 while staying inside FTMO's published rules and risk guidance. It is slower and smaller than the theoretical optimum. That is the price of not relying on the firm overlooking a prohibited pattern.</p>
+</section>
+
+<!-- 14 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 14</span>
+  <h1>Which plan, and why not the fastest one</h1>
+  <table>
+    <thead><tr><th></th><th>Bold plan (Chapter 4)</th><th>Part 2 plan</th></tr></thead>
+    <tbody>
+      <tr><td>Risk per trade</td><td>Up to $5,000 (the full daily limit)</td><td>$1,000 (1%)</td></tr>
+      <tr><td>Trades per attempt</td><td>About 7</td><td>About 170</td></tr>
+      <tr><td>EV per attempt (real data)</td><td class="n">+$1,764</td><td class="n">+$1,398</td></tr>
+      <tr><td>Average length of an attempt</td><td>&asymp; 6 weeks</td><td>&asymp; 86 weeks</td></tr>
+      <tr><td>EV per month per account slot</td><td class="n">&asymp; +$1,300</td><td class="n">&asymp; +$70</td></tr>
+      <tr><td>Matches FTMO's prohibited patterns</td><td>Yes: overexposure, one-sided bets</td><td>No: within the 1&ndash;1.5% guidance</td></tr>
+    </tbody>
+  </table>
+  <p>The bold plan is twenty times faster, and that speed is exactly why firms prohibit it: it extracts the loss allowance in a handful of trades. Running it while trying to make it look like something else would mean hiding a prohibited practice to get paid. That is deception, and once discovered it justifies withholding everything. This document does not describe how to do that.</p>
+  <p>The Part 2 plan risks what FTMO itself recommends, trades one position at a time with ordinary stops, and never quits or hedges accounts. Its EV per attempt stays close to the bold plan's. What it gives up is speed.</p>
+  <div class="box warn"><h4>Read this before Part 2</h4>
+  <ul>
+    <li>Following the rules lowers the risk of a refused payout. It does not remove it. Payouts remain at the firm's discretion.</li>
+    <li>The direction of every trade in this plan is no better than a coin flip. The plan makes money only from the contract, never from the market.</li>
+    <li>About three attempts in four end with a loss, nearly always the whole fee. You need many attempts, over years, for the average to show.</li>
+  </ul></div>
+</section>
+
+<!-- 15 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 15</span>
+  <h1>Before you start</h1>
+  <h2>15.1 Requirements</h2>
+  <ul class="check">
+    <li>You are an adult (18+). Prop firms verify identity before paying.</li>
+    <li>Money set aside that you can lose entirely: at least 10 fees ($6,320), ideally 20 ($12,640). Never borrowed money.</li>
+    <li>A computer with MetaTrader 5 or cTrader, a stable connection, and a backup connection.</li>
+    <li>A trade journal (Chapter 23).</li>
+    <li>The current FTMO terms read in full: trading objectives, forbidden practices, payout rules.</li>
+  </ul>
+  <h2>15.2 Choosing the account</h2>
+  <p>This plan uses the <strong>FTMO 100K 2-Step</strong>, because its rules are simple, its floor is static and it has the longest public record of paying. Any static-floor 2-Step with similar rules works the same way (FundedNext Stellar 2-Step, FundingPips 2-Step, The5ers High Stakes; see Appendix B). Avoid intraday trailing drawdowns and 3-step programmes (Chapter 8).</p>
+  <p>Account size: 100K is the reference. Smaller accounts carry the same percentages, but the payout per attempt scales down. The fee scales roughly in proportion, so EV per dollar of fee is similar.</p>
+  <h2>15.3 Choosing the instrument</h2>
+  <p>Use <strong>EURUSD</strong>. It has the lowest cost relative to its daily movement among FTMO's instruments, deep liquidity, and it was the instrument tested in Chapter 11. One standard lot (100,000 EUR) moves $10 per pip on a USD account.</p>
+  <h2>15.4 Check your real costs</h2>
+  <p>Before the first trade, place one 1-lot trade on a free demo, close it, and note the total cost (spread plus commission). If it is more than about 1 pip, the cost ratio &kappa; rises above 2% and the EV falls. Re-run the numbers in Chapter 7 with your figure.</p>
+</section>
+
+<!-- 16 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 16</span>
+  <h1>The plan on one page</h1>
+  <div class="box key"><h4>Every trade</h4>
+  <ol>
+    <li><strong>One position at a time.</strong> Never more than one open trade on the account.</li>
+    <li><strong>Risk</strong> = the smaller of $1,000 and (room above the floor &minus; $100).</li>
+    <li><strong>Stop</strong> = one average daily range of EURUSD (the 20-day average of high minus low; about 55&ndash;65 pips in 2024&ndash;26).</li>
+    <li><strong>Target</strong> = the same distance as the stop (1 : 1), except when the remaining distance to the phase target is smaller. Then set the target to exactly that remaining distance.</li>
+    <li><strong>Lots</strong> = risk &divide; (stop in pips &times; $10). Round down to 0.01.</li>
+    <li>Attach stop and target <strong>when you open</strong> the trade. Never move them.</li>
+  </ol></div>
+  <div class="box key"><h4>Every phase and account</h4>
+  <ol>
+    <li>Never abandon a live account. Its value is always positive (Section 3.3).</li>
+    <li>Stop trading the moment a phase target is reached. Use tiny trades only if minimum days are still missing.</li>
+    <li>Funded: aim for +$500 first, stop, collect the first payout and refund, then continue with the same rules. Request a payout every 14 days when in profit.</li>
+    <li>No hedging, no opposite positions across your accounts, no copying trades between your own accounts in opposite directions.</li>
+    <li>When an attempt ends, wait before buying the next, and buy it because the plan says so, not to win back a loss.</li>
+  </ol></div>
+  <div class="box"><h4>Never</h4>
+  <ul>
+    <li>Trade within 30 minutes before or after a high-impact scheduled release (central-bank decisions, US payrolls, CPI).</li>
+    <li>Increase size after losses, or add a second trade "to make it back".</li>
+    <li>Change the plan during a losing run. Losing runs of 10&ndash;20 trades are normal.</li>
+  </ul></div>
+</section>
+
+<!-- 17 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 17</span>
+  <h1>Position sizing, step by step</h1>
+  <h2>17.1 The formulas</h2>
+  <div class="formula"><span class="lbl">Risk for the next trade</span>room = current balance &minus; $90,000 &nbsp;&nbsp;&nbsp; risk = min($1,000, room &minus; $100)</div>
+  <div class="formula"><span class="lbl">Distance to target</span>remaining = phase target balance &minus; current balance &nbsp;&nbsp;&nbsp; target $ = min(risk, remaining)</div>
+  <div class="formula"><span class="lbl">Lots and pips (EURUSD, USD account)</span>lots = risk &divide; (stop pips &times; $10) &nbsp;&nbsp;&nbsp; target pips = target $ &divide; (lots &times; $10)</div>
+  <p>The daily loss limit ($5,000) can never bind with one $1,000 trade open, so it needs no separate check. If a trade is still open at midnight, its floating loss counts toward the next day's limit, but $1,000 is still far below $5,000.</p>
+  <h2>17.2 Worked examples (stop = 60 pips)</h2>
+  <table><thead><tr><th>Stage</th><th class="n">Balance</th><th class="n">Room above floor</th><th class="n">To target</th><th class="n">Risk</th><th class="n">Lots</th><th class="n">Stop pips</th><th class="n">Target $</th><th class="n">Target pips</th><th class="n">Win chance</th></tr></thead><tbody><tr><td>Phase 1</td><td class="n">$100,000</td><td class="n">$10,000</td><td class="n">$10,000</td><td class="n">$1,000</td><td class="n">1.66</td><td class="n">60</td><td class="n">$1,000</td><td class="n">60</td><td class="n">50%</td></tr><tr><td>Phase 1</td><td class="n">$106,200</td><td class="n">$16,200</td><td class="n">$3,800</td><td class="n">$1,000</td><td class="n">1.66</td><td class="n">60</td><td class="n">$1,000</td><td class="n">60</td><td class="n">50%</td></tr><tr><td>Phase 1</td><td class="n">$109,400</td><td class="n">$19,400</td><td class="n">$600</td><td class="n">$1,000</td><td class="n">1.66</td><td class="n">60</td><td class="n">$600</td><td class="n">36</td><td class="n">62%</td></tr><tr><td>Phase 1</td><td class="n">$91,500</td><td class="n">$1,500</td><td class="n">$18,500</td><td class="n">$1,000</td><td class="n">1.66</td><td class="n">60</td><td class="n">$1,000</td><td class="n">60</td><td class="n">50%</td></tr><tr><td>Phase 1</td><td class="n">$90,700</td><td class="n">$700</td><td class="n">$19,300</td><td class="n">$600</td><td class="n">1.00</td><td class="n">60</td><td class="n">$600</td><td class="n">60</td><td class="n">50%</td></tr><tr><td>Phase 1</td><td class="n">$90,180</td><td class="n">$180</td><td class="n">$19,820</td><td class="n">$80</td><td class="n">0.13</td><td class="n">60</td><td class="n">$80</td><td class="n">62</td><td class="n">49%</td></tr><tr><td>Phase 2</td><td class="n">$104,550</td><td class="n">$14,550</td><td class="n">$450</td><td class="n">$1,000</td><td class="n">1.66</td><td class="n">60</td><td class="n">$450</td><td class="n">27</td><td class="n">69%</td></tr><tr><td>Funded, first payout</td><td class="n">$100,000</td><td class="n">$10,000</td><td class="n">$500</td><td class="n">$1,000</td><td class="n">1.66</td><td class="n">60</td><td class="n">$500</td><td class="n">30</td><td class="n">67%</td></tr></tbody></table>
+  <h2>17.3 Why near-target trades have a smaller target</h2>
+  <p>If you are $400 from the target, a $1,000 target would overshoot by $600. Section 3.5 showed overshoot lowers the pass probability. Setting the target to exactly $400, with the normal $1,000 stop, gives a 71% chance of finishing on that trade (1,000 &divide; 1,400). That is the fair price of a small target.</p>
+  <h2>17.4 Why near-floor trades are smaller</h2>
+  <p>FTMO closes the account the instant equity touches $90,000, including spread and slippage. The $100 buffer keeps a stop-out from breaching the floor by a few dollars. Near the floor the trades become small. That is correct: the pass probability from x is (x + B) &divide; (A + B) whatever you do, so there is nothing to gain by risking more than the room left.</p>
+</section>
+
+<!-- 18 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 18</span>
+  <h1>Stop, target and direction</h1>
+  <h2>18.1 The stop: about one day's range</h2>
+  <p>The stop sets the cost ratio &kappa; (Chapter 7). Wider is cheaper, but slower. One average daily range is a good balance: EURUSD's high-to-low range averaged 59 pips in 2024, 79 in 2025 and 61 in 2026 so far (median 58 over the whole period). Recalculate it every Monday from the last 20 trading days, and round to the nearest 5 pips.</p>
+  <h2>18.2 The target: 1 : 1</h2>
+  <p>At zero cost, every reward-to-risk ratio gives the same pass probability. With costs, larger targets mean fewer trades and therefore less cost. On real 2023&ndash;26 data, however, far targets hit slightly less often than fair (Section 2.4), and 1 : 2 ended up with a lower EV than 1 : 1 (Chapter 11). Use 1 : 1. It is also the easiest to follow without mistakes.</p>
+  <h2>18.3 Direction</h2>
+  <p>The mathematics assumes no edge, so <em>any</em> direction rule works equally well in expectation, as long as it is not systematically wrong. Two honest options:</p>
+  <ul>
+    <li><strong>Your own analysis.</strong> If you have a method you believe in, use it. The plan's EV does not depend on it being right, only on it not being worse than random after costs.</li>
+    <li><strong>A coin flip.</strong> This is the zero-skill baseline tested in Chapter 11. Record it as such in your journal.</li>
+  </ul>
+  <p>Do not pick direction from the previous trade's result ("it went up, so now short"). That is still random, but it encourages the emotional trading that breaks the plan.</p>
+  <h2>18.4 When to trade</h2>
+  <p>Open trades during the London or New York session, when spreads are tightest (roughly 07:00&ndash;16:00 UTC). Check the economic calendar first, and skip the day if a high-impact release is due while you would be entering.</p>
+</section>
+
+<!-- 19 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 19</span>
+  <h1>The daily routine</h1>
+  <table>
+    <thead><tr><th style="width:8%">Step</th><th>What to do</th></tr></thead>
+    <tbody>
+      <tr><td class="n">1</td><td>Is a trade already open? If yes, do nothing today except check it has its stop and target.</td></tr>
+      <tr><td class="n">2</td><td>Check the economic calendar for the next two hours. If a high-impact release is due, wait or skip the day.</td></tr>
+      <tr><td class="n">3</td><td>Check the EURUSD spread on your platform. If it is wider than about 0.5 pip, wait.</td></tr>
+      <tr><td class="n">4</td><td>Write down balance, room above the floor, and distance to target.</td></tr>
+      <tr><td class="n">5</td><td>Compute risk, target and lots with Chapter 17.</td></tr>
+      <tr><td class="n">6</td><td>Choose direction (Chapter 18.3) and write down how you chose it.</td></tr>
+      <tr><td class="n">7</td><td>Open the trade with stop and target attached. Confirm both show on the platform.</td></tr>
+      <tr><td class="n">8</td><td>Close the platform. Do not watch the trade or move the orders.</td></tr>
+      <tr><td class="n">9</td><td>When the trade closes, record the result, the costs and the new balance.</td></tr>
+      <tr><td class="n">10</td><td>If a phase target is reached, stop trading that phase (Chapter 20).</td></tr>
+    </tbody>
+  </table>
+  <p>Expected time at the screen: 10&ndash;15 minutes per trade. Each trade lasts about one to two days on average, so you will typically open a new trade every two to three trading days.</p>
+</section>
+
+<!-- 20 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 20</span>
+  <h1>Phase 1 and Phase 2</h1>
+  <h2>20.1 What to expect in Phase 1</h2>
+  <p>You need +$10,000 with trades of about &plusmn;$1,000. That is a walk of about ten net steps, and walks like this take on average A &times; B &divide; L<sup>2</sup> = 100 trades. With one trade open at a time, the real-data test took about a year on average for attempts that passed Phase 1 (failed attempts ended sooner). Expect long flat stretches.</p>
+  <ul>
+    <li>Chance of passing: about 45% (50% minus costs).</li>
+    <li>Once the balance reaches $110,000 and you have at least 4 trading days, Phase 1 is complete. Stop trading. FTMO reviews the account and issues Phase 2.</li>
+    <li>If the balance hits $90,000, the attempt is over. Record it and follow Chapter 22 before buying another.</li>
+  </ul>
+  <h2>20.2 Never quit a live account</h2>
+  <p>At any balance x, the account is worth (x + B) &divide; (A + B) of the next stage's value. At $93,000 in Phase 1 (x = &minus;$7,000) that is 15% of the Phase 2 value, about $860. Quitting there throws $860 away to save nothing. The earlier documents' quit rule cost more value than any other single choice (Chapter 11).</p>
+  <h2>20.3 Phase 2</h2>
+  <p>Same rules, target +$5,000. The expected number of trades is about 5 &times; 10 = 50, and the chance of passing is about 60% after costs (66.7% before). When the balance reaches $105,000 with at least 4 trading days, stop.</p>
+</section>
+
+<!-- 21 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 21</span>
+  <h1>The funded account and payouts</h1>
+  <h2>21.1 The first payout</h2>
+  <p>Your fee is refunded with the first payout, so secure it early. Trade with the normal $1,000 risk, but set the target to exactly the distance to +$500. Once the balance is at $100,500 or more, stop trading and wait for the payout date. The chance of getting there before the floor is about 95%. Then request the payout: you receive 80% of the profit plus the &euro;540 refund.</p>
+  <h2>21.2 After the first payout</h2>
+  <ul>
+    <li>Continue with the Chapter 16 rules, 1 : 1, one trade at a time, with no phase target.</li>
+    <li>Every 14 days, if the balance is above $100,000, request a payout of the full profit. The balance returns to $100,000 and the floor stays at $90,000.</li>
+    <li>When the balance hits $90,000, the account ends. Under the identity of Chapter 5, the expected total you received is about 80% &times; ($10,000 &minus; costs), plus the refund.</li>
+  </ul>
+  <p>Real-data test of this plan: funded accounts paid on average $7,463 over about 3.4 payouts, and lasted about 77 weeks. 4.5% ended before any payout.</p>
+  <h2>21.3 Scaling plan</h2>
+  <p>FTMO's scaling plan raises the split to 90% and enlarges the account for traders who are consistently profitable over several months. A zero-skill trader rarely qualifies, and it is not part of this plan. If you qualify, accept: a larger allowance and a higher split both raise the funded value.</p>
+</section>
+
+<!-- 22 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 22</span>
+  <h1>Several accounts, bankroll and realistic income</h1>
+  <h2>22.1 Running accounts in parallel</h2>
+  <p>FTMO caps each trader's total allocation (currently $400,000). Within the cap you may run several accounts at once. Three rules keep this inside the terms:</p>
+  <ul>
+    <li><strong>Never hold opposite positions</strong> on the same or a closely related instrument across your accounts. The simplest way is to trade only EURUSD and, when two accounts have trades open at the same time, keep them in the same direction.</li>
+    <li><strong>Do not "roll" accounts.</strong> Buying a new challenge only because one just failed, again and again, is listed as forbidden. Buy on a schedule you decided in advance.</li>
+    <li><strong>One identity.</strong> Never use accounts in other people's names. Every firm treats this as fraud.</li>
+  </ul>
+  <p>Accounts that share a direction are correlated: they win and lose together, which raises the swings. Section 22.3 accounts for that.</p>
+  <h2>22.2 Realistic income</h2>
+  <table>
+    <thead><tr><th>Part 2 plan, FTMO 100K</th><th class="n">Value</th></tr></thead>
+    <tbody>
+      <tr><td>EV per attempt (real data)</td><td class="n">+$1,398</td></tr>
+      <tr><td>Average length of an attempt (median)</td><td class="n">86 weeks (64)</td></tr>
+      <tr><td>EV per month for one account slot</td><td class="n">&asymp; +$70</td></tr>
+      <tr><td>EV per month with four 100K slots</td><td class="n">&asymp; +$280</td></tr>
+      <tr><td>Chance a single attempt is profitable</td><td class="n">26%</td></tr>
+    </tbody>
+  </table>
+  <p>This is the honest result of trading inside the rules. The EV per attempt is real, but attempts are slow, so income per month is modest and arrives in irregular lumps. Opening the next trade as soon as the previous one closes, instead of waiting for the next day, would shorten attempts by roughly a third.</p>
+  <h2>22.3 Bankroll rules</h2>
+  <ul>
+    <li>Start with at least 10 fees per account slot you intend to run, ideally 20 (Chapter 9).</li>
+    <li>Decide in advance how many attempts you will buy in total, and stop when you reach that number.</li>
+    <li>Withdraw payouts to a separate account. Only the planned budget pays for new attempts.</li>
+    <li>If the bankroll falls to 3 fees, stop and review. That is a 1-in-10 outcome under the plan, not a sign to speed up.</li>
+  </ul>
+</section>
+
+<!-- 23 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 23</span>
+  <h1>Records, tax, and checking that the maths holds</h1>
+  <h2>23.1 The journal</h2>
+  <p>For every trade, record: date and time, account, phase, balance before, room above floor, distance to target, risk, stop pips, target pips, lots, direction and how it was chosen, result, total cost, balance after. Keep screenshots of each payout request and confirmation.</p>
+  <h2>23.2 Check the assumptions as you go</h2>
+  <table>
+    <thead><tr><th>What to check</th><th>Expected</th><th>Stop and review if</th></tr></thead>
+    <tbody>
+      <tr><td>Win rate of 1 : 1 trades (after 200 trades)</td><td class="n">&asymp; 50% before costs</td><td>Below 45%</td></tr>
+      <tr><td>Average cost per trade</td><td class="n">&le; 1.5% of risk</td><td>Above 2.5%</td></tr>
+      <tr><td>Phase 1 pass rate (after 10 attempts)</td><td class="n">&asymp; 45%</td><td>0 or 1 pass out of 10 (about a 2% chance if the plan is right)</td></tr>
+      <tr><td>Payout requests honoured</td><td class="n">All</td><td>Any refusal: stop all accounts at that firm and read the stated reason</td></tr>
+    </tbody>
+  </table>
+  <h2>23.3 Tax</h2>
+  <p>Prop-firm payouts are taxable income in most countries, usually as self-employment or other income rather than capital gains. Keep every payout record and every fee receipt, since fees are often deductible. Rules differ by country; check with a local tax adviser.</p>
+</section>
+
+<!-- 24 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 24</span>
+  <h1>Final checklist</h1>
+  <ul class="check">
+    <li>I am 18 or older and my bankroll is money I can lose entirely, without borrowing.</li>
+    <li>I have read the firm's current trading objectives, forbidden practices and payout terms.</li>
+    <li>I understand that about three attempts in four lose the whole fee, and that the average shows only after many attempts and a long time.</li>
+    <li>I have measured my platform's real cost per trade, and it is at or below 1 pip on EURUSD.</li>
+    <li>I can compute risk, lots and target from Chapter 17 without help.</li>
+    <li>I will risk at most $1,000 per trade, hold one trade at a time, and attach stop and target on entry.</li>
+    <li>I will never abandon a live account, never hedge, never hold opposite positions across accounts, and never buy accounts in other people's names.</li>
+    <li>I will keep a journal and run the checks in Chapter 23.</li>
+    <li>I accept that the firm may refuse a payout, change its rules, or close, and that no plan can prevent that.</li>
+  </ul>
+  <div class="box key"><h4>The whole document in four lines</h4>
+  <p style="margin:0">A zero-skill trade is a fair bet, so a challenge phase passes with probability B &divide; (A + B) however you size it. A funded account pays out, on average, the split times the loss allowance. For FTMO 100K that makes one attempt worth about +$2,200 in theory and +$1,400 on real data inside the rules. Costs, quitting and the firm's discretion are what stand between the expected value and the cash.</p></div>
+</section>
+
+<!-- ================================================================ APPENDICES -->
+<section class="chapter">
+  <span class="eyebrow">Appendix A</span>
+  <h1>Formula sheet and glossary</h1>
+  <table>
+    <thead><tr><th>Quantity</th><th>Formula</th><th>FTMO 100K example</th></tr></thead>
+    <tbody>
+      <tr><td>Zero-skill win probability</td><td>p = S &divide; (S + T)</td><td>1 : 2 &rarr; 33.3%</td></tr>
+      <tr><td>Pass probability, static floor</td><td>P = B &divide; (A + B)</td><td>Phase 1: 50%; Phase 2: 66.7%</td></tr>
+      <tr><td>Pass probability from balance x</td><td>P(x) = (x + B) &divide; (A + B)</td><td>x = &minus;$5,000: 25%</td></tr>
+      <tr><td>With overshoot</td><td>P = (B + O<sub>floor</sub>) &divide; (A + O<sub>target</sub> + B)</td><td>&plusmn;$4,800 fixed: 41%</td></tr>
+      <tr><td>Intraday trailing, continuous prices</td><td>P = e<sup>&minus;A/D</sup></td><td>A = 1.5D &rarr; 22.3%</td></tr>
+      <tr><td>Funded identity</td><td>Withdrawn = trading P&amp;L + (start &minus; final balance)</td><td>E[withdrawn] = $10,000</td></tr>
+      <tr><td>Funded value</td><td>&asymp; split &times; B &times; (1 &minus; cost share) + refund &times; q</td><td>&asymp; $8,600</td></tr>
+      <tr><td>First-payout probability</td><td>q = B &divide; (B + h)</td><td>h = $500 &rarr; 95.2%</td></tr>
+      <tr><td>EV per attempt</td><td>&minus;Fee + &Pi; P<sub>i</sub> &times; (funded value &minus; activation)</td><td>+$2,235 (no costs)</td></tr>
+      <tr><td>Cost ratio</td><td>&kappa; = cost pips &divide; stop pips</td><td>0.75 &divide; 55 = 1.4%</td></tr>
+      <tr><td>Expected trades per phase</td><td>A &times; B &divide; L<sup>2</sup></td><td>L = $1,000: 100</td></tr>
+      <tr><td>Expected cost per phase</td><td>&kappa; &times; A &times; B &divide; L</td><td>L = $1,000: &asymp; $1,400</td></tr>
+      <tr><td>Kelly bankroll for one attempt</td><td>W &asymp; &sigma;<sup>2</sup> &divide; &mu;</td><td>&asymp; $4,100&ndash;6,000</td></tr>
+      <tr><td>Lots (EURUSD)</td><td>risk &divide; (stop pips &times; $10)</td><td>$1,000, 60 pips &rarr; 1.66</td></tr>
+    </tbody>
+  </table>
+  <h2>Glossary</h2>
+  <table class="small">
+    <tbody>
+      <tr><td style="width:24%"><strong>Bold play</strong></td><td>Sizing each bet so a win lands exactly on the target, using as few bets as possible.</td></tr>
+      <tr><td><strong>Bracket</strong></td><td>A trade with stop-loss and take-profit attached on entry.</td></tr>
+      <tr><td><strong>Consistency rule</strong></td><td>A limit on how much of total profit one day may contribute.</td></tr>
+      <tr><td><strong>EOD trailing drawdown</strong></td><td>A floor that rises with the highest end-of-day balance.</td></tr>
+      <tr><td><strong>Expected value (EV)</strong></td><td>The average result per repetition over many repetitions.</td></tr>
+      <tr><td><strong>Fair bet / martingale</strong></td><td>A bet with zero expected value; a sequence of such bets.</td></tr>
+      <tr><td><strong>Floor</strong></td><td>The balance at which the account is closed ($90,000 for FTMO 100K).</td></tr>
+      <tr><td><strong>Gambler's ruin</strong></td><td>The problem of reaching one level before another; answer B &divide; (A + B).</td></tr>
+      <tr><td><strong>Intraday trailing drawdown</strong></td><td>A floor that follows the highest live equity, including open profit.</td></tr>
+      <tr><td><strong>Kelly criterion</strong></td><td>The stake that maximises long-run growth of wealth.</td></tr>
+      <tr><td><strong>Lot</strong></td><td>Position unit; 1 standard EURUSD lot = 100,000 EUR, $10 per pip.</td></tr>
+      <tr><td><strong>Optional stopping theorem</strong></td><td>A fair game stopped by a reasonable rule is still fair on average.</td></tr>
+      <tr><td><strong>Overshoot</strong></td><td>Ending beyond a barrier instead of exactly on it.</td></tr>
+      <tr><td><strong>Pip</strong></td><td>0.0001 in EURUSD.</td></tr>
+      <tr><td><strong>Profit split</strong></td><td>Your share of withdrawn profit (80% at FTMO).</td></tr>
+      <tr><td><strong>Slippage</strong></td><td>Being filled at a worse price than your order.</td></tr>
+      <tr><td><strong>Spread</strong></td><td>The gap between the buy and sell price.</td></tr>
+      <tr><td><strong>Static drawdown</strong></td><td>A floor fixed relative to the starting balance.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="chapter">
+  <span class="eyebrow">Appendix B</span>
+  <h1>Every account type modelled</h1>
+  <p>Zero skill, best sizing for each rule set, payouts honoured. "EV" uses 1% trading costs; "1%-risk EV" restricts every trade to 1% of the account (25% of the drawdown for futures). CFD accounts are 100K, futures 50K, prices in USD (EUR at 1.17). Rules as published September&ndash;October 2026. &dagger; marks rule sets partly inferred; instant-account values ignore payout caps.</p>
+  <table class="small" style="table-layout:fixed"><colgroup><col style="width:15%"><col style="width:15%"><col style="width:10%"><col style="width:21%"><col style="width:10%"><col style="width:7%"><col style="width:8%"><col style="width:7%"><col style="width:7%"></colgroup><thead><tr><th>Firm</th><th>Account</th><th class="n">Price</th><th>Target / max loss</th><th class="n">Funded</th><th class="n">P(fund.)</th><th class="n">Value</th><th class="n">EV</th><th class="n">1% risk</th></tr></thead><tbody><tr><td>FTMO</td><td>1-Step</td><td class="n">$584</td><td>10/10% EOD trail +cons.</td><td class="n">90% × $10k</td><td class="n">43%</td><td class="n">$9,376</td><td class="n">+$3,465</td><td class="n">+$2,640</td></tr><tr><td>Blue Guardian</td><td>Instant</td><td class="n">$779</td><td>instant</td><td class="n">80% × $6k</td><td class="n">100%</td><td class="n">$3,920</td><td class="n">+$3,141</td><td class="n">+$3,061</td></tr><tr><td>Goat Funded</td><td>Instant GOAT</td><td class="n">$838</td><td>instant</td><td class="n">80% × $6k</td><td class="n">100%</td><td class="n">$3,920</td><td class="n">+$3,082</td><td class="n">+$3,002</td></tr><tr><td>The5ers</td><td>High Stakes 2-Step</td><td class="n">$545</td><td>8/10% static → 5/10% static</td><td class="n">80% × $10k</td><td class="n">36%</td><td class="n">$8,359</td><td class="n">+$2,490</td><td class="n">+$2,054</td></tr><tr><td>FundedNext</td><td>Stellar 2-Step</td><td class="n">$550</td><td>8/10% static → 5/10% static</td><td class="n">80% × $10k</td><td class="n">36%</td><td class="n">$8,364</td><td class="n">+$2,486</td><td class="n">+$2,050</td></tr><tr><td>FundingPips</td><td>2-Step</td><td class="n">$529</td><td>8/10% static → 5/10% static</td><td class="n">80% × $10k</td><td class="n">36%</td><td class="n">$8,281</td><td class="n">+$2,477</td><td class="n">+$2,043</td></tr><tr><td>Alpha Capital †</td><td>Alpha Pro 10%</td><td class="n">$497</td><td>10/10% static → 5/10% static</td><td class="n">80% × $10k</td><td class="n">33%</td><td class="n">$8,313</td><td class="n">+$2,215</td><td class="n">+$1,794</td></tr><tr><td>FTMO</td><td>2-Step</td><td class="n">$632</td><td>10/10% static → 5/10% static</td><td class="n">80% × $10k</td><td class="n">33%</td><td class="n">$8,442</td><td class="n">+$2,122</td><td class="n">+$1,697</td></tr><tr><td>Goat Funded †</td><td>2-Step Standard</td><td class="n">$594</td><td>10/10% static → 5/10% static</td><td class="n">80% × $10k</td><td class="n">33%</td><td class="n">$7,840</td><td class="n">+$1,964</td><td class="n">+$1,556</td></tr><tr><td>FundedNext</td><td>Stellar Lite</td><td class="n">$400</td><td>8/8% static → 4/8% static</td><td class="n">80% × $8k</td><td class="n">33%</td><td class="n">$6,272</td><td class="n">+$1,646</td><td class="n">+$1,398</td></tr><tr><td>Blue Guardian †</td><td>2-Step Pro</td><td class="n">$464</td><td>10/10% EOD trail → 10/10% EOD trail</td><td class="n">85% × $10k</td><td class="n">24%</td><td class="n">$8,330</td><td class="n">+$1,556</td><td class="n">+$597</td></tr><tr><td>Maven †</td><td>2-Step</td><td class="n">$396</td><td>8/8% static → 5/8% static</td><td class="n">80% × $8k</td><td class="n">30%</td><td class="n">$6,272</td><td class="n">+$1,490</td><td class="n">+$1,251</td></tr><tr><td>Alpha Capital †</td><td>Alpha Pro 8%</td><td class="n">$577</td><td>8/8% static → 5/8% static</td><td class="n">80% × $8k</td><td class="n">30%</td><td class="n">$6,815</td><td class="n">+$1,473</td><td class="n">+$1,222</td></tr><tr><td>FundedNext</td><td>Stellar 1-Step</td><td class="n">$570</td><td>10/6% static</td><td class="n">90% × $6k</td><td class="n">37%</td><td class="n">$5,292</td><td class="n">+$1,374</td><td class="n">+$1,194</td></tr><tr><td>FundingPips</td><td>1-Step</td><td class="n">$555</td><td>10/6% static</td><td class="n">80% × $6k</td><td class="n">37%</td><td class="n">$5,120</td><td class="n">+$1,326</td><td class="n">+$1,158</td></tr><tr><td>FundingPips</td><td>Zero (instant)</td><td class="n">$499</td><td>instant</td><td class="n">95% × $5k</td><td class="n">100%</td><td class="n">$1,679</td><td class="n">+$1,180</td><td class="n">+$1,113</td></tr><tr><td>E8 Markets †</td><td>E8 One (6% DD)</td><td class="n">$464</td><td>9/6% EOD trail</td><td class="n">80% × $6k</td><td class="n">39%</td><td class="n">$3,920</td><td class="n">+$1,079</td><td class="n">+$514</td></tr><tr><td>Goat Funded †</td><td>3-Step GOAT</td><td class="n">$365</td><td>6/8% static → 6/8% static → 6/8% static</td><td class="n">80% × $8k</td><td class="n">18%</td><td class="n">$6,272</td><td class="n">+$767</td><td class="n">+$598</td></tr><tr><td>FundingPips</td><td>2-Step Pro</td><td class="n">$399</td><td>6/6% static +cons. → 6/6% static +cons.</td><td class="n">80% × $6k</td><td class="n">24%</td><td class="n">$4,704</td><td class="n">+$726</td><td class="n">+$635</td></tr><tr><td>Maven †</td><td>3-Step</td><td class="n">$269</td><td>3/3% static → 3/3% static → 3/3% static</td><td class="n">80% × $3k</td><td class="n">12%</td><td class="n">$2,352</td><td class="n">+$14</td><td class="n">+$3</td></tr><tr><td>Alpha Capital †</td><td>Alpha Three</td><td class="n">$397</td><td>8/6% static → 8/6% static → 8/6% static</td><td class="n">80% × $6k</td><td class="n">8%</td><td class="n">$4,704</td><td class="n">&minus;$39</td><td class="n">&minus;$95</td></tr><tr><td>Lucid</td><td>Direct 50K (instant)</td><td class="n">$520</td><td>instant</td><td class="n">90% × $2k</td><td class="n">100%</td><td class="n">$1,458</td><td class="n">+$938</td><td class="n">+$908</td></tr><tr><td>Apex</td><td>50K EOD</td><td class="n">$58 +$139</td><td>$3k/$2k EOD trail</td><td class="n">100% × $2k</td><td class="n">39%</td><td class="n">$1,620</td><td class="n">+$525</td><td class="n">+$352</td></tr><tr><td>Bulenox</td><td>50K Opt.2 (EOD)</td><td class="n">$175/mo +$148</td><td>$3k/$2.5k EOD trail +cons.</td><td class="n">100% × $2.5k</td><td class="n">36%</td><td class="n">$2,028</td><td class="n">+$502</td><td class="n">+$482</td></tr><tr><td>Lucid</td><td>Flex 50K</td><td class="n">$130</td><td>$3k/$2k EOD trail</td><td class="n">90% × $2k</td><td class="n">40%</td><td class="n">$1,458</td><td class="n">+$446</td><td class="n">+$274</td></tr><tr><td>Tradeify</td><td>Growth 50K</td><td class="n">$139</td><td>$3k/$2k EOD trail</td><td class="n">90% × $2k</td><td class="n">39%</td><td class="n">$1,458</td><td class="n">+$435</td><td class="n">+$265</td></tr><tr><td>Tradeify</td><td>Lightning 25K (instant)</td><td class="n">$329</td><td>instant</td><td class="n">90% × $1k</td><td class="n">100%</td><td class="n">$723</td><td class="n">+$394</td><td class="n">+$379</td></tr><tr><td>Lucid</td><td>Pro 50K</td><td class="n">$185</td><td>$3k/$2k EOD trail</td><td class="n">90% × $2k</td><td class="n">39%</td><td class="n">$1,458</td><td class="n">+$389</td><td class="n">+$219</td></tr><tr><td>Topstep</td><td>Combine 50K (Standard)</td><td class="n">$49/mo +$149</td><td>$3k/$2k EOD trail +cons.</td><td class="n">90% × $2k</td><td class="n">32%</td><td class="n">$1,470</td><td class="n">+$375</td><td class="n">+$316</td></tr><tr><td>Topstep</td><td>Combine 50K (No-Activation)</td><td class="n">$109/mo</td><td>$3k/$2k EOD trail +cons.</td><td class="n">90% × $2k</td><td class="n">32%</td><td class="n">$1,470</td><td class="n">+$363</td><td class="n">+$298</td></tr><tr><td>My Funded Futures</td><td>Flex 50K</td><td class="n">$107/mo</td><td>$3k/$2k EOD trail +cons.</td><td class="n">80% × $2k</td><td class="n">32%</td><td class="n">$1,296</td><td class="n">+$309</td><td class="n">+$252</td></tr><tr><td>Tradeify</td><td>Select 50K</td><td class="n">$159</td><td>$3k/$2k EOD trail +cons.</td><td class="n">90% × $2k</td><td class="n">29%</td><td class="n">$1,458</td><td class="n">+$270</td><td class="n">+$245</td></tr><tr><td>The5ers †</td><td>Futures Basecamp 50K</td><td class="n">$100</td><td>$3k/$1.5k static</td><td class="n">80% × $1.5k</td><td class="n">33%</td><td class="n">$980</td><td class="n">+$222</td><td class="n">+$202</td></tr><tr><td>Apex</td><td>50K Intraday</td><td class="n">$32 +$99</td><td>$3k/$2k intraday</td><td class="n">100% × $2k</td><td class="n">22%</td><td class="n">$672</td><td class="n">+$92</td><td class="n">+$86</td></tr><tr><td>Bulenox</td><td>50K Opt.1 (intraday)</td><td class="n">$175/mo +$148</td><td>$3k/$2.5k intraday</td><td class="n">100% × $2.5k</td><td class="n">29%</td><td class="n">$848</td><td class="n">+$31</td><td class="n">+$21</td></tr><tr><td>Take Profit Trader</td><td>PRO 50K</td><td class="n">$170 +$130</td><td>$3k/$2k EOD trail</td><td class="n">80% × $2k</td><td class="n">40%</td><td class="n">$565</td><td class="n">+$2</td><td class="n">&minus;$53</td></tr><tr><td>My Funded Futures</td><td>Rapid 50K</td><td class="n">$157/mo</td><td>$3k/$2k intraday</td><td class="n">90% × $2k</td><td class="n">22%</td><td class="n">$604</td><td class="n">&minus;$26</td><td class="n">&minus;$31</td></tr></tbody></table>
+</section>
+
+<section class="chapter">
+  <span class="eyebrow">Appendix C</span>
+  <h1>Method and sources</h1>
+  <h2>How the numbers were produced</h2>
+  <ul>
+    <li><strong>Exact results</strong> (Chapters 3&ndash;6) follow from the formulas shown and were reproduced by a coin-flip simulation of 200,000 attempts (EV +$2,272 &plusmn; 31 against the exact +$2,235).</li>
+    <li><strong>Evaluation phases for other firms</strong> were solved by dynamic programming over balance and end-of-day high-water mark, with daily loss limits, best-day caps and a cost of &kappa;&radic;(wl) per bracket.</li>
+    <li><strong>Funded values</strong> use the identity of Chapter 5 with lock levels and payout caps.</li>
+    <li><strong>Real-data tests</strong> use hourly EURUSD (yfinance), 18 Dec 2023 &ndash; 2 Oct 2026, as described in Chapter 11.</li>
+  </ul>
+  <h2>Sources</h2>
+  <ul class="small" style="font-size:8.6pt">
+    <li>FTMO, Trading Objectives: ftmo.com/en/trading-objectives</li>
+    <li>FTMO, Forbidden Trading Practices: ftmo.com/en/forbidden-trading-practices</li>
+    <li>FTMO, 1-Step Challenge: ftmo.com/en/1-step-challenge</li>
+    <li>Topstep, Express Funded Account parameters: help.topstep.com</li>
+    <li>PropFirmsFinder program pages (FTMO, Topstep, Apex, The5ers, FundedNext, FundingPips, E8 Markets, Alpha Capital, Blue Guardian, Maven, Goat Funded Trader, Tradeify, Lucid, Take Profit Trader, My Funded Futures, Bulenox): propfirmsfinder.com</li>
+    <li>Apex Trader Funding payout caps: thepropjournalist.com/reviews/apex-trader-funding; PA rules: traderssecondbrain.com</li>
+    <li>Tradeify, Lucid, Take Profit Trader, FundedNext rule guides: tradetanto.com, proptradingvibes.com</li>
+    <li>Pass-rate estimates: traderssecondbrain.com/guides/prop-firm-pass-rate</li>
+    <li>Prop firm closures: tradernotion.com; fxnewsgroup.com (True Forex Funds)</li>
+  </ul>
+  <p class="cap" style="margin-top:6mm">Rules and prices change frequently. Every figure is a snapshot from October 2026 and should be re-checked against the firm's current terms.</p>
+</section>
+
+</body></html>

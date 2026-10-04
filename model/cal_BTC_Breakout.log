@@ -1,0 +1,14 @@
+BTC_Breakout  m=1    k=1 p=0.5078 (fair 0.5000) hrs=   4.1 kappa=2091.02% fin=86.86% edge/trade=-2176.33%
+BTC_Breakout  m=1    k=2 p=0.3392 (fair 0.3333) hrs=   6.3 kappa=2091.02% fin=146.29% edge/trade=-2235.53%
+BTC_Breakout  m=1.5  k=1 p=0.5094 (fair 0.5000) hrs=   6.8 kappa=1394.01% fin=110.52% edge/trade=-1502.66%
+BTC_Breakout  m=1.5  k=2 p=0.3508 (fair 0.3333) hrs=  11.2 kappa=1394.01% fin=190.56% edge/trade=-1579.35%
+BTC_Breakout  m=2    k=1 p=0.5032 (fair 0.5000) hrs=  10.5 kappa=1045.51% fin=129.17% edge/trade=-1174.02%
+BTC_Breakout  m=2    k=2 p=0.3384 (fair 0.3333) hrs=  16.2 kappa=1045.51% fin=214.39% edge/trade=-1258.38%
+BTC_Breakout  m=3    k=1 p=0.5031 (fair 0.5000) hrs=  18.9 kappa=697.01% fin=165.12% edge/trade=-861.50%
+BTC_Breakout  m=3    k=2 p=0.3528 (fair 0.3333) hrs=  31.0 kappa=697.01% fin=279.15% edge/trade=-970.33%
+BTC_Breakout  m=4    k=1 p=0.5039 (fair 0.5000) hrs=  28.6 kappa=522.75% fin=191.05% edge/trade=-713.03%
+BTC_Breakout  m=4    k=2 p=0.3458 (fair 0.3333) hrs=  52.2 kappa=522.75% fin=358.39% edge/trade=-877.42%
+BTC_Breakout  m=6    k=1 p=0.4995 (fair 0.5000) hrs=  57.2 kappa=348.50% fin=262.70% edge/trade=-611.31%
+BTC_Breakout  m=6    k=2 p=0.3458 (fair 0.3333) hrs= 106.6 kappa=348.50% fin=500.69% edge/trade=-845.47%
+BTC_Breakout  m=9    k=1 p=0.4968 (fair 0.5000) hrs= 121.3 kappa=232.34% fin=380.09% edge/trade=-613.07%
+BTC_Breakout  m=9    k=2 p=0.3221 (fair 0.3333) hrs= 221.6 kappa=232.34% fin=699.14% edge/trade=-934.86%

@@ -1,0 +1,122 @@
+[
+{
+"firm": "FundedNext Stellar 2-Step",
+"instr": "EURUSD",
+"m": 0.75,
+"EV": 1316.3730787114446,
+"days": 12.161105521204648,
+"EV_month": 3294.9633111979692
+},
+{
+"firm": "FundedNext Stellar 2-Step",
+"instr": "EURUSD",
+"m": 1.0,
+"EV": 1624.5438072290635,
+"days": 14.856892403942034,
+"EV_month": 3328.4964410815583
+},
+{
+"firm": "FundedNext Stellar 2-Step",
+"instr": "US100",
+"m": 0.75,
+"EV": 2154.6616051634173,
+"days": 14.010159589231288,
+"EV_month": 4681.452687490272
+},
+{
+"firm": "FundedNext Stellar 2-Step",
+"instr": "XAUUSD",
+"m": 0.75,
+"EV": 1875.43210109553,
+"days": 13.227748146191416,
+"EV_month": 4315.787730943832
+},
+{
+"firm": "FundedNext Stellar 2-Step",
+"instr": "XAUUSD",
+"m": 1.0,
+"EV": 2043.3561431080595,
+"days": 15.14955014773709,
+"EV_month": 4105.716697172042
+},
+{
+"firm": "FunderPro Classic",
+"instr": "EURUSD",
+"m": 0.75,
+"EV": 783.4095622883674,
+"days": 8.815850987454244,
+"EV_month": 2705.012495106182
+},
+{
+"firm": "FunderPro Classic",
+"instr": "EURUSD",
+"m": 1.0,
+"EV": 904.7526822857674,
+"days": 11.776349569229206,
+"EV_month": 2338.642504358112
+},
+{
+"firm": "FunderPro Classic",
+"instr": "US100",
+"m": 0.75,
+"EV": 1298.6313166666662,
+"days": 9.52018010665981,
+"EV_month": 4152.267797085058
+},
+{
+"firm": "FunderPro Classic",
+"instr": "XAUUSD",
+"m": 0.75,
+"EV": 1125.9937735736553,
+"days": 9.012227694398195,
+"EV_month": 3803.1940192641623
+},
+{
+"firm": "FunderPro Classic",
+"instr": "XAUUSD",
+"m": 1.0,
+"EV": 1289.3785703511858,
+"days": 11.376778582548425,
+"EV_month": 3449.8943085432097
+},
+{
+"firm": "GFT 2-Step Standard",
+"instr": "EURUSD",
+"m": 0.75,
+"EV": 702.8321012677699,
+"days": 10.71863309311632,
+"EV_month": 1995.9829743897683
+},
+{
+"firm": "GFT 2-Step Standard",
+"instr": "EURUSD",
+"m": 1.0,
+"EV": 981.2738892741559,
+"days": 13.809371567912551,
+"EV_month": 2163.022194211297
+},
+{
+"firm": "GFT 2-Step Standard",
+"instr": "US100",
+"m": 0.75,
+"EV": 1502.164665845372,
+"days": 12.752211949851404,
+"EV_month": 3585.72243059887
+},
+{
+"firm": "GFT 2-Step Standard",
+"instr": "XAUUSD",
+"m": 0.75,
+"EV": 1322.700515562528,
+"days": 12.199592040421454,
+"EV_month": 3300.3565660489417
+},
+{
+"firm": "GFT 2-Step Standard",
+"instr": "XAUUSD",
+"m": 1.0,
+"EV": 1469.3162735203173,
+"days": 14.3434212666988,
+"EV_month": 3118.223088782802
+}
+]

@@ -1,0 +1,13 @@
+FTMO 2-Step                        mean 12m    43669  P(ahead) 1m 0.19 3m 0.75 6m 0.88 12m 0.96 worst med   -3792 p05   -13488
+FTMO 1-Step                        mean 12m    41722  P(ahead) 1m 0.19 3m 0.71 6m 0.85 12m 0.95 worst med   -2920 p05   -11096
+FundingPips 2-Step (bi-weekly 80%) mean 12m    52850  P(ahead) 1m 0.24 3m 0.86 6m 0.94 12m 0.99 worst med   -2645 p05    -9522
+FundingPips 2-Step (monthly 100%)  mean 12m    46923  P(ahead) 1m 0.00 3m 0.77 6m 0.89 12m 0.99 worst med   -2645 p05    -9522
+FundedNext Stellar 2-Step          mean 12m    51230  P(ahead) 1m 0.00 3m 0.76 6m 0.91 12m 0.98 worst med   -2750 p05    -9900
+The5ers High Stakes                mean 12m    52503  P(ahead) 1m 0.21 3m 0.80 6m 0.90 12m 0.99 worst med   -2802 p05    -9820
+Alpha Capital Pro 10%              mean 12m    48529  P(ahead) 1m 0.22 3m 0.80 6m 0.89 12m 0.98 worst med   -2685 p05   -10437
+FXIFY Two-Phase                    mean 12m    57079  P(ahead) 1m 0.28 3m 0.86 6m 0.93 12m 0.99 worst med   -2400 p05    -9600
+GFT 2-Step Standard                mean 12m    39489  P(ahead) 1m 0.32 3m 0.73 6m 0.90 12m 0.97 worst med   -2620 p05    -9268
+Topstep 50K                        mean 12m    11424  P(ahead) 1m 0.29 3m 0.47 6m 0.58 12m 0.71 worst med   -3752 p05   -11151
+Lucid Flex 50K                     mean 12m     4070  P(ahead) 1m 0.22 3m 0.33 6m 0.42 12m 0.52 worst med   -8128 p05   -21253
+Tradeify Select 50K                mean 12m     1561  P(ahead) 1m 0.18 3m 0.29 6m 0.36 12m 0.42 worst med  -11475 p05   -25580
+Apex 50K EOD                       mean 12m   -15052  P(ahead) 1m 0.12 3m 0.13 6m 0.14 12m 0.10 worst med  -17540 p05   -33260

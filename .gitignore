@@ -1,0 +1,5 @@
+# Yahoo Finance price history: download with model/fetch_data.py (not redistributable)
+model/*.csv
+__pycache__/
+*.pyc
+*.png

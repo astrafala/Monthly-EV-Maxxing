@@ -1,0 +1,473 @@
+{
+"rows": [
+{
+"week": 1,
+"buys": 4,
+"fees": 2528,
+"p1_pass": 4,
+"p1_fail": 0,
+"funded": 0,
+"p2_fail": 0,
+"funded_lost": 0,
+"payouts": 0,
+"cash_in": 0,
+"cum": -2528,
+"firms": [
+"FTMO"
+],
+"paid_by": []
+},
+{
+"week": 2,
+"buys": 0,
+"fees": 0,
+"p1_pass": 0,
+"p1_fail": 0,
+"funded": 4,
+"p2_fail": 0,
+"funded_lost": 0,
+"payouts": 0,
+"cash_in": 0,
+"cum": -2528,
+"firms": [],
+"paid_by": []
+},
+{
+"week": 3,
+"buys": 4,
+"fees": 2528,
+"p1_pass": 0,
+"p1_fail": 0,
+"funded": 0,
+"p2_fail": 0,
+"funded_lost": 4,
+"payouts": 0,
+"cash_in": 0,
+"cum": -5056,
+"firms": [
+"FTMO"
+],
+"paid_by": []
+},
+{
+"week": 4,
+"buys": 4,
+"fees": 2528,
+"p1_pass": 4,
+"p1_fail": 0,
+"funded": 0,
+"p2_fail": 4,
+"funded_lost": 0,
+"payouts": 0,
+"cash_in": 0,
+"cum": -7584,
+"firms": [
+"FTMO"
+],
+"paid_by": []
+},
+{
+"week": 5,
+"buys": 10,
+"fees": 4974,
+"p1_pass": 4,
+"p1_fail": 5,
+"funded": 0,
+"p2_fail": 0,
+"funded_lost": 0,
+"payouts": 0,
+"cash_in": 0,
+"cum": -12558,
+"firms": [
+"FundingPips",
+"The5ers"
+],
+"paid_by": []
+},
+{
+"week": 6,
+"buys": 13,
+"fees": 7543,
+"p1_pass": 0,
+"p1_fail": 9,
+"funded": 0,
+"p2_fail": 4,
+"funded_lost": 0,
+"payouts": 0,
+"cash_in": 0,
+"cum": -20101,
+"firms": [
+"FTMO",
+"FundingPips",
+"The5ers"
+],
+"paid_by": []
+},
+{
+"week": 7,
+"buys": 12,
+"fees": 7052,
+"p1_pass": 5,
+"p1_fail": 12,
+"funded": 0,
+"p2_fail": 0,
+"funded_lost": 0,
+"payouts": 0,
+"cash_in": 0,
+"cum": -27153,
+"firms": [
+"FTMO",
+"FundingPips"
+],
+"paid_by": []
+},
+{
+"week": 8,
+"buys": 0,
+"fees": 0,
+"p1_pass": 4,
+"p1_fail": 0,
+"funded": 5,
+"p2_fail": 0,
+"funded_lost": 0,
+"payouts": 0,
+"cash_in": 0,
+"cum": -27153,
+"firms": [],
+"paid_by": []
+},
+{
+"week": 9,
+"buys": 10,
+"fees": 5078,
+"p1_pass": 0,
+"p1_fail": 1,
+"funded": 4,
+"p2_fail": 0,
+"funded_lost": 5,
+"payouts": 0,
+"cash_in": 0,
+"cum": -32231,
+"firms": [
+"Alpha",
+"FundedNext",
+"FundingPips",
+"The5ers"
+],
+"paid_by": []
+},
+{
+"week": 10,
+"buys": 0,
+"fees": 0,
+"p1_pass": 2,
+"p1_fail": 0,
+"funded": 0,
+"p2_fail": 0,
+"funded_lost": 0,
+"payouts": 0,
+"cash_in": 0,
+"cum": -32231,
+"firms": [],
+"paid_by": []
+},
+{
+"week": 11,
+"buys": 7,
+"fees": 3487,
+"p1_pass": 7,
+"p1_fail": 0,
+"funded": 2,
+"p2_fail": 7,
+"funded_lost": 0,
+"payouts": 4,
+"cash_in": 34531,
+"cum": -1187,
+"firms": [
+"Alpha",
+"FundingPips"
+],
+"paid_by": [
+"FTMO"
+]
+},
+{
+"week": 12,
+"buys": 0,
+"fees": 0,
+"p1_pass": 7,
+"p1_fail": 0,
+"funded": 4,
+"p2_fail": 0,
+"funded_lost": 0,
+"payouts": 0,
+"cash_in": 0,
+"cum": -1187,
+"firms": [],
+"paid_by": []
+},
+{
+"week": 13,
+"buys": 13,
+"fees": 6721,
+"p1_pass": 3,
+"p1_fail": 0,
+"funded": 3,
+"p2_fail": 0,
+"funded_lost": 4,
+"payouts": 4,
+"cash_in": 32000,
+"cum": 24092,
+"firms": [
+"Alpha",
+"Blue",
+"BrightFunded",
+"FunderPro",
+"The5ers"
+],
+"paid_by": [
+"FTMO"
+]
+}
+],
+"monthly": [
+-10071.0,
+-19613.99,
+53777.20999999997,
+87749.43000000002,
+115133.62999999986,
+112638.45000000011,
+61680.19999999998,
+146498.00000000096,
+141970.66000000012,
+10109.610000000028,
+167361.76999999894,
+101104.41000000003
+],
+"tot12": 968338.3799999994,
+"low13w": -33721.98,
+"ledger_sample": [
+[
+0.0,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+0.0,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+0.0,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+0.0,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+6.42,
+"FTMO 2-Step",
+"phase1_pass",
+0
+],
+[
+6.42,
+"FTMO 2-Step",
+"phase1_pass",
+0
+],
+[
+6.42,
+"FTMO 2-Step",
+"phase1_pass",
+0
+],
+[
+6.42,
+"FTMO 2-Step",
+"phase1_pass",
+0
+],
+[
+12.58,
+"FTMO 2-Step",
+"phase2_pass",
+0
+],
+[
+12.58,
+"FTMO 2-Step",
+"phase2_pass",
+0
+],
+[
+12.58,
+"FTMO 2-Step",
+"phase2_pass",
+0
+],
+[
+12.58,
+"FTMO 2-Step",
+"phase2_pass",
+0
+],
+[
+14.79,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+14.79,
+"FTMO 2-Step",
+"funded_end",
+0
+],
+[
+14.79,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+14.79,
+"FTMO 2-Step",
+"funded_end",
+0
+],
+[
+14.79,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+14.79,
+"FTMO 2-Step",
+"funded_end",
+0
+],
+[
+14.79,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+14.79,
+"FTMO 2-Step",
+"funded_end",
+0
+],
+[
+22.46,
+"FTMO 2-Step",
+"phase1_pass",
+0
+],
+[
+22.46,
+"FTMO 2-Step",
+"phase1_pass",
+0
+],
+[
+22.46,
+"FTMO 2-Step",
+"phase1_pass",
+0
+],
+[
+22.46,
+"FTMO 2-Step",
+"phase1_pass",
+0
+],
+[
+27.33,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+27.33,
+"FTMO 2-Step",
+"phase2_fail",
+0
+],
+[
+27.33,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+27.33,
+"FTMO 2-Step",
+"phase2_fail",
+0
+],
+[
+27.33,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+27.33,
+"FTMO 2-Step",
+"phase2_fail",
+0
+],
+[
+27.33,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+27.33,
+"FTMO 2-Step",
+"phase2_fail",
+0
+],
+[
+30.0,
+"FundingPips 2-Step Flex (95%)",
+"buy",
+-499
+],
+[
+30.0,
+"FundingPips 2-Step Flex (95%)",
+"buy",
+-499
+],
+[
+30.0,
+"FundingPips 2-Step Flex (95%)",
+"buy",
+-499
+],
+[
+30.0,
+"FundingPips 2-Step Flex (95%)",
+"buy",
+-499
+],
+[
+30.0,
+"The5ers High Stakes",
+"buy",
+-491
+]
+]
+}

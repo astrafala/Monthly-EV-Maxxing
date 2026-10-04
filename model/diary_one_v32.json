@@ -1,0 +1,611 @@
+{
+"rows": [
+{
+"week": 1,
+"buys": 12,
+"fees": 6171,
+"p1_pass": 10,
+"p1_fail": 1,
+"funded": 0,
+"p2_fail": 0,
+"funded_lost": 0,
+"payouts": 0,
+"cash_in": 0,
+"cum": -6171,
+"firms": [
+"Alpha",
+"Blue",
+"BrightFunded",
+"FTMO",
+"FXIFY",
+"FundedNext",
+"FunderPro",
+"FundingPips",
+"GFT",
+"Maven",
+"The5ers"
+],
+"paid_by": []
+},
+{
+"week": 2,
+"buys": 0,
+"fees": 0,
+"p1_pass": 1,
+"p1_fail": 0,
+"funded": 8,
+"p2_fail": 0,
+"funded_lost": 0,
+"payouts": 0,
+"cash_in": 0,
+"cum": -6171,
+"firms": [],
+"paid_by": []
+},
+{
+"week": 3,
+"buys": 1,
+"fees": 550,
+"p1_pass": 0,
+"p1_fail": 0,
+"funded": 3,
+"p2_fail": 0,
+"funded_lost": 1,
+"payouts": 0,
+"cash_in": 0,
+"cum": -6721,
+"firms": [
+"FundedNext"
+],
+"paid_by": []
+},
+{
+"week": 4,
+"buys": 0,
+"fees": 0,
+"p1_pass": 1,
+"p1_fail": 0,
+"funded": 0,
+"p2_fail": 0,
+"funded_lost": 0,
+"payouts": 7,
+"cash_in": 58769,
+"cum": 52048,
+"firms": [],
+"paid_by": [
+"Alpha",
+"Blue",
+"FTMO",
+"FXIFY",
+"FunderPro",
+"FundingPips",
+"GFT"
+]
+},
+{
+"week": 5,
+"buys": 0,
+"fees": 0,
+"p1_pass": 0,
+"p1_fail": 0,
+"funded": 1,
+"p2_fail": 0,
+"funded_lost": 0,
+"payouts": 2,
+"cash_in": 14892,
+"cum": 66940,
+"firms": [],
+"paid_by": [
+"Maven",
+"The5ers"
+]
+},
+{
+"week": 6,
+"buys": 1,
+"fees": 497,
+"p1_pass": 0,
+"p1_fail": 0,
+"funded": 0,
+"p2_fail": 0,
+"funded_lost": 1,
+"payouts": 7,
+"cash_in": 56703,
+"cum": 123146,
+"firms": [
+"Blue"
+],
+"paid_by": [
+"Alpha",
+"Blue",
+"FTMO",
+"FXIFY",
+"FunderPro",
+"FundingPips",
+"GFT"
+]
+},
+{
+"week": 7,
+"buys": 7,
+"fees": 3542,
+"p1_pass": 2,
+"p1_fail": 0,
+"funded": 1,
+"p2_fail": 1,
+"funded_lost": 6,
+"payouts": 3,
+"cash_in": 22981,
+"cum": 142585,
+"firms": [
+"Alpha",
+"BrightFunded",
+"FTMO",
+"FXIFY",
+"FunderPro",
+"The5ers"
+],
+"paid_by": [
+"BrightFunded",
+"Maven",
+"The5ers"
+]
+},
+{
+"week": 8,
+"buys": 9,
+"fees": 4716,
+"p1_pass": 2,
+"p1_fail": 6,
+"funded": 0,
+"p2_fail": 0,
+"funded_lost": 3,
+"payouts": 2,
+"cash_in": 18501,
+"cum": 156369,
+"firms": [
+"Alpha",
+"Blue",
+"BrightFunded",
+"FTMO",
+"FXIFY",
+"FundedNext",
+"FunderPro",
+"FundingPips"
+],
+"paid_by": [
+"FundedNext",
+"GFT"
+]
+},
+{
+"week": 9,
+"buys": 7,
+"fees": 3669,
+"p1_pass": 4,
+"p1_fail": 5,
+"funded": 1,
+"p2_fail": 2,
+"funded_lost": 0,
+"payouts": 1,
+"cash_in": 6841,
+"cum": 159541,
+"firms": [
+"Alpha",
+"BrightFunded",
+"FTMO",
+"FXIFY",
+"FundedNext",
+"FunderPro",
+"FundingPips"
+],
+"paid_by": [
+"Maven"
+]
+},
+{
+"week": 10,
+"buys": 8,
+"fees": 4113,
+"p1_pass": 5,
+"p1_fail": 1,
+"funded": 1,
+"p2_fail": 6,
+"funded_lost": 1,
+"payouts": 1,
+"cash_in": 2567,
+"cum": 157995,
+"firms": [
+"Alpha",
+"Blue",
+"BrightFunded",
+"FTMO",
+"FXIFY",
+"FunderPro",
+"FundingPips"
+],
+"paid_by": [
+"GFT"
+]
+},
+{
+"week": 11,
+"buys": 8,
+"fees": 4166,
+"p1_pass": 6,
+"p1_fail": 7,
+"funded": 1,
+"p2_fail": 0,
+"funded_lost": 1,
+"payouts": 2,
+"cash_in": 14893,
+"cum": 168722,
+"firms": [
+"Alpha",
+"Blue",
+"BrightFunded",
+"FTMO",
+"FXIFY",
+"FundedNext",
+"FunderPro",
+"FundingPips"
+],
+"paid_by": [
+"Maven",
+"The5ers"
+]
+},
+{
+"week": 12,
+"buys": 17,
+"fees": 8789,
+"p1_pass": 1,
+"p1_fail": 8,
+"funded": 0,
+"p2_fail": 7,
+"funded_lost": 2,
+"payouts": 0,
+"cash_in": 0,
+"cum": 159933,
+"firms": [
+"Alpha",
+"Blue",
+"BrightFunded",
+"FTMO",
+"FXIFY",
+"FundedNext",
+"FunderPro",
+"FundingPips",
+"GFT",
+"The5ers"
+],
+"paid_by": []
+},
+{
+"week": 13,
+"buys": 2,
+"fees": 1071,
+"p1_pass": 10,
+"p1_fail": 0,
+"funded": 3,
+"p2_fail": 2,
+"funded_lost": 0,
+"payouts": 1,
+"cash_in": 6400,
+"cum": 165262,
+"firms": [
+"BrightFunded",
+"The5ers"
+],
+"paid_by": [
+"Maven"
+]
+}
+],
+"monthly": [
+66940.22999999994,
+93150.96000000002,
+5170.365574575389,
+-2055.654425424522,
+47918.79000000019,
+35112.43999999995,
+-553.1600000000528,
+-23129.98,
+80934.61000000002,
+8919.020000000128,
+23264.479999999865,
+162156.44000000035
+],
+"tot12": 497828.5411491515,
+"low13w": -6720.969999999999,
+"ledger_sample": [
+[
+0.0,
+"FTMO 2-Step",
+"buy",
+-632
+],
+[
+0.0,
+"FundingPips 2-Step Flex (95%)",
+"buy",
+-499
+],
+[
+0.0,
+"Alpha Capital Pro 10%",
+"buy",
+-497
+],
+[
+0.0,
+"BrightFunded 2-Step Classic",
+"buy",
+-580
+],
+[
+0.0,
+"Blue Guardian 2-Step",
+"buy",
+-497
+],
+[
+0.0,
+"The5ers High Stakes",
+"buy",
+-491
+],
+[
+0.0,
+"FXIFY Two-Phase",
+"buy",
+-480
+],
+[
+0.0,
+"GFT 2-Step Standard",
+"buy",
+-524
+],
+[
+0.0,
+"FunderPro Classic",
+"buy",
+-431
+],
+[
+0.0,
+"Maven 2-Step",
+"buy",
+-440
+],
+[
+0.0,
+"FundedNext Stellar 2-Step",
+"buy",
+-550
+],
+[
+3.67,
+"FundedNext Stellar 2-Step",
+"buy",
+-550
+],
+[
+3.67,
+"FundedNext Stellar 2-Step",
+"phase1_fail",
+0
+],
+[
+4.33,
+"Blue Guardian 2-Step",
+"phase1_pass",
+0
+],
+[
+4.38,
+"FundingPips 2-Step Flex (95%)",
+"phase1_pass",
+0
+],
+[
+4.83,
+"Alpha Capital Pro 10%",
+"phase1_pass",
+0
+],
+[
+4.83,
+"FXIFY Two-Phase",
+"phase1_pass",
+0
+],
+[
+4.83,
+"GFT 2-Step Standard",
+"phase1_pass",
+0
+],
+[
+4.83,
+"FunderPro Classic",
+"phase1_pass",
+0
+],
+[
+5.83,
+"FTMO 2-Step",
+"phase1_pass",
+0
+],
+[
+6.25,
+"Maven 2-Step",
+"phase1_pass",
+0
+],
+[
+6.29,
+"The5ers High Stakes",
+"phase1_pass",
+0
+],
+[
+6.83,
+"BrightFunded 2-Step Classic",
+"phase1_pass",
+0
+],
+[
+8.79,
+"FundedNext Stellar 2-Step",
+"phase1_pass",
+0
+],
+[
+9.42,
+"Blue Guardian 2-Step",
+"phase2_pass",
+0
+],
+[
+11.92,
+"FTMO 2-Step",
+"phase2_pass",
+0
+],
+[
+12.17,
+"FundingPips 2-Step Flex (95%)",
+"phase2_pass",
+0
+],
+[
+12.17,
+"Alpha Capital Pro 10%",
+"phase2_pass",
+0
+],
+[
+12.17,
+"FXIFY Two-Phase",
+"phase2_pass",
+0
+],
+[
+12.17,
+"GFT 2-Step Standard",
+"phase2_pass",
+0
+],
+[
+12.46,
+"FunderPro Classic",
+"phase2_pass",
+0
+],
+[
+13.25,
+"The5ers High Stakes",
+"phase2_pass",
+0
+],
+[
+14.17,
+"Maven 2-Step",
+"phase2_pass",
+0
+],
+[
+15.38,
+"FundedNext Stellar 2-Step",
+"phase2_pass",
+0
+],
+[
+16.17,
+"BrightFunded 2-Step Classic",
+"phase2_pass",
+0
+],
+[
+17.88,
+"FundedNext Stellar 2-Step",
+"buy",
+-550
+],
+[
+17.88,
+"FundedNext Stellar 2-Step",
+"funded_end",
+0
+],
+[
+22.33,
+"FundedNext Stellar 2-Step",
+"phase1_pass",
+0
+],
+[
+24.42,
+"Blue Guardian 2-Step",
+"payout",
+8500
+],
+[
+26.92,
+"FTMO 2-Step",
+"payout",
+8632
+],
+[
+27.17,
+"FundingPips 2-Step Flex (95%)",
+"payout",
+11400
+],
+[
+27.17,
+"Alpha Capital Pro 10%",
+"payout",
+8001
+],
+[
+27.17,
+"FXIFY Two-Phase",
+"payout",
+8481
+],
+[
+27.17,
+"GFT 2-Step Standard",
+"payout",
+5324
+],
+[
+27.46,
+"FunderPro Classic",
+"payout",
+8432
+],
+[
+28.25,
+"The5ers High Stakes",
+"payout",
+8492
+],
+[
+29.17,
+"Maven 2-Step",
+"payout",
+6400
+],
+[
+29.29,
+"FundedNext Stellar 2-Step",
+"phase2_pass",
+0
+]
+]
+}

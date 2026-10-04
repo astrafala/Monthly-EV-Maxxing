@@ -1,0 +1,15 @@
+EURUSD        m=0.5  k=1 p=0.5038 (fair 0.5000) hrs=   3.3 kappa=1454.57% fin= 9.50% edge/trade=-1463.32%
+EURUSD        m=0.5  k=2 p=0.3329 (fair 0.3333) hrs=   4.5 kappa=1454.57% fin=27.33% edge/trade=-1482.04%
+EURUSD        m=0.5  k=3 p=0.2525 (fair 0.2500) hrs=   5.3 kappa=1454.57% fin=38.94% edge/trade=-1492.51%
+EURUSD        m=0.75 k=1 p=0.4921 (fair 0.5000) hrs=   5.0 kappa=969.71% fin=23.54% edge/trade=-994.83%
+EURUSD        m=0.75 k=2 p=0.3355 (fair 0.3333) hrs=   6.8 kappa=969.71% fin=42.42% edge/trade=-1011.49%
+EURUSD        m=0.75 k=3 p=0.2602 (fair 0.2500) hrs=   7.8 kappa=969.71% fin=55.41% edge/trade=-1021.02%
+EURUSD        m=1    k=1 p=0.5046 (fair 0.5000) hrs=   6.2 kappa=727.28% fin=29.97% edge/trade=-756.33%
+EURUSD        m=1    k=2 p=0.3390 (fair 0.3333) hrs=   8.8 kappa=727.28% fin=49.06% edge/trade=-774.65%
+EURUSD        m=1    k=3 p=0.2676 (fair 0.2500) hrs=  11.1 kappa=727.28% fin=63.64% edge/trade=-783.87%
+EURUSD        m=1.5  k=1 p=0.4996 (fair 0.5000) hrs=   9.6 kappa=484.86% fin=37.01% edge/trade=-521.94%
+EURUSD        m=1.5  k=2 p=0.3443 (fair 0.3333) hrs=  14.6 kappa=484.86% fin=57.30% edge/trade=-538.88%
+EURUSD        m=1.5  k=3 p=0.2674 (fair 0.2500) hrs=  19.4 kappa=484.86% fin=78.14% edge/trade=-556.05%
+EURUSD        m=2    k=1 p=0.5019 (fair 0.5000) hrs=  13.1 kappa=363.64% fin=38.96% edge/trade=-402.23%
+EURUSD        m=2    k=2 p=0.3296 (fair 0.3333) hrs=  22.0 kappa=363.64% fin=66.17% edge/trade=-430.93%
+EURUSD        m=2    k=3 p=0.2487 (fair 0.2500) hrs=  30.1 kappa=363.64% fin=93.45% edge/trade=-457.59%

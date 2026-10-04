@@ -1,0 +1,733 @@
+<title>Prop Firm Convexity Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one 68ch reading column on cool chart paper; tables and charts break out to a wider measure. */
+:root {
+  --paper: #f6f7f9;
+  --sheet: #ffffff;
+  --ink: #151a22;
+  --muted: #586172;
+  --rule: #d8dde5;
+  --accent: #1d4ed8;
+  --flag: #b23a1f;
+  --ok: #1f7a4d;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --neg: #e34948;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --measure: 68ch;
+  --wide: 1180px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1217; --sheet: #161a21; --ink: #e6e9ef; --muted: #9aa3b2; --rule: #2a313c;
+    --accent: #86a8ff; --flag: #f08468; --ok: #63c99a;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --neg: #e66767;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1217; --sheet: #161a21; --ink: #e6e9ef; --muted: #9aa3b2; --rule: #2a313c;
+  --accent: #86a8ff; --flag: #f08468; --ok: #63c99a;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --neg: #e66767;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+.page { padding-inline: 20px; padding-block: 40px 80px; }
+.col { max-width: var(--measure); margin-inline: auto; min-width: 0; width: 100%; }
+section > *, .chart > *, .result > * { min-width: 0; }
+.wide { max-width: var(--wide); margin-inline: auto; min-width: 0; width: 100%; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; line-height: 1.12; margin: 0; }
+h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); font-weight: 800; font-stretch: 112%; letter-spacing: -0.01em; }
+h2 { font-size: 1.6rem; font-weight: 750; font-stretch: 108%; }
+h3 { font-size: 1.12rem; font-weight: 700; }
+.eyebrow { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+p { margin: 0; }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+section { display: flex; flex-direction: column; gap: 18px; padding-block: 36px; border-top: 1px solid var(--rule); }
+header.top { display: flex; flex-direction: column; gap: 14px; padding-block: 8px 28px; }
+.lede { font-size: 1.15rem; color: var(--ink); }
+.meta { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+a { color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.muted { color: var(--muted); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 0.86em; white-space: nowrap; }
+.strong { font-weight: 600; }
+ul.tight { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 8px; }
+.verdict { background: var(--sheet); border: 1px solid var(--rule); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; }
+.verdict li strong { font-family: var(--display); font-weight: 700; }
+.formula { font-family: var(--mono); font-size: 0.92rem; background: var(--sheet); border-left: 3px solid var(--accent); padding: 12px 16px; overflow-x: auto; white-space: pre; line-height: 1.5; }
+.result { display: flex; flex-direction: column; gap: 8px; }
+.result h3 .tag { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; color: var(--muted); margin-left: 6px; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--rule); background: var(--sheet); }
+table.data { border-collapse: collapse; width: 100%; font-size: 0.86rem; font-family: var(--display); }
+table.data th, table.data td { padding: 8px 10px; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; }
+table.data th { font-weight: 650; font-size: 0.78rem; letter-spacing: 0.02em; color: var(--muted); background: var(--sheet); position: sticky; top: 0; }
+table.data td.num { text-align: right; }
+table.data tr.c-low td:first-child::after { content: " \2020"; color: var(--muted); }
+.audit td:first-child { width: 34%; }
+.pill { font-family: var(--mono); font-size: 0.72rem; padding: 1px 7px; border-radius: 9px; border: 1px solid currentColor; white-space: nowrap; }
+.pill.wrong { color: var(--flag); }
+.pill.ok { color: var(--ok); }
+.chart { margin: 0; display: flex; flex-direction: column; gap: 12px; background: var(--sheet); border: 1px solid var(--rule); padding: 18px 18px 14px; }
+.chart figcaption { font-size: 0.92rem; color: var(--muted); }
+.chart figcaption strong { color: var(--ink); font-family: var(--display); font-weight: 650; }
+.bars { display: flex; flex-direction: column; gap: 3px; }
+.bar-row { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 5.2rem; gap: 10px; align-items: center; font-family: var(--display); font-size: 0.8rem; }
+.bar-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { position: relative; height: 14px; }
+.bar { position: absolute; top: 2px; height: 10px; border-radius: 0 3px 3px 0; }
+.bar.pos { background: var(--s1); }
+.bar.neg { background: var(--neg); border-radius: 3px 0 0 3px; }
+.zero { position: absolute; top: -2px; bottom: -2px; width: 1px; background: var(--muted); }
+.bar-row:hover .bar-label { color: var(--accent); }
+.bar-val { text-align: right; }
+.ticks { height: 18px; border-top: 1px solid var(--rule); }
+.tick { position: absolute; top: 2px; transform: translateX(-50%); font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+.svgwrap { overflow-x: auto; }
+.svgwrap svg { width: 100%; min-width: 520px; height: auto; display: block; }
+.grid { stroke: var(--rule); stroke-width: 1; }
+.axis-t { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.ln { fill: none; stroke-width: 2; }
+.ln.s1, .pt.s1 { stroke: var(--s1); } .ln.s2, .pt.s2 { stroke: var(--s2); } .ln.s3, .pt.s3 { stroke: var(--s3); }
+.pt { fill: var(--sheet); stroke-width: 2; }
+.pt:hover { fill: var(--ink); }
+.lbl { fill: var(--ink); font-family: var(--display); font-size: 12px; }
+.lblv { fill: var(--muted); font-family: var(--mono); }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-family: var(--display); font-size: 0.82rem; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { display: inline-block; width: 16px; height: 3px; border-radius: 2px; }
+.sw.s1 { background: var(--s1); } .sw.s2 { background: var(--s2); } .sw.s3 { background: var(--s3); }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.two > * { min-width: 0; }
+.note { font-size: 0.92rem; color: var(--muted); }
+.ladder { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 0; border: 1px solid var(--rule); background: var(--sheet); }
+.ladder div { padding: 12px 14px; border-right: 1px solid var(--rule); display: flex; flex-direction: column; gap: 2px; }
+.ladder div:last-child { border-right: 0; }
+.ladder .k { font-family: var(--mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.ladder .v { font-family: var(--display); font-weight: 750; font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+.ladder .s { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .bar-row { grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr) 4.4rem; font-size: 0.72rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="page">
+<header class="top col">
+  <span class="eyebrow">16 prop firms &middot; zero-skill valuation</span>
+  <h1>Prop Firm Convexity Audit</h1>
+  <p class="lede">You asked whether the "FTMO Convex Edge" strategy works. The idea behind it is sound and the edge is larger than the PDFs claim. The PDFs' maths is mostly wrong, and the protocol they recommend loses money on real data. Whether any of it pays depends on the firm choosing to pay, and no model can price that.</p>
+  <p class="meta">Rules as published Sept&ndash;Oct 2026 &middot; Real-data test: EURUSD hourly bars, 18 Dec 2023 &ndash; 2 Oct 2026 &middot; 37 account types modelled &middot; Prices in USD (EUR at 1.17)</p>
+</header>
+
+<div class="col">
+<div class="verdict">
+  <span class="eyebrow">Verdict</span>
+  <ul class="tight">
+    <li><strong>The convexity is real.</strong> A trader with zero skill has positive expected value against most prop-firm contracts, provided the firm pays. FTMO 100K 2-Step: about +$2,100 per attempt in the model and +$1,760 &plusmn; $160 on real EURUSD data, against a &euro;540 fee.</li>
+    <li><strong>The PDFs give the wrong reason.</strong> The value does not come from Jensen's inequality or from "maximising variance". The firm hands you a loss budget (the max drawdown) that it never charges you for. At zero drift, every dollar of that budget eventually gets paid out at the profit split.</li>
+    <li><strong>The PDF protocol loses money.</strong> Implemented as written on real data it returns &minus;$173 &plusmn; $79 per attempt. The "quit after two full-size losses" rule and fixed 1:1 sizing throw away most of the option.</li>
+    <li><strong>Hedging between firms adds no expected value.</strong> Expected value is additive, so hedging only changes the spread of outcomes: it turns a lottery that loses the fee about 73% of the time into a near-certain cash flow. FTMO's terms ban it explicitly, including against accounts at other firms.</li>
+    <li><strong>The real risk sits with the counterparty.</strong> Payouts are discretionary "rewards" on simulated accounts, the optimal play is what the conduct clauses target, and 80&ndash;100 firms closed in 2024&ndash;25. On paper FTMO stays break-even even if 77% of payouts are denied, but denials come with bans, so the real limit is how many attempts you get.</li>
+  </ul>
+</div>
+</div>
+
+<section class="col" id="theory">
+  <span class="eyebrow">Part 1 &middot; From zero</span>
+  <h2>What a challenge is, mathematically</h2>
+  <p>Treat the account balance as a process you control. Each day you place one bracket: take-profit <var>w</var>, stop <var>l</var>. With no predictive skill the mid-price is a martingale, so the win probability is <var>l</var>/(<var>w</var>+<var>l</var>) and the expected P&amp;L of a bracket is exactly minus its costs. A challenge pays you when the balance reaches a target <var>A</var> before it hits a floor <var>B</var> below the start. A funded account pays you a share of every withdrawal until it hits the floor. Everything below follows from optional stopping (a fair game stopped at a sensible time is still fair).</p>
+
+  <div class="result">
+    <h3>1. Pass probability, static floor <span class="tag">FTMO 2-Step, most CFD firms</span></h3>
+    <div class="formula">P(pass) = B / (A + B)                       exact, any sizing, any RR, no deadline
+P(pass) = (B + O_floor) / (A + O_target + B)  with overshoot past either barrier</div>
+    <p>Neither sizing nor reward-to-risk changes this, and neither does variance. Overshoot does. Overshooting the target wastes probability. Overshooting the floor is free, because the firm absorbs it. The optimal play is <em>bold play</em>: size every bracket so the balance lands exactly on the target or exactly on the floor (or the daily loss limit), in as few trades as possible. FTMO Phase 1 gives 50%, Phase 2 gives 67%, so 33% reach funded. The PDF's fixed 1:1 bracket at $4,800 needs $14,400 to clear a $10,000 target, which cuts Phase 1 from 50% to about 41%.</p>
+  </div>
+
+  <div class="result">
+    <h3>2. End-of-day trailing drawdown <span class="tag">Topstep, Apex EOD, Tradeify, Lucid, FTMO 1-Step</span></h3>
+    <p>An end-of-day trail only moves when a day closes at a new high. If you can reach the target in one day, the trail never moves and you get the static answer <var>B</var>/(<var>A</var>+<var>B</var>). Firms add consistency rules to block this. A best-day cap forces several profitable days, and each one lifts the floor. That is where EOD accounts lose value (dynamic programming, $3k target, $2k trail):</p>
+    <div class="tablewrap"><table class="data">
+      <thead><tr><th>Rule set ($3,000 target, $2,000 drawdown)</th><th>Max P(pass)</th></tr></thead>
+      <tbody>
+        <tr><td>Static floor, or EOD trail with one-day pass allowed</td><td class="num">40.0%</td></tr>
+        <tr><td>EOD trail + $1,000 daily loss limit</td><td class="num">40.0%</td></tr>
+        <tr><td>EOD trail + best day &le; 50% of target</td><td class="num">32.7%</td></tr>
+        <tr><td>EOD trail + best day &le; 40%</td><td class="num">30.0%</td></tr>
+        <tr><td>EOD trail + best day &le; 30%</td><td class="num">28.5%</td></tr>
+        <tr><td>Intraday trail (live equity, continuous prices)</td><td class="num">22.3%</td></tr>
+      </tbody></table></div>
+  </div>
+
+  <div class="result">
+    <h3>3. Intraday trailing drawdown <span class="tag">Apex intraday, MFFU Rapid, TPT PRO funded, Bulenox opt. 1</span></h3>
+    <div class="formula">P(reach A before a drawdown of D from the equity peak) = exp(&minus;A / D)</div>
+    <p>This is the maximum over every strategy when prices move continuously. For a driftless process, the peak reached before a drawdown of <var>D</var> is exponentially distributed with mean <var>D</var>, and position sizing only changes the clock. Intraday trailing is the rule that destroys most of the convexity. It is the firms' strongest defence.</p>
+  </div>
+
+  <div class="result">
+    <h3>4. What a funded account is worth <span class="tag">the result the PDFs needed</span></h3>
+    <div class="formula">E[total gross withdrawals] = E[starting balance &minus; final balance] + E[trading P&amp;L]
+                          &le; D &minus; E[costs]            (zero drift, run to the floor)
+Funded value to you      &asymp; split &times; D &times; (1 &minus; 2&kappa;) + refund &times; P(first payout)</div>
+    <p>This is accounting, not a probability argument. Money paid out has to come either from trading profits or from the balance falling. With zero edge the first term is zero, so the firm's expected payout equals the drawdown it lets you use. FTMO 100K: 0.80 &times; $10,000 = $8,000, whatever reward-to-risk you trade, plus the fee refund. Lock levels, payout caps (Apex closes the account after six payouts), "50% of balance" rules and intraday trails all reduce the usable budget.</p>
+  </div>
+
+  <div class="result">
+    <h3>5. Costs</h3>
+    <p>A bracket that resolves within a day costs about &kappa;&middot;&radic;(<var>w</var>&middot;<var>l</var>), where &kappa; is the cost-to-risk ratio of a 1:1 trade with a stop of one daily sigma. On EURUSD (0.75 pip all-in against roughly a 55-pip day) &kappa; &asymp; 1.4%. Total cost scales like &kappa;&middot;<var>A</var><var>B</var>/<var>L</var> for bet size <var>L</var>. Few large trades cost little and many small trades cost a lot. Scalping is how ordinary traders lose: 10-pip stops make &kappa; around 7.5% per trade.</p>
+    <div class="formula">EV per attempt &asymp; &minus;fee + &Pi; P(pass phase i) &times; ( split&middot;D&middot;(1 &minus; 2&kappa;) &minus; activation fee + refund&middot;q )</div>
+  </div>
+</section>
+
+<section class="wide" id="audit">
+  <div class="col stack">
+    <span class="eyebrow">Part 2 &middot; The PDFs</span>
+    <h2>What is wrong in the documents you sent</h2>
+    <p>Your eight files are four distinct documents: the 9-page and 6-page "Convex-EV" versions (+$2,502 headline), the 30-page "Convex Edge" (+$530 / +$248) and its two execution manuals.</p>
+  </div>
+  <div class="tablewrap"><table class="data audit">
+    <thead><tr><th>Claim in the PDFs</th><th>What is actually true</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td>"The expected supremum of a symmetric walk before it hits &minus;B equals B" (Doc 1 &sect;1.4, &sect;5.4; Foundations &sect;4.1)</td><td>P(max &ge; m) = B/(B+m), whose mean is infinite. The correct funded bound comes from optional stopping with withdrawals: split &times; B.</td><td><span class="pill wrong">false theorem</span></td></tr>
+      <tr><td>Funded payout of $10,271 at an 80% split (Foundations &sect;4)</td><td>Implies $12,839 gross withdrawn against a $10,000 budget. At zero edge the maximum is $8,000 to you.</td><td><span class="pill wrong">impossible</span></td></tr>
+      <tr><td>EV = 0.333 &times; ($590 + $10,271) = +$3,223, then +$2,502</td><td>Refunds the fee to every funded account, while the same document says 58% bust before any payout.</td><td><span class="pill wrong">inconsistent</span></td></tr>
+      <tr><td>Naive EV: 13.6% &times; $22,000 (Doc 1 &sect;5.5)</td><td>That is $8,985 per funded account, above the $8,000 cap.</td><td><span class="pill wrong">impossible</span></td></tr>
+      <tr><td>"E[payoff] is increasing in &sigma;&sup2;"; variance via Jensen is the source of the edge</td><td>With no deadline, P(pass) = B/(A+B) for any &sigma;. The edge is the free loss budget. Variance matters only under time pressure (monthly fees, Apex's 30-day window).</td><td><span class="pill wrong">wrong mechanism</span></td></tr>
+      <tr><td>"1:1 is the unique RR that makes a symmetric walk"</td><td>Every fair bracket is a martingale. Reward-to-risk matters only through overshoot. Fixed 1:1 at $4,800 overshoots the target: 41% instead of 50%.</td><td><span class="pill wrong">costs ~9 pts</span></td></tr>
+      <tr><td>Spread "~$30 per trade regardless of size" creates a trap near the floor (Doc 1 &sect;6.3)</td><td>Spread and commission scale with lot size. With proportional costs the trap disappears. Dynamic sizing never changes pass probability at zero drift.</td><td><span class="pill wrong">simulation bug</span></td></tr>
+      <tr><td>Effective win rate 48.5% from spread asymmetry and mean reversion (&sect;6.5)</td><td>Measured on EURUSD 2023&ndash;26, random direction, mid prices: 50.4% (25 pip), 50.3% (50 pip), 50.0% (100 pip), &plusmn;0.7%. The spread asymmetry <em>is</em> the spread cost, so it was counted twice. Random direction cancels any mean reversion.</td><td><span class="pill wrong">not supported by data</span></td></tr>
+      <tr><td>Quit Phase 1 after two consecutive full-size losses</td><td>Throws away live options. W W L L leaves you at break-even with a 50% pass chance. On real data, dropping the rule moves the protocol from &minus;$70 to +$880 per attempt.</td><td><span class="pill wrong">main loss driver</span></td></tr>
+      <tr><td>Kelly: f* = &mu;/&sigma;&sup2; &rArr; "$40 million bankroll"</td><td>Units error. The growth-optimal bankroll for one attempt is about &sigma;&sup2;/&mu;. Exact log-optimal on the real-data distribution: about $4,100.</td><td><span class="pill wrong">off by 10,000&times;</span></td></tr>
+      <tr><td>RR table: $964, $530, $794, $487, $632, and "1:1.5 has the highest EV"</td><td>Non-monotone values are simulation noise, and the table's maximum is 1:0.5, not 1:1.5.</td><td><span class="pill wrong">noise</span></td></tr>
+      <tr><td>Abandoned challenges "sit dormant"; quitting frees capacity</td><td>Dormant accounts still count toward FTMO's $400K allocation cap.</td><td><span class="pill wrong">false</span></td></tr>
+      <tr><td>1:2 RR on the funded account raises EV</td><td>Funded value at zero edge is split &times; D for any RR.</td><td><span class="pill wrong">irrelevant</span></td></tr>
+      <tr><td>"$3,000 bankroll = 87% confidence of profit"</td><td>On real data, 5 attempts of the corrected strategy give a 64% chance of being ahead. For the PDF protocol it is 14%.</td><td><span class="pill wrong">overstated</span></td></tr>
+      <tr><td>Zero-edge play is positive EV if FTMO honours payouts</td><td>True, and by more than the PDFs say.</td><td><span class="pill ok">correct</span></td></tr>
+      <tr><td>Bigger accounts dilute fixed costs; EURUSD is a cheap instrument</td><td>Broadly true, but costs are proportional, and wider stops (multi-day holds) cut them further.</td><td><span class="pill ok">mostly correct</span></td></tr>
+    </tbody></table></div>
+</section>
+
+<section class="wide" id="realdata">
+  <div class="col stack">
+    <span class="eyebrow">Part 3 &middot; Real data</span>
+    <h2>FTMO 100K on 2.8 years of real EURUSD</h2>
+    <p>Each simulated attempt starts at a random date, picks each trade's direction by coin flip, enters at a random London/New York hour, and resolves the bracket on real hourly bars. If a bar touches both stop and target, a coin flip decides. Costs are 0.75 pip per round trip. Minimum trading days, the 5% daily and 10% total loss limits, 14-day reward cycles, the 80% split and the fee refund are all applied. The funded account runs until it busts. 6,000 attempts per strategy.</p>
+  </div>
+  <div class="tablewrap"><table class="data">
+    <thead><tr><th>Strategy</th><th>EV per attempt (95% CI)</th><th>P(pass Phase 1)</th><th>P(funded)</th><th>P(ahead after 1)</th><th>Trades per attempt</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Corrected bold play</strong>: aim each bracket at the target, risk up to the daily limit</td><td class="num strong">+$1,764 &plusmn; $161</td><td class="num">46.4%</td><td class="num">29.5%</td><td class="num">27.4%</td><td class="num">6.7</td></tr>
+      <tr><td><strong>1%-risk swing</strong>: 1% risk, 1:1, one trade a day; looks like ordinary trading</td><td class="num strong">+$1,152 &plusmn; $127</td><td class="num">42.8%</td><td class="num">25.8%</td><td class="num">19.9%</td><td class="num">169</td></tr>
+      <tr><td><strong>PDF protocol</strong>: &plusmn;$4,800 at 1:1, 50-pip brackets, flatten by 4 pm NY, quit after 2L, 1:2 funded</td><td class="num strong">&minus;$173 &plusmn; $79</td><td class="num">14.6%</td><td class="num">8.2%</td><td class="num">3.5%</td><td class="num">&ndash;</td></tr>
+    </tbody></table></div>
+  <div class="two">
+    <div class="tablewrap"><table class="data">
+      <thead><tr><th>PDF protocol variant</th><th>EV per attempt</th><th>P(funded)</th></tr></thead>
+      <tbody>
+        <tr><td>As written (quit rule + daily flatten)</td><td class="num">&minus;$70 &plusmn; $90</td><td class="num">8.8%</td></tr>
+        <tr><td>Quit rule, no daily flatten</td><td class="num">+$404 &plusmn; $165</td><td class="num">14.8%</td></tr>
+        <tr><td>No quit rule, daily flatten</td><td class="num">+$884 &plusmn; $152</td><td class="num">22.1%</td></tr>
+        <tr><td>Neither</td><td class="num">+$672 &plusmn; $178</td><td class="num">19.9%</td></tr>
+      </tbody></table></div>
+    <div class="tablewrap"><table class="data">
+      <thead><tr><th>Bankroll (corrected bold play)</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>Median outcome of one attempt</td><td class="num">&minus;$632</td></tr>
+        <tr><td>Mean gain when an attempt wins</td><td class="num">+$7,935</td></tr>
+        <tr><td>Exact Kelly bankroll for one attempt</td><td class="num">&asymp;$4,100</td></tr>
+        <tr><td>Ruin within 100 attempts, $3,160 start (5 fees)</td><td class="num">35%</td></tr>
+        <tr><td>Ruin within 100 attempts, $12,640 start (20 fees)</td><td class="num">1.2%</td></tr>
+      </tbody></table></div>
+  </div>
+  <div class="col"><figure class="chart">
+<figcaption><strong>Chance of being ahead after buying <em>n</em> FTMO 100K attempts</strong>
+(bootstrap of 6,000 simulated attempts per strategy on real EURUSD hourly data).</figcaption>
+<div class="legend"><span><i class="sw s1"></i>Corrected bold play</span><span><i class="sw s2"></i>1%-risk swing</span><span><i class="sw s3"></i>PDF protocol</span></div>
+<div class="svgwrap"><svg viewBox="0 0 640 300" role="img" aria-label="Probability of cumulative profit by number of attempts"><line x1="48" x2="490" y1="260.0" y2="260.0" class="grid"/><text x="40" y="264.0" class="axis-t" text-anchor="end">0%</text><line x1="48" x2="490" y1="199.0" y2="199.0" class="grid"/><text x="40" y="203.0" class="axis-t" text-anchor="end">25%</text><line x1="48" x2="490" y1="138.0" y2="138.0" class="grid"/><text x="40" y="142.0" class="axis-t" text-anchor="end">50%</text><line x1="48" x2="490" y1="77.0" y2="77.0" class="grid"/><text x="40" y="81.0" class="axis-t" text-anchor="end">75%</text><line x1="48" x2="490" y1="16.0" y2="16.0" class="grid"/><text x="40" y="20.0" class="axis-t" text-anchor="end">100%</text><text x="48.0" y="278" class="axis-t" text-anchor="middle">1</text><text x="121.7" y="278" class="axis-t" text-anchor="middle">3</text><text x="195.3" y="278" class="axis-t" text-anchor="middle">5</text><text x="269.0" y="278" class="axis-t" text-anchor="middle">10</text><text x="342.7" y="278" class="axis-t" text-anchor="middle">20</text><text x="416.3" y="278" class="axis-t" text-anchor="middle">50</text><text x="490.0" y="278" class="axis-t" text-anchor="middle">100</text><text x="269.0" y="294" class="axis-t" text-anchor="middle">attempts bought</text><polyline points="48.0,193.2 121.7,145.5 195.3,103.1 269.0,66.1 342.7,33.9 416.3,17.5 490.0,16.0" class="ln s1"/><circle cx="48.0" cy="193.2" r="4.5" class="pt s1"><title>Corrected bold play: 27% chance of being ahead after 1 attempts</title></circle><circle cx="121.7" cy="145.5" r="4.5" class="pt s1"><title>Corrected bold play: 47% chance of being ahead after 3 attempts</title></circle><circle cx="195.3" cy="103.1" r="4.5" class="pt s1"><title>Corrected bold play: 64% chance of being ahead after 5 attempts</title></circle><circle cx="269.0" cy="66.1" r="4.5" class="pt s1"><title>Corrected bold play: 79% chance of being ahead after 10 attempts</title></circle><circle cx="342.7" cy="33.9" r="4.5" class="pt s1"><title>Corrected bold play: 93% chance of being ahead after 20 attempts</title></circle><circle cx="416.3" cy="17.5" r="4.5" class="pt s1"><title>Corrected bold play: 99% chance of being ahead after 50 attempts</title></circle><circle cx="490.0" cy="16.0" r="4.5" class="pt s1"><title>Corrected bold play: 100% chance of being ahead after 100 attempts</title></circle><polyline points="48.0,211.5 121.7,154.9 195.3,123.6 269.0,83.0 342.7,50.8 416.3,23.3 490.0,16.7" class="ln s2"/><circle cx="48.0" cy="211.5" r="4.5" class="pt s2"><title>1%-risk swing: 20% chance of being ahead after 1 attempts</title></circle><circle cx="121.7" cy="154.9" r="4.5" class="pt s2"><title>1%-risk swing: 43% chance of being ahead after 3 attempts</title></circle><circle cx="195.3" cy="123.6" r="4.5" class="pt s2"><title>1%-risk swing: 56% chance of being ahead after 5 attempts</title></circle><circle cx="269.0" cy="83.0" r="4.5" class="pt s2"><title>1%-risk swing: 73% chance of being ahead after 10 attempts</title></circle><circle cx="342.7" cy="50.8" r="4.5" class="pt s2"><title>1%-risk swing: 86% chance of being ahead after 20 attempts</title></circle><circle cx="416.3" cy="23.3" r="4.5" class="pt s2"><title>1%-risk swing: 97% chance of being ahead after 50 attempts</title></circle><circle cx="490.0" cy="16.7" r="4.5" class="pt s2"><title>1%-risk swing: 100% chance of being ahead after 100 attempts</title></circle><polyline points="48.0,251.4 121.7,236.1 195.3,224.7 269.0,205.3 342.7,194.8 416.3,193.2 490.0,199.4" class="ln s3"/><circle cx="48.0" cy="251.4" r="4.5" class="pt s3"><title>PDF protocol: 4% chance of being ahead after 1 attempts</title></circle><circle cx="121.7" cy="236.1" r="4.5" class="pt s3"><title>PDF protocol: 10% chance of being ahead after 3 attempts</title></circle><circle cx="195.3" cy="224.7" r="4.5" class="pt s3"><title>PDF protocol: 14% chance of being ahead after 5 attempts</title></circle><circle cx="269.0" cy="205.3" r="4.5" class="pt s3"><title>PDF protocol: 22% chance of being ahead after 10 attempts</title></circle><circle cx="342.7" cy="194.8" r="4.5" class="pt s3"><title>PDF protocol: 27% chance of being ahead after 20 attempts</title></circle><circle cx="416.3" cy="193.2" r="4.5" class="pt s3"><title>PDF protocol: 27% chance of being ahead after 50 attempts</title></circle><circle cx="490.0" cy="199.4" r="4.5" class="pt s3"><title>PDF protocol: 25% chance of being ahead after 100 attempts</title></circle><text x="500.0" y="20.0" class="lbl">Corrected bold play <tspan class="lblv">100%</tspan></text><text x="500.0" y="35.0" class="lbl">1%-risk swing <tspan class="lblv">100%</tspan></text><text x="500.0" y="203.4" class="lbl">PDF protocol <tspan class="lblv">25%</tspan></text></svg></div>
+</figure></div>
+  <p class="col note">The model predicts a little more (+$2,100 and +$1,700) than the real-data runs. The gap comes from the 3% safety buffer the simulation keeps above the floor and from hourly-bar resolution. Both methods agree on the sign and the order of magnitude.</p>
+</section>
+
+<section class="wide" id="firms">
+  <div class="col stack">
+    <span class="eyebrow">Part 4 &middot; Every account type</span>
+    <h2>37 account types at 16 firms, valued the same way</h2>
+    <p>Same assumptions for every account: zero skill, optimal sizing for that rule set, and every payout honoured. CFD accounts are 100K and futures accounts 50K. The "1%-risk rule" column restricts every trade to 1% of the account (25% of the drawdown on futures) and charges the extra costs that small trades bring. "Breakeven denial" is the share of payouts the firm could refuse before the attempt stops paying. Instant accounts are valued without their payout caps and consistency rules, so treat them as upper estimates.</p>
+  </div>
+  <figure class="chart" aria-label="Expected value per attempt by account type">
+<figcaption><strong>Expected value per attempt, zero skill, 1% trading costs, payouts honoured.</strong>
+Sorted. &dagger; = rule set partly inferred (low confidence).</figcaption>
+<div class="bars"><div class="bar-row" title="FTMO 1-Step: EV +$3,465 per attempt at 1% costs; P(funded) 43%; fee $584">
+  <span class="bar-label">FTMO <span class="muted">1-Step</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:91.18%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$3,465</span>
+</div><div class="bar-row" title="Blue Guardian Instant: EV +$3,141 per attempt at 1% costs; P(funded) 100%; fee $779">
+  <span class="bar-label">Blue Guardian <span class="muted">Instant</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:82.66%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$3,141</span>
+</div><div class="bar-row" title="Goat Funded Instant GOAT: EV +$3,082 per attempt at 1% costs; P(funded) 100%; fee $838">
+  <span class="bar-label">Goat Funded <span class="muted">Instant GOAT</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:81.11%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$3,082</span>
+</div><div class="bar-row" title="The5ers High Stakes 2-Step: EV +$2,490 per attempt at 1% costs; P(funded) 36%; fee $545">
+  <span class="bar-label">The5ers <span class="muted">High Stakes 2-Step</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:65.52%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$2,490</span>
+</div><div class="bar-row" title="FundedNext Stellar 2-Step: EV +$2,486 per attempt at 1% costs; P(funded) 36%; fee $550">
+  <span class="bar-label">FundedNext <span class="muted">Stellar 2-Step</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:65.43%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$2,486</span>
+</div><div class="bar-row" title="FundingPips 2-Step: EV +$2,477 per attempt at 1% costs; P(funded) 36%; fee $529">
+  <span class="bar-label">FundingPips <span class="muted">2-Step</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:65.19%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$2,477</span>
+</div><div class="bar-row" title="Alpha Capital Alpha Pro 10%: EV +$2,215 per attempt at 1% costs; P(funded) 33%; fee $497">
+  <span class="bar-label">Alpha Capital <span class="muted">Alpha Pro 10%</span>&dagger;</span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:58.29%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$2,215</span>
+</div><div class="bar-row" title="FTMO 2-Step: EV +$2,122 per attempt at 1% costs; P(funded) 33%; fee $632">
+  <span class="bar-label">FTMO <span class="muted">2-Step</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:55.84%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$2,122</span>
+</div><div class="bar-row" title="Goat Funded 2-Step Standard: EV +$1,964 per attempt at 1% costs; P(funded) 33%; fee $594">
+  <span class="bar-label">Goat Funded <span class="muted">2-Step Standard</span>&dagger;</span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:51.67%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$1,964</span>
+</div><div class="bar-row" title="FundedNext Stellar Lite: EV +$1,646 per attempt at 1% costs; P(funded) 33%; fee $400">
+  <span class="bar-label">FundedNext <span class="muted">Stellar Lite</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:43.32%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$1,646</span>
+</div><div class="bar-row" title="Blue Guardian 2-Step Pro: EV +$1,556 per attempt at 1% costs; P(funded) 24%; fee $464">
+  <span class="bar-label">Blue Guardian <span class="muted">2-Step Pro</span>&dagger;</span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:40.95%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$1,556</span>
+</div><div class="bar-row" title="Maven 2-Step: EV +$1,490 per attempt at 1% costs; P(funded) 30%; fee $396">
+  <span class="bar-label">Maven <span class="muted">2-Step</span>&dagger;</span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:39.22%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$1,490</span>
+</div><div class="bar-row" title="Alpha Capital Alpha Pro 8%: EV +$1,473 per attempt at 1% costs; P(funded) 30%; fee $577">
+  <span class="bar-label">Alpha Capital <span class="muted">Alpha Pro 8%</span>&dagger;</span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:38.75%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$1,473</span>
+</div><div class="bar-row" title="FundedNext Stellar 1-Step: EV +$1,374 per attempt at 1% costs; P(funded) 37%; fee $570">
+  <span class="bar-label">FundedNext <span class="muted">Stellar 1-Step</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:36.16%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$1,374</span>
+</div><div class="bar-row" title="FundingPips 1-Step: EV +$1,326 per attempt at 1% costs; P(funded) 37%; fee $555">
+  <span class="bar-label">FundingPips <span class="muted">1-Step</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:34.90%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$1,326</span>
+</div><div class="bar-row" title="FundingPips Zero (instant): EV +$1,180 per attempt at 1% costs; P(funded) 100%; fee $499">
+  <span class="bar-label">FundingPips <span class="muted">Zero (instant)</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:31.04%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$1,180</span>
+</div><div class="bar-row" title="E8 Markets E8 One (6% DD): EV +$1,079 per attempt at 1% costs; P(funded) 39%; fee $464">
+  <span class="bar-label">E8 Markets <span class="muted">E8 One (6% DD)</span>&dagger;</span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:28.40%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$1,079</span>
+</div><div class="bar-row" title="Lucid Direct 50K (instant): EV +$938 per attempt at 1% costs; P(funded) 100%; fee $520">
+  <span class="bar-label">Lucid <span class="muted">Direct 50K (instant)</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:24.68%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$938</span>
+</div><div class="bar-row" title="Goat Funded 3-Step GOAT: EV +$767 per attempt at 1% costs; P(funded) 18%; fee $365">
+  <span class="bar-label">Goat Funded <span class="muted">3-Step GOAT</span>&dagger;</span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:20.20%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$767</span>
+</div><div class="bar-row" title="FundingPips 2-Step Pro: EV +$726 per attempt at 1% costs; P(funded) 24%; fee $399">
+  <span class="bar-label">FundingPips <span class="muted">2-Step Pro</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:19.10%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$726</span>
+</div><div class="bar-row" title="Apex 50K EOD: EV +$525 per attempt at 1% costs; P(funded) 39%; fee $58">
+  <span class="bar-label">Apex <span class="muted">50K EOD</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:13.81%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$525</span>
+</div><div class="bar-row" title="Bulenox 50K Opt.2 (EOD): EV +$502 per attempt at 1% costs; P(funded) 36%; fee $175">
+  <span class="bar-label">Bulenox <span class="muted">50K Opt.2 (EOD)</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:13.21%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$502</span>
+</div><div class="bar-row" title="Lucid Flex 50K: EV +$446 per attempt at 1% costs; P(funded) 40%; fee $130">
+  <span class="bar-label">Lucid <span class="muted">Flex 50K</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:11.74%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$446</span>
+</div><div class="bar-row" title="Tradeify Growth 50K: EV +$435 per attempt at 1% costs; P(funded) 39%; fee $139">
+  <span class="bar-label">Tradeify <span class="muted">Growth 50K</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:11.44%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$435</span>
+</div><div class="bar-row" title="Tradeify Lightning 25K (instant): EV +$394 per attempt at 1% costs; P(funded) 100%; fee $329">
+  <span class="bar-label">Tradeify <span class="muted">Lightning 25K (instant)</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:10.37%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$394</span>
+</div><div class="bar-row" title="Lucid Pro 50K: EV +$389 per attempt at 1% costs; P(funded) 39%; fee $185">
+  <span class="bar-label">Lucid <span class="muted">Pro 50K</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:10.23%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$389</span>
+</div><div class="bar-row" title="Topstep Combine 50K (Standard): EV +$375 per attempt at 1% costs; P(funded) 32%; fee $49">
+  <span class="bar-label">Topstep <span class="muted">Combine 50K (Standard)</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:9.87%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$375</span>
+</div><div class="bar-row" title="Topstep Combine 50K (No-Activation): EV +$363 per attempt at 1% costs; P(funded) 32%; fee $109">
+  <span class="bar-label">Topstep <span class="muted">Combine 50K (No-Activation)</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:9.55%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$363</span>
+</div><div class="bar-row" title="My Funded Futures Flex 50K: EV +$309 per attempt at 1% costs; P(funded) 32%; fee $107">
+  <span class="bar-label">My Funded Futures <span class="muted">Flex 50K</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:8.13%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$309</span>
+</div><div class="bar-row" title="Tradeify Select 50K: EV +$270 per attempt at 1% costs; P(funded) 29%; fee $159">
+  <span class="bar-label">Tradeify <span class="muted">Select 50K</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:7.10%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$270</span>
+</div><div class="bar-row" title="The5ers Futures Basecamp 50K: EV +$222 per attempt at 1% costs; P(funded) 33%; fee $100">
+  <span class="bar-label">The5ers <span class="muted">Futures Basecamp 50K</span>&dagger;</span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:5.84%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$222</span>
+</div><div class="bar-row" title="Apex 50K Intraday: EV +$92 per attempt at 1% costs; P(funded) 22%; fee $32">
+  <span class="bar-label">Apex <span class="muted">50K Intraday</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:2.42%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$92</span>
+</div><div class="bar-row" title="Bulenox 50K Opt.1 (intraday): EV +$31 per attempt at 1% costs; P(funded) 29%; fee $175">
+  <span class="bar-label">Bulenox <span class="muted">50K Opt.1 (intraday)</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:0.81%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$31</span>
+</div><div class="bar-row" title="Maven 3-Step: EV +$14 per attempt at 1% costs; P(funded) 12%; fee $269">
+  <span class="bar-label">Maven <span class="muted">3-Step</span>&dagger;</span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:0.40%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$14</span>
+</div><div class="bar-row" title="Take Profit Trader PRO 50K: EV +$2 per attempt at 1% costs; P(funded) 40%; fee $170">
+  <span class="bar-label">Take Profit Trader <span class="muted">PRO 50K</span></span>
+  <span class="bar-track"><span class="bar pos" style="left:5.26%;width:0.40%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">+$2</span>
+</div><div class="bar-row" title="My Funded Futures Rapid 50K: EV &amp;minus;$26 per attempt at 1% costs; P(funded) 22%; fee $157">
+  <span class="bar-label">My Funded Futures <span class="muted">Rapid 50K</span></span>
+  <span class="bar-track"><span class="bar neg" style="left:4.58%;width:0.69%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">&minus;$26</span>
+</div><div class="bar-row" title="Alpha Capital Alpha Three: EV &amp;minus;$39 per attempt at 1% costs; P(funded) 8%; fee $397">
+  <span class="bar-label">Alpha Capital <span class="muted">Alpha Three</span>&dagger;</span>
+  <span class="bar-track"><span class="bar neg" style="left:4.23%;width:1.03%"></span><span class="zero" style="left:5.26%"></span></span>
+  <span class="bar-val num">&minus;$39</span>
+</div>
+<div class="bar-row axis"><span class="bar-label"></span><span class="bar-track ticks"><span class="tick" style="left:5.26%">$0</span><span class="tick" style="left:31.58%">$1,000</span><span class="tick" style="left:57.89%">$2,000</span><span class="tick" style="left:84.21%">$3,000</span></span><span class="bar-val"></span></div>
+</div></figure>
+  <div class="tablewrap"><table class="data">
+<thead><tr><th>Firm</th><th>Account</th><th>Price</th><th>Target / max loss per phase</th>
+<th>Funded budget</th><th>P(funded)</th><th>Funded value</th><th>EV frictionless</th>
+<th>EV 1% costs</th><th>EV 1%-risk rule</th><th>EV &divide; fee</th><th>Breakeven denial</th><th>Rule data</th></tr></thead>
+<tbody><tr class="c-high">
+<td>FTMO</td><td>1-Step</td>
+<td class="num">$584</td><td>10% / 10% EOD trail + consistency</td>
+<td class="num">90% &times; $10k</td>
+<td class="num">43%</td><td class="num">$9,376</td>
+<td class="num">+$3,663</td><td class="num strong">+$3,465</td>
+<td class="num">+$2,640</td><td class="num">5.9&times;</td>
+<td class="num">86%</td><td>high</td></tr><tr class="c-med">
+<td>Blue Guardian</td><td>Instant</td>
+<td class="num">$779</td><td>instant (no evaluation)</td>
+<td class="num">80% &times; $6k</td>
+<td class="num">100%</td><td class="num">$3,920</td>
+<td class="num">+$3,221</td><td class="num strong">+$3,141</td>
+<td class="num">+$3,061</td><td class="num">4.0&times;</td>
+<td class="num">80%</td><td>medium</td></tr><tr class="c-med">
+<td>Goat Funded</td><td>Instant GOAT</td>
+<td class="num">$838</td><td>instant (no evaluation)</td>
+<td class="num">80% &times; $6k</td>
+<td class="num">100%</td><td class="num">$3,920</td>
+<td class="num">+$3,162</td><td class="num strong">+$3,082</td>
+<td class="num">+$3,002</td><td class="num">3.7&times;</td>
+<td class="num">79%</td><td>medium</td></tr><tr class="c-med">
+<td>The5ers</td><td>High Stakes 2-Step</td>
+<td class="num">$545</td><td>8% / 10% static &rarr; 5% / 10% static</td>
+<td class="num">80% &times; $10k</td>
+<td class="num">36%</td><td class="num">$8,359</td>
+<td class="num">+$2,610</td><td class="num strong">+$2,490</td>
+<td class="num">+$2,054</td><td class="num">4.6&times;</td>
+<td class="num">82%</td><td>medium</td></tr><tr class="c-high">
+<td>FundedNext</td><td>Stellar 2-Step</td>
+<td class="num">$550</td><td>8% / 10% static &rarr; 5% / 10% static</td>
+<td class="num">80% &times; $10k</td>
+<td class="num">36%</td><td class="num">$8,364</td>
+<td class="num">+$2,607</td><td class="num strong">+$2,486</td>
+<td class="num">+$2,050</td><td class="num">4.5&times;</td>
+<td class="num">82%</td><td>high</td></tr><tr class="c-high">
+<td>FundingPips</td><td>2-Step</td>
+<td class="num">$529</td><td>8% / 10% static &rarr; 5% / 10% static</td>
+<td class="num">80% &times; $10k</td>
+<td class="num">36%</td><td class="num">$8,281</td>
+<td class="num">+$2,597</td><td class="num strong">+$2,477</td>
+<td class="num">+$2,043</td><td class="num">4.7&times;</td>
+<td class="num">82%</td><td>high</td></tr><tr class="c-low">
+<td>Alpha Capital</td><td>Alpha Pro 10%</td>
+<td class="num">$497</td><td>10% / 10% static &rarr; 5% / 10% static</td>
+<td class="num">80% &times; $10k</td>
+<td class="num">33%</td><td class="num">$8,313</td>
+<td class="num">+$2,327</td><td class="num strong">+$2,215</td>
+<td class="num">+$1,794</td><td class="num">4.5&times;</td>
+<td class="num">82%</td><td>low</td></tr><tr class="c-high">
+<td>FTMO</td><td>2-Step</td>
+<td class="num">$632</td><td>10% / 10% static &rarr; 5% / 10% static</td>
+<td class="num">80% &times; $10k</td>
+<td class="num">33%</td><td class="num">$8,442</td>
+<td class="num">+$2,235</td><td class="num strong">+$2,122</td>
+<td class="num">+$1,697</td><td class="num">3.4&times;</td>
+<td class="num">77%</td><td>high</td></tr><tr class="c-low">
+<td>Goat Funded</td><td>2-Step Standard</td>
+<td class="num">$594</td><td>10% / 10% static &rarr; 5% / 10% static</td>
+<td class="num">80% &times; $10k</td>
+<td class="num">33%</td><td class="num">$7,840</td>
+<td class="num">+$2,073</td><td class="num strong">+$1,964</td>
+<td class="num">+$1,556</td><td class="num">3.3&times;</td>
+<td class="num">77%</td><td>low</td></tr><tr class="c-med">
+<td>FundedNext</td><td>Stellar Lite</td>
+<td class="num">$400</td><td>8% / 8% static &rarr; 4% / 8% static</td>
+<td class="num">80% &times; $8k</td>
+<td class="num">33%</td><td class="num">$6,272</td>
+<td class="num">+$1,733</td><td class="num strong">+$1,646</td>
+<td class="num">+$1,398</td><td class="num">4.1&times;</td>
+<td class="num">80%</td><td>medium</td></tr><tr class="c-low">
+<td>Blue Guardian</td><td>2-Step Pro</td>
+<td class="num">$464</td><td>10% / 10% EOD trail &rarr; 10% / 10% EOD trail</td>
+<td class="num">85% &times; $10k</td>
+<td class="num">24%</td><td class="num">$8,330</td>
+<td class="num">+$1,661</td><td class="num strong">+$1,556</td>
+<td class="num">+$597</td><td class="num">3.4&times;</td>
+<td class="num">77%</td><td>low</td></tr><tr class="c-low">
+<td>Maven</td><td>2-Step</td>
+<td class="num">$396</td><td>8% / 8% static &rarr; 5% / 8% static</td>
+<td class="num">80% &times; $8k</td>
+<td class="num">30%</td><td class="num">$6,272</td>
+<td class="num">+$1,573</td><td class="num strong">+$1,490</td>
+<td class="num">+$1,251</td><td class="num">3.8&times;</td>
+<td class="num">79%</td><td>low</td></tr><tr class="c-low">
+<td>Alpha Capital</td><td>Alpha Pro 8%</td>
+<td class="num">$577</td><td>8% / 8% static &rarr; 5% / 8% static</td>
+<td class="num">80% &times; $8k</td>
+<td class="num">30%</td><td class="num">$6,815</td>
+<td class="num">+$1,559</td><td class="num strong">+$1,473</td>
+<td class="num">+$1,222</td><td class="num">2.6&times;</td>
+<td class="num">72%</td><td>low</td></tr><tr class="c-med">
+<td>FundedNext</td><td>Stellar 1-Step</td>
+<td class="num">$570</td><td>10% / 6% static</td>
+<td class="num">90% &times; $6k</td>
+<td class="num">37%</td><td class="num">$5,292</td>
+<td class="num">+$1,449</td><td class="num strong">+$1,374</td>
+<td class="num">+$1,194</td><td class="num">2.4&times;</td>
+<td class="num">71%</td><td>medium</td></tr><tr class="c-med">
+<td>FundingPips</td><td>1-Step</td>
+<td class="num">$555</td><td>10% / 6% static</td>
+<td class="num">80% &times; $6k</td>
+<td class="num">37%</td><td class="num">$5,120</td>
+<td class="num">+$1,395</td><td class="num strong">+$1,326</td>
+<td class="num">+$1,158</td><td class="num">2.4&times;</td>
+<td class="num">70%</td><td>medium</td></tr><tr class="c-med">
+<td>FundingPips</td><td>Zero (instant)</td>
+<td class="num">$499</td><td>instant (no evaluation)</td>
+<td class="num">95% &times; $5k</td>
+<td class="num">100%</td><td class="num">$1,679</td>
+<td class="num">+$1,248</td><td class="num strong">+$1,180</td>
+<td class="num">+$1,113</td><td class="num">2.4&times;</td>
+<td class="num">70%</td><td>medium</td></tr><tr class="c-low">
+<td>E8 Markets</td><td>E8 One (6% DD)</td>
+<td class="num">$464</td><td>9% / 6% EOD trail</td>
+<td class="num">80% &times; $6k</td>
+<td class="num">39%</td><td class="num">$3,920</td>
+<td class="num">+$1,136</td><td class="num strong">+$1,079</td>
+<td class="num">+$514</td><td class="num">2.3&times;</td>
+<td class="num">70%</td><td>low</td></tr><tr class="c-low">
+<td>Goat Funded</td><td>3-Step GOAT</td>
+<td class="num">$365</td><td>6% / 8% static &rarr; 6% / 8% static &rarr; 6% / 8% static</td>
+<td class="num">80% &times; $8k</td>
+<td class="num">18%</td><td class="num">$6,272</td>
+<td class="num">+$829</td><td class="num strong">+$767</td>
+<td class="num">+$598</td><td class="num">2.1&times;</td>
+<td class="num">68%</td><td>low</td></tr><tr class="c-med">
+<td>FundingPips</td><td>2-Step Pro</td>
+<td class="num">$399</td><td>6% / 6% static + consistency &rarr; 6% / 6% static + consistency</td>
+<td class="num">80% &times; $6k</td>
+<td class="num">24%</td><td class="num">$4,704</td>
+<td class="num">+$801</td><td class="num strong">+$726</td>
+<td class="num">+$635</td><td class="num">1.8&times;</td>
+<td class="num">65%</td><td>medium</td></tr><tr class="c-low">
+<td>Maven</td><td>3-Step</td>
+<td class="num">$269</td><td>3% / 3% static &rarr; 3% / 3% static &rarr; 3% / 3% static</td>
+<td class="num">80% &times; $3k</td>
+<td class="num">12%</td><td class="num">$2,352</td>
+<td class="num">+$31</td><td class="num strong">+$14</td>
+<td class="num">+$3</td><td class="num">0.1&times;</td>
+<td class="num">5%</td><td>low</td></tr><tr class="c-low">
+<td>Alpha Capital</td><td>Alpha Three</td>
+<td class="num">$397</td><td>8% / 6% static &rarr; 8% / 6% static &rarr; 8% / 6% static</td>
+<td class="num">80% &times; $6k</td>
+<td class="num">8%</td><td class="num">$4,704</td>
+<td class="num">&minus;$15</td><td class="num strong">&minus;$39</td>
+<td class="num">&minus;$95</td><td class="num">-0.1&times;</td>
+<td class="num">&mdash;</td><td>low</td></tr><tr class="c-med">
+<td>Lucid</td><td>Direct 50K (instant)</td>
+<td class="num">$520</td><td>instant (no evaluation)</td>
+<td class="num">90% &times; $2k</td>
+<td class="num">100%</td><td class="num">$1,458</td>
+<td class="num">+$968</td><td class="num strong">+$938</td>
+<td class="num">+$908</td><td class="num">1.8&times;</td>
+<td class="num">64%</td><td>medium</td></tr><tr class="c-high">
+<td>Apex</td><td>50K EOD</td>
+<td class="num">$58 + $139 act.</td><td>$3k / $2k EOD trail</td>
+<td class="num">100% &times; $2k</td>
+<td class="num">39%</td><td class="num">$1,620</td>
+<td class="num">+$548</td><td class="num strong">+$525</td>
+<td class="num">+$352</td><td class="num">9.0&times;</td>
+<td class="num">90%</td><td>high</td></tr><tr class="c-med">
+<td>Bulenox</td><td>50K Opt.2 (EOD)</td>
+<td class="num">$175/mo + $148 act.</td><td>$3k / $2.5k EOD trail + consistency</td>
+<td class="num">100% &times; $2.5k</td>
+<td class="num">36%</td><td class="num">$2,028</td>
+<td class="num">+$537</td><td class="num strong">+$502</td>
+<td class="num">+$482</td><td class="num">2.9&times;</td>
+<td class="num">74%</td><td>medium</td></tr><tr class="c-med">
+<td>Lucid</td><td>Flex 50K</td>
+<td class="num">$130</td><td>$3k / $2k EOD trail</td>
+<td class="num">90% &times; $2k</td>
+<td class="num">40%</td><td class="num">$1,458</td>
+<td class="num">+$465</td><td class="num strong">+$446</td>
+<td class="num">+$274</td><td class="num">3.4&times;</td>
+<td class="num">77%</td><td>medium</td></tr><tr class="c-med">
+<td>Tradeify</td><td>Growth 50K</td>
+<td class="num">$139</td><td>$3k / $2k EOD trail</td>
+<td class="num">90% &times; $2k</td>
+<td class="num">39%</td><td class="num">$1,458</td>
+<td class="num">+$456</td><td class="num strong">+$435</td>
+<td class="num">+$265</td><td class="num">3.1&times;</td>
+<td class="num">76%</td><td>medium</td></tr><tr class="c-med">
+<td>Tradeify</td><td>Lightning 25K (instant)</td>
+<td class="num">$329</td><td>instant (no evaluation)</td>
+<td class="num">90% &times; $1k</td>
+<td class="num">100%</td><td class="num">$723</td>
+<td class="num">+$409</td><td class="num strong">+$394</td>
+<td class="num">+$379</td><td class="num">1.2&times;</td>
+<td class="num">54%</td><td>medium</td></tr><tr class="c-med">
+<td>Lucid</td><td>Pro 50K</td>
+<td class="num">$185</td><td>$3k / $2k EOD trail</td>
+<td class="num">90% &times; $2k</td>
+<td class="num">39%</td><td class="num">$1,458</td>
+<td class="num">+$410</td><td class="num strong">+$389</td>
+<td class="num">+$219</td><td class="num">2.1&times;</td>
+<td class="num">68%</td><td>medium</td></tr><tr class="c-high">
+<td>Topstep</td><td>Combine 50K (Standard)</td>
+<td class="num">$49/mo + $149 act.</td><td>$3k / $2k EOD trail + consistency</td>
+<td class="num">90% &times; $2k</td>
+<td class="num">32%</td><td class="num">$1,470</td>
+<td class="num">+$392</td><td class="num strong">+$375</td>
+<td class="num">+$316</td><td class="num">7.7&times;</td>
+<td class="num">88%</td><td>high</td></tr><tr class="c-med">
+<td>Topstep</td><td>Combine 50K (No-Activation)</td>
+<td class="num">$109/mo</td><td>$3k / $2k EOD trail + consistency</td>
+<td class="num">90% &times; $2k</td>
+<td class="num">32%</td><td class="num">$1,470</td>
+<td class="num">+$381</td><td class="num strong">+$363</td>
+<td class="num">+$298</td><td class="num">3.3&times;</td>
+<td class="num">77%</td><td>medium</td></tr><tr class="c-med">
+<td>My Funded Futures</td><td>Flex 50K</td>
+<td class="num">$107/mo</td><td>$3k / $2k EOD trail + consistency</td>
+<td class="num">80% &times; $2k</td>
+<td class="num">32%</td><td class="num">$1,296</td>
+<td class="num">+$325</td><td class="num strong">+$309</td>
+<td class="num">+$252</td><td class="num">2.9&times;</td>
+<td class="num">74%</td><td>medium</td></tr><tr class="c-med">
+<td>Tradeify</td><td>Select 50K</td>
+<td class="num">$159</td><td>$3k / $2k EOD trail + consistency</td>
+<td class="num">90% &times; $2k</td>
+<td class="num">29%</td><td class="num">$1,458</td>
+<td class="num">+$288</td><td class="num strong">+$270</td>
+<td class="num">+$245</td><td class="num">1.7&times;</td>
+<td class="num">63%</td><td>medium</td></tr><tr class="c-low">
+<td>The5ers</td><td>Futures Basecamp 50K</td>
+<td class="num">$100</td><td>$3k / $1.5k static</td>
+<td class="num">80% &times; $1.5k</td>
+<td class="num">33%</td><td class="num">$980</td>
+<td class="num">+$233</td><td class="num strong">+$222</td>
+<td class="num">+$202</td><td class="num">2.2&times;</td>
+<td class="num">69%</td><td>low</td></tr><tr class="c-high">
+<td>Apex</td><td>50K Intraday</td>
+<td class="num">$32 + $99 act.</td><td>$3k / $2k intraday trail</td>
+<td class="num">100% &times; $2k</td>
+<td class="num">22%</td><td class="num">$672</td>
+<td class="num">+$102</td><td class="num strong">+$92</td>
+<td class="num">+$86</td><td class="num">2.9&times;</td>
+<td class="num">74%</td><td>high</td></tr><tr class="c-med">
+<td>Bulenox</td><td>50K Opt.1 (intraday)</td>
+<td class="num">$175/mo + $148 act.</td><td>$3k / $2.5k intraday trail</td>
+<td class="num">100% &times; $2.5k</td>
+<td class="num">29%</td><td class="num">$848</td>
+<td class="num">+$47</td><td class="num strong">+$31</td>
+<td class="num">+$21</td><td class="num">0.2&times;</td>
+<td class="num">15%</td><td>medium</td></tr><tr class="c-med">
+<td>Take Profit Trader</td><td>PRO 50K</td>
+<td class="num">$170 + $130 act.</td><td>$3k / $2k EOD trail</td>
+<td class="num">80% &times; $2k</td>
+<td class="num">40%</td><td class="num">$565</td>
+<td class="num">+$13</td><td class="num strong">+$2</td>
+<td class="num">&minus;$53</td><td class="num">0.0&times;</td>
+<td class="num">1%</td><td>medium</td></tr><tr class="c-med">
+<td>My Funded Futures</td><td>Rapid 50K</td>
+<td class="num">$157/mo</td><td>$3k / $2k intraday trail</td>
+<td class="num">90% &times; $2k</td>
+<td class="num">22%</td><td class="num">$604</td>
+<td class="num">&minus;$16</td><td class="num strong">&minus;$26</td>
+<td class="num">&minus;$31</td><td class="num">-0.2&times;</td>
+<td class="num">&mdash;</td><td>medium</td></tr></tbody></table></div>
+  <div class="col stack">
+    <h3>What the ranking says</h3>
+    <ul class="tight">
+      <li><strong>Static 10% drawdown 2-Steps lead in dollars</strong> (FundedNext, FundingPips, The5ers, Alpha Pro 10%, FTMO: +$2,000 to +$2,500). Their contracts are linear, which also makes them the easiest to hedge.</li>
+      <li><strong>FTMO 1-Step comes out top</strong> (+$3,465) because its trailing loss resets with every reward and the split is 90%. Its 50% best-day rule costs only a few points.</li>
+      <li><strong>Futures evaluations return the most per dollar of evaluation fee</strong> (Apex EOD 9&times;, Topstep 7.7&times;) because they are cheap, but they are worth only $300&ndash;$550 each. Activation fees, locks at start + $100 and payout ceilings cap the funded value near $1,500 on a $2,000 budget.</li>
+      <li><strong>Intraday trailing accounts are close to worthless</strong> even with perfect play: Apex intraday +$92, Bulenox option 1 +$31, TPT PRO about $0, MFFU Rapid &minus;$26.</li>
+      <li><strong>3-step programmes are a trap.</strong> Three B/(A+B) factors multiply: Alpha Three &minus;$39, Maven 3-Step +$14.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="col" id="hedging">
+  <span class="eyebrow">Part 5 &middot; Hedging</span>
+  <h2>Hedging between prop firms</h2>
+  <p>Expected value is linear. The expected total of several accounts equals the sum of their expected values, however they are correlated. A hedge cannot create value. If each account is worth +$2,000 on its own, a hedged book is worth exactly the sum. If each is negative, hedging locks in the loss. What a hedge changes is the <em>shape</em> of the outcome.</p>
+  <p>On static-floor accounts that shape becomes flat, because every stage's value is a straight line in its own balance. FTMO 100K, zero costs:</p>
+  <div class="ladder">
+    <div><span class="k">Phase 1 at start</span><span class="v">$2,867</span><span class="s">slope 0.287 per $</span></div>
+    <div><span class="k">Phase 2 at start</span><span class="v">$5,735</span><span class="s">slope 0.573 per $</span></div>
+    <div><span class="k">Funded at start</span><span class="v">$8,602</span><span class="s">slope 0.80 per $</span></div>
+    <div><span class="k">Net of &euro;540 fee</span><span class="v">+$2,235</span><span class="s">per attempt</span></div>
+  </div>
+  <p>A constant opposite position equal to the slope makes the total value constant, and the outcome becomes deterministic. Three versions:</p>
+  <ul class="tight">
+    <li><strong>Two identical Phase-1 accounts, opposite positions.</strong> Target and floor are both $10,000, so exactly one passes every time. Two fees always buy one Phase-2 account, with no personal capital at risk.</li>
+    <li><strong>Different firms.</strong> Size the positions in the ratio of the slopes (FTMO Phase 1 at 0.287 against FundedNext Phase 1 at 0.316 means 1 : 0.91), then rebalance whenever an account crosses a barrier.</li>
+    <li><strong>Your own broker account.</strong> Hold 0.287&times; the opposite exposure during Phase 1, 0.573&times; during Phase 2 and 0.80&times; once funded. You lock in about +$2,235 per attempt minus costs on both legs. The hedge leg needs about $2,900 per challenge account and $8,000 per funded account to absorb its worst move.</li>
+  </ul>
+  <p>Hedging cannot fix a refused payout. In a hedge against your own account, the paths where the prop account wins are exactly the paths where your real account lost. If that payout is denied, the loss is real money, up to $8,000 per funded account, where the unhedged loss would have been the fee. Across firms, a denial forfeits the option value of the pair. FTMO's forbidden-practices page bans "opposite positions" across accounts, including "accounts held with various operators/providers", and the listed consequence is forfeiture of rewards and termination of all agreements. Other firms have similar clauses. So in real life, cross-firm hedging turns a positive-EV lottery into a bet on not being detected. That probability is not something this analysis can estimate.</p>
+</section>
+
+<section class="col" id="reallife">
+  <span class="eyebrow">Part 6 &middot; Real life</span>
+  <h2>Why firms survive a contract that is positive EV for a coin flip</h2>
+  <ul class="tight">
+    <li><strong>The typical customer is far worse than random.</strong> A coin-flipper with wide stops passes FTMO Phase 1 about 46% of the time. Industry estimates put real pass rates near 10&ndash;15%, mostly because high-turnover trading pays &kappa; hundreds of times.</li>
+    <li><strong>Rules remove convexity where it is cheapest to remove</strong>: intraday trailing drawdowns, best-day consistency rules, activation fees, locks at start + $100, payout ladders, six-payout ceilings and "max 50% of balance" withdrawals.</li>
+    <li><strong>Conduct clauses target the optimal play.</strong> FTMO lists "overleveraging, overexposure, one-sided bets, account rolling" and cross-account hedging. Bold play (5% risk, one trade a day, aimed at the target) is exactly that pattern. The 1%-risk version still clears +$1,150 on real data and looks like ordinary trading, though it is still the same zero-skill bet underneath.</li>
+    <li><strong>Payouts are discretionary.</strong> Funded accounts are simulated, and payouts are "rewards" the firm may refuse under its terms.</li>
+    <li><strong>Firms fail.</strong> True Forex Funds closed in May 2024 owing about $1.2M. The Funded Trader admitted to more than $2M in denied payouts. MyForexFunds was shut down by a CFTC action in 2023; the case later collapsed, and pre-2023 customers were never made whole. Roughly 80&ndash;100 firms closed in 2024&ndash;25, many after MetaQuotes revoked their platform licences.</li>
+    <li><strong>Hard caps limit scale.</strong> One verified identity per person, $400K allocation at FTMO, 5 funded accounts at Topstep, 20 at Apex. Using other people's identities is fraud under every firm's terms.</li>
+  </ul>
+</section>
+
+<section class="col" id="method">
+  <span class="eyebrow">Method &amp; sources</span>
+  <h2>How these numbers were made</h2>
+  <p>Evaluation phases are solved by value iteration over (balance, end-of-day high) states with two-point daily brackets, a daily loss limit, best-day caps and a cost drift of &kappa;&middot;&radic;(<var>w</var><var>l</var>). Intraday trails use the exponential-peak result. Funded values use the withdrawal identity with lock levels and payout caps. Real-data runs use yfinance hourly EURUSD. Rule sets are mid-2026 snapshots and change often, especially promo prices. Rows marked &dagger; have a phase-2 target or funded terms inferred rather than published.</p>
+  <p class="note">Sources: <a href="https://ftmo.com/en/trading-objectives/">FTMO trading objectives</a>, <a href="https://ftmo.com/en/forbidden-trading-practices/">FTMO forbidden practices</a>, <a href="https://ftmo.com/en/1-step-challenge/">FTMO 1-Step</a>, <a href="https://help.topstep.com/en/articles/8284215-express-funded-account-parameters">Topstep XFA parameters</a>, <a href="https://proptradingvibes.com/blog/topstep-pricing-breakdown">Topstep pricing</a>, <a href="https://propfirmsfinder.com/">PropFirmsFinder program pages</a> (FTMO, Topstep, Apex, The5ers, FundedNext, FundingPips, E8, Alpha Capital, Blue Guardian, Maven, Goat, Tradeify, Lucid, TPT, MFFU, Bulenox), <a href="https://thepropjournalist.com/reviews/apex-trader-funding/">Apex payout caps</a>, <a href="https://traderssecondbrain.com/guides/apex-trader-funding-review">Apex PA rules</a>, <a href="https://tradetanto.com/learn/tradeify-rules-explained-what-every-trader-should-know">Tradeify rules</a>, <a href="https://proptradingvibes.com/blog/lucid-trading-payout-rules">Lucid payout rules</a>, <a href="https://tradetanto.com/learn/take-profit-trader-rules-what-you-need-to-know">Take Profit Trader rules</a>, <a href="https://tradetanto.com/learn/fundednext-rules-a-complete-guide-for-cfd-traders">FundedNext rules</a>, <a href="https://thepropfirmguide.com/compare-firms/">57-firm comparison</a>, <a href="https://traderssecondbrain.com/guides/prop-firm-pass-rate">pass-rate estimates</a>, <a href="https://www.tradernotion.com/blog/prop-firms-that-shut-down-in-2023-2026">prop firm shutdowns</a>, <a href="https://fxnewsgroup.com/forex-news/retail-forex/exclusive-prop-trading-firm-true-forex-funds-shut-down-by-metaquotes-move/">True Forex Funds closure</a>.</p>
+</section>
+</div>

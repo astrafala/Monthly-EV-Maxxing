@@ -1,0 +1,16 @@
+import time
+from engine import *
+t=time.time()
+print("FTMO P1 static k=0:", eval_pass_prob(10000,10000,dll=5000,kappa=0))
+print("FTMO P2 static k=0:", eval_pass_prob(5000,10000,dll=5000,kappa=0))
+print("FTMO P1 static k=1%:", eval_pass_prob(10000,10000,dll=5000,kappa=0.01))
+print("FTMO P2 static k=1%:", eval_pass_prob(5000,10000,dll=5000,kappa=0.01))
+print("FTMO P1 static k=1%, max 1% risk/2% win:", eval_pass_prob(10000,10000,dll=5000,kappa=0.01,max_loss_bet=1000,max_win_bet=2000,g=250))
+print(time.time()-t)
+t=time.time()
+print("EOD 3000/2000 k=0:", eval_pass_prob(3000,2000,trailing=True,kappa=0,g=100))
+print("EOD 3000/2000 cap1500 k=0:", eval_pass_prob(3000,2000,trailing=True,daily_cap=1500,kappa=0,g=100))
+print("EOD 3000/2000 cap1500 k=1%:", eval_pass_prob(3000,2000,trailing=True,daily_cap=1500,kappa=0.01,g=100))
+print("EOD 3000/2000 dll1000 k=0:", eval_pass_prob(3000,2000,trailing=True,dll=1000,kappa=0,g=100))
+print(time.time()-t)
+print("intraday exp:", intraday_trailing_pass_prob(3000,2000))

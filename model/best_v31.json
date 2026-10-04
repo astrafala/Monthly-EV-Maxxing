@@ -1,0 +1,211 @@
+[
+{
+"kind": "cfd",
+"firm": "FTMO 2-Step",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 10000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "FTMO 1-Step",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 10000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "FundingPips 2-Step Flex (85%)",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 12000,
+"X": 12000
+},
+{
+"kind": "cfd",
+"firm": "FundingPips 2-Step (on-demand 90%)",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 10000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "FundingPips 2-Step (bi-weekly 80%)",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 10000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "FundingPips 2-Step (monthly 100%)",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 10000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "FundedNext Stellar 2-Step",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 10000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "The5ers High Stakes",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 10000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "Alpha Capital Pro 10%",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 10000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "FXIFY Two-Phase",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 10000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "GFT 2-Step Standard",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 7000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "BrightFunded 2-Step Classic",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 10000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "Blue Guardian 2-Step",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 10000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "FunderPro Classic",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 10000,
+"X": 10000
+},
+{
+"kind": "cfd",
+"firm": "Maven 2-Step",
+"size": 100000,
+"instr": "US100",
+"m": 0.75,
+"k": 5,
+"L": 1500,
+"X1": 8000,
+"X": 8000
+},
+{
+"kind": "fut",
+"firm": "Topstep 50K",
+"size": 50000,
+"instr": "MNQ_fut",
+"m": 0.75,
+"k": 5,
+"L": 950,
+"X1": 0,
+"X": 0
+},
+{
+"kind": "fut",
+"firm": "Lucid Flex 50K",
+"size": 50000,
+"instr": "MNQ_fut",
+"m": 0.75,
+"k": 5,
+"L": 800,
+"X1": 0,
+"X": 0
+},
+{
+"kind": "fut",
+"firm": "Tradeify Select 50K",
+"size": 50000,
+"instr": "MNQ_fut",
+"m": 0.75,
+"k": 5,
+"L": 950,
+"X1": 0,
+"X": 0
+},
+{
+"kind": "fut",
+"firm": "Apex 50K EOD",
+"size": 50000,
+"instr": "MNQ_fut",
+"m": 0.5,
+"k": 2,
+"L": 950,
+"X1": 0,
+"X": 0
+}
+]

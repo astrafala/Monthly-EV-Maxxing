@@ -1,0 +1,163 @@
+
+<!-- 17 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 17 &middot; new in versions 3&ndash;4</span>
+  <h1>Every trade resolved on a price path</h1>
+  <p>Version 2 modelled each account with a calendar and the firm's rules, but drew each trade's outcome and duration from distributions measured once on real data. From version 3 on, every trade is opened at a real hour, its stop and target are checked bar by bar against an hourly price path, and the firm's rules (daily loss, floors, minimum days, profitable days, payout dates, caps, refunds) are applied around it. Version 4 adds a lockstep engine: all of one person's accounts run on one price path and one calendar at the same time, so the rule that no two accounts may hold opposite positions is enforced trade by trade.</p>
+  <h2>17.1 Two kinds of price path</h2>
+  <table>
+    <thead><tr><th>Path</th><th>What it is</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Synthetic</strong></td><td>A random walk with exactly zero edge, the Nasdaq's real hourly volatility, 12 years long, markets closed at weekends. Highs and lows inside each hour are drawn from the exact distribution of a continuous path (a "Brownian bridge"), so stops are monitored as real stop orders are. Eight independent paths are used for the portfolio results.</td><td>All headline figures. A zero-skill trader can do no better or worse than this, on average.</td></tr>
+      <tr><td><strong>Real</strong></td><td>Hourly Nasdaq-100 bars, 2024&ndash;26, with measured spreads and overnight financing.</td><td>A check. One two-year path carries its own trends, so real-path figures scatter around the synthetic ones.</td></tr>
+    </tbody>
+  </table>
+  <h2>17.2 Checks that the engine is fair</h2>
+  <table>
+    <thead><tr><th>Check (synthetic path, no costs unless stated)</th><th class="n">Theory</th><th class="n">Engine</th></tr></thead>
+    <tbody>
+      <tr><td>Win rate of a 1 : 1 bracket</td><td class="n">50.0%</td><td class="n">49.98%</td></tr>
+      <tr><td>Win rate of a 1 : 2 bracket</td><td class="n">33.3%</td><td class="n">33.4%</td></tr>
+      <tr><td>Average result of a 1 : 3 bracket, in units of risk</td><td class="n">0</td><td class="n">+0.013 &plusmn; 0.020</td></tr>
+      <tr><td>FTMO Phase 1 pass rate, one position at a time</td><td class="n">49.6%</td><td class="n">49.2%</td></tr>
+      <tr><td>FTMO Phase 1 pass rate, four positions at a time (combined target capped)</td><td class="n">49.6%</td><td class="n">49.9%</td></tr>
+      <tr><td>The5ers Phase 1 / Phase 2 pass rate with the profitable-days rule (with costs)</td><td class="n">&lt; 50% / &lt; 66.7%</td><td class="n">46.6% / 63.3%</td></tr>
+      <tr><td>Opposite positions between a person's accounts, lockstep engine</td><td class="n">0</td><td class="n">0 in {{LIVES}} simulated years</td></tr>
+    </tbody>
+  </table>
+  <h2>17.3 Traps found on the way</h2>
+  <p>Each of these made a simulation look better than reality. All are fixed in every figure of version 4, and each is a trap for anyone writing their own test.</p>
+  <ol>
+    <li><strong>Skipping the entry bar.</strong> Checking the stop and target only from the next hour onwards gave a zero-skill 1 : 3 trade a fake +0.14 R.</li>
+    <li><strong>Checking the price too rarely.</strong> Sampling 12 times an hour misses stop touches in between: a fake +0.11 R.</li>
+    <li><strong>Overshooting the target with several positions.</strong> Profit beyond a target is wasted pass probability (Chapter 18).</li>
+    <li><strong>A take-profit equal to the distance left.</strong> The cost turns the last "win" into a loss; the target must be the distance left plus the cost.</li>
+    <li><strong>Ignoring gaps against the daily limit.</strong> A price gap can push a loss past the stop and through the daily loss limit. Version 4 fails the account when that happens.</li>
+    <li><strong>Holding where the plan says flat.</strong> The plan is flat at weekends on every account, evaluation included, and futures firms forbid overnight positions. Version 4 enforces both.</li>
+    <li><strong>Padding "profitable days" with tiny trades.</strong> The5ers counts only days with at least +0.5% profit and forbids constructing them artificially. Version 3 had padded them with tiny trades; that overstated The5ers by about a third. Version 4 uses a daily profit target with full risk on every trade (Section 26.4).</li>
+    <li><strong>Letting a big win break a best-day rule.</strong> On funded accounts with a consistency rule, the take-profit is now capped so that one day can never exceed the limit.</li>
+  </ol>
+  <h2>17.4 How the figure for one FTMO account moved</h2>
+  {{V2V4_TABLE}}
+</section>
+
+<!-- 18 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 18 &middot; new in version 3</span>
+  <h1>Many positions at once</h1>
+  <p>The idea: instead of one trade at a time on one instrument, open several at once (Nasdaq and S&amp;P 500, or many pairs), so the account reaches its target or floor sooner. This chapter works out what that can and cannot do, then tests every variant on price paths.</p>
+  <h2>18.1 Three facts</h2>
+  <ol>
+    <li><strong>The pass chance does not change.</strong> A fair game stays fair however many bets run at once, so a phase still passes with probability B &divide; (A + B). That holds only if profit beyond the target is not wasted (18.3).</li>
+    <li><strong>Correlated positions in the same direction are one bigger bet.</strong> Two positions risking L<sub>1</sub> and L<sub>2</sub> on instruments with correlation &rho; carry the risk of a single position of
+      <span class="mono">&radic;(L<sub>1</sub><sup>2</sup> + L<sub>2</sub><sup>2</sup> + 2&rho;L<sub>1</sub>L<sub>2</sub>)</span>.
+      Nasdaq and S&amp;P 500 move together with &rho; &asymp; 0.9, so 1.5% on each is about 2.9% on one idea. That is twice FTMO's 1&ndash;1.5% guidance on what is really one trade, and FundedNext lists "concentrated directional exposure" and several trades in the same direction as prohibited one-sided betting. It also costs more than a single Nasdaq position of the same size, because the S&amp;P CFD costs about twice as much per unit of movement (Chapter 9).</li>
+    <li><strong>Independent positions add speed, but the calendar does not move.</strong> Two independent positions double the rate at which the balance moves, so trading time halves. But an attempt also contains minimum trading days, account reviews and payout dates, which no amount of trading shortens.</li>
+  </ol>
+  <h2>18.2 Results</h2>
+  {{MULTI_TABLE}}
+  <p>Read the table in three groups.</p>
+  <ul>
+    <li><strong>Same total risk, split across correlated instruments</strong> (Nasdaq + S&amp;P at 0.75% each): 28% worse than one Nasdaq position at 1.5%. The risk is the same, so there is no speed gain, and the spread is paid twice.</li>
+    <li><strong>Twice the risk, via a correlated second position</strong> (1.5% each): 12% better than one 1.5% position, but 11% worse than simply trading one Nasdaq position at 3%. Stacking is the expensive way to take a bigger bet, and either way the bet exceeds the guidance.</li>
+    <li><strong>Independent instruments</strong> (gold, yen, euro next to the Nasdaq): worse, because every other instrument costs two to three times more per unit of movement. Even an imaginary second Nasdaq with independent prices and identical costs adds only 1&ndash;4%, within the noise, because the calendar dominates.</li>
+  </ul>
+  <h2>18.3 The overshoot trap</h2>
+  <p>With several positions open, the target can be crossed by more than one of them. Profit beyond the target is pass probability thrown away: by optional stopping, P(pass) = (B + overshoot at the floor) &divide; (A + B + overshoot at the target + overshoot at the floor). Four uncapped positions (no costs) passed Phase 1 only 43% of the time, against the theoretical 49.6%, because the average balance at a pass was +$13,665 rather than +$10,000. Capping the <em>combined</em> target of all open positions at the distance left restored 49.9%.</p>
+  <div class="box key"><h4>Verdict</h4>
+  <p style="margin:0">One position at a time, on the cheapest instrument per unit of movement, at the top of the firm's guidance. More positions help only if a second instrument is as cheap as the Nasdaq and independent of it, and none is. The way to grow income is more accounts, not more positions per account (Chapter 21).</p></div>
+</section>
+
+<!-- 19 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 19 &middot; new in versions 3&ndash;4</span>
+  <h1>Account size, account type and the settings that matter</h1>
+  <h2>19.1 50K, 100K or 200K</h2>
+  {{SIZE_TABLE}}
+  <p>The value of an account is proportional to its loss allowance, and so is everything else, including the risk per trade. What differs is the fee per dollar of allowance: FTMO charges about 0.63% of the account size for 100K and 200K, but 0.81% for 50K. So, per dollar of the $400,000 cap, two 200K accounts and four 100K accounts are worth about the same, and 50K accounts less. Four 100K accounts can be started at different times; two 200K accounts mean fewer logins and orders.</p>
+  <h2>19.2 1-Step or 2-Step</h2>
+  <p>FTMO's 1-Step (one 10% target, 90% split, but a 3% daily limit, an end-of-day trailing floor and a 50% best-day rule) gives {{FTMO1}} per month per slot, against {{FTMO2}} for the 2-Step. The best-day rule forces profits to be spread over several days, and the trailing floor shrinks the allowance after good days. The 2-Step is better for this plan.</p>
+  <h2>19.3 The settings, one at a time</h2>
+  <p>FTMO 2-Step 100K, synthetic paths, zero edge, 10,000 attempts per row. Each row changes one setting from the plan: stop 0.75 hourly moves, 1 : 5, risk 1.5%, funded cycles of +10%.</p>
+  {{SENS_TABLE}}
+  <h2>19.4 Why 1 : 5</h2>
+  <p>Trades per phase fall in proportion to the reward-to-risk ratio k (A &times; B &divide; k L<sup>2</sup>), and so does the spread paid. Time per trade rises in proportion to k, so the time per phase barely changes. The gain flattens between 1 : 5 and 1 : 8 because near a target most trades are capped at the distance left anyway; on the real 2024&ndash;26 path the best was 1 : 4 to 1 : 5. The plan uses 1 : 5.</p>
+  <p>The price of 1 : 5 is psychological. Only about one trade in six wins. A run of ten losses in a row has a probability of about (5/6)<sup>10</sup> &asymp; 16% at any given point and will happen many times a year. Nothing is wrong when it does.</p>
+  <h2>19.5 Funded accounts: run cycles of the full allowance</h2>
+  <p>With zero edge, the total paid out by a funded account averages the split times its loss allowance, whatever the payout policy (Chapter 5). What the policy changes is time. A small first target (+$1,000) reaches the first payout safely, but then the account sits idle waiting for the date. Aiming for +10% (+12% on a 12% allowance) in every cycle finishes accounts sooner and recycles the slot into a new attempt. At FTMO: {{X_GAIN}}.</p>
+  <h2>19.6 If your costs are higher</h2>
+  {{COST_TABLE}}
+  <p>The plan tolerates moderate cost differences between firms: half again the measured Nasdaq cost loses 4&ndash;11% of the value, double the cost 12&ndash;19%. Measure each firm's spread before you start (Section 25.3).</p>
+</section>
+
+<!-- 20 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 20 &middot; new in versions 3&ndash;4</span>
+  <h1>Every firm, compared on the same paths</h1>
+  <p>Each programme was run with the plan of Part 2 (Nasdaq, stop 0.75 hourly moves, 1 : 5, risk 1.5% of the account; for futures, the best of a grid), 24,000 attempts on synthetic paths and 8,000 on the real path. Rules and prices were checked in October 2026 (Appendix D).</p>
+  <h2>20.1 CFD programmes (100K accounts)</h2>
+  {{CFD_TABLE}}
+  <p>Most CFD programmes fall between {{CFD_LO}} and {{CFD_HI}} per month per slot, with about &plusmn;$170 of simulation noise each; the real path agrees within its noise. The best product found is <strong>FundingPips 2-Step Flex with the 95% split</strong>: a 12% static loss allowance instead of 10%, for a lower fee, and 95% of profits in exchange for three profitable days (at least +0.5%) in each two-week payout cycle. What separates the rest is mostly how long each step takes and side rules: GFT caps funded profit at $3,000 a day, BrightFunded pays first after 30 days, FundedNext pays 15% of challenge profits with the first payout but waits 21 days for it, Maven caps payouts at $10,000 per 30 days per person.</p>
+  <h2>20.2 Trading gold instead of the Nasdaq</h2>
+  {{GOLD_TABLE}}
+  <p>Where a firm's rules make copied or duplicated trades risky (Chapter 23), its one account can trade gold instead, independently of the Nasdaq accounts. Gold costs about 8% of the value; EURUSD would cost about 40%.</p>
+  <h2>20.3 Futures firms (50K accounts, micro Nasdaq futures)</h2>
+  {{FUT_TABLE}}
+  <p>Futures programmes are much weaker for this plan. Their loss allowance is small ($2,000 on 50K, against $10,000 on a 100K CFD account), it trails the balance, it locks just above the starting balance, and payouts need five qualifying days and are capped at about half the profit. Topstep is the only one clearly positive, and only just; running it at full speed means dozens of failed Combines a month (Chapter 21). Apex at its $490 list price loses money: {{APEX_NOTE}} The plan leaves futures out.</p>
+  <h2>20.4 Crypto programmes</h2>
+  <p>Unchanged from Chapter 9: 24/7 trading does not compensate for crypto's cost per unit of movement, which is 5&ndash;10 times the Nasdaq's.</p>
+</section>
+
+<!-- 21 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 21 &middot; rewritten in version 4</span>
+  <h1>The maximum per person</h1>
+  <p>Every firm limits how much it allocates to one person, and several limit how many of their accounts may carry the same trades. Within those limits the plan can run in parallel at many firms. This chapter adds it up with the lockstep engine: all accounts on one price path, one calendar, one shared direction.</p>
+  <h2>21.1 Caps and copying rules</h2>
+  {{CAPS_TABLE}}
+  <h2>21.2 Four ways to run it</h2>
+  {{PORTF_TABLE}}
+  <p>"Steady month" is the average month once every slot is running (months 3&ndash;12); "first year" averages all twelve months including the slow start. "Cash low" is the lowest point of cumulative cash (fees paid minus payouts received). All figures assume zero skill and that every payout is honoured. The real 2024&ndash;26 path, run the same way, gave {{REAL_NOTE}}.</p>
+  <h2>21.3 Why accounts move together, and what it costs</h2>
+  <p>No two of your accounts may hold opposite positions at the same time; at most firms that is hedging, and FTMO also forbids it across firms. So every Nasdaq account trades the same direction at the same time, and their results move together: in a bad week every account loses at once, and funded accounts tend to pass and fail in batches. That is why the cash low points above are large and why the first months are usually negative. Expected value is unaffected by moving together; only the spread of outcomes is.</p>
+  <h2>21.4 Failed accounts per firm</h2>
+  <p>A zero-skill plan fails most of its accounts quickly, and every failed evaluation is replaced at once. FundedNext lists "multiple account breaches quickly" and "losses exceeding gains" among the signs of the gambling behaviour it prohibits, and FTMO monitors "account rolling". Running four accounts at one firm means about ten failed accounts a month at that firm:</p>
+  {{BREACH_TABLE}}
+  <p>One account per firm keeps every firm at about two failed accounts a month, which is what any losing trader produces. That is why Part 2 recommends one account per firm as the default and treats more as a deliberate choice.</p>
+  <div class="box warn"><h4>Read this before the totals</h4>
+  <p style="margin:0">These are expected values under three assumptions: zero skill, every firm pays every payout, and no firm changes its rules. Payouts are discretionary. Running the same short, systematic trades on many accounts at eleven firms is exactly what risk teams review. One refusal usually closes the account and bars the person. Several prop firms have failed or stopped paying since 2023. The totals are an upper limit of what the contracts are worth, not a forecast of income.</p></div>
+  <h2>21.5 Starting firm by firm</h2>
+  <p>Opening everything on day one maximises the first year but needs the most cash. Adding firms month by month, from payouts already received, lowers the cash low point sharply:</p>
+  {{STAGED_TABLE}}
+  <h2>21.6 If evaluations were not capped</h2>
+  <p>FundedNext and BrightFunded cap funded accounts but not evaluations. Extra evaluations could in principle keep every funded slot full; a FundedNext funded slot is then worth about {{UNCAPPED}} per month instead of about {{CAPPED}}. In practice the extra evaluations would move together (same direction), pass in batches that cannot all be funded, and multiply failed accounts. The plan does not use this.</p>
+</section>
+
+<!-- 22 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 22 &middot; new in versions 3&ndash;4</span>
+  <h1>Direction rules, and what one price history can tell you</h1>
+  <p>The plan assumes no skill, so the direction of each trade does not affect expected value as long as the rule is not systematically wrong. Version 2 used a random choice. The plan now uses a written mechanical rule instead (Section 26.3): a risk team can recognise it as a trading plan, while FTMO lists "trading without a plan" under the gambling it monitors. Four rules on the real 2024&ndash;26 Nasdaq path:</p>
+  {{DIR_TABLE}}
+  <p>The spread is large: from half to one and a half times the random baseline. To see whether any of it is real, the 5-hour trend rule and the random rule were run on eight independent synthetic paths, where by construction no rule can have an edge:</p>
+  {{DIR_PATHS}}
+  <p>The difference averages {{DIR_MEAN}} per month, indistinguishable from zero, while individual paths swing from {{DIR_MIN}} to {{DIR_MAX}}. A deterministic rule ties results more tightly to whatever the market happens to do, without raising the expected value. One price history can make any rule look good or bad.</p>
+  <div class="box key"><h4>What to do with this</h4>
+  <p style="margin:0">Pick one simple rule, write it down, apply it identically on every account, and plan on the zero-edge figures. If after several hundred trades your rule's full-size win rate at 1 : 5 is clearly above 1 in 6 after costs, that is the first evidence of an edge; until then there is none.</p></div>
+</section>
+
+<!-- 23 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 23 &middot; new in version 4</span>
+  <h1>Rule audit: every firm, every rule that touches the plan</h1>
+  <p>Each firm's published prohibited practices and account rules were checked against the plan of Part 2 (October 2026). "Plan" says how the plan meets the rule; a mark of "check" means the rule could not be confirmed from a reliable source and should be confirmed with the firm in writing before buying.</p>
+  {{AUDIT_TABLE}}
+  <h2>23.1 What could still close an account</h2>
+  <ul>
+    <li><strong>Discretion.</strong> Every firm reserves the right to refuse payouts and close accounts for behaviour it judges to be gambling or not like real trading. A zero-skill plan has losses roughly equal to gains and many quick failures, which are listed signs at FundedNext. Following every written rule lowers this risk; it cannot remove it.</li>
+    <li><strong>Rule changes.</strong> Several rules above changed during 2026 (FundingPips risk per trade, weekend rules; Apex's whole model). Re-read the terms before every purchase.</li>
+    <li><strong>Firm failure.</strong> Payouts depend on the firm staying solvent and willing to pay.</li>
+  </ul>
+  <div class="box warn"><h4>Do not share or sell this plan</h4>
+  <p style="margin:0">If several people trade the same written rules, their accounts produce the same trades at the same moments. FTMO calls that group or copy trading, FundedNext monitors synchronized entries across traders, Alpha Capital calls it group trading, FXIFY prohibits herd trading, and GFT closes accounts that use "any third-party strategy ... or one marketed to pass assessment accounts". A plan like this works, in so far as it works at all, only for one person trading it privately. Selling it would also mean selling expectations that depend on discretionary payouts and zero-edge maths, not on any trading skill.</p></div>
+</section>

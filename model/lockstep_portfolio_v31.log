@@ -1,0 +1,80 @@
+== FTMO only (4 x 100K) [synth] lives=200 conflicts=0
+   mean monthly cash: [-2705.0, 16702.0, 17807.0, 20416.0, 18958.0, 16933.0, 14990.0, 17006.0, 15362.0, 17584.0, 16553.0, 18716.0]
+   EV/month (12-mo avg) 15694, months 3-12 avg 17433
+   P(ahead) 1/2/3/6/12 m: [0.21, 0.61, 0.79, 0.89, 0.95]
+   12m cash p05/p50/p95: [2344.0, 192806.0, 338398.0]
+   trough p50/p05: [-12640.0, -53131.0]
+   breaches per firm per month: {'FTMO 2-Step': 9.9}
+   order tickets per trading day mean 17.9 (p90 29.3); distinct entry times per day 4.6
+== FTMO only (4 x 100K) [real] lives=40 conflicts=0
+   mean monthly cash: [2724.0, 28311.0, 30699.0, 21778.0, 30989.0, 31953.0, 33205.0, 24883.0, 26942.0, 15513.0, 13003.0, 13103.0]
+   EV/month (12-mo avg) 22759, months 3-12 avg 24207
+   P(ahead) 1/2/3/6/12 m: [0.25, 0.8, 0.95, 1.0, 1.0]
+   12m cash p05/p50/p95: [217504.0, 269778.0, 361008.0]
+   trough p50/p05: [-5056.0, -17949.0]
+   breaches per firm per month: {'FTMO 2-Step': 6.2}
+   order tickets per trading day mean 12.2 (p90 20.3); distinct entry times per day 3.5
+== One account per firm (11 firms) [synth] lives=200 conflicts=0
+   mean monthly cash: [-7099.0, 40605.0, 48697.0, 51482.0, 53333.0, 47825.0, 44465.0, 49935.0, 48013.0, 47000.0, 49262.0, 48778.0]
+   EV/month (12-mo avg) 43525, months 3-12 avg 48879
+   P(ahead) 1/2/3/6/12 m: [0.3, 0.64, 0.87, 0.98, 1.0]
+   12m cash p05/p50/p95: [308534.0, 510619.0, 746489.0]
+   trough p50/p05: [-22758.0, -53239.0]
+   breaches per firm per month: {'FTMO 2-Step': 2.4, 'FundedNext Stellar 2-Step': 2.2, 'Alpha Capital Pro 10%': 2.6, 'FXIFY Two-Phase': 2.9, 'GFT 2-Step Standard': 2.2, 'BrightFunded 2-Step Classic': 2.1, 'Blue Guardian 2-Step': 3.0, 'FunderPro Classic': 2.9, 'FundingPips 2-Step Flex (95%)': 2.1, 'Maven 2-Step': 2.3, 'The5ers High Stakes': 2.2}
+   order tickets per trading day mean 27.7 (p90 50.6); distinct entry times per day 6.7
+== One account per firm (11 firms) [real] lives=40 conflicts=0
+   mean monthly cash: [-3802.0, 52504.0, 53160.0, 40889.0, 56749.0, 68506.0, 69884.0, 64148.0, 66941.0, 46765.0, 49636.0, 28750.0]
+   EV/month (12-mo avg) 49511, months 3-12 avg 54543
+   P(ahead) 1/2/3/6/12 m: [0.35, 0.57, 0.75, 1.0, 1.0]
+   12m cash p05/p50/p95: [476040.0, 555179.0, 769509.0]
+   trough p50/p05: [-13942.0, -37836.0]
+   breaches per firm per month: {'FTMO 2-Step': 1.5, 'FundedNext Stellar 2-Step': 1.7, 'Alpha Capital Pro 10%': 1.8, 'FXIFY Two-Phase': 1.9, 'GFT 2-Step Standard': 1.2, 'BrightFunded 2-Step Classic': 1.5, 'Blue Guardian 2-Step': 2.4, 'FunderPro Classic': 1.9, 'FundingPips 2-Step Flex (95%)': 1.4, 'Maven 2-Step': 1.8, 'The5ers High Stakes': 1.8}
+   order tickets per trading day mean 22.1 (p90 42.5); distinct entry times per day 5.2
+== At most two per firm (17 accounts) [synth] lives=200 conflicts=0
+   mean monthly cash: [-10583.0, 61861.0, 76424.0, 80849.0, 83757.0, 78387.0, 71678.0, 80116.0, 74566.0, 72073.0, 74188.0, 76513.0]
+   EV/month (12-mo avg) 68319, months 3-12 avg 76855
+   P(ahead) 1/2/3/6/12 m: [0.32, 0.66, 0.86, 0.98, 1.0]
+   12m cash p05/p50/p95: [455082.0, 809376.0, 1215173.0]
+   trough p50/p05: [-35084.0, -83269.0]
+   breaches per firm per month: {'FTMO 2-Step': 4.8, 'Alpha Capital Pro 10%': 5.2, 'BrightFunded 2-Step Classic': 4.2, 'Blue Guardian 2-Step': 6.1, 'FunderPro Classic': 5.9, 'FundedNext Stellar 2-Step': 2.1, 'FXIFY Two-Phase': 2.9, 'GFT 2-Step Standard': 2.2, 'FundingPips 2-Step Flex (95%)': 4.3, 'Maven 2-Step': 2.3, 'The5ers High Stakes': 2.1}
+   order tickets per trading day mean 43.1 (p90 79.2); distinct entry times per day 6.8
+== At most two per firm (17 accounts) [real] lives=40 conflicts=0
+   mean monthly cash: [-5371.0, 80161.0, 87939.0, 58757.0, 83990.0, 108641.0, 118799.0, 105092.0, 110563.0, 70147.0, 68948.0, 40003.0]
+   EV/month (12-mo avg) 77306, months 3-12 avg 85288
+   P(ahead) 1/2/3/6/12 m: [0.35, 0.62, 0.78, 1.0, 1.0]
+   12m cash p05/p50/p95: [743321.0, 906714.0, 1179121.0]
+   trough p50/p05: [-21740.0, -66338.0]
+   breaches per firm per month: {'FTMO 2-Step': 2.9, 'Alpha Capital Pro 10%': 3.5, 'BrightFunded 2-Step Classic': 3.0, 'Blue Guardian 2-Step': 5.0, 'FunderPro Classic': 3.7, 'FundedNext Stellar 2-Step': 1.7, 'FXIFY Two-Phase': 2.0, 'GFT 2-Step Standard': 1.2, 'FundingPips 2-Step Flex (95%)': 2.9, 'Maven 2-Step': 1.8, 'The5ers High Stakes': 1.7}
+   order tickets per trading day mean 34.3 (p90 66.4); distinct entry times per day 5.4
+== Full caps, rules-strict (26 accounts) [synth] lives=200 conflicts=0
+   mean monthly cash: [-16709.0, 95220.0, 115411.0, 124368.0, 130497.0, 124115.0, 114694.0, 127373.0, 110853.0, 114863.0, 115760.0, 119108.0]
+   EV/month (12-mo avg) 106296, months 3-12 avg 119704
+   P(ahead) 1/2/3/6/12 m: [0.32, 0.65, 0.84, 0.98, 1.0]
+   12m cash p05/p50/p95: [743939.0, 1276792.0, 1847062.0]
+   trough p50/p05: [-55137.0, -133623.0]
+   breaches per firm per month: {'FTMO 2-Step': 9.6, 'Alpha Capital Pro 10%': 7.8, 'BrightFunded 2-Step Classic': 8.4, 'Blue Guardian 2-Step': 12.1, 'FunderPro Classic': 5.9, 'FundedNext Stellar 2-Step': 2.2, 'FXIFY Two-Phase': 2.9, 'GFT 2-Step Standard': 2.2, 'FundingPips 2-Step Flex (95%)': 8.6, 'Maven 2-Step': 2.3, 'The5ers High Stakes': 2.2}
+   order tickets per trading day mean 64.7 (p90 121.0); distinct entry times per day 6.9
+== Full caps, rules-strict (26 accounts) [real] lives=40 conflicts=0
+   mean monthly cash: [-6574.0, 125075.0, 136456.0, 95462.0, 139070.0, 167742.0, 180794.0, 156441.0, 165962.0, 100156.0, 110670.0, 78721.0]
+   EV/month (12-mo avg) 120831, months 3-12 avg 133147
+   P(ahead) 1/2/3/6/12 m: [0.35, 0.62, 0.8, 1.0, 1.0]
+   12m cash p05/p50/p95: [1079342.0, 1409777.0, 2021778.0]
+   trough p50/p05: [-32719.0, -92721.0]
+   breaches per firm per month: {'FTMO 2-Step': 5.8, 'Alpha Capital Pro 10%': 5.2, 'BrightFunded 2-Step Classic': 5.9, 'Blue Guardian 2-Step': 9.8, 'FunderPro Classic': 3.7, 'FundedNext Stellar 2-Step': 1.7, 'FXIFY Two-Phase': 2.0, 'GFT 2-Step Standard': 1.2, 'FundingPips 2-Step Flex (95%)': 5.8, 'Maven 2-Step': 1.8, 'The5ers High Stakes': 1.7}
+   order tickets per trading day mean 51.2 (p90 99.7); distinct entry times per day 5.5
+== Full caps, staged start [synth] lives=200 conflicts=0
+   mean monthly cash: [-5192.0, 18284.0, 40259.0, 55996.0, 113466.0, 115287.0, 110729.0, 124943.0, 116415.0, 111808.0, 115865.0, 116870.0]
+   EV/month (12-mo avg) 86228, months 3-12 avg 102164
+   P(ahead) 1/2/3/6/12 m: [0.21, 0.61, 0.69, 0.97, 1.0]
+   12m cash p05/p50/p95: [491875.0, 1036978.0, 1513119.0]
+   trough p50/p05: [-21165.0, -91483.0]
+   breaches per firm per month: {'FTMO 2-Step': 9.7, 'FundingPips 2-Step Flex (95%)': 7.8, 'The5ers High Stakes': 2.0, 'FundedNext Stellar 2-Step': 1.7, 'Alpha Capital Pro 10%': 6.5, 'Blue Guardian 2-Step': 9.2, 'BrightFunded 2-Step Classic': 6.4, 'FXIFY Two-Phase': 1.9, 'GFT 2-Step Standard': 1.5, 'Maven 2-Step': 1.5, 'FunderPro Classic': 4.4}
+   order tickets per trading day mean 55.7 (p90 110.8); distinct entry times per day 6.5
+== Full caps, staged start [real] lives=40 conflicts=0
+   mean monthly cash: [237.0, 25987.0, 58770.0, 59075.0, 129269.0, 158913.0, 177528.0, 158759.0, 143360.0, 112620.0, 106794.0, 76830.0]
+   EV/month (12-mo avg) 100678, months 3-12 avg 118192
+   P(ahead) 1/2/3/6/12 m: [0.25, 0.78, 0.85, 1.0, 1.0]
+   12m cash p05/p50/p95: [960845.0, 1240002.0, 1414810.0]
+   trough p50/p05: [-10050.0, -32010.0]
+   breaches per firm per month: {'FTMO 2-Step': 6.0, 'FundingPips 2-Step Flex (95%)': 5.5, 'The5ers High Stakes': 1.5, 'Alpha Capital Pro 10%': 4.4, 'FundedNext Stellar 2-Step': 1.5, 'BrightFunded 2-Step Classic': 4.5, 'Blue Guardian 2-Step': 7.1, 'FunderPro Classic': 2.6, 'GFT 2-Step Standard': 0.8, 'FXIFY Two-Phase': 1.2, 'Maven 2-Step': 1.0}
+   order tickets per trading day mean 44.3 (p90 92.4); distinct entry times per day 5.2

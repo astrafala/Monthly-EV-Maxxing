@@ -1,0 +1,14 @@
+BTC_Hyro      m=1    k=1 p=0.5078 (fair 0.5000) hrs=   4.1 kappa=2509.22% fin=26.32% edge/trade=-2533.99%
+BTC_Hyro      m=1    k=2 p=0.3392 (fair 0.3333) hrs=   6.3 kappa=2509.22% fin=44.33% edge/trade=-2551.77%
+BTC_Hyro      m=1.5  k=1 p=0.5094 (fair 0.5000) hrs=   6.8 kappa=1672.81% fin=33.49% edge/trade=-1704.43%
+BTC_Hyro      m=1.5  k=2 p=0.3508 (fair 0.3333) hrs=  11.2 kappa=1672.81% fin=57.75% edge/trade=-1725.34%
+BTC_Hyro      m=2    k=1 p=0.5032 (fair 0.5000) hrs=  10.5 kappa=1254.61% fin=39.14% edge/trade=-1293.10%
+BTC_Hyro      m=2    k=2 p=0.3384 (fair 0.3333) hrs=  16.2 kappa=1254.61% fin=64.97% edge/trade=-1318.06%
+BTC_Hyro      m=3    k=1 p=0.5031 (fair 0.5000) hrs=  18.9 kappa=836.41% fin=50.04% edge/trade=-885.82%
+BTC_Hyro      m=3    k=2 p=0.3528 (fair 0.3333) hrs=  31.0 kappa=836.41% fin=84.59% edge/trade=-915.17%
+BTC_Hyro      m=4    k=1 p=0.5039 (fair 0.5000) hrs=  28.6 kappa=627.31% fin=57.90% edge/trade=-684.43%
+BTC_Hyro      m=4    k=2 p=0.3458 (fair 0.3333) hrs=  52.2 kappa=627.31% fin=108.60% edge/trade=-732.18%
+BTC_Hyro      m=6    k=1 p=0.4995 (fair 0.5000) hrs=  57.2 kappa=418.20% fin=79.61% edge/trade=-497.91%
+BTC_Hyro      m=6    k=2 p=0.3458 (fair 0.3333) hrs= 106.6 kappa=418.20% fin=151.73% edge/trade=-566.20%
+BTC_Hyro      m=9    k=1 p=0.4968 (fair 0.5000) hrs= 121.3 kappa=278.80% fin=115.18% edge/trade=-394.63%
+BTC_Hyro      m=9    k=2 p=0.3221 (fair 0.3333) hrs= 221.6 kappa=278.80% fin=211.86% edge/trade=-494.05%

@@ -1,0 +1,14 @@
+ETH_FTMO      m=1    k=1 p=0.5032 (fair 0.5000) hrs=   3.8 kappa=1480.59% fin=80.11% edge/trade=-1560.05%
+ETH_FTMO      m=1    k=2 p=0.3426 (fair 0.3333) hrs=   5.9 kappa=1480.59% fin=142.33% edge/trade=-1620.14%
+ETH_FTMO      m=1.5  k=1 p=0.5024 (fair 0.5000) hrs=   6.5 kappa=987.06% fin=106.64% edge/trade=-1093.23%
+ETH_FTMO      m=1.5  k=2 p=0.3420 (fair 0.3333) hrs=  10.5 kappa=987.06% fin=181.08% edge/trade=-1165.54%
+ETH_FTMO      m=2    k=1 p=0.4939 (fair 0.5000) hrs=   9.9 kappa=740.30% fin=127.97% edge/trade=-869.49%
+ETH_FTMO      m=2    k=2 p=0.3494 (fair 0.3333) hrs=  16.4 kappa=740.30% fin=219.18% edge/trade=-954.66%
+ETH_FTMO      m=3    k=1 p=0.4994 (fair 0.5000) hrs=  18.5 kappa=493.53% fin=164.60% edge/trade=-658.25%
+ETH_FTMO      m=3    k=2 p=0.3448 (fair 0.3333) hrs=  31.8 kappa=493.53% fin=294.65% edge/trade=-784.76%
+ETH_FTMO      m=4    k=1 p=0.4925 (fair 0.5000) hrs=  28.9 kappa=370.15% fin=198.47% edge/trade=-570.12%
+ETH_FTMO      m=4    k=2 p=0.3359 (fair 0.3333) hrs=  52.2 kappa=370.15% fin=364.90% edge/trade=-734.29%
+ETH_FTMO      m=6    k=1 p=0.5120 (fair 0.5000) hrs=  59.6 kappa=246.77% fin=279.54% edge/trade=-523.90%
+ETH_FTMO      m=6    k=2 p=0.3602 (fair 0.3333) hrs= 108.0 kappa=246.77% fin=514.59% edge/trade=-753.30%
+ETH_FTMO      m=9    k=1 p=0.4966 (fair 0.5000) hrs= 124.6 kappa=164.51% fin=395.11% edge/trade=-560.30%
+ETH_FTMO      m=9    k=2 p=0.3501 (fair 0.3333) hrs= 204.6 kappa=164.51% fin=654.56% edge/trade=-814.06%

@@ -1,0 +1,14 @@
+MNQ_fut       m=1    k=1 p=0.5004 (fair 0.5000) hrs=   5.5 kappa=98.66% fin= 0.00% edge/trade=-98.58%
+MNQ_fut       m=1    k=2 p=0.3364 (fair 0.3333) hrs=   7.8 kappa=98.66% fin= 0.00% edge/trade=-97.74%
+MNQ_fut       m=1.5  k=1 p=0.4979 (fair 0.5000) hrs=   8.5 kappa=65.77% fin= 0.00% edge/trade=-66.20%
+MNQ_fut       m=1.5  k=2 p=0.3440 (fair 0.3333) hrs=  14.4 kappa=65.77% fin= 0.00% edge/trade=-62.57%
+MNQ_fut       m=2    k=1 p=0.5002 (fair 0.5000) hrs=  13.0 kappa=49.33% fin= 0.00% edge/trade=-49.28%
+MNQ_fut       m=2    k=2 p=0.3222 (fair 0.3333) hrs=  22.2 kappa=49.33% fin= 0.00% edge/trade=-52.65%
+MNQ_fut       m=3    k=1 p=0.5051 (fair 0.5000) hrs=  24.9 kappa=32.89% fin= 0.00% edge/trade=-31.86%
+MNQ_fut       m=3    k=2 p=0.3409 (fair 0.3333) hrs=  44.7 kappa=32.89% fin= 0.00% edge/trade=-30.62%
+MNQ_fut       m=4    k=1 p=0.4956 (fair 0.5000) hrs=  41.1 kappa=24.66% fin= 0.00% edge/trade=-25.54%
+MNQ_fut       m=4    k=2 p=0.3285 (fair 0.3333) hrs=  75.6 kappa=24.66% fin= 0.00% edge/trade=-26.11%
+MNQ_fut       m=6    k=1 p=0.5051 (fair 0.5000) hrs=  82.1 kappa=16.44% fin= 0.00% edge/trade=-15.42%
+MNQ_fut       m=6    k=2 p=0.3162 (fair 0.3333) hrs= 156.1 kappa=16.44% fin= 0.00% edge/trade=-21.57%
+MNQ_fut       m=9    k=1 p=0.4985 (fair 0.5000) hrs= 179.6 kappa=10.96% fin= 0.00% edge/trade=-11.26%
+MNQ_fut       m=9    k=2 p=0.3504 (fair 0.3333) hrs= 332.9 kappa=10.96% fin= 0.00% edge/trade= -5.85%

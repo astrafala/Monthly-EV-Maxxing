@@ -1,0 +1,222 @@
+
+<!-- ================================================================ PART 2 -->
+<section class="part">
+  <span class="num">Part 2</span>
+  <h1>Execution</h1>
+  <p>The plan that maximised expected value per month per person in Part 1, written step by step and checked against every firm's published rules (Chapter 23). It uses one position at a time on the Nasdaq, grows by adding firms rather than risk, and by default runs one account per firm.</p>
+</section>
+
+<!-- 24 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 24</span>
+  <h1>The plan on one page</h1>
+  <div class="box warn"><h4>Read this first</h4>
+  <ul style="margin:0">
+    <li>All figures assume zero skill and that every firm pays every payout. Payouts are discretionary; one refusal usually ends that firm.</li>
+    <li>The trades have no edge. About seven attempts in ten lose their whole fee. With eleven firms, the chance of being ahead is about {{AHEAD_W6}} after six weeks and {{AHEAD_W13}} after thirteen (Chapter 30).</li>
+    <li>For your use only: shared, the same trades on many people's accounts become prohibited group trading (Chapter 23).</li>
+  </ul></div>
+  <h2>24.1 Accounts (default: one per firm)</h2>
+  <table class="small"><thead><tr><th>Firm and programme (100K)</th><th>Market</th><th>Funded cycle target</th></tr></thead><tbody>
+    <tr><td>FTMO 2-Step</td><td>Nasdaq</td><td>+10%</td></tr>
+    <tr><td>FundingPips 2-Step Flex, 95% split</td><td>Nasdaq</td><td>+12%, with 3 profitable days per cycle</td></tr>
+    <tr><td>Alpha Capital Pro 10%</td><td>Nasdaq</td><td>+10%</td></tr>
+    <tr><td>BrightFunded 2-Step Classic</td><td>Nasdaq</td><td>+10%</td></tr>
+    <tr><td>Blue Guardian 2-Step</td><td>Nasdaq</td><td>+10% (never let open loss reach 2%)</td></tr>
+    <tr><td>The5ers High Stakes</td><td>Nasdaq</td><td>+10%</td></tr>
+    <tr><td>FXIFY Two-Phase</td><td>Nasdaq</td><td>+10%</td></tr>
+    <tr><td>GFT 2-Step Standard</td><td>Nasdaq</td><td>+7% first, then +10%; $3,000 a day at most</td></tr>
+    <tr><td>FunderPro Classic</td><td>Nasdaq</td><td>+10%</td></tr>
+    <tr><td>Maven 2-Step</td><td>Nasdaq</td><td>+8%</td></tr>
+    <tr><td>FundedNext Stellar 2-Step</td><td>Gold, traded independently</td><td>+10%</td></tr>
+  </tbody></table>
+  <p>Optional, after several months with every payout honoured: a second account at FTMO, FundingPips, Alpha Capital, BrightFunded and Blue Guardian (16 accounts), or their full caps (25 accounts). Each step raises expected value and also the failed accounts per firm (Chapter 21).</p>
+  <h2>24.2 Every trade</h2>
+  <ol>
+    <li><strong>One position at a time</strong> per account; the next one as soon as the last closes.</li>
+    <li><strong>Window:</strong> Monday to Friday, 01:00&ndash;20:00 UTC. No new trade after 19:00 UTC Friday; be flat by 20:30 UTC Friday on every account.</li>
+    <li><strong>Direction:</strong> the shared rule (26.3). Nasdaq accounts never oppose each other; the gold account follows its own rule.</li>
+    <li><strong>Risk</strong> = the smallest of 1.5% of the account size, (room above the floor &minus; 0.1%), and (today's loss room &minus; 0.2%).</li>
+    <li><strong>Stop</strong> = 0.75 &times; the hourly move, attached on entry, never moved.</li>
+    <li><strong>Target</strong> = 5 &times; the stop distance, capped at the distance left to the phase or cycle target plus this trade's cost, and at any daily profit target or cap (26.4).</li>
+    <li><strong>News:</strong> no new trade from 15 minutes before to 5 minutes after a high-impact US release (gold: also US releases). On funded accounts, be flat 10 minutes before.</li>
+  </ol>
+  <h2>24.3 Every account</h2>
+  <ul>
+    <li>Never abandon a live account (Section 3.3). At a phase target, stop; fill missing minimum days with one small trade a day where the firm counts trading days (FTMO, FundedNext, Alpha, BrightFunded, Blue Guardian).</li>
+    <li>Where profitable days are required (The5ers, Maven, FundingPips 95%), never construct them with tiny trades; use the daily profit target of 26.4.</li>
+    <li>Funded: trade each cycle to its target, stop, request the payout on the first allowed day, withdraw all profit.</li>
+  </ul>
+</section>
+
+<!-- 25 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 25</span>
+  <h1>Before you start</h1>
+  <h2>25.1 Requirements</h2>
+  <ul>
+    <li>Adult (18+), with each firm's identity check in your own name and from a country the firm accepts. One registration per firm.</li>
+    <li>Money you can lose entirely, never borrowed: at least the bad-case cash low point of the version you run (Chapter 31): about {{LOW_ONE}} for eleven firms, {{LOW_FTMO}} for FTMO alone.</li>
+    <li>Each firm's current objectives, prohibited practices, payout terms and allocation cap, read in full and saved with the date.</li>
+  </ul>
+  <h2>25.2 Platforms, programs and copying</h2>
+  <table class="small"><thead><tr><th>Firm</th><th>Your own program (EA)</th><th>Copying between your own accounts</th></tr></thead><tbody>
+    <tr><td>FTMO</td><td>allowed (no hyperactivity)</td><td>allowed, within the $400,000 cap</td></tr>
+    <tr><td>FundingPips</td><td>check</td><td>own FundingPips accounts only; no copier services</td></tr>
+    <tr><td>Alpha Capital</td><td>check</td><td>from your own external accounts, with proof of ownership</td></tr>
+    <tr><td>BrightFunded</td><td>allowed; trades must last at least 60 seconds</td><td>allowed between your own accounts, any firm</td></tr>
+    <tr><td>Blue Guardian</td><td>check</td><td>your own accounts only</td></tr>
+    <tr><td>The5ers</td><td>only with written approval</td><td>allowed across your own accounts</td></tr>
+    <tr><td>FXIFY</td><td>allowed on Two-Phase</td><td>only after FXIFY approves a request</td></tr>
+    <tr><td>GFT</td><td>your own only; no third-party or "marketed" strategy</td><td>not between GFT accounts: keep one</td></tr>
+    <tr><td>FunderPro</td><td>allowed</td><td>no replicating across FunderPro accounts: keep one</td></tr>
+    <tr><td>Maven</td><td>check</td><td>own 2-Step accounts</td></tr>
+    <tr><td>FundedNext</td><td>check</td><td>never with a funded account: keep one, trade gold</td></tr>
+  </tbody></table>
+  <p>Where no program is allowed or approved, place orders by hand. Across firms, either place each firm's orders yourself or run a separate copy of your own program on each account; never use a third-party copy service.</p>
+  <h2>25.3 Measure costs and the hourly move</h2>
+  <ol>
+    <li>On each firm's demo, write down the value of one point per lot (V) for the Nasdaq (and gold for FundedNext), and the minimum and maximum lot size per order.</li>
+    <li>Average the spread over a US afternoon (14:00&ndash;20:00 UTC) and add about 0.6 points for slippage. If the Nasdaq total is above about 3 points, expect a third less value at that firm.</li>
+  </ol>
+  <div class="formula"><span class="lbl">Hourly move (simple version)</span>hourly move &asymp; average of |close &minus; previous close| over the last 100 hourly bars &times; 1.25 (recompute every Monday)</div>
+</section>
+
+<!-- 26 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 26</span>
+  <h1>The trade, step by step</h1>
+  <h2>26.1 The formulas (any account size S)</h2>
+  <div class="formula"><span class="lbl">Risk</span>room = balance &minus; floor &nbsp;&nbsp; day room = daily limit &minus; (start-of-day balance &minus; current equity)<br>risk = min(1.5% &times; S, room &minus; 0.1% &times; S, day room &minus; 0.2% &times; S)</div>
+  <div class="formula"><span class="lbl">Stop, lots, cost</span>stop points = 0.75 &times; hourly move &nbsp;&nbsp; lots = risk &divide; (stop points &times; V) &nbsp;&nbsp; cost $ &asymp; (spread + 0.6) &times; lots &times; V</div>
+  <div class="formula"><span class="lbl">Target</span>to go = phase (or cycle) target balance &minus; balance<br>target $ = min(5 &times; risk, to go + cost $ + $5, today's remaining daily target or cap) &nbsp;&nbsp; target points = target $ &divide; (lots &times; V)</div>
+  <p>If the lots exceed a firm's maximum per order, place the position as two orders at the same moment with the same stop and target, or reduce the risk to fit.</p>
+  <h2>26.2 Worked examples (100K, hourly move 85 points, V = $1, spread 1.4 points)</h2>
+  {{SIZING_V3}}
+  <h2>26.3 Direction</h2>
+  <div class="formula"><span class="lbl">Shared direction (Nasdaq accounts)</span>If any of your accounts holds a Nasdaq position: same direction as that position.<br>Otherwise: long if the last completed hourly close is above the close 5 hours earlier, short if it is below.</div>
+  <p>The gold account (FundedNext) uses the same 5-hour rule on gold, by itself. Gold and the Nasdaq are different markets, so its positions are neither copies of nor hedges against the others. The rule is chosen for being simple and common, not because it did best in Chapter 22's sample.</p>
+  <h2>26.4 Daily profit targets and caps</h2>
+  <ul>
+    <li><strong>Profitable days required</strong> (The5ers and Maven in each phase; FundingPips 95% in each funded cycle; a profitable day is at least +0.5%): until enough profitable days are done, each day's profit target is the larger of 0.55% and (distance left &divide; profitable days still needed). Stop for the day when it is reached. Risk stays 1.5% on every trade.</li>
+    <li><strong>Best-day rules</strong> (Maven funded after $5,000 of payouts: 50%): cap the take-profit so that no day exceeds the limit.</li>
+    <li><strong>GFT funded:</strong> at most $3,000 profit a day; the take-profit never exceeds what is left of it.</li>
+  </ul>
+</section>
+
+<!-- 27 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 27</span>
+  <h1>Firm-by-firm rule sheet</h1>
+  <p>Summarised from public sources in October 2026 (Appendix D). Rules change often. Before buying, check each line against the firm's current terms, and get anything marked "check" confirmed in writing.</p>
+  {{RULES_TABLE}}
+  <div class="box key"><h4>The rules that apply everywhere</h4>
+  <ul style="margin:0">
+    <li>No opposite positions in correlated markets across any of your accounts, at any firm, at any time.</li>
+    <li>Everything in your own name; no third-party account management; no signals or copy services from others.</li>
+    <li>Stay under each firm's cap, and within its rules on how many accounts may carry the same trades.</li>
+    <li>No exploiting platform errors, latency or price feeds; no tick scalping; no trades shorter than a minute.</li>
+    <li>Minimum trading days may be met with small, real trades; profitable days may not be manufactured.</li>
+    <li>Respect each firm's news windows and weekend rules on funded accounts (the plan is flat for both).</li>
+  </ul></div>
+</section>
+
+<!-- 28 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 28</span>
+  <h1>Running many accounts: the daily routine</h1>
+  <h2>28.1 The work</h2>
+  {{WORK_TABLE}}
+  <p>At 1 : 5 a full-size trade lasts about four to eight hours including waiting. Nasdaq accounts usually enter together, so the day has a handful of entry moments, each with an order ticket per free account, sized for that account's own balance.</p>
+  <h2>28.2 What a program does on each account</h2>
+  <table>
+    <thead><tr><th>Step</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td class="n">1</td><td>If this account has a position open, do nothing until it closes.</td></tr>
+      <tr><td class="n">2</td><td>Outside 01:00&ndash;20:00 UTC Monday&ndash;Friday, after 19:00 UTC Friday, or within the news window: wait.</td></tr>
+      <tr><td class="n">3</td><td>Read balance, start-of-day balance, the current phase or cycle target and any daily target or cap. If a target is reached, stop.</td></tr>
+      <tr><td class="n">4</td><td>Compute risk (26.1). If the day room is below 0.3% of the account, wait for the next day.</td></tr>
+      <tr><td class="n">5</td><td>Read the shared direction (26.3) from a file that all your programs read.</td></tr>
+      <tr><td class="n">6</td><td>Compute stop, lots, cost and target. Send a market order with both attached.</td></tr>
+      <tr><td class="n">7</td><td>Log: time, account, balance, risk, lots, stop, target, direction, fill, result, cost.</td></tr>
+      <tr><td class="n">8</td><td>Friday 20:30 UTC: close any open position. Funded: close 10 minutes before a listed release.</td></tr>
+    </tbody>
+  </table>
+  <p>Run each program on a free demo for two weeks first. Where a firm requires approval for programs (The5ers) or copying (FXIFY), get it in writing first, or trade by hand.</p>
+</section>
+
+<!-- 29 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 29</span>
+  <h1>Funded accounts and payouts</h1>
+  <h2>29.1 Cycles of the full allowance</h2>
+  <p>On every funded account, trade the normal plan with the cycle target at the allowance (+10%; +12% at FundingPips Flex; +8% at Maven; +7% for GFT's first cycle). When it is reached, stop; request a payout of all profit on the first allowed day. About one cycle in two ends at the target and one in two ends the account: that is expected. Half of funded accounts end before their first payout, and then the fee is not refunded either; that is the price of the faster cycle. A first cycle of only +$1,000 makes the first payout and refund far more likely (91%) at a cost of about a sixth of the value per month (Section 19.3).</p>
+  <h2>29.2 What each firm's funded account delivers</h2>
+  {{FUNDED_TABLE}}
+  <h2>29.3 Milestones of one FTMO attempt</h2>
+  {{MILESTONES}}
+</section>
+
+<!-- 30 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 30 &middot; new in version 4</span>
+  <h1>Signing up: the first three months, simulated</h1>
+  <p>What happens if you open the default eleven accounts on one Monday? The lockstep engine was run for 160 simulated years from different start dates and price paths. The table shows cumulative cash (payouts received minus fees paid) week by week.</p>
+  {{WEEKLY_TABLE}}
+  <p>The first payout typically arrives on day {{FIRSTPAY_ONE}} with eleven firms (one year in ten: after day {{FIRSTPAY_ONE_P90}}), against day {{FIRSTPAY_FTMO}} with four FTMO accounts, whose results move together. The first month is almost always negative: fees are paid at once, and every failed evaluation is replaced the same day.</p>
+  <h2>30.1 One median year, week by week (full caps, firms added month by month)</h2>
+  {{DIARY_TABLE}}
+  <p>This is the simulated year with the median 12-month result among 60 runs. Note the pattern: weeks of fees with nothing coming back, four funded FTMO accounts lost together before their first payout, then large months once several funded accounts pay at the same time. The same lumpiness holds for every version of the plan.</p>
+</section>
+
+<!-- 31 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 31</span>
+  <h1>Month by month: cash, odds and when to stop</h1>
+  <h2>31.1 What to expect</h2>
+  {{MONTHS_TABLE}}
+  <h2>31.2 Bankroll rules</h2>
+  <ul>
+    <li>Hold the bad-case cash low point of 31.1 for the version you run, in cash you can lose.</li>
+    <li>Add firms or accounts only from payouts already received.</li>
+    <li>Withdraw payouts to a separate account; only the planned budget buys new attempts.</li>
+    <li>Fix in advance how many months you will run before reviewing.</li>
+  </ul>
+  <h2>31.3 Checks that the assumptions hold</h2>
+  <table>
+    <thead><tr><th>Check</th><th>Expected</th><th>Stop and review if</th></tr></thead>
+    <tbody>
+      <tr><td>Win rate of full-size 1 : 5 trades (after 600)</td><td>&asymp; 16.7% before costs</td><td>below 13%</td></tr>
+      <tr><td>Average cost per trade (spread, slippage, financing)</td><td>&asymp; 3&ndash;4% of the risk</td><td>above 5.5%</td></tr>
+      <tr><td>Phase 1 pass rate (after 20 attempts at 10% targets)</td><td>&asymp; 46%</td><td>4 or fewer passes</td></tr>
+      <tr><td>Payouts honoured</td><td>all</td><td>any refusal: stop at that firm, read the stated reason, review the others</td></tr>
+      <tr><td>Rule changes</td><td>none</td><td>any change to caps, payouts, copying, news or risk rules: re-check before the next purchase</td></tr>
+    </tbody>
+  </table>
+  <h2>31.4 If firms refuse payouts</h2>
+  <p>Every figure so far assumes all payouts are paid. Suppose instead that each payout request is refused with some probability, and that a refusal also ends that firm for you (no further purchases there). Applied to 1,000 simulated years of the default plan (one account at each of eleven firms):</p>
+  {{REFUSAL_TABLE}}
+  <p>The plan stays ahead after a year in almost every simulated year even when one payout in five is refused, but its value falls steeply, and the firms that refuse are lost for good. This, not the trading, is the main uncertainty in the whole plan.</p>
+  <h2>31.5 Tax</h2>
+  <p>Payouts are usually taxable income; fees are often deductible. Keep one ledger of every fee and payout with dates and currencies, and check your country's rules with an adviser.</p>
+</section>
+
+<!-- 32 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 32</span>
+  <h1>Final checklist</h1>
+  <ul class="check">
+    <li>I am 18 or older and hold, in cash I can lose, the bad-case cash low point for the version I will run.</li>
+    <li>I have read each firm's current objectives, prohibited practices, payout terms and cap, and confirmed every "check" item in writing.</li>
+    <li>I measured Nasdaq (and gold) costs and the point value at every firm.</li>
+    <li>My programs or routine follow Chapter 24 exactly and passed two weeks on demo; approvals obtained where required.</li>
+    <li>One position per account; risk 1.5%; stop and target attached on entry; 1 : 5.</li>
+    <li>Nasdaq accounts share one direction; no account ever opposes another; FundedNext trades gold on its own.</li>
+    <li>Only one account at GFT, FunderPro, FundedNext, FXIFY, The5ers and Maven.</li>
+    <li>Daily guard, news rule, Friday close, daily profit targets and caps are in place.</li>
+    <li>Everything is in my own name; I do not share, sell or copy this plan to or from anyone.</li>
+    <li>I understand that about seven attempts in ten lose the fee, that the first month is usually negative, and that firms may refuse payouts or change rules.</li>
+  </ul>
+  <div class="box key"><h4>The whole document in six lines</h4>
+  <p style="margin:0">A zero-skill trade is a fair bet, so a phase passes with probability B &divide; (A + B). A funded account pays out, on average, the split times its loss allowance. Time is set by the instrument's cost per unit of movement, the stop, the reward-to-risk ratio and the firm's calendar. The best plan found is one Nasdaq position at a time, stop 0.75 hourly moves, 1 : 5, risk 1.5%, funded cycles of the full allowance. One account at each of eleven firms is worth about {{HEAD_ONE}} a month in theory; the full caps about {{HEAD_FULL}}, with far more failed accounts per firm. The firms' discretion is the one thing the maths cannot price.</p></div>
+</section>

@@ -1,0 +1,14 @@
+BTC_FTMO      m=1    k=1 p=0.5078 (fair 0.5000) hrs=   4.1 kappa=1944.65% fin=131.60% edge/trade=-2074.70%
+BTC_FTMO      m=1    k=2 p=0.3392 (fair 0.3333) hrs=   6.3 kappa=1944.65% fin=221.65% edge/trade=-2164.52%
+BTC_FTMO      m=1.5  k=1 p=0.5094 (fair 0.5000) hrs=   6.8 kappa=1296.43% fin=167.46% edge/trade=-1462.01%
+BTC_FTMO      m=1.5  k=2 p=0.3508 (fair 0.3333) hrs=  11.2 kappa=1296.43% fin=288.73% edge/trade=-1579.94%
+BTC_FTMO      m=2    k=1 p=0.5032 (fair 0.5000) hrs=  10.5 kappa=972.32% fin=195.71% edge/trade=-1167.38%
+BTC_FTMO      m=2    k=2 p=0.3384 (fair 0.3333) hrs=  16.2 kappa=972.32% fin=324.83% edge/trade=-1295.64%
+BTC_FTMO      m=3    k=1 p=0.5031 (fair 0.5000) hrs=  18.9 kappa=648.22% fin=250.18% edge/trade=-897.77%
+BTC_FTMO      m=3    k=2 p=0.3528 (fair 0.3333) hrs=  31.0 kappa=648.22% fin=422.95% edge/trade=-1065.34%
+BTC_FTMO      m=4    k=1 p=0.5039 (fair 0.5000) hrs=  28.6 kappa=486.16% fin=289.48% edge/trade=-774.86%
+BTC_FTMO      m=4    k=2 p=0.3458 (fair 0.3333) hrs=  52.2 kappa=486.16% fin=543.01% edge/trade=-1025.45%
+BTC_FTMO      m=6    k=1 p=0.4995 (fair 0.5000) hrs=  57.2 kappa=324.11% fin=398.03% edge/trade=-722.24%
+BTC_FTMO      m=6    k=2 p=0.3458 (fair 0.3333) hrs= 106.6 kappa=324.11% fin=758.63% edge/trade=-1079.01%
+BTC_FTMO      m=9    k=1 p=0.4968 (fair 0.5000) hrs= 121.3 kappa=216.07% fin=575.89% edge/trade=-792.61%
+BTC_FTMO      m=9    k=2 p=0.3221 (fair 0.3333) hrs= 221.6 kappa=216.07% fin=1059.30% edge/trade=-1278.76%

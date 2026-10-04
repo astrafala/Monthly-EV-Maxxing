@@ -1,0 +1,15 @@
+XAUUSD        m=0.5  k=1 p=0.5011 (fair 0.5000) hrs=   2.5 kappa=761.04% fin=40.30% edge/trade=-801.11%
+XAUUSD        m=0.5  k=2 p=0.3336 (fair 0.3333) hrs=   3.6 kappa=761.04% fin=66.99% edge/trade=-827.94%
+XAUUSD        m=0.5  k=3 p=0.2592 (fair 0.2500) hrs=   4.4 kappa=761.04% fin=83.24% edge/trade=-840.57%
+XAUUSD        m=0.75 k=1 p=0.5008 (fair 0.5000) hrs=   3.8 kappa=507.36% fin=48.27% edge/trade=-555.48%
+XAUUSD        m=0.75 k=2 p=0.3415 (fair 0.3333) hrs=   5.3 kappa=507.36% fin=67.82% edge/trade=-572.73%
+XAUUSD        m=0.75 k=3 p=0.2656 (fair 0.2500) hrs=   6.6 kappa=507.36% fin=90.28% edge/trade=-591.39%
+XAUUSD        m=1    k=1 p=0.4979 (fair 0.5000) hrs=   5.1 kappa=380.52% fin=50.93% edge/trade=-431.88%
+XAUUSD        m=1    k=2 p=0.3449 (fair 0.3333) hrs=   7.5 kappa=380.52% fin=82.05% edge/trade=-459.10%
+XAUUSD        m=1    k=3 p=0.2686 (fair 0.2500) hrs=   9.6 kappa=380.52% fin=104.91% edge/trade=-477.97%
+XAUUSD        m=1.5  k=1 p=0.4966 (fair 0.5000) hrs=   8.0 kappa=253.68% fin=54.79% edge/trade=-309.14%
+XAUUSD        m=1.5  k=2 p=0.3488 (fair 0.3333) hrs=  13.3 kappa=253.68% fin=97.29% edge/trade=-346.34%
+XAUUSD        m=1.5  k=3 p=0.2685 (fair 0.2500) hrs=  18.6 kappa=253.68% fin=136.31% edge/trade=-382.59%
+XAUUSD        m=2    k=1 p=0.4930 (fair 0.5000) hrs=  11.6 kappa=190.26% fin=62.76% edge/trade=-254.42%
+XAUUSD        m=2    k=2 p=0.3422 (fair 0.3333) hrs=  20.7 kappa=190.26% fin=113.76% edge/trade=-301.34%
+XAUUSD        m=2    k=3 p=0.2667 (fair 0.2500) hrs=  30.1 kappa=190.26% fin=165.45% edge/trade=-349.01%

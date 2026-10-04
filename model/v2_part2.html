@@ -1,0 +1,246 @@
+<!-- ================================================================ PART 2 -->
+<section class="part">
+  <span class="num">Part 2</span>
+  <h1>Execution</h1>
+  <p>The plan that maximised expected value per month in Chapter 10, written step by step. It stays inside FTMO's published rules and its 1&ndash;1.5% risk guidance. FTMO 2-Step 100K is the worked example; Chapter 25 covers other firms.</p>
+</section>
+
+<!-- 17 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 17</span>
+  <h1>The plan, and why this one</h1>
+  <table>
+    <thead><tr><th></th><th>Bold plan (Ch. 4)</th><th>Slow plan (version 1)</th><th>Fast plan (this Part)</th></tr></thead>
+    <tbody>
+      <tr><td>Instrument</td><td>EURUSD</td><td>EURUSD</td><td>US100 (Nasdaq CFD)</td></tr>
+      <tr><td>Risk per trade</td><td>Up to $5,000</td><td>$1,000 (1%)</td><td>$1,500 (1.5%)</td></tr>
+      <tr><td>Stop</td><td>~1 day's move</td><td>~6 hourly moves (~55 pips)</td><td>0.75 hourly moves (~64 points)</td></tr>
+      <tr><td>Reward : risk</td><td>Aim at target</td><td>1 : 1</td><td>1 : 3</td></tr>
+      <tr><td>Trades</td><td>One a day</td><td>One at a time, next day</td><td>One at a time, back to back</td></tr>
+      <tr><td>EV per attempt (zero edge)</td><td class="n">+$2,081</td><td class="n">+$1,254</td><td class="n">+$1,429</td></tr>
+      <tr><td>Average attempt</td><td>~6 weeks</td><td>~86 weeks</td><td>~18 days</td></tr>
+      <tr><td>EV per month per slot</td><td class="n">&asymp; $1,300</td><td class="n">&asymp; $70</td><td class="n">&asymp; $2,400</td></tr>
+      <tr><td>Median time to first payout</td><td>~4 weeks</td><td>over a year</td><td>~27 days</td></tr>
+      <tr><td>Inside FTMO's risk guidance</td><td>No (overexposure, one-sided bets)</td><td>Yes</td><td>Yes</td></tr>
+    </tbody>
+  </table>
+  <p>The fast plan beats even the bold plan per month while risking only 1.5% per trade. It gets its speed from the instrument and the stop size, not from big bets.</p>
+  <div class="box warn"><h4>Read this before Part 2</h4>
+  <ul>
+    <li>All figures assume the firm pays every payout. Payouts are discretionary. Many short random-direction trades may be judged by a risk team in ways no model can predict.</li>
+    <li>About three attempts in four lose the fee. After one month the chance of being ahead on a slot is about 5%; after a year it is about 88% (Section 10.7).</li>
+    <li>The trades have no edge. The plan earns only from the contract, never from the market.</li>
+  </ul></div>
+</section>
+
+<!-- 18 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 18</span>
+  <h1>Before you start</h1>
+  <h2>18.1 Requirements</h2>
+  <ul class="check">
+    <li>You are an adult (18+); firms verify identity before paying.</li>
+    <li>A bankroll you can lose entirely: about $7,000&ndash;10,000 per account slot you plan to run (Section 10.7's bad case at six months is &minus;$6,600). Never borrowed money.</li>
+    <li>MetaTrader 5 (or the firm's platform) and either an Expert Advisor (an automated trading program that MT5 runs for you) or the time to place trades by hand (Section 22.3).</li>
+    <li>The firm's current trading objectives, forbidden practices and payout terms, read in full.</li>
+  </ul>
+  <h2>18.2 Choose the firm</h2>
+  <p>Per Chapter 10, the best expected value per month comes from static-drawdown 2-Steps with an 8% Phase 1 target (The5ers High Stakes, FundingPips 2-Step) and from FTMO 1-Step. FTMO 2-Step is close behind and has the longest payout record. Avoid intraday trailing drawdowns, 3-step programmes and the crypto programmes.</p>
+  <h2>18.3 Measure your costs (do not skip)</h2>
+  <p>The whole plan rests on the Nasdaq costing about 2 points per round trip, including slippage. On a free demo of your firm's platform:</p>
+  <ol>
+    <li>Open the symbol specification for US100 (FTMO calls it US100.cash). Write down the value of one point for one lot (call it V) and the minimum lot size.</li>
+    <li>During 14:00&ndash;20:00 UTC, note the spread every few minutes for a day. Average it.</li>
+    <li>Add 0.5&ndash;0.6 points for slippage. If the total is above about 3 points, the plan's value per month falls by roughly a third. Re-check Chapter 10, or use gold or USDJPY instead.</li>
+  </ol>
+  <h2>18.4 Measure the hourly move</h2>
+  <p>The stop is set in "hourly moves", the typical size of one hour's price change. Over 2024&ndash;26 it averaged 0.27% of the US100 price, about 85 points at 31,000. Recompute it every Monday:</p>
+  <div class="formula"><span class="lbl">Hourly move (simple version)</span>hourly move &asymp; average of |close &minus; previous close| over the last 100 hourly bars &times; 1.25</div>
+</section>
+
+<!-- 19 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 19</span>
+  <h1>The plan on one page</h1>
+  <div class="box key"><h4>Every trade</h4>
+  <ol>
+    <li><strong>One position at a time</strong> on US100. Open the next trade as soon as the last one closes, inside the trading window.</li>
+    <li><strong>Trading window</strong>: open new trades Monday to Friday, 01:00&ndash;20:00 UTC. No new trades after 20:00 UTC on Friday; close anything still open by 20:30 UTC Friday.</li>
+    <li><strong>Risk</strong> = the smallest of: $1,500; (room above the floor &minus; $100); ($5,000 &minus; today's loss so far &minus; $200).</li>
+    <li><strong>Stop</strong> = 0.75 &times; hourly move (about 60&ndash;65 points).</li>
+    <li><strong>Target</strong> = 3 &times; the stop distance, except near a target (rule 7).</li>
+    <li><strong>Lots</strong> = risk &divide; (stop in points &times; V), rounded down.</li>
+    <li><strong>Near a target</strong>: if 3 &times; risk would carry you past the phase target or the payout-cycle target, set the take-profit to the remaining distance <em>plus this trade's cost</em> (spread &times; lots &times; V + $5).</li>
+    <li>Attach stop and target on entry; never move them.</li>
+  </ol></div>
+  <div class="box key"><h4>Every day</h4>
+  <ol>
+    <li>If today's loss would leave less than $1,700 of the $5,000 daily limit, reduce the next trade's risk to fit. If less than $300 would remain, stop until the next FTMO day (midnight Prague time).</li>
+    <li>15 minutes before a scheduled high-impact US release (CPI, payrolls, the Fed decision), do not open a new trade. On a funded account, close an open trade before the release: FTMO's standard funded accounts restrict opening or closing trades within 2 minutes of high-impact news (check the current rule for your account type).</li>
+  </ol></div>
+  <div class="box key"><h4>Every account</h4>
+  <ol>
+    <li>Never abandon a live account (Section 3.3).</li>
+    <li>When a phase target is reached, stop. If minimum days are missing, place one tiny trade (0.01 lot, 5-point stop) per day.</li>
+    <li>Funded, first cycle: trade until +$1,000, then stop and wait for payout day. Later cycles: trade until +$10,000 profit in the cycle or the account ends, then stop and wait. Request a payout of all profit on every payout day.</li>
+    <li>No hedging, no opposite positions across your accounts, no accounts in other people's names.</li>
+  </ol></div>
+</section>
+
+<!-- 20 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 20</span>
+  <h1>Sizing, step by step</h1>
+  <h2>20.1 The formulas</h2>
+  <div class="formula"><span class="lbl">Risk</span>room = balance &minus; $90,000 &nbsp;&nbsp; day room = $5,000 &minus; (start-of-day balance &minus; current equity)<br>risk = min($1,500, room &minus; $100, day room &minus; $200)</div>
+  <div class="formula"><span class="lbl">Stop, lots, cost</span>stop points = 0.75 &times; hourly move &nbsp;&nbsp; lots = risk &divide; (stop points &times; V) &nbsp;&nbsp; cost $ &asymp; (spread + 0.6) &times; lots &times; V</div>
+  <div class="formula"><span class="lbl">Target</span>to go = phase (or cycle) target balance &minus; balance &nbsp;&nbsp; target $ = min(3 &times; risk, to go + cost $ + $5)<br>target points = target $ &divide; (lots &times; V)</div>
+  <h2>20.2 Worked examples</h2>
+  <p>Hourly move 85 points, so stop = 64 points. V = $1 per point per lot (check yours), spread 1.4 points.</p>
+  {{SIZING_V2}}
+  <p class="cap">Win chance is the fair value: stop &divide; (stop + target). Leverage check: 23 lots &times; 31,000 = $726,000 notional, far below the $5,000,000 that 1:50 allows on 100K.</p>
+  <h2>20.3 Why the cost is added near the target</h2>
+  <p>Costs are charged on the full position, even when the remaining distance is small. If you are $47 from the target and set a $47 take-profit, the spread eats the whole win and you never cross the line. The simulation hit exactly this trap before the fix. Adding the trade's cost to the final target is what lets the account land on the target.</p>
+</section>
+
+<!-- 21 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 21</span>
+  <h1>Stop, target and direction</h1>
+  <h2>21.1 Why 0.75 hourly moves</h2>
+  <p>Chapter 10 found the best value per month for stops between 0.5 and 1 hourly moves. 0.75 sits in the middle of that plateau, so a small error in measuring the hourly move costs little. Below 0.5, costs rise faster than speed. Above 1.5, the plan slows sharply.</p>
+  <h2>21.2 Why 1 : 3</h2>
+  <p>Higher targets do not slow a phase down (Section 8.3) but reduce how many trades, and therefore costs, a phase needs. 1 : 2 and 1 : 3 performed about equally; 1 : 3 was slightly ahead. Do not go beyond 1 : 3: near the target most trades are capped anyway, and the real-data drift at very far targets is uncertain.</p>
+  <h2>21.3 Direction</h2>
+  <p>The plan assumes no edge. Any direction rule that is not systematically wrong gives the same expected value. A random choice (a coin flip or random number) is the honest baseline, and it is what was tested. If you use your own analysis instead, track whether it helps (Chapter 26).</p>
+  <h2>21.4 Expected rhythm</h2>
+  <p>With a 64-point stop and 192-point target, a trade lasts about 4&ndash;7 hours including waiting time. That is two to four trades per day. Phase 1 needs about 15 full-size trades on average, so most attempts are decided within a week.</p>
+</section>
+
+<!-- 22 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 22</span>
+  <h1>Running it: by program or by hand</h1>
+  <h2>22.1 What the program does, step by step</h2>
+  <table>
+    <thead><tr><th style="width:8%">Step</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td class="n">1</td><td>If a position is open, do nothing until it closes.</td></tr>
+      <tr><td class="n">2</td><td>If outside 01:00&ndash;20:00 UTC Monday&ndash;Friday, or within 15 minutes of a listed high-impact US release, wait.</td></tr>
+      <tr><td class="n">3</td><td>Read balance, start-of-day balance and the current phase or cycle target. If the target is reached, stop for this phase or cycle.</td></tr>
+      <tr><td class="n">4</td><td>Compute risk (Section 20.1). If the day room is below $300, wait for the next FTMO day.</td></tr>
+      <tr><td class="n">5</td><td>Compute stop points, lots, cost and target points.</td></tr>
+      <tr><td class="n">6</td><td>Choose direction at random. Send a market order with stop and target attached.</td></tr>
+      <tr><td class="n">7</td><td>Write a log line: time, balance, risk, lots, stop, target, direction, fill, result, cost.</td></tr>
+      <tr><td class="n">8</td><td>Friday 20:30 UTC: close any open position. Funded account: close an open position 2 minutes before a listed release.</td></tr>
+    </tbody>
+  </table>
+  <p>FTMO permits Expert Advisors. Keep the server load low (well under FTMO's 2,000 requests per day): this plan places only a few orders a day.</p>
+  <h2>22.2 Test before using it on a paid account</h2>
+  <p>Run the program on a free demo for at least two weeks. Check that every trade has both orders attached, that sizes match Section 20.2, and that the daily guard and Friday close fire.</p>
+  <h2>22.3 By hand</h2>
+  <p>Brackets keep working while you are away, so a person only needs to be present to <em>open</em> each trade. Opening trades only during 13:00&ndash;20:00 UTC (the US session) and letting them run gave, in simulation, about <strong>+$1,490 per attempt, 22 days per attempt and $2,000 per month per slot</strong>, with the first payout after about 29 days. That is about 15% less than the automated version.</p>
+</section>
+
+<!-- 23 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 23</span>
+  <h1>Phases and timeline</h1>
+  <table>
+    <thead><tr><th>Milestone (from the day you buy)</th><th class="n">Typical day</th></tr></thead>
+    <tbody>
+      <tr><td>Phase 1 decided (pass or fail)</td><td class="n">day 5&ndash;6</td></tr>
+      <tr><td>Phase 2 decided; funded account issued (if passed)</td><td class="n">day ~12</td></tr>
+      <tr><td>First payout received, fee refunded (if paid)</td><td class="n">day ~27 (middle half: 25&ndash;29)</td></tr>
+      <tr><td>Funded account ends (on average after 1.7 payouts)</td><td class="n">day ~39</td></tr>
+    </tbody>
+  </table>
+  <p class="cap">Medians from 6,000 simulated attempts of the fast plan on FTMO 2-Step.</p>
+  <h2>23.1 Phase 1</h2>
+  <p>Chance of passing about 47%. Reaching +$10,000 takes about 15 trades of $1,500 at 1 : 3, so about five days. Passing requires 4 trading days; if you pass sooner, use tiny trades for the remaining days.</p>
+  <h2>23.2 Phase 2</h2>
+  <p>Chance of passing about 60%, usually within 3&ndash;5 days. FTMO then checks identity and issues the contract (1&ndash;3 days).</p>
+  <h2>23.3 Never quit</h2>
+  <p>A live account at balance x is worth (x + $10,000) &divide; (target + $10,000) of the next stage. Quitting throws that away. The rule matters more in a fast plan: losing runs of 6&ndash;8 trades happen within a single day.</p>
+</section>
+
+<!-- 24 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 24</span>
+  <h1>The funded account and payouts</h1>
+  <h2>24.1 First cycle: secure the refund</h2>
+  <p>Trade the normal plan with the cycle target set to +$1,000. The chance of reaching it before the floor is about 91%. Once the balance is $101,000 or more, stop and wait for the first payout date (14 days after your first funded trade). Request the payout: 80% of the profit plus the &euro;540 fee.</p>
+  <h2>24.2 Later cycles: aim high</h2>
+  <p>After the first payout, set the cycle target to +$10,000. Each cycle then either reaches +$10,000 (about one chance in two, after which you stop and wait) or ends the account. On each payout date, withdraw all profit; the balance returns to $100,000 and the floor stays at $90,000.</p>
+  <p>Why +$10,000 rather than small, frequent payouts? With zero edge the total paid out averages 80% of the $10,000 allowance whatever the policy (Chapter 5). Fewer, larger cycles finish sooner, which frees the slot for the next attempt. In simulation, +$10,000 cycles gave $2,351 per month against $1,892 for +$3,000 cycles.</p>
+  <h2>24.3 What a funded account pays</h2>
+  <p>On average $7,225 (including the refund) over about 1.7 payouts. The spread is wide: about half of funded accounts pay only the first $800 plus the refund, while about one in four pays $16,800 or more.</p>
+</section>
+
+<!-- 25 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 25</span>
+  <h1>Several accounts, other firms and the bankroll</h1>
+  <h2>25.1 Slots</h2>
+  <p>A "slot" is one account you keep running: when an attempt ends, you buy the next. FTMO caps total allocation at $400,000, so up to four 100K slots. Other firms have their own caps.</p>
+  <ul>
+    <li><strong>Same direction only.</strong> If two of your accounts have trades open at the same time, they must not be opposite. The simplest rule is that all accounts copy the same random direction. That makes their results move together, which raises the swings.</li>
+    <li><strong>No rolling.</strong> FTMO lists "account rolling" as forbidden. Buy attempts on a schedule you set in advance, not as a reflex after a loss.</li>
+    <li><strong>Several firms.</strong> Running the same plan at The5ers, FundingPips and FTMO at once is not hedging, as long as directions match. Check each firm's rules on copying trades between your own accounts.</li>
+  </ul>
+  <h2>25.2 Expected income</h2>
+  <table>
+    <thead><tr><th>Set-up (zero-edge model, payouts honoured)</th><th class="n">EV per month</th><th class="n">Fees per month</th></tr></thead>
+    <tbody>
+      <tr><td>1 FTMO 2-Step slot</td><td class="n">&asymp; $2,400</td><td class="n">&asymp; $1,000</td></tr>
+      <tr><td>4 FTMO 2-Step slots (the $400K cap)</td><td class="n">&asymp; $9,800</td><td class="n">&asymp; $4,000</td></tr>
+      <tr><td>1 slot each at The5ers, FundingPips, FTMO 1-Step, FTMO 2-Step</td><td class="n">&asymp; $11,500</td><td class="n">&asymp; $4,000</td></tr>
+    </tbody>
+  </table>
+  <p>Treat these as upper estimates. They assume every payout is honoured, costs as measured, and no change in rules. Running many accounts with identical random trades is exactly the kind of activity a risk team looks at closely.</p>
+  <h2>25.3 Bankroll rules</h2>
+  <ul>
+    <li>Hold $7,000&ndash;10,000 per slot before starting it.</li>
+    <li>Fix in advance the number of months and attempts you will run.</li>
+    <li>Withdraw payouts to a separate account; only the planned budget buys new attempts.</li>
+    <li>If a slot's bankroll falls below 3 fees, pause that slot and review.</li>
+  </ul>
+</section>
+
+<!-- 26 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 26</span>
+  <h1>Records, tax and checks</h1>
+  <h2>26.1 Keep the log</h2>
+  <p>The program's log (Section 22.1) is the record. Add every fee, every payout request and confirmation, and every message from the firm.</p>
+  <h2>26.2 Check that the assumptions hold</h2>
+  <table>
+    <thead><tr><th>Check</th><th>Expected</th><th>Stop and review if</th></tr></thead>
+    <tbody>
+      <tr><td>Win rate of full 1 : 3 trades (after 400)</td><td class="n">&asymp; 25% before costs</td><td>Below 21%</td></tr>
+      <tr><td>Average cost per trade (spread, slippage and financing)</td><td class="n">&asymp; 3.5&ndash;4% of risk</td><td>Above 5.5%</td></tr>
+      <tr><td>Phase 1 pass rate (after 15 attempts)</td><td class="n">&asymp; 45%</td><td>2 or fewer passes (about a 1% chance if the plan is right)</td></tr>
+      <tr><td>Payouts honoured</td><td class="n">All</td><td>Any refusal: stop at that firm and read the stated reason</td></tr>
+    </tbody>
+  </table>
+  <h2>26.3 Tax</h2>
+  <p>Payouts are usually taxable income. Fees are often deductible. Keep every record and check your country's rules with a tax adviser.</p>
+</section>
+
+<!-- 27 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 27</span>
+  <h1>Final checklist</h1>
+  <ul class="check">
+    <li>I am 18 or older, and each slot's bankroll ($7,000&ndash;10,000) is money I can lose entirely.</li>
+    <li>I have read the firm's current objectives, forbidden practices and payout terms.</li>
+    <li>I have measured US100 cost (&le; 3 points round trip) and the value per point per lot on my platform.</li>
+    <li>My program (or my manual routine) follows Chapter 19 exactly, and passed two weeks on demo.</li>
+    <li>Risk never exceeds $1,500 per trade; one position at a time; stop and target attached on entry.</li>
+    <li>The daily guard, news rule and Friday close are in place.</li>
+    <li>I never abandon a live account, never hedge, never hold opposite positions across accounts, never use other people's names.</li>
+    <li>I understand that about three attempts in four lose the fee, that one month is almost always negative, and that the firm may refuse payouts or change its rules.</li>
+  </ul>
+  <div class="box key"><h4>The whole document in five lines</h4>
+  <p style="margin:0">A zero-skill trade is a fair bet, so a phase passes with probability B &divide; (A + B). A funded account pays out, on average, the split times the loss allowance. Time per phase grows with (stop &divide; risk)<sup>2</sup>, and cost with 1 &divide; (reward-to-risk &times; risk &times; stop). So the fastest plan uses an efficient instrument (the Nasdaq), a short stop (0.75 hourly moves), 1 : 3 targets and the top of the firm's risk guidance (1.5%). That gives about +$1,400 per FTMO attempt every 18 days, roughly $2,400 per month per slot in theory. The firm's discretion is the one thing the maths cannot price.</p></div>
+</section>

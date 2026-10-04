@@ -1,0 +1,13 @@
+FTMO 2-Step                        synth EV=  1520± 85 d= 11.6 EV/mo= 3998±164 P=0.295 Vf= 7302 tf=16.5 U= 9521 | real EV/mo= 4527±242 P=0.333
+FTMO 1-Step                        synth EV=  1664± 87 d= 13.9 EV/mo= 3653±151 P=0.329 Vf= 6829 tf=16.2 U= 9479 | real EV/mo= 3538±239 P=0.316
+FundingPips 2-Step (bi-weekly 80%) synth EV=  1871± 90 d= 11.6 EV/mo= 4924±161 P=0.334 Vf= 7187 tf=16.6 U=10287 | real EV/mo= 4933±245 P=0.372
+FundingPips 2-Step (monthly 100%)  synth EV=  2417±108 d= 16.2 EV/mo= 4532±106 P=0.336 Vf= 8759 tf=30.3 U= 7211 | real EV/mo= 4540±168 P=0.363
+FundedNext Stellar 2-Step          synth EV=  2178± 96 d= 14.2 EV/mo= 4683±137 P=0.337 Vf= 8106 tf=19.3 U=10187 | real EV/mo= 4922±212 P=0.368
+The5ers High Stakes                synth EV=  1705± 88 d= 10.9 EV/mo= 4760±171 P=0.300 Vf= 7326 tf=16.1 U=10761 | real EV/mo= 4886±244 P=0.331
+Alpha Capital Pro 10%              synth EV=  1644± 85 d= 11.0 EV/mo= 4530±164 P=0.299 Vf= 7149 tf=16.5 U=10106 | real EV/mo= 4606±247 P=0.325
+FXIFY Two-Phase                    synth EV=  1659± 85 d= 10.1 EV/mo= 5011±178 P=0.296 Vf= 7223 tf=16.1 U=10615 | real EV/mo= 5042±252 P=0.320
+GFT 2-Step Standard                synth EV=  1500± 78 d= 12.8 EV/mo= 3573±126 P=0.299 Vf= 6772 tf=25.0 U= 6099 | real EV/mo= 3374±185 P=0.329
+Topstep 50K                        synth EV=   117± 30 d=  3.2 EV/mo= 1127±235 P=0.249 Vf=  817 tf= 5.7 U= 2536 | real EV/mo= 1727±453 P=0.233
+Lucid Flex 50K                     synth EV=    48± 30 d=  3.1 EV/mo=  473±274 P=0.248 Vf=  783 tf= 5.5 U= 1086 | real EV/mo=  994±522 P=0.232
+Tradeify Select 50K                synth EV=    84± 41 d=  3.5 EV/mo=  739±329 P=0.219 Vf= 1138 tf= 6.2 U= 1902 | real EV/mo=  970±524 P=0.187
+Apex 50K EOD                       synth EV=  -304± 14 d=  9.9 EV/mo= -932± 81 P=0.369 Vf=  504 tf=18.7 U=-1337 | real EV/mo= -145± 79 P=0.395

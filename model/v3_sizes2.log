@@ -1,0 +1,5 @@
+FTMO 1-Step                         200000 synth m=0.75 k=3 L=3000 X1=10000 X=20000 EV=   3408± 230 days= 15.4 EV/mo=  6748 P=0.330 Vf= 13888 tf= 21.5 slotU= 14659 t1= 23.3
+FTMO 1-Step                         100000 synth m=0.75 k=3 L=1500 X1=5000 X=10000 EV=   1615± 110 days= 15.1 EV/mo=  3248 P=0.319 Vf=  6885 tf= 21.1 slotU=  7286 t1= 23.6
+FTMO 2-Step                         200000 synth m=0.75 k=3 L=3000 X1=20000 X=20000 EV=   2789± 232 days= 11.3 EV/mo=  7545 P=0.277 Vf= 14613 tf= 16.5 slotU= 18530 t1= 26.0
+FTMO 2-Step                         100000 synth m=0.75 k=3 L=1500 X1=10000 X=10000 EV=   1385± 116 days= 11.6 EV/mo=  3634 P=0.290 Vf=  6965 tf= 16.1 slotU=  9026 t1= 26.1
+FTMO 2-Step                          50000 synth m=0.75 k=3 L=750 X1=5000 X=5000 EV=    645±  60 days= 11.8 EV/mo=  1668 P=0.284 Vf=  3690 tf= 16.9 slotU=  4091 t1= 26.1

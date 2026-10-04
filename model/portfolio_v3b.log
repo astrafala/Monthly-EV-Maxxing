@@ -1,0 +1,12 @@
+FTMO only: 4 x 100K: EV/mo 16,656 ± 646 (real-path 16,419); fees/mo 6,490
+    together 1m:0.19 2m:0.58 3m:0.77 6m:0.88 9m:0.93 12m:0.96 | med12 177,638 p05_12 14,246 | trough med -13,504 p05 -50,560
+    independent 1m:0.31 2m:0.74 3m:0.89 6m:0.99 9m:1.00 12m:1.00 | med12 176,598 p05_12 97,006 | trough med -3,375 p05 -15,383
+Five best-documented CFD firms: 15 slots: EV/mo 67,175 ± 1,110 (real-path 70,566); fees/mo 20,663
+    together 1m:0.35 2m:0.77 3m:0.88 6m:0.96 9m:0.98 12m:0.98 | med12 718,897 p05_12 136,385 | trough med -50,320 p05 -119,788
+    independent 1m:0.21 2m:0.96 3m:1.00 6m:1.00 9m:1.00 12m:1.00 | med12 724,467 p05_12 570,399 | trough med -12,489 p05 -33,009
+Seven CFD firms: 23 slots: EV/mo 100,899 ± 1,395 (real-path 104,004); fees/mo 31,280
+    together 1m:0.35 2m:0.81 3m:0.91 6m:0.97 9m:0.98 12m:0.98 | med12 1,096,556 p05_12 213,096 | trough med -75,002 p05 -164,431
+    independent 1m:0.25 2m:0.99 3m:1.00 6m:1.00 9m:1.00 12m:1.00 | med12 1,104,739 p05_12 916,010 | trough med -12,509 p05 -39,982
+Seven CFD firms + Topstep: 23 + 5: EV/mo 105,685 ± 1,792 (real-path 113,889); fees/mo 35,039
+    together 1m:0.34 2m:0.79 3m:0.89 6m:0.96 9m:0.97 12m:0.97 | med12 1,134,682 p05_12 135,844 | trough med -96,259 p05 -225,545
+    independent 1m:0.19 2m:0.99 3m:1.00 6m:1.00 9m:1.00 12m:1.00 | med12 1,152,873 p05_12 958,470 | trough med -16,239 p05 -43,698

@@ -1,0 +1,408 @@
+[
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "A1 US100 1.5%",
+"names": [
+"US100"
+],
+"per_trade": 1500,
+"total_cap": 1500,
+"same_dir": false,
+"data": "real",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "A2 US100 3% (single big bet, reference)",
+"names": [
+"US100"
+],
+"per_trade": 3000,
+"total_cap": 3000,
+"same_dir": false,
+"data": "real",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "B1 NQ+ES same dir 0.75% each",
+"names": [
+"US100",
+"US500"
+],
+"per_trade": 750,
+"total_cap": 1500,
+"same_dir": true,
+"data": "real",
+"rho": 0.9
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "B2 NQ+ES same dir 1.5% each",
+"names": [
+"US100",
+"US500"
+],
+"per_trade": 1500,
+"total_cap": 3000,
+"same_dir": true,
+"data": "real",
+"rho": 0.9
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C1 NQ+Gold 1.5% each, total 1.5%",
+"names": [
+"US100",
+"XAUUSD"
+],
+"per_trade": 1500,
+"total_cap": 1500,
+"same_dir": false,
+"data": "real",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C2 NQ+Gold 0.75% each",
+"names": [
+"US100",
+"XAUUSD"
+],
+"per_trade": 750,
+"total_cap": 1500,
+"same_dir": false,
+"data": "real",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C3 NQ+Gold 1.5% each, total 3%",
+"names": [
+"US100",
+"XAUUSD"
+],
+"per_trade": 1500,
+"total_cap": 3000,
+"same_dir": false,
+"data": "real",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C4 NQ+Gold+JPY 1.5% each, total 4.5%",
+"names": [
+"US100",
+"XAUUSD",
+"USDJPY"
+],
+"per_trade": 1500,
+"total_cap": 4500,
+"same_dir": false,
+"data": "real",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C5 NQ+Gold+JPY+EUR 1.5% each, total 4.5%",
+"names": [
+"US100",
+"XAUUSD",
+"USDJPY",
+"EURUSD"
+],
+"per_trade": 1500,
+"total_cap": 4500,
+"same_dir": false,
+"data": "real",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C6 NQ+Gold+JPY+EUR 1% each, total 4%",
+"names": [
+"US100",
+"XAUUSD",
+"USDJPY",
+"EURUSD"
+],
+"per_trade": 1000,
+"total_cap": 4000,
+"same_dir": false,
+"data": "real",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C7 NQ+Gold+JPY+EUR 1.5% each, total 6% (capped by daily room)",
+"names": [
+"US100",
+"XAUUSD",
+"USDJPY",
+"EURUSD"
+],
+"per_trade": 1500,
+"total_cap": 6000,
+"same_dir": false,
+"data": "real",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "A1 US100 1.5%",
+"names": [
+"US100"
+],
+"per_trade": 1500,
+"total_cap": 1500,
+"same_dir": false,
+"data": "synth",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "A2 US100 3% (single big bet, reference)",
+"names": [
+"US100"
+],
+"per_trade": 3000,
+"total_cap": 3000,
+"same_dir": false,
+"data": "synth",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "B1 NQ+ES same dir 0.75% each",
+"names": [
+"US100",
+"US500"
+],
+"per_trade": 750,
+"total_cap": 1500,
+"same_dir": true,
+"data": "synth",
+"rho": 0.9
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "B2 NQ+ES same dir 1.5% each",
+"names": [
+"US100",
+"US500"
+],
+"per_trade": 1500,
+"total_cap": 3000,
+"same_dir": true,
+"data": "synth",
+"rho": 0.9
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C1 NQ+Gold 1.5% each, total 1.5%",
+"names": [
+"US100",
+"XAUUSD"
+],
+"per_trade": 1500,
+"total_cap": 1500,
+"same_dir": false,
+"data": "synth",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C2 NQ+Gold 0.75% each",
+"names": [
+"US100",
+"XAUUSD"
+],
+"per_trade": 750,
+"total_cap": 1500,
+"same_dir": false,
+"data": "synth",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C3 NQ+Gold 1.5% each, total 3%",
+"names": [
+"US100",
+"XAUUSD"
+],
+"per_trade": 1500,
+"total_cap": 3000,
+"same_dir": false,
+"data": "synth",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C4 NQ+Gold+JPY 1.5% each, total 4.5%",
+"names": [
+"US100",
+"XAUUSD",
+"USDJPY"
+],
+"per_trade": 1500,
+"total_cap": 4500,
+"same_dir": false,
+"data": "synth",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C5 NQ+Gold+JPY+EUR 1.5% each, total 4.5%",
+"names": [
+"US100",
+"XAUUSD",
+"USDJPY",
+"EURUSD"
+],
+"per_trade": 1500,
+"total_cap": 4500,
+"same_dir": false,
+"data": "synth",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C6 NQ+Gold+JPY+EUR 1% each, total 4%",
+"names": [
+"US100",
+"XAUUSD",
+"USDJPY",
+"EURUSD"
+],
+"per_trade": 1000,
+"total_cap": 4000,
+"same_dir": false,
+"data": "synth",
+"rho": 0.0
+},
+{
+"m": 0.75,
+"k": 3,
+"X1": 1000,
+"X": 10000,
+"n": 6000,
+"out": "grid1.jsonl",
+"tag": "C7 NQ+Gold+JPY+EUR 1.5% each, total 6% (capped by daily room)",
+"names": [
+"US100",
+"XAUUSD",
+"USDJPY",
+"EURUSD"
+],
+"per_trade": 1500,
+"total_cap": 6000,
+"same_dir": false,
+"data": "synth",
+"rho": 0.0
+}
+]
