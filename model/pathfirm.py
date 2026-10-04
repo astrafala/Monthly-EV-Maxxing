@@ -17,12 +17,53 @@ import multi
 
 _DATA = {}
 
+def synth_name(data, with_sub=False):
+    """synth = seed 11, 12 years; synthN = seed N; synthNyY = Y years; ...sS = S sub-steps per hour (default 12)"""
+    body = data[5:]; sub = 12
+    if "s" in body: body, sb = body.split("s"); sub = int(sb)
+    sd, yrs = 11, 12.0
+    if body:
+        if "y" in body: a, b = body.split("y"); sd, yrs = int(a), float(b)
+        else: sd = int(body)
+    return (sd, yrs, sub) if with_sub else (sd, yrs)
+
+def sibling(data, off):
+    """an independent synthetic path for a second market of the same life (same length, seed + off)"""
+    sd, yrs, sub = synth_name(data, True)
+    return f"synth{sd + off}" + (f"y{yrs:g}" if yrs != 12 else "") + (f"s{sub}" if sub != 12 else "")
+
+def evict(data):
+    for key in [k for k in _DATA if k[1] == data]: del _DATA[key]
+
+def _store(key, idx, d):
+    wd = idx.weekday.values; hr = idx.hour.values
+    _DATA[key] = dict(O=d["O"].tolist(), H=d["H"].tolist(), L=d["L"].tolist(), C=d["C"].tolist(),
+                      ok=d["ok"].tolist(), entry=d["entry"].tolist(), roll=d["roll"].tolist(),
+                      sig=d["sig"], cost=d["cost"], fin=d["fin"],
+                      fri_late=((wd == 4) & (hr >= 19)).tolist(), fri_close=((wd == 4) & (hr == 20)).tolist(),
+                      T=len(idx), h0=int(hr[0]), hour=hr.tolist())
+    if "sH" in d: _DATA[key].update(sH=d["sH"], sL=d["sL"], sub=d["sub"])
+
+CORR_NAMES = ["US100", "XAUUSD", "EURUSD", "USDJPY"]
+def _load_corr(data):
+    """'corrR_NyY': the four markets on one joint path, every pair with correlation R/100 (sensitivity runs); the
+    micro Nasdaq future follows the Nasdaq CFD's path with its own costs"""
+    r, rest = data[4:].split("_")
+    sd, yrs, sub = synth_name("synth" + rest, True)
+    idx, D, day = multi.load_synth(CORR_NAMES, int(r) / 100.0, seed=sd, years=yrs, sub=sub)
+    for nm in CORR_NAMES: _store((nm, data), idx, D[nm])
+    u = D["US100"]; f = multi._finish(idx, "MNQ_fut", u["O"], u["H"], u["L"], u["C"], u["sig"])
+    f.update(sH=u["sH"], sL=u["sL"], sub=u["sub"])
+    _store(("MNQ_fut", data), idx, f)
+
 def market(instr, data):
     key = (instr, data)
+    if key not in _DATA and data.startswith("corr"):
+        _load_corr(data)
     if key not in _DATA:
         if data.startswith("synth"):
-            sd = int(data[5:]) if len(data) > 5 else 11       # "synth" = seed 11; "synth23" = an independent path
-            idx, D, day = multi.load_synth([instr], 0.0, seed=sd)
+            sd, yrs, sub = synth_name(data, True)            # "synth" = seed 11; "synth23" = an independent path;
+            idx, D, day = multi.load_synth([instr], 0.0, seed=sd, years=yrs, sub=sub)   # "synth5001y2" = 2 years
         else:
             idx, D, day = multi.load_aligned([instr])
         d = D[instr]
@@ -56,6 +97,12 @@ class PathTrader:
         self.dir_rule = dir_rule
         self.flat_daily = flat_daily          # e.g. 20: no entry at or after 19:00 UTC, close at the 20:00 UTC open
         self.cost = self.M["cost"] * cost_mult
+        self.rho = self.cost / (m * self.M["sig"])      # round-trip cost per dollar of risk (v7 sizing)
+        self.s = m * self.M["sig"]                       # stop distance as a fraction of the price (margin check)
+        # v7: whole micro contracts. Synthetic paths are normalised to start at 100, so one contract's notional is fixed at
+        # $2 per point x 31,070 points (the reference Nasdaq level of 2 Oct 2026): one contract loses 62,140 x s at the stop.
+        self.contract = 2.0 * 31070.0 if instr == "MNQ_fut" else None
+        self.min_l = self.contract * m * self.M["sig"] if self.contract else 0.0
         # engine day boundaries (clock = 0 mod 24) fall at 22:00 UTC, the futures/CFD daily reset
         self.base = 24 * rng.randrange(self.M["T"] // 48) + (22 - self.M["h0"]) % 24
         self.trades = 0
@@ -85,7 +132,12 @@ class PathTrader:
                or (fd_h is not None and M["hour"][i] >= fd_h - 1)):
             i = (i + 1) % T; waited += 1
         d = self._direction(i)
-        s = self.m * M["sig"]; notional = l / s; e = M["O"][i]
+        s = self.m * M["sig"]; e = M["O"][i]
+        if self.contract:                               # whole contracts: risk rounded down to a multiple of one contract's stop
+            per = self.contract * s                     # dollars lost by one contract at the stop
+            n = max(1, math.floor(l / per + 1e-9))      # the rule engine never asks for less than one contract (min_l)
+            f = n * per / l; l = l * f; w = w * f
+        notional = l / s
         fee = self.cost * notional                     # target placed so that a win nets w after costs
         wg = w + fee
         sl = e * (1 - d * s); tp = e * (1 + d * s * wg / l)
@@ -118,18 +170,20 @@ def attempt(firm, instr, data, m, L, k, X1, X, rng, cost_mult=1.0, dir_rule="ran
     tr = PathTrader(instr, data, m, L, k, rng, cost_mult, dir_rule, firm.get("flat_daily"))
     clock = rng.random() * A.DAY; t_start = clock
     fees = firm["fee"]; passed = 0
-    for st in firm["phases"]:
+    credits = 0.0
+    for j, st in enumerate(firm["phases"]):
         ok, clock = A.run_stage(st, tr, rng, firm, clock)
+        if ok and firm.get("phase_credit"): credits += firm["phase_credit"][j]
         if not ok:
             if firm["monthly"]: fees = firm["fee"] * max(1, math.ceil((clock - t_start) / (30 * A.DAY)))
-            return dict(v=-fees, days=(clock - t_start) / A.DAY, t1=None, npay=0, passed=passed,
+            return dict(v=-fees + credits, days=(clock - t_start) / A.DAY, t1=None, npay=0, passed=passed,
                         t_eval=(clock - t_start) / A.DAY, paid=0.0, t_fund=0.0, trades=tr.trades)
         passed += 1
     if firm["monthly"]: fees = firm["fee"] * max(1, math.ceil((clock - t_start) / (30 * A.DAY)))
     fees += firm.get("activation", 0)
     t_eval = (clock - t_start) / A.DAY
     paid, clock2, tfirst, npay = A.run_funded(firm["funded"], tr, rng, firm, clock, X1, X)
-    return dict(v=paid - fees, days=(clock2 - t_start) / A.DAY,
+    return dict(v=paid - fees + credits, days=(clock2 - t_start) / A.DAY,
                 t1=(tfirst - t_start) / A.DAY if tfirst else None, npay=npay, passed=passed,
                 t_eval=t_eval, paid=paid, t_fund=(clock2 - clock) / A.DAY, trades=tr.trades, fees=fees)
 

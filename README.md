@@ -6,10 +6,81 @@ A prop-firm evaluation ("challenge") works like an option. You pay a fee. If you
 
 | File | Contents |
 |---|---|
-| [`docs/The_Prop_Firm_Option_v6_Mathematics.pdf`](docs/The_Prop_Firm_Option_v6_Mathematics.pdf) | **Current version, 98 pages.** The expected cash per month for one person first, then every formula derived from first principles (Part I), one chapter per programme with every number worked through at its optimised setting (Part II), the per-person allocation, the portfolio simulation and payout-refusal scenarios (Part III), and the execution routine and risks (Part IV). |
-| `docs/archive/` | Versions 1–5, superseded. Version 5 (88 pages) holds the execution plan, the sign-up diary and the firm-by-firm rule audit that version 6 builds on. |
+| [`docs/The_Prop_Firm_Option_v7_Mathematics.pdf`](docs/The_Prop_Firm_Option_v7_Mathematics.pdf) | **Current version, 89 pages.** Version 6 corrected after a 35-point review, with 11 further errors found and fixed. The expected cash per month for one person first, then every formula derived from first principles (Part I), one chapter per programme with every number worked through at its chosen setting (Part II), the allocation, the portfolio simulation, budget, cost and refusal scenarios (Part III), the execution routine and risks (Part IV), and the corrections, point by point (Appendix A). |
+| [`docs/v7_review_response.md`](docs/v7_review_response.md) | The same corrections as Appendix A, as text: each review point, what was wrong and what version 7 does. |
+| `docs/archive/` | Versions 1–6, superseded. Version 5 (88 pages) holds the sign-up diary and the firm-by-firm rule audit; version 6 (98 pages) is the version the review checked. |
 
-## Key results (version 6, 4 October 2026)
+## Key results (version 7, corrected after review, 4 October 2026)
+
+**Expected cash per month for one person, recommended plan, first year: $70,128 ± $2,427** (28 accounts, 1,200 simulated first years, each on its own new price paths; zero predictive skill; every rule the model contains, plus the plan's policies: flat every day by 20:00 UTC, no trade and no day above 40% of a target, accounts closed before they are traded down to the floor). Months 2–12 average $79,208; the long-run rate (months 13–36 of 36-month lives) is $82,062 a month, and the accounts open at month 12 go on to pay $169,478 more. With payouts refused 2% / 5% / 15% of the time by tier: $47,758; at 5% / 10% / 30%: $32,157.
+
+| Portfolio | Accounts | EV/month, first year | Months 2–12 | Tiered refusals | Harsh refusals | First-year cash: median (5th–95th) | Cash low: median / 1 in 20 |
+|---|---:|---:|---:|---:|---:|---|---|
+| Tier A only | 15 | 27.7K ± 1.0K | 31.4K | 23.1K | 18.1K | 0.31M (−0.01M to 0.71M) | 30.1K / 86.2K |
+| Tiers A and B | 22 | 45.8K ± 1.6K | 51.8K | 34.1K | 25.1K | 0.51M (0.05M to 1.19M) | 43.0K / 115.2K |
+| **Recommended (A + B + one account per tier-D firm)** | 28 | **70.1K ± 2.4K** | 79.2K | 47.8K | 32.2K | 0.78M (0.09M to 1.78M) | 56.9K / 156.1K |
+| Recommended, FTMO as 2 × 200K | 26 | 70.1K ± 2.4K | 79.2K | 48.5K | 33.8K | 0.78M (0.09M to 1.78M) | 56.9K / 156.1K |
+| All firms at full allowance | 35 | 81.3K ± 2.9K | 91.9K | 46.9K | 29.4K | 0.90M (0.11M to 2.06M) | 67.7K / 185.0K |
+| Full allowance + The5ers small accounts | 45 | 83.2K ± 2.9K | 94.1K | 47.1K | 28.7K | 0.93M (0.11M to 2.14M) | 69.9K / 188.0K |
+| Recommended + futures layer | 53 | 77.0K ± 2.8K | 87.0K | 47.5K | 30.7K | 0.85M (0.06M to 1.97M) | 69.2K / 197.9K |
+
+The recommended plan, account by account (risk / k / m / X = risk per trade and payout target as shares of the account, reward-to-risk, stop in hourly standard deviations; EV per month is each account's long-run rate on sixteen fresh paths):
+
+| Programme | Market | Accounts | Risk / k / m / X | EV/month each | EV/month |
+|---|---|---|---|---:|---:|
+| FTMO 2-Step | Nasdaq | 4 × 100K | 1.5% / 8 / 0.75 / 20% | 2,930 | 11,722 |
+| FundingPips 2-Step Flex (95%) | USDJPY | 4 × 100K | 1.75% / 8 / 1 / 15% | 2,829 | 11,315 |
+| The5ers High Stakes Classic | Nasdaq | 1 × 100K | 1.75% / 7 / 1 / 30% | 3,592 | 3,592 |
+| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 100K | 1.75% / 6 / 1.07 / 30% | 2,877 | 2,877 |
+| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 50K | 1.75% / 6 / 1.07 / 30% | 1,310 | 1,310 |
+| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 25K | 1.75% / 6 / 1.07 / 30% | 643 | 643 |
+| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 10K | 1.75% / 6 / 1.07 / 30% | 246 | 246 |
+| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 5K | 1.75% / 6 / 1.07 / 30% | 105 | 105 |
+| FundedNext Stellar 2-Step | EURUSD | 1 × 200K | 1.75% / 6 / 1 / 20% | 3,265 | 3,265 |
+| Fintokei ProTrader | Nasdaq | 5 × 100K | 1.75% / 10 / 1 / 30% | 3,209 | 16,043 |
+| Hola Prime 2-Step Prime (bi-weekly 80%) | gold | 2 × 100K | 1.75% / 10 / 1.03 / 20% | 2,813 | 5,627 |
+| Alpha Capital Pro 10% | Nasdaq | 1 × 200K | 1.75% / 6 / 1 / 20% | 6,392 | 6,392 |
+| FunderPro Classic | Nasdaq | 1 × 200K | 1.75% / 8 / 1.07 / 20% | 6,961 | 6,961 |
+| GFT 2-Step Standard | Nasdaq | 1 × 200K | 1.75% / 3 / 1.07 / 10% | 4,035 | 4,035 |
+| BrightFunded 2-Step Classic | Nasdaq | 1 × 200K | 1.75% / 6 / 1 / 20% | 5,526 | 5,526 |
+| Blue Guardian 2-Step | Nasdaq | 1 × 200K | 1.75% / 4 / 1.07 / 15% | 4,648 | 4,648 |
+| Maven 2-Step | Nasdaq | 1 × 100K | 1.75% / 4 / 1.25 / 10% | 1,627 | 1,627 |
+| **Total** | | **28 accounts** | | | **85,934** |
+
+With a finite starting budget (purchases wait until the cash is there):
+
+| Starting cash | EV/month, first year |
+|---|---:|
+| $5,000 | 9,033 |
+| $10,000 | 19,888 |
+| $20,000 | 28,754 |
+| $30,000 | 36,411 |
+| $50,000 | 50,158 |
+| $75,000 | 55,472 |
+| $100,000 | 59,471 |
+| no limit (same 200 seeds) | 65,125 |
+
+Scenarios (full portfolio runs, paired with the baseline):
+
+| Scenario | EV/month, first year | Difference to baseline |
+|---|---:|---:|
+| Baseline (same 200 seeds) | $65,125 ± $5,894 |  |
+| All trading costs × 1.5 | $53,418 ± $5,520 | −$11,707 ± $2,725 |
+| All trading costs × 2 | $43,877 ± $5,284 | −$21,247 ± $3,234 |
+| Markets correlated 0.3 (one joint path) | $72,340 ± $6,483 | +$7,216 ± $9,322 |
+| News proxy: flat 12:00–14:00 UTC every weekday | $61,637 ± $5,492 | −$3,488 ± $4,368 |
+| FundedNext 1% risk (behavioural remedy) | $63,629 ± $5,905 | −$1,496 ± $512 |
+| FundedNext 7-day pause (behavioural remedy) | $64,142 ± $5,900 | −$982 ± $481 |
+
+What changed from version 6:
+
+- **The review was right on almost every point.** All 35 points were checked against the code, the data and the firms' pages: 34 agreed, one in part. Appendix A of the PDF and [`docs/v7_review_response.md`](docs/v7_review_response.md) give each one with what was wrong and what changed.
+- **Eleven further errors found and fixed** (N1–N11 in Appendix A). The largest: version 6's FunderPro setting broke the firm's funded margin limit (20% of the starting balance), and GFT's $3,000 daily profit cap is flat, not scaled with size. The engine also overwrote the target cap in one funded branch, counted weekend days as trading days, could place an extra trade after a win that closed the gap to the target by a rounding error, and did not check FXIFY's and Hola Prime's best-day rules at the payout request. Maven's consistency rules were missing.
+- **The strategy is more conservative, so the value is lower.** No trade and no day may make more than 40% of a target (several firms forbid passing with one or a few trades, so bold play is gone); every position is closed by 20:00 UTC, so the account is flat at every firm's daily reset; an account is closed near its floor instead of being traded in micro size; risk is sized net of cost and margin is checked at every entry; FTMO risk stays at or below its own 1.5% guidance. These policies cost value but make the plan executable as written. Together with the rule corrections they explain why the figure is lower than version 6's $138,412; they interact, so the new figure is a new measurement, not version 6's minus a list.
+- **Cleaner statistics.** Every figure is re-measured on price paths no earlier stage used. Intervals are cluster-robust with Student's t, because attempts on one path share its history. The engine is checked against the exact chain on 24 independent paths. The first-year average, the long-run rate and the value of accounts still open after a year are reported separately.
+
+## Version 6 results (superseded by version 7; see the corrections above)
+
 
 **Expected cash per month for one person, recommended plan: $138,400 ± $4,900** (first-year average, 400 simulated years; 28 accounts at 13 firms, zero predictive skill, every written rule followed). From the second month on the average is $151,600 a month. If payouts are refused 2% / 5% / 15% of the time by tier, it is $93,700; at 5% / 10% / 30%, $64,500.
 
@@ -146,10 +217,11 @@ Version 4 per-person results, every payout assumed paid. Every account is run at
 
 - **No skill.** Trades are fair bets. The value comes from the fee-versus-payout structure, not from predicting prices.
 - **The firm pays as its rules say.** If it might not, see the refusal scenarios above. The value lost depends on how many accounts sit at each firm.
-- **Trading costs as modelled.** At 1.5× the costs the recommended plan is worth about 7% less, and at 2× about 17% less (version 6, chapter 31). The currency accounts are the most sensitive, so measure real costs in the first week.
-- **Rules as published in October 2026.** Firms change their rules often. Check each programme's rule table (version 6, Part II) against the firm's current terms before every purchase.
+- **Trading costs as modelled.** At 1.5× the costs the recommended plan's first year is worth about 18% less, and at 2× about 33% less (version 7, Part III; paired runs). Measure real spreads and commissions in the first week.
+- **Rules as published in October 2026.** Firms change their rules often. Check each programme's rule table (version 7, Part II, with the source URLs) against the firm's current terms before every purchase.
+- **The plan's own policies are part of the numbers.** Flat every day by 20:00 UTC, no trade and no day above 40% of a target, the risk caps, margin at most 60% of the balance (FunderPro funded: 20% of the start balance), and closing an account near its floor. Trading differently changes the value and can break a firm's rules.
 - **One person, their own accounts, their own money.** Accounts are copied only where a firm allows copying between your own accounts. There is no hedging across accounts and no account in anyone else's name.
-- **Large drawdowns are normal.** In the recommended version 6 plan, the cash balance typically falls about 59K (fees paid before payouts arrive) before it recovers; in 1 case in 20 it falls about 136K.
+- **Large drawdowns are normal.** In the recommended version 7 plan, the cash balance typically falls about $57K (fees paid before payouts arrive) before it recovers; in 1 case in 20 it falls about $156K. With less starting cash the plan buys fewer accounts at once and is worth less in the first year (the budget table above).
 - **Private use.** If several people traded the same written rules, the result would be prohibited group trading at several firms.
 - **This is research, not financial advice.**
 
@@ -185,8 +257,25 @@ The main pipeline is in `model/`:
 | `lockstep_portfolio_v6.py` | `lockstep_v6.json` | Version 6 portfolios, 400 simulated first years each, with the refusal scenarios |
 | `build_math_v6.py`, `doc6_*.py`, `math_v6_*.html`, `katex/` | `prop_firm_math_v6.html`, PDF | Build the version 6 document; formulas typeset with KaTeX (MIT licence, `katex/LICENSE`) |
 | `tie_v0/` | | Results of the first version 6 run, before the same-bar tie correction, kept for the record |
+| `firms_v7.py` | | Version 7 rule sets: every programme re-read on the firms' pages (URLs in `SOURCES`), plus the plan's policies (daily flat by 20:00 UTC, 40% concentration, closing near the floor) |
+| `optimize_v7.py` | `opt_v7_grid.jsonl`, `opt_v7_refine.jsonl`, `opt_v7_futures.jsonl`, `opt_v7_final.json` | Version 7 search on the corrected engine: grid, refine, futures, final run on fresh paths with cluster-robust Student-t intervals |
+| `analytic_v7.py` | | The exact trade-level chain of the corrected rules (pass probability, trades, cost, end balance, funded cash, accounting identities), written independently of the engine |
+| `verify_v7.py`, `sens_v7.py` | `verify_v7.json`, `verify_v7_ties2.json`, `sens_v7.json` | Engine against the chain on 24 independent paths; same-bar tie convergence; cost, risk, concentration, daily-flat and direction-rule sensitivities |
+| `lockstep_portfolio_v7.py` | `lockstep_v7*.json` | Version 7 portfolios: 1,200 first years each, 36-month lives, linearity check, finite budgets, cost stress, correlated markets, news blackout, behaviour scenarios |
+| `build_math_v7.py`, `doc7_*.py`, `math_v7_*.html`, `progs_v7.py`, `review_v7.py`, `readme_v7.py` | `prop_firm_math_v7.html`, PDF, `docs/v7_review_response.md` | Build the version 7 document, the corrections appendix and this README's results section |
 
 The other scripts are earlier versions and checks, kept for the record.
+
+## Reproducing version 7
+
+```bash
+cd model
+python3 fetch_data.py            # hourly price history (needed for calibration and real-path checks)
+python3 optimize_v7.py grid      # grid search on the corrected engine (the longest stage)
+./rerun_v7.sh                    # refine, futures, final, verification, sensitivities, every portfolio stage
+python3 build_math_v7.py         # writes prop_firm_math_v7.html, the PDF and docs/v7_review_response.md
+python3 readme_v7.py             # prints the results section of this README
+```
 
 ## Reproducing version 6
 

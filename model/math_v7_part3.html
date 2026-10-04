@@ -1,0 +1,65 @@
+<!-- ================================================================ PART III -->
+<section class="part">
+  <span class="num">Part III</span>
+  <h1>One person, many accounts</h1>
+  <p>Part II valued one account at a time, as a long-run rate. This part runs them together for one person: how much each firm allows, how to fill it, what a first year looks like, what the long run is, how much cash it takes, and what happens if costs are higher, markets move together, news must be avoided, or payouts are refused.</p>
+</section>
+
+<!-- allocation -->
+<section class="chapter">
+  <span class="eyebrow">Chapter [[CH_ALLOC]]</span>
+  <h1>The maximum allocation per person</h1>
+  <h2>[[CH_ALLOC]].1 Firm by firm</h2>
+  [[ALLOC_TABLE]]
+  <h2>[[CH_ALLOC]].2 Four 100K accounts or two 200K?</h2>
+  <p>Scale every dollar amount of a programme by \(\lambda\) (account, targets, limits, risk, payout target, safety margins). The engine's rules then scale exactly: every trade's win, loss and cost scale by \(\lambda\), the pass probabilities and the time are unchanged, and the funded account's trading cash scales by \(\lambda\). The fee need not scale, and the refund follows the fee actually paid. Writing \(G(S)\) for the funded cash <em>excluding</em> the refund, \(R(S)\) for the refund and \(q_R\) for the chance of reaching the payout that carries it (given a pass):</p>
+  <div class="formula"><span class="lbl">Scaling an account (rules that scale)</span>
+  $$\mathbb{E}[V(\lambda S)] = P\big[\lambda\, G(S) + q_R\, R(\lambda S)\big] - F(\lambda S), \qquad \mathbb{E}[T](\lambda S) = \mathbb{E}[T](S).$$
+  </div>
+  <p>With \(R = F\), one account of size \(\lambda S\) is worth more than \(\lambda\) accounts of size \(S\) by \(\big[\lambda F(S) - F(\lambda S)\big](1 - P\,q_R)\) per attempt: the fee saving, less the part of it that would have come back as a refund. (Version 6's formula scaled the refund with the account; it does not.) The formula does not apply where a rule is a fixed dollar amount: GFT's $3,000 day cap and $10,000 payout cap, Maven's $10,000 rolling cap, The5ers' $150 minimum payout, and whole futures contracts. Chapter 11 checks the scaling path by path on the same seeds.</p>
+  [[SIZE_TABLE]]
+  [[SIZE_TEXT]]
+</section>
+
+<!-- portfolios -->
+<section class="chapter">
+  <span class="eyebrow">Chapter [[CH_LOCK]]</span>
+  <h1>Running every account at once</h1>
+  <h2>[[CH_LOCK]].1 What adds up and what does not</h2>
+  <p>By linearity (2.1), the expected cash of a set of slots over a horizon is the sum of their expected cash over that horizon, under the policy actually run, however correlated the accounts are. Correlation changes the spread: in a bad week every Nasdaq account loses together, fees fall due together, and a finite budget can run short together.</p>
+  <h2>[[CH_LOCK]].2 One direction per market</h2>
+  <p>No two of your accounts ever hold opposite positions on one market at the same time. When a new trade opens and another of your accounts already holds that market, the new trade takes the same direction; when none does, the plan's rule decides (the sign of the last five hourly closes). The rule has no edge (Chapter 11); its job is to keep every account on one side.</p>
+  <h2>[[CH_LOCK]].3 The lockstep simulation</h2>
+  <p>The portfolio results come from an engine that runs every account of one person on shared price paths and one calendar (lockstep.py), processing trades in the order of their entry time so the shared-direction rule is exact, applying every firm's rules (with the plan's policies) to its own accounts, and writing every fee, credit, phase result and payout to a dated ledger. The settings were frozen before any portfolio run, and each simulated life runs on its own new paths (seeds 100,000 and up), used by nothing else; version 6 re-used the paths that had chosen its settings. Lives are therefore independent and their average is an unbiased estimate with an ordinary interval. In [[LIVES]] simulated years, no two accounts held opposite positions.</p>
+  <h2>[[CH_LOCK]].4 The portfolios: the first year</h2>
+  [[PORTF_TABLE]]
+  [[PORTF_TEXT]]
+  <h2>[[CH_LOCK]].5 Month by month</h2>
+  [[MONTH_FIG]]
+  [[MONTH_TABLE]]
+  <h2>[[CH_LOCK]].6 The long run, and what is left at month 12</h2>
+  [[LONG_TEXT]]
+  <h2>[[CH_LOCK]].7 Finite cash, higher costs, correlation, news and behaviour</h2>
+  <p><strong>A finite budget.</strong> The first-year figures assume every slot is refilled the moment its attempt ends, which needs cash for fees before payouts arrive. Version 6 quoted the median of the deepest cash shortfall as if it kept every slot filled; half of all years need more. Here the plan is run with a fixed starting budget instead: a purchase waits until the cash is there.</p>
+  [[BUDGET_TABLE]]
+  <p><strong>Other scenarios</strong>, each a full portfolio run on the baseline's seeds:</p>
+  [[SCEN_TABLE]]
+</section>
+
+<!-- refusals -->
+<section class="chapter">
+  <span class="eyebrow">Chapter [[CH_REF]]</span>
+  <h1>If payouts can be refused</h1>
+  <p>Every firm keeps the right to refuse a payout it judges to break its rules. Nobody publishes how often it happens. This chapter turns that uncertainty into scenarios; it does not cover payouts lost because a firm judges the strategy itself to break a behavioural rule (Chapter [[CH_RISK]].2), which would not be random.</p>
+  <h2>[[CH_REF]].1 A model</h2>
+  <p>Suppose each payout request at a firm is refused with probability \(\rho\), independently, and a refusal ends your use of that firm. The number of paid requests before the first refusal is geometric, with mean \((1-\rho)/\rho\). If the firm's accounts make requests at rate \(r\) a month, each of gross size \(a\), the expected cash actually paid over \(H\) months is</p>
+  <div class="formula"><span class="lbl">Paid cash under refusals</span>
+  $$a\,r\,(1-\rho)\,\frac{1 - e^{-\rho r H}}{\rho r} \;=\; a\,r\,H \times (1-\rho)\,\frac{1 - e^{-\rho r H}}{\rho r H},$$
+  </div>
+  <p>the all-paid cash \(arH\) times the average survival fraction <em>and</em> the factor \((1-\rho)\): the refused request itself is not paid (version 6's formula left that factor out; its simulation did not). Fees paid while the firm is still used count against this. [[REF_EXAMPLE]]</p>
+  <h2>[[CH_REF]].2 Tiers and scenarios</h2>
+  [[TIER_TABLE]]
+  <h2>[[CH_REF]].3 What it does to each portfolio</h2>
+  [[REFUSAL_TABLE]]
+  [[REFUSAL_TEXT]]
+</section>

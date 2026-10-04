@@ -1,0 +1,97 @@
+cost  None      FTMO 2-Step                        US100   L=1500 cost x1.0 random  EV/mo=  2630± 629 EV=  1308 days= 15.1 P=0.271
+cost  None      FTMO 2-Step                        US100   L=1500 cost x1.5 random  EV/mo=  2410± 830 EV=  1163 days= 14.7 P=0.261
+cost  None      FTMO 2-Step                        US100   L=1500 cost x2.0 random  EV/mo=  2075± 228 EV=   965 days= 14.2 P=0.238
+cost  None      FundingPips 2-Step Flex (80%)      USDJPY  L=1750 cost x1.0 random  EV/mo=  2187± 986 EV=  1469 days= 20.5 P=0.247
+cost  None      FundingPips 2-Step Flex (80%)      USDJPY  L=1750 cost x1.5 random  EV/mo=  1762± 803 EV=  1109 days= 19.2 P=0.221
+cost  None      FundingPips 2-Step Flex (80%)      USDJPY  L=1750 cost x2.0 random  EV/mo=  1447± 561 EV=   862 days= 18.1 P=0.199
+cost  None      FundingPips 2-Step Flex (80%)      EURUSD  L=1750 cost x1.0 random  EV/mo=  1229± 576 EV=   826 days= 20.5 P=0.206
+cost  None      FundingPips 2-Step Flex (80%)      EURUSD  L=1750 cost x1.5 random  EV/mo=   746± 551 EV=   457 days= 18.6 P=0.173
+cost  None      FundingPips 2-Step Flex (80%)      EURUSD  L=1750 cost x2.0 random  EV/mo=   215± 507 EV=   120 days= 17.1 P=0.131
+cost  None      FundingPips 2-Step Flex (95%)      USDJPY  L=1750 cost x1.0 random  EV/mo=  2671± 588 EV=  1966 days= 22.4 P=0.250
+cost  None      FundingPips 2-Step Flex (95%)      USDJPY  L=1750 cost x1.5 random  EV/mo=  2108± 630 EV=  1435 days= 20.7 P=0.222
+cost  None      FundingPips 2-Step Flex (95%)      USDJPY  L=1750 cost x2.0 random  EV/mo=  1605± 503 EV=  1015 days= 19.2 P=0.193
+cost  None      FundingPips 2-Step Flex (95%)      EURUSD  L=1750 cost x1.0 random  EV/mo=  1872± 826 EV=  1311 days= 21.3 P=0.209
+cost  None      FundingPips 2-Step Flex (95%)      EURUSD  L=1750 cost x1.5 random  EV/mo=  1067± 452 EV=   667 days= 19.0 P=0.167
+cost  None      FundingPips 2-Step Flex (95%)      EURUSD  L=1750 cost x2.0 random  EV/mo=   565± 711 EV=   324 days= 17.5 P=0.127
+cost  None      FundedNext Stellar 2-Step          EURUSD  L=1750 cost x1.0 random  EV/mo=  1630± 897 EV=   865 days= 16.2 P=0.227
+cost  None      FundedNext Stellar 2-Step          EURUSD  L=1750 cost x1.5 random  EV/mo=  1012± 791 EV=   494 days= 14.8 P=0.191
+cost  None      FundedNext Stellar 2-Step          EURUSD  L=1750 cost x2.0 random  EV/mo=   405± 370 EV=   178 days= 13.4 P=0.148
+cost  None      FundedNext Stellar 2-Step          XAUUSD  L=1750 cost x1.0 random  EV/mo=  2740± 591 EV=  1552 days= 17.2 P=0.295
+cost  None      FundedNext Stellar 2-Step          XAUUSD  L=1750 cost x1.5 random  EV/mo=  2264± 456 EV=  1204 days= 16.2 P=0.263
+cost  None      FundedNext Stellar 2-Step          XAUUSD  L=1750 cost x2.0 random  EV/mo=  1828± 413 EV=   924 days= 15.4 P=0.234
+cost  None      The5ers High Stakes                US100   L=1750 cost x1.0 random  EV/mo=  3233± 323 EV=  1688 days= 15.9 P=0.283
+cost  None      The5ers High Stakes                US100   L=1750 cost x1.5 random  EV/mo=  3200± 398 EV=  1659 days= 15.8 P=0.277
+cost  None      The5ers High Stakes                US100   L=1750 cost x2.0 random  EV/mo=  2410± 497 EV=  1186 days= 15.0 P=0.258
+cost  None      The5ers High Stakes Classic        US100   L=1750 cost x1.0 random  EV/mo=  3360± 470 EV=  1796 days= 16.3 P=0.312
+cost  None      The5ers High Stakes Classic        US100   L=1750 cost x1.5 random  EV/mo=  3122± 387 EV=  1652 days= 16.1 P=0.300
+cost  None      The5ers High Stakes Classic        US100   L=1750 cost x2.0 random  EV/mo=  2662± 551 EV=  1367 days= 15.6 P=0.287
+cost  None      FXIFY Two Phase Classic (100%, 30  US100   L=1750 cost x1.0 random  EV/mo=  2548± 600 EV=  1870 days= 22.3 P=0.286
+cost  None      FXIFY Two Phase Classic (100%, 30  US100   L=1750 cost x1.5 random  EV/mo=  2162± 797 EV=  1538 days= 21.7 P=0.266
+cost  None      FXIFY Two Phase Classic (100%, 30  US100   L=1750 cost x2.0 random  EV/mo=  2127± 596 EV=  1470 days= 21.0 P=0.251
+cost  None      FXIFY Two Phase Classic (100%, 30  USDJPY  L=1750 cost x1.0 random  EV/mo=  2215± 680 EV=  1610 days= 22.1 P=0.263
+cost  None      FXIFY Two Phase Classic (100%, 30  USDJPY  L=1750 cost x1.5 random  EV/mo=  1668± 748 EV=  1126 days= 20.5 P=0.241
+cost  None      FXIFY Two Phase Classic (100%, 30  USDJPY  L=1750 cost x2.0 random  EV/mo=  1209± 523 EV=   766 days= 19.3 P=0.217
+cost  None      FXIFY Two Phase Classic (80%)      US100   L=1500 cost x1.0 random  EV/mo=  2016± 888 EV=  1503 days= 22.7 P=0.291
+cost  None      FXIFY Two Phase Classic (80%)      US100   L=1500 cost x1.5 random  EV/mo=  1609± 482 EV=  1145 days= 21.7 P=0.272
+cost  None      FXIFY Two Phase Classic (80%)      US100   L=1500 cost x2.0 random  EV/mo=  1287± 628 EV=   879 days= 20.8 P=0.245
+cost  None      FXIFY Two Phase Classic (80%)      USDJPY  L=1750 cost x1.0 random  EV/mo=  1496± 672 EV=  1053 days= 21.4 P=0.265
+cost  None      FXIFY Two Phase Classic (80%)      USDJPY  L=1750 cost x1.5 random  EV/mo=  1295± 414 EV=   865 days= 20.3 P=0.242
+cost  None      FXIFY Two Phase Classic (80%)      USDJPY  L=1750 cost x2.0 random  EV/mo=   856± 774 EV=   539 days= 19.2 P=0.214
+cost  None      Fintokei ProTrader                 US100   L=1750 cost x1.0 random  EV/mo=  3132± 998 EV=  1660 days= 16.1 P=0.298
+cost  None      Fintokei ProTrader                 US100   L=1750 cost x1.5 random  EV/mo=  2756± 619 EV=  1434 days= 15.8 P=0.282
+cost  None      Fintokei ProTrader                 US100   L=1750 cost x2.0 random  EV/mo=  2356± 705 EV=  1177 days= 15.2 P=0.265
+cost  None      Hola Prime 2-Step Prime (bi-weekly XAUUSD  L=1750 cost x1.0 random  EV/mo=  2786± 740 EV=  1464 days= 16.0 P=0.295
+cost  None      Hola Prime 2-Step Prime (bi-weekly XAUUSD  L=1750 cost x1.5 random  EV/mo=  2252± 779 EV=  1117 days= 15.1 P=0.257
+cost  None      Hola Prime 2-Step Prime (bi-weekly XAUUSD  L=1750 cost x2.0 random  EV/mo=  1622± 213 EV=   758 days= 14.2 P=0.229
+cost  None      Hola Prime 2-Step Prime (bi-weekly EURUSD  L=1750 cost x1.0 random  EV/mo=  1591± 802 EV=   948 days= 18.1 P=0.251
+cost  None      Hola Prime 2-Step Prime (bi-weekly EURUSD  L=1750 cost x1.5 random  EV/mo=  1012± 617 EV=   558 days= 16.8 P=0.219
+cost  None      Hola Prime 2-Step Prime (bi-weekly EURUSD  L=1750 cost x2.0 random  EV/mo=   595± 816 EV=   303 days= 15.5 P=0.185
+cost  None      Alpha Capital Pro 10%              US100   L=1750 cost x1.0 random  EV/mo=  3032± 663 EV=  1531 days= 15.4 P=0.289
+cost  None      Alpha Capital Pro 10%              US100   L=1750 cost x1.5 random  EV/mo=  2704± 576 EV=  1317 days= 14.8 P=0.267
+cost  None      Alpha Capital Pro 10%              US100   L=1750 cost x2.0 random  EV/mo=  2314± 378 EV=  1102 days= 14.5 P=0.257
+cost  None      GFT 2-Step Standard                US100   L=1750 cost x1.0 random  EV/mo=  2286± 315 EV=  1453 days= 19.4 P=0.283
+cost  None      GFT 2-Step Standard                US100   L=1750 cost x1.5 random  EV/mo=  2094± 209 EV=  1265 days= 18.4 P=0.260
+cost  None      GFT 2-Step Standard                US100   L=1750 cost x2.0 random  EV/mo=  1733± 451 EV=  1002 days= 17.6 P=0.247
+cost  None      GFT 2-Step Standard                USDJPY  L=1750 cost x1.0 random  EV/mo=  1998± 328 EV=  1243 days= 18.9 P=0.269
+cost  None      GFT 2-Step Standard                USDJPY  L=1750 cost x1.5 random  EV/mo=  1572± 394 EV=   899 days= 17.4 P=0.239
+cost  None      GFT 2-Step Standard                USDJPY  L=1750 cost x2.0 random  EV/mo=  1159± 216 EV=   623 days= 16.3 P=0.212
+cost  None      FunderPro Classic                  US100   L=1750 cost x1.0 random  EV/mo=  2967± 709 EV=  1527 days= 15.7 P=0.279
+cost  None      FunderPro Classic                  US100   L=1750 cost x1.5 random  EV/mo=  2611± 850 EV=  1312 days= 15.3 P=0.272
+cost  None      FunderPro Classic                  US100   L=1750 cost x2.0 random  EV/mo=  2424± 423 EV=  1178 days= 14.8 P=0.250
+cost  None      FunderPro Classic                  USDJPY  L=1750 cost x1.0 random  EV/mo=  2684± 950 EV=  1409 days= 16.0 P=0.271
+cost  None      FunderPro Classic                  USDJPY  L=1750 cost x1.5 random  EV/mo=  1962± 857 EV=   972 days= 15.1 P=0.247
+cost  None      FunderPro Classic                  USDJPY  L=1750 cost x2.0 random  EV/mo=  1530± 831 EV=   723 days= 14.4 P=0.221
+cost  None      BrightFunded 2-Step Classic        US100   L=1750 cost x1.0 random  EV/mo=  2524± 249 EV=  1446 days= 17.4 P=0.285
+cost  None      BrightFunded 2-Step Classic        US100   L=1750 cost x1.5 random  EV/mo=  2328± 521 EV=  1291 days= 16.9 P=0.265
+cost  None      BrightFunded 2-Step Classic        US100   L=1750 cost x2.0 random  EV/mo=  2006± 723 EV=  1063 days= 16.1 P=0.250
+cost  None      Blue Guardian 2-Step               US100   L=1750 cost x1.0 random  EV/mo=  2271± 349 EV=  1148 days= 15.4 P=0.281
+cost  None      Blue Guardian 2-Step               US100   L=1750 cost x1.5 random  EV/mo=  1741± 462 EV=   850 days= 14.9 P=0.265
+cost  None      Blue Guardian 2-Step               US100   L=1750 cost x2.0 random  EV/mo=  1716± 201 EV=   824 days= 14.6 P=0.254
+cost  None      Maven 2-Step                       US100   L=1750 cost x1.0 random  EV/mo=  1632± 450 EV=  1000 days= 18.7 P=0.270
+cost  None      Maven 2-Step                       US100   L=1750 cost x1.5 random  EV/mo=  1470± 382 EV=   867 days= 17.9 P=0.258
+cost  None      Maven 2-Step                       US100   L=1750 cost x2.0 random  EV/mo=  1188± 265 EV=   667 days= 17.1 P=0.244
+cost  None      Topstep 50K                        MNQ_fut L=1100 cost x1.0 random  EV/mo=   601± 395 EV=    62 days=  3.1 P=0.211
+cost  None      Topstep 50K                        MNQ_fut L=1100 cost x1.5 random  EV/mo=   520± 335 EV=    53 days=  3.1 P=0.202
+cost  None      Topstep 50K                        MNQ_fut L=1100 cost x2.0 random  EV/mo=   381± 268 EV=    34 days=  2.7 P=0.178
+cost  None      Apex 50K EOD                       MNQ_fut L=800 cost x1.0 random  EV/mo=   290± 188 EV=    81 days=  8.5 P=0.247
+cost  None      Apex 50K EOD                       MNQ_fut L=800 cost x1.5 random  EV/mo=   252± 150 EV=    69 days=  8.3 P=0.240
+cost  None      Apex 50K EOD                       MNQ_fut L=800 cost x2.0 random  EV/mo=   165± 148 EV=    40 days=  7.4 P=0.209
+risk  None      FTMO 2-Step                        US100   L=1000 cost x1.0 random  EV/mo=  2291± 495 EV=  1344 days= 17.9 P=0.278
+risk  None      FTMO 2-Step                        US100   L=1250 cost x1.0 random  EV/mo=  2610± 848 EV=  1367 days= 15.9 P=0.274
+risk  None      FTMO 2-Step                        US100   L=1500 cost x1.0 random  EV/mo=  2630± 629 EV=  1308 days= 15.1 P=0.271
+risk  None      FTMO 2-Step                        US100   L=1750 cost x1.0 random  EV/mo=  3063± 532 EV=  1500 days= 14.9 P=0.284
+risk  None      FTMO 2-Step                        US100   L=2000 cost x1.0 random  EV/mo=  2880± 607 EV=  1396 days= 14.8 P=0.280
+conc  conc0.6   FTMO 2-Step                        US100   L=1500 cost x1.0 random  EV/mo=  3661± 805 EV=  1531 days= 12.7 P=0.291
+conc  conc_none FTMO 2-Step                        US100   L=1500 cost x1.0 random  EV/mo=  4345± 763 EV=  1603 days= 11.2 P=0.310
+flat  noflat    FTMO 2-Step                        US100   L=1500 cost x1.0 random  EV/mo=  2891± 415 EV=  1460 days= 15.4 P=0.280
+conc  conc0.6   The5ers High Stakes                US100   L=1750 cost x1.0 random  EV/mo=  3721± 821 EV=  1705 days= 13.9 P=0.296
+conc  conc_none The5ers High Stakes                US100   L=1750 cost x1.0 random  EV/mo=  4384±1136 EV=  1868 days= 13.0 P=0.308
+conc  conc0.6   Fintokei ProTrader                 US100   L=1750 cost x1.0 random  EV/mo=  3801±1017 EV=  1769 days= 14.2 P=0.304
+conc  conc_none Fintokei ProTrader                 US100   L=1750 cost x1.0 random  EV/mo=  4468±1122 EV=  1915 days= 13.0 P=0.316
+conc  conc0.6   FundingPips 2-Step Flex (80%)      USDJPY  L=1750 cost x1.0 random  EV/mo=  3011±1590 EV=  1607 days= 16.2 P=0.271
+conc  conc_none FundingPips 2-Step Flex (80%)      USDJPY  L=1750 cost x1.0 random  EV/mo=  4541±2036 EV=  1882 days= 12.6 P=0.297
+flat  noflat    FundingPips 2-Step Flex (80%)      USDJPY  L=1750 cost x1.0 random  EV/mo=  2447± 443 EV=  1637 days= 20.4 P=0.254
+dir   None      FTMO 2-Step                        US100   L=1500 cost x1.0 trend5  EV/mo=  2013± 800 EV=   950 days= 14.4 P=0.263
+dir   None      FTMO 2-Step                        US100   L=1500 cost x1.0 random  EV/mo=  2797± 273 EV=  1407 days= 15.3 P=0.276
+dirbr None                                         US100   L=1000 cost x0.0 trend5  EV/mo=     0±   0 EV=     0 days=  0.0 P=0.000
+dirbr None                                         US100   L=1000 cost x0.0 random  EV/mo=     0±   0 EV=     0 days=  0.0 P=0.000

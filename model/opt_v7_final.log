@@ -1,0 +1,46 @@
+45 final configurations
+Alpha Capital Pro 10%                  US100   100K chosen  k=   6 m=1.00 L=1750 X= 20.0K EV/mo=  3199± 177 (iid ±164) P=0.289 days= 15.6
+Alpha Capital Pro 10%                  US100   200K 200K    k=   6 m=1.00 L=3500 X= 40.0K EV/mo=  6392± 354 (iid ±329) P=0.289 days= 15.6
+Apex 50K EOD                           MNQ_fut  50K chosen  k= 1.5 m=1.00 L=800 X=  0.0K EV/mo=   279±  50 (iid ±38) P=0.244 days=  8.5
+Blue Guardian 2-Step                   US100   100K chosen  k=   4 m=1.07 L=1750 X= 15.0K EV/mo=  2328± 176 (iid ±138) P=0.289 days= 15.7
+Blue Guardian 2-Step                   US100   200K 200K    k=   4 m=1.07 L=3500 X= 30.0K EV/mo=  4648± 351 (iid ±276) P=0.289 days= 15.7
+BrightFunded 2-Step Classic            US100   100K chosen  k=   6 m=1.00 L=1750 X= 20.0K EV/mo=  2766± 234 (iid ±141) P=0.296 days= 18.0
+BrightFunded 2-Step Classic            US100   200K 200K    k=   6 m=1.00 L=3500 X= 40.0K EV/mo=  5526± 468 (iid ±283) P=0.296 days= 18.0
+FTMO 2-Step                            US100   100K chosen  k=   8 m=0.75 L=1500 X= 20.0K EV/mo=  2930± 270 (iid ±170) P=0.277 days= 15.4
+FTMO 2-Step                            US100   200K 200K    k=   8 m=0.75 L=3000 X= 40.0K EV/mo=  5861± 540 (iid ±340) P=0.277 days= 15.4
+FXIFY Two Phase Classic (100%, 30 days US100     5K 5K      k=   6 m=1.07 L=88 X=  1.5K EV/mo=   105±  11 (iid ±9) P=0.296 days= 23.0
+FXIFY Two Phase Classic (100%, 30 days US100    10K 10K     k=   6 m=1.07 L=175 X=  3.0K EV/mo=   246±  22 (iid ±17) P=0.296 days= 23.0
+FXIFY Two Phase Classic (100%, 30 days US100    25K 25K     k=   6 m=1.07 L=438 X=  7.5K EV/mo=   643±  53 (iid ±42) P=0.296 days= 23.0
+FXIFY Two Phase Classic (100%, 30 days US100    50K 50K     k=   6 m=1.07 L=875 X= 15.0K EV/mo=  1310± 107 (iid ±83) P=0.296 days= 23.0
+FXIFY Two Phase Classic (100%, 30 days US100   100K chosen  k=   6 m=1.07 L=1750 X= 30.0K EV/mo=  2877± 210 (iid ±164) P=0.296 days= 23.0
+FXIFY Two Phase Classic (100%, 30 days USDJPY  100K chosen  k=   6 m=1.25 L=1750 X= 30.0K EV/mo=  2277± 241 (iid ±151) P=0.273 days= 22.4
+FXIFY Two Phase Classic (80%)          US100   100K chosen  k=   6 m=1.00 L=1500 X= 30.0K EV/mo=  2113± 238 (iid ±139) P=0.289 days= 22.6
+FXIFY Two Phase Classic (80%)          USDJPY  100K chosen  k=10.0 m=1.25 L=1750 X= 30.0K EV/mo=  1621± 175 (iid ±126) P=0.270 days= 21.6
+Fintokei ProTrader                     US100   100K chosen  k=10.0 m=1.00 L=1750 X= 30.0K EV/mo=  3209± 312 (iid ±180) P=0.302 days= 16.3
+Fintokei ProTrader                     US100   200K 200K    k=10.0 m=1.00 L=3500 X= 60.0K EV/mo=  6163± 629 (iid ±362) P=0.302 days= 16.3
+FundedNext Stellar 2-Step              EURUSD  100K chosen  k=   6 m=1.00 L=1750 X= 20.0K EV/mo=  1590± 192 (iid ±129) P=0.240 days= 16.5
+FundedNext Stellar 2-Step              EURUSD  200K 200K    k=   6 m=1.00 L=3500 X= 40.0K EV/mo=  3265± 382 (iid ±258) P=0.240 days= 16.5
+FundedNext Stellar 2-Step              XAUUSD  100K chosen  k=   8 m=1.03 L=1750 X= 20.0K EV/mo=  2761± 196 (iid ±145) P=0.301 days= 17.5
+FundedNext Stellar 2-Step              XAUUSD  200K 200K    k=   8 m=1.03 L=3500 X= 40.0K EV/mo=  5600± 392 (iid ±290) P=0.301 days= 17.5
+FunderPro Classic                      US100   100K chosen  k=   8 m=1.07 L=1750 X= 20.0K EV/mo=  3406± 234 (iid ±169) P=0.294 days= 16.1
+FunderPro Classic                      US100   200K 200K    k=   8 m=1.07 L=3500 X= 40.0K EV/mo=  6961± 466 (iid ±337) P=0.294 days= 16.1
+FunderPro Classic                      USDJPY  100K chosen  k=   6 m=1.25 L=1750 X= 30.0K EV/mo=  2467± 220 (iid ±157) P=0.272 days= 15.9
+FunderPro Classic                      USDJPY  200K 200K    k=   6 m=1.25 L=3500 X= 60.0K EV/mo=  5087± 438 (iid ±312) P=0.272 days= 15.9
+FundingPips 2-Step Flex (80%)          EURUSD  100K chosen  k=   4 m=1.00 L=1750 X= 15.0K EV/mo=  1380± 166 (iid ±97) P=0.212 days= 20.8
+FundingPips 2-Step Flex (80%)          USDJPY  100K chosen  k=   8 m=1.00 L=1750 X= 30.0K EV/mo=  2399± 173 (iid ±141) P=0.265 days= 21.1
+FundingPips 2-Step Flex (95%)          EURUSD  100K chosen  k= 7.0 m=1.00 L=1750 X= 15.0K EV/mo=  1703± 190 (iid ±113) P=0.212 days= 21.1
+FundingPips 2-Step Flex (95%)          USDJPY  100K chosen  k=   8 m=1.00 L=1750 X= 15.0K EV/mo=  2829± 217 (iid ±129) P=0.263 days= 22.7
+GFT 2-Step Standard                    US100   100K chosen  k=   3 m=1.07 L=1750 X= 10.0K EV/mo=  2534± 109 (iid ±95) P=0.291 days= 20.0
+GFT 2-Step Standard                    US100   200K 200K    k=   3 m=1.07 L=3500 X= 20.0K EV/mo=  4035± 204 (iid ±150) P=0.288 days= 21.7
+GFT 2-Step Standard                    USDJPY  100K chosen  k=   3 m=1.25 L=1750 X= 15.0K EV/mo=  2034± 114 (iid ±95) P=0.272 days= 19.1
+GFT 2-Step Standard                    USDJPY  200K 200K    k=   3 m=1.25 L=3500 X= 30.0K EV/mo=  3467± 160 (iid ±151) P=0.268 days= 20.8
+Hola Prime 2-Step Prime (bi-weekly 80% EURUSD  100K chosen  k= 7.0 m=1.25 L=1750 X= 20.0K EV/mo=  1247± 208 (iid ±117) P=0.254 days= 17.7
+Hola Prime 2-Step Prime (bi-weekly 80% XAUUSD  100K chosen  k=10.0 m=1.03 L=1750 X= 20.0K EV/mo=  2813± 225 (iid ±162) P=0.298 days= 16.2
+Maven 2-Step                           US100   100K chosen  k=   4 m=1.25 L=1750 X= 10.0K EV/mo=  1627±  84 (iid ±84) P=0.271 days= 18.7
+The5ers High Stakes                    US100   100K chosen  k=   6 m=1.00 L=1750 X= 20.0K EV/mo=  3290± 257 (iid ±166) P=0.291 days= 16.0
+The5ers High Stakes 10K                US100    10K 10K     k=   6 m=1.00 L=175 X=  2.0K EV/mo=   296±  24 (iid ±17) P=0.291 days= 16.0
+The5ers High Stakes 2.5K               US100     2K 2K      k=   6 m=1.00 L=44 X=  0.5K EV/mo=    72±   6 (iid ±4) P=0.292 days= 16.0
+The5ers High Stakes 25K                US100    25K 25K     k=   6 m=1.00 L=438 X=  5.0K EV/mo=   734±  66 (iid ±42) P=0.290 days= 16.0
+The5ers High Stakes 5K                 US100     5K 5K      k=   6 m=1.00 L=88 X=  1.0K EV/mo=   147±  11 (iid ±8) P=0.290 days= 15.9
+The5ers High Stakes Classic            US100   100K chosen  k= 7.0 m=1.00 L=1750 X= 30.0K EV/mo=  3592± 197 (iid ±183) P=0.324 days= 16.7
+Topstep 50K                            MNQ_fut  50K chosen  k= 1.5 m=1.00 L=1100 X=  0.0K EV/mo=   602± 147 (iid ±147) P=0.209 days=  3.1

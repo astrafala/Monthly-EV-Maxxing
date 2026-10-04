@@ -1,0 +1,76 @@
+Tier A 15 35075
+Tier A + B 22 56744
+Recommended: A + B + one account at each tier-D firm 28 85934
+Recommended, FTMO as 2 x 200K 26 85934
+All firms at full caps 35 99334
+All firms at full caps + The5ers small accounts 45 101611
+Recommended + futures 53 94515
+FP ('FundingPips 2-Step Flex (95%)', 'USDJPY', 2828.752507003028) T5 ('The5ers High Stakes Classic', 'US100', 3592.2314348140626) FX ('FXIFY Two Phase Classic (100%, 30 days)', 'US100', 2877.354021770485) GFT ('GFT 2-Step Standard', 'US100', 2533.839362522938) FunderPro ('FunderPro Classic', 'US100', 3405.8558958820363) FN EURUSD 200000 Hola XAUUSD
+== Tier A: lives=400 EV/month 26019 ± 1678  months 2-12 29673  P(ahead 12m) 0.94  trough p50/p05 [-28685.0, -92031.0]
+== Tier A + B: lives=400 EV/month 43433 ± 2663  months 2-12 49083  P(ahead 12m) 0.97  trough p50/p05 [-42434.0, -121727.0]
+== Recommended: A + B + one account at each tier-D firm: lives=400 EV/month 66036 ± 4036  months 2-12 74722  P(ahead 12m) 0.97  trough p50/p05 [-55960.0, -164776.0]
+== Recommended, FTMO as 2 x 200K: lives=400 EV/month 66045 ± 4037  months 2-12 74731  P(ahead 12m) 0.97  trough p50/p05 [-55960.0, -164776.0]
+== All firms at full caps: lives=400 EV/month 76522 ± 4812  months 2-12 86692  P(ahead 12m) 0.97  trough p50/p05 [-67156.0, -196038.0]
+== All firms at full caps + The5ers small accounts: lives=400 EV/month 78117 ± 4905  months 2-12 88527  P(ahead 12m) 0.97  trough p50/p05 [-67989.0, -195464.0]
+== Recommended + futures: lives=400 EV/month 72161 ± 4658  months 2-12 81892  P(ahead 12m) 0.96  trough p50/p05 [-69612.0, -201384.0]
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+           ^^^^^^^^^^^^^^^^
+  File "/home/user/monthly-ev-maxxing/model/lockstep_portfolio_v7.py", line 148, in life
+    ledger, st = LS.run_life(slots, data=data, months=months, seed=seed, rule="trend5", **kw)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/monthly-ev-maxxing/model/lockstep.py", line 164, in run_life
+    assert base + t_end + 60 * DAY < T, "price path too short for this horizon"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: price path too short for this horizon
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/user/monthly-ev-maxxing/model/lockstep_portfolio_v7.py", line 205, in <module>
+    R = run(J, "lockstep_v7_long.json")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/monthly-ev-maxxing/model/lockstep_portfolio_v7.py", line 181, in run
+    R = pool.map(life, J, chunksize=1)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/multiprocessing/pool.py", line 367, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/multiprocessing/pool.py", line 774, in get
+    raise self._value
+AssertionError: price path too short for this horizon
+== 36 months: lives=200 EV/month 76977 ± 3237  months 2-12 82673  P(ahead 12m) 0.97  trough p50/p05 [-55399.0, -175807.0]
+months 13-36: 78833.0 open at 12: 173925.0
+== budget 5000: lives=200 EV/month 9033 ± 4171  months 2-12 9739  P(ahead 12m) 0.14  trough p50/p05 [-4985.0, -4985.0]
+== budget 10000: lives=200 EV/month 19888 ± 5593  months 2-12 21726  P(ahead 12m) 0.31  trough p50/p05 [-9991.0, -9992.0]
+== budget 20000: lives=200 EV/month 28754 ± 5945  months 2-12 31785  P(ahead 12m) 0.47  trough p50/p05 [-19976.0, -19999.0]
+== budget 30000: lives=200 EV/month 36411 ± 6407  months 2-12 41008  P(ahead 12m) 0.57  trough p50/p05 [-29974.0, -29997.0]
+== budget 50000: lives=200 EV/month 50158 ± 6727  months 2-12 57169  P(ahead 12m) 0.72  trough p50/p05 [-49888.0, -49996.0]
+== budget 75000: lives=200 EV/month 55472 ± 6728  months 2-12 63313  P(ahead 12m) 0.81  trough p50/p05 [-58789.0, -74996.0]
+== budget 100000: lives=200 EV/month 59471 ± 6538  months 2-12 67690  P(ahead 12m) 0.86  trough p50/p05 [-59461.0, -99987.0]
+== budget None: lives=200 EV/month 65125 ± 5894  months 2-12 73857  P(ahead 12m) 0.96  trough p50/p05 [-59461.0, -173175.0]
+== cost x1.5: lives=200 EV/month 53418 ± 5520  months 2-12 61330  P(ahead 12m) 0.96  trough p50/p05 [-67415.0, -187204.0]
+== cost x2.0: lives=200 EV/month 43877 ± 5284  months 2-12 51144  P(ahead 12m) 0.91  trough p50/p05 [-79528.0, -214416.0]
+== correlation 0.3: lives=200 EV/month 72340 ± 6483  months 2-12 81985  P(ahead 12m) 0.98  trough p50/p05 [-57915.0, -150463.0]
+== news proxy: lives=200 EV/month 61637 ± 5492  months 2-12 70345  P(ahead 12m) 0.98  trough p50/p05 [-63406.0, -159232.0]
+== FundedNext 1% risk: lives=200 EV/month 63629 ± 5905  months 2-12 72168  P(ahead 12m) 0.96  trough p50/p05 [-58579.0, -171304.0]
+== FundedNext 7-day pause: lives=200 EV/month 64142 ± 5900  months 2-12 72713  P(ahead 12m) 0.96  trough p50/p05 [-58634.0, -171276.0]
+== 36 months: lives=800 EV/month 78139 ± 1618  months 2-12 79327  P(ahead 12m) 0.98  trough p50/p05 [-58972.0, -158268.0]
+months 13-36: 82062.0 open at 12: 169478.0
+pairfirms {'n': 200, 'diff': -1506.571527395922, 'ci': 2854.024095277826, 'diff_y1': 1372.9255156684085, 'ci_y1': 3632.0589750317267, 'full': 78832.96526572482, 'sum_alone': 80339.53679312074}
+LONGDONE
+== Tier A: lives=1200 EV/month 27659 ± 1033  months 2-12 31427  P(ahead 12m) 0.95  trough p50/p05 [-30127.0, -86219.0]
+== Tier A + B: lives=1200 EV/month 45827 ± 1620  months 2-12 51762  P(ahead 12m) 0.97  trough p50/p05 [-42982.0, -115205.0]
+== Recommended: A + B + one account at each tier-D firm: lives=1200 EV/month 70128 ± 2427  months 2-12 79208  P(ahead 12m) 0.98  trough p50/p05 [-56885.0, -156132.0]
+== Recommended, FTMO as 2 x 200K: lives=1200 EV/month 70131 ± 2428  months 2-12 79211  P(ahead 12m) 0.98  trough p50/p05 [-56885.0, -156132.0]
+== All firms at full caps: lives=1200 EV/month 81260 ± 2875  months 2-12 91867  P(ahead 12m) 0.97  trough p50/p05 [-67740.0, -185004.0]
+== All firms at full caps + The5ers small accounts: lives=1200 EV/month 83183 ± 2939  months 2-12 94064  P(ahead 12m) 0.97  trough p50/p05 [-69939.0, -187960.0]
+== Recommended + futures: lives=1200 EV/month 76950 ± 2760  months 2-12 87049  P(ahead 12m) 0.97  trough p50/p05 [-69159.0, -197876.0]
+MAINDONE

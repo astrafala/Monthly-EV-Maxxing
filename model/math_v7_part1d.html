@@ -1,0 +1,98 @@
+<!-- 9 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 9</span>
+  <h1>Optimising the settings</h1>
+  <p>Four numbers define how the plan trades a programme: the risk per trade \(L\), the reward-to-risk \(k\), the stop \(m\) and the funded payout target \(X\); a fifth choice is the market. This chapter explains what each does, how they were searched, and what the search can and cannot claim.</p>
+
+  <h2>9.1 What each setting does</h2>
+  <table>
+    <thead><tr><th>Setting</th><th>Value of an attempt</th><th>Time of an attempt</th><th>Range searched</th></tr></thead>
+    <tbody>
+      <tr><td>Risk \(L\)</td><td>with the 40% cap on a win, a larger \(L\) means a smaller effective reward:risk</td><td>market time \(\propto 1/L^2\)</td><td>1.0%, 1.5%, 1.75% of the account (every firm's 2% rule stays out of reach after costs); FTMO at most 1.5%, its own guidance</td></tr>
+      <tr><td>Reward:risk \(k\)</td><td>fewer trades, less cost, until the 40% cap binds</td><td>little in theory (8.2)</td><td>1.5 to 12</td></tr>
+      <tr><td>Stop \(m\)</td><td>cost per trade \(\rho = \kappa/(m\sigma)\)</td><td>market time \(\propto m^2\)</td><td>from the leverage floor (Chapter 10) or 0.35, whichever is larger, to 1.25</td></tr>
+      <tr><td>Payout target \(X\)</td><td>more funded trades and cost with larger \(X\) (7.3)</td><td>payout waiting against cycle length</td><td>4% to 30% of the account, within each firm's payout rules</td></tr>
+      <tr><td>Market</td><td>cost per unit of movement \(\kappa/\sigma\)</td><td>trading hours</td><td>those the firm's leverage and copy rules allow</td></tr>
+    </tbody>
+  </table>
+
+  <h2>9.2 The search</h2>
+  <ol>
+    <li><strong>Grid.</strong> For every programme and every market it may trade, every combination of \(L\), \(m\) (up to four stops from the leverage floor up), \(k \in \{1.5, 2, 3, 4, 6, 8, 12\}\) and five or six payout targets: [[N_GRID]] settings, each 2,000 attempts on four paths (101&ndash;104): [[N_GRID_ATTEMPTS]] simulated attempts.</li>
+    <li><strong>Refine.</strong> For each programme and market, the fourteen best grid settings, plus \(k\) half-way to its neighbours around the best and a larger payout target where the best sat on the edge, re-run for 16,000 attempts on four <em>different</em> paths (111&ndash;114): [[N_REFINE]] settings, [[N_REFINE_ATTEMPTS]] attempts.</li>
+    <li><strong>Choose.</strong> The highest refined value per month with a stop of at least 0.35 hourly moves and a payout target of at most 30% of the account.</li>
+    <li><strong>Report.</strong> The chosen setting is run a third time on sixteen fresh paths (121&ndash;136), 24,000 attempts in all, with the cluster-robust interval of 8.4. Every figure reported for a programme comes from this run, so none is inflated by having been picked as the best of many noisy estimates. The inflation is visible: the chosen settings average [[CURSE]] less on the fresh paths than on the paths that chose them. (The grid and the refinement ran before the last two engine corrections, N9 and N10 of Appendix A, which concern payout requests under consistency rules; the fresh-path value of every chosen setting, and every figure after it, comes from the final engine.)</li>
+  </ol>
+  <p><strong>What the search establishes.</strong> The best setting found in this grid, for these programmes and these markets, under the model. It is not a proof of a global optimum over every possible rule, product, size or market; Part II lists what was searched for each programme and what was left out.</p>
+
+  <h2>9.3 What the search found</h2>
+  [[OPT_GENERAL]]
+
+  <h2>9.4 Every programme</h2>
+  [[OPT_TABLE]]
+</section>
+
+<!-- 10 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 10</span>
+  <h1>Position size, leverage and margin</h1>
+
+  <h2>10.1 From risk to lots</h2>
+  <p>The stop distance in price points is \(m\sigma\times\text{price}\). If one lot gains or loses \(V\) dollars per point (the firm's contract specification), then</p>
+  <div class="formula"><span class="lbl">Lots for a given risk</span>
+  $$\text{lots} = \frac{l}{m\,\sigma\,\text{price}\,V}, \qquad \text{notional} = \frac{l}{m\sigma}.$$
+  </div>
+  <p>Lots are rounded <em>down</em> to the lot step, so the realised risk is never above \(l\). Micro Nasdaq futures trade in whole contracts of $2 per point: the engine rounds the number of contracts down and never trades fewer than one, and a futures account whose room is below one contract's stop is closed (5.4).</p>
+
+  <h2>10.2 Leverage and margin, at every entry</h2>
+  <p>A position of notional \(N\) needs margin \(N/\lambda\) at leverage 1:\(\lambda\). The plan keeps margin at most 60% of the <em>current</em> balance at every entry (version 6 checked it on the starting balance only):</p>
+  <div class="formula"><span class="lbl">Margin condition at entry, and the smallest stop at the start</span>
+  $$\frac{l}{m\sigma\lambda} \le 0.6\,(S + x) \quad\Longleftrightarrow\quad l \le 0.6\,\lambda\, m\sigma\,(S+x), \qquad m_{\min} = \frac{L/S}{0.6\,\lambda\,\sigma}.$$
+  </div>
+  <p>The engine applies the first form to every trade, lowering the risk when the balance has fallen; the search starts its stops at \(m_{\min}\). Where a firm's leverage differs between evaluation and funded accounts (GFT: 1:20 then 1:10 on indices), the funded leverage sets \(m_{\min}\). FunderPro's funded accounts have a rule of their own: at most 20% of the <em>starting</em> balance as margin per asset class. At 1:30 on the Nasdaq and 1.5% risk that needs \(m \ge 0.913\); version 6's FunderPro setting (\(m = 0.35\)) used about 52% and broke it.</p>
+  [[LEV_TABLE]]
+
+  <h2>10.3 Which market each account trades</h2>
+  <ul>
+    <li><strong>Nasdaq 100</strong> (US100 CFD, or micro Nasdaq futures): every firm that allows the position and the same trades as your own accounts elsewhere.</li>
+    <li><strong>USDJPY</strong>: FundingPips (leverage), and any firm whose Nasdaq stop the leverage pushes too wide, where the search found it better.</li>
+    <li><strong>Markets of their own</strong> for the firms that forbid copying from other firms' accounts or into funded accounts: FundedNext and Hola Prime each trade a market (EURUSD, gold) that no other account trades.</li>
+  </ul>
+  <p>Inside each group every account takes the same direction (Chapter [[CH_LOCK]]), so no two accounts are ever on opposite sides of one market.</p>
+
+  <h2>10.4 The ten-minute rule</h2>
+  <p>FundingPips groups positions on one market in one direction, including one opened within 10 minutes of closing a losing one, into one "trade idea" limited to 2%. The plan waits at least 10 minutes after any losing trade before the next trade in the same direction, at every firm. In the engine the next entry is always at a later hour's open, which already satisfies this.</p>
+
+  <h2>10.5 Risk per trade</h2>
+  <p>Version 6 fixed the risk at 1.5% and argued from time alone. Under the 40% cap a larger risk lowers the effective reward:risk of a capped win, so the risk now matters for value too, and it is searched (1.0%, 1.5%, 1.75%). The upper end is 1.75% because Alpha forbids risking or losing 2% or more on a trade, FundingPips closes a trade idea at 2%, Hola Prime and FunderPro cap funded risk at 2%, and Blue Guardian's shield and GFT's Goat Guard act at a 2% open loss: 1.75% plus cost stays below all of them. FTMO publishes a recommendation of 1&ndash;1.5% of the initial balance per trade and says larger risk can trigger its risk monitoring; it is not a written rule, but the plan treats it as one and caps FTMO at 1.5%.</p>
+  [[RISK_SENS]]
+</section>
+
+<!-- 11 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 11</span>
+  <h1>Checking the engine against the formulas</h1>
+  <p>The engine and the chain were written separately. The chain leaves out daily limits, minimum and profitable days, the per-day part of the concentration policy, payout dates (it pays only at the payout target, while the plan withdraws whatever profit there is on each payout date), the daily flat and weekend closes; the engine includes them. One effect exists only in the engine and only if positions are held over a weekend: a gap through the floor is absorbed by the firm, a gap through the target is kept. The plan is flat at weekends, so it does not arise; the verification stays flat at weekends too. Agreement where both apply is supporting evidence that each implements its model as described. It is not proof that either is right: two programs can agree because they share a wrong rule input or a wrong assumption. Where they differ, the difference should come from what the chain leaves out, and the third column of 11.2 measures exactly that, by running the engine with those rules switched off.</p>
+  <h2>11.1 Basic checks</h2>
+  <table class="small">
+    <thead><tr><th style="width:52%">Check</th><th class="n" style="width:20%">Theory</th><th class="n" style="width:28%">Engine</th></tr></thead>
+    <tbody>
+      <tr><td>Win rate of brackets with costs, 1 : 1, 1 : 2, 1 : 3, 1 : 6, stop \(m = 1\) (60,000 trades each)</td><td class="n">[[CHK_W_TH]]</td><td class="n">[[CHK_W]]</td></tr>
+      <tr><td>The same at a tight stop \(m = 0.35\)</td><td class="n">[[CHK_WT_TH]]</td><td class="n">[[CHK_WT]]</td></tr>
+      <tr><td>Average result per trade in units of risk, 1 : 3, \(m = 1\) (theory \(-\rho\))</td><td class="n">[[CHK_R3_TH]]</td><td class="n">[[CHK_R3]]</td></tr>
+      <tr><td>Tie test: win rate of cost-free brackets at \(m = 0.35\), 12 sub-steps per hour, \(k\) = 1, 3, 6 (80,000 each)</td><td class="n">[[TIE_TH]]</td><td class="n">[[TIE_12]]</td></tr>
+      <tr><td>The same with 60 sub-steps per hour</td><td class="n">[[TIE_TH]]</td><td class="n">[[TIE_60]]</td></tr>
+      <tr><td>FTMO phase 1, no costs, no daily rules, \(k = 3\): pass rate (chain, with the plan's floor rule)</td><td class="n">[[Z_P1_TH]]</td><td class="n">[[Z_P1]]</td></tr>
+      <tr><td>FTMO funded account, no costs, no daily rules: average withdrawn before the split (chain)</td><td class="n">[[Z_W_TH]]</td><td class="n">[[Z_W]]</td></tr>
+      <tr><td>200K account against two 100K accounts, same seeds, 1,500 attempts (FTMO, Fintokei, The5ers, GFT)</td><td class="n">exactly 2&times; where every rule scales</td><td class="n">[[SCALE_TEST]]</td></tr>
+      <tr><td>Accounting identity of 5.5, largest gap over every chosen programme's phases and cycles</td><td class="n">0</td><td class="n">[[GAP_MAX]]</td></tr>
+      <tr><td>FTMO with the plan's direction rule against a coin flip</td><td class="n">equal</td><td class="n">[[CHK_DIR]]</td></tr>
+    </tbody>
+  </table>
+  [[TIE_TEXT]]
+  [[SCALE_TEXT]]
+  [[DIR_TEXT]]
+  <h2>11.2 Every chosen programme: chain against engine</h2>
+  [[VERIFY_TABLE]]
+  [[VERIFY_TEXT]]
+</section>

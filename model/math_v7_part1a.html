@@ -1,0 +1,111 @@
+<!-- ================================================================ PART I -->
+<section class="part">
+  <span class="num">Part I</span>
+  <h1>The mathematics, from zero</h1>
+  <p>Every result in this document follows from a handful of facts about fair games. This part derives each of them, says exactly which model each formula is exact for, and works the numbers of the plan through at every step. Where a formula is an approximation it is labelled as one, and the engine (the rule-by-rule simulation) supplies the figure that is used.</p>
+</section>
+
+<!-- 1 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 1</span>
+  <h1>What is being bought</h1>
+  <p>A proprietary trading firm ("prop firm") sells an <em>evaluation</em>. You pay a fee, you trade a simulated account under written rules, and if you meet the profit targets without breaking a loss limit, the firm gives you a <em>funded</em> account. On the funded account you keep a share of every profit you withdraw, and the firm absorbs every loss. You never owe the firm money beyond the fee.</p>
+  <p>That last sentence is the whole opportunity. Your downside is capped at the fee, and your upside is a share of profits that, as Chapter 7 shows, have a positive expected size even when every trade is a coin flip. The contract is an <em>option</em>: you pay a premium (the fee) for the right to keep part of the gains of a game whose losses fall on someone else.</p>
+
+  <h2>1.1 The parts of the contract</h2>
+  <table>
+    <thead><tr><th>Symbol</th><th>Meaning</th><th>FTMO 2-Step 100K, as an example</th></tr></thead>
+    <tbody>
+      <tr><td>\(S\)</td><td>account size (simulated money)</td><td>$100,000</td></tr>
+      <tr><td>\(F\)</td><td>fee for one attempt</td><td>&euro;540 = $607.82 at 1.1256</td></tr>
+      <tr><td>\(A_1, A_2\)</td><td>profit targets of phase 1 and phase 2</td><td>$10,000 and $5,000</td></tr>
+      <tr><td>\(B\)</td><td>maximum loss: the floor sits \(B\) below the starting balance and never moves ("static")</td><td>$10,000</td></tr>
+      <tr><td>\(d\)</td><td>daily loss limit, measured from a reference level set at each day's reset</td><td>$5,000</td></tr>
+      <tr><td>\(D\)</td><td>maximum loss on the funded account (the "allowance")</td><td>$10,000</td></tr>
+      <tr><td>\(\alpha\)</td><td>your share ("split") of every profit withdrawn</td><td>80%</td></tr>
+      <tr><td>\(R\)</td><td>fee refund, paid with the first payout</td><td>$607.82</td></tr>
+      <tr><td>&mdash;</td><td>minimum trading days, payout cycle, other rules</td><td>4 days per phase; payouts every 14 days</td></tr>
+    </tbody>
+  </table>
+
+  <h2>1.2 The value of one attempt</h2>
+  <p>Call the cash an attempt brings you \(V\). It is the fee (always paid), plus, if both phases are passed, whatever the funded account pays out (the refund included):</p>
+  <div class="formula"><span class="lbl">Value of one attempt</span>
+  $$V = -F + \mathbf{1}\{\text{pass}\}\cdot C, \qquad \mathbb{E}[V] = -F + \Pr(\text{pass})\cdot \mathbb{E}[C \mid \text{pass}]$$
+  </div>
+  <p>Here \(\mathbf{1}\{\text{pass}\}\) is 1 if both phases are passed and 0 otherwise, and \(C\) is the total cash from the funded account. Where a firm returns part of the fee as non-cash credit when a phase is passed (The5ers), that credit is a third term, counted separately from cash (Chapter [[CH0_T5]]).</p>
+
+  <h2>1.3 The whole argument in five lines, in an idealised model</h2>
+  <p>Before the details, the result in its simplest form: no trading costs, every phase ending exactly at its target or its floor, and payouts of a fixed cycle target \(X\) from a static allowance. Chapter 5 proves that a fair game reaches \(+A\) before \(-B\) with probability \(B/(A+B)\) in that model; Chapter 7 proves that a funded account then withdraws on average exactly \(D\) before it is lost, and reaches its first payout with probability \(q = D/(D+X)\). The refund comes only with that first payout, so it is weighted by \(q\):</p>
+  <div class="formula"><span class="lbl">FTMO 2-Step, zero cost, zero skill, idealised</span>
+  $$\Pr(\text{pass}) = \frac{B}{A_1+B}\cdot\frac{B}{A_2+B} = \frac{10{,}000}{20{,}000}\cdot\frac{10{,}000}{15{,}000} = \frac{1}{3}$$
+  $$\mathbb{E}[V] = -F + \Pr(\text{pass})\big(\alpha D + q\,R\big) = -632 + \tfrac13\Big(8{,}000 + \tfrac{10{,}000}{10{,}000 + X}\,632\Big)$$
+  </div>
+  <p>At the version 6 fee of $632 this is $2,140.00 with a cycle of \(X = \$10{,}000\) and $2,087.33 with \(X = \$30{,}000\); version 6 printed $2,245, which counts the refund on every pass and is only the limit as \(X \to 0\). At the correct fee of $607.82 and \(X = \$10{,}000\) it is \(-607.82 + \tfrac13(8{,}000 + 303.91) = \$2{,}160.15\).</p>
+  <p>Everything else in this document refines this number: trading costs lower it; the plan's policies (flat every evening, at most 40% of a target from one trade or one day, an attempt closed before it reaches the floor in micro size) change both the value and the time; and the settings are then chosen to make the most of it per month and per person. The sign is already visible here; its size needs the full engine.</p>
+
+  <h2>1.4 Why the firm still makes money, and what that implies</h2>
+  <p>The firm's revenue is the fees of everyone, and most traders are not zero-skill traders with a plan built around the contract: they over-trade, break rules, abandon accounts and stop after one failure. A plan that treats the contract as a mathematical object and repeats it many times is the case the firm's pricing does not cover. Firms know this, and their terms contain behavioural rules (against "gambling", "all-in" trading, one-trade target attainment, account rolling) that are written broadly and applied at their discretion. The plan is built to meet every rule that can be stated as a condition on trades, and Chapter [[CH_RISK]] lists the behavioural rules that cannot, firm by firm, as conditions under which the figures here apply.</p>
+</section>
+
+<!-- 2 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 2</span>
+  <h1>The probability toolkit</h1>
+  <p>Seven ideas carry the analysis. Each is stated with the conditions it needs.</p>
+
+  <h2>2.1 Expected value and linearity</h2>
+  <p>A random quantity \(X\) that takes values \(x_1, x_2, \dots\) with probabilities \(p_1, p_2, \dots\) has expected value \(\mathbb{E}[X] = \sum_i p_i\, x_i\). For any random quantities, dependent or not,</p>
+  $$\mathbb{E}[X+Y] = \mathbb{E}[X] + \mathbb{E}[Y], \qquad \mathbb{E}[cX] = c\,\mathbb{E}[X].$$
+  <p>Linearity says that the expected cash of many accounts <em>over one horizon, under one policy</em> is the sum of their expected cash over that horizon, however strongly they move together. It does not say that a first year's average equals a long-run rate (they are different quantities, Chapter 8.5), and it does not make correlation irrelevant: correlation leaves the sum of the means alone and changes everything else (the spread, the cash needed for fees, the chance of many failures at once).</p>
+
+  <h2>2.2 Variance</h2>
+  <p>\(\operatorname{Var}(X) = \mathbb{E}[(X-\mathbb{E}X)^2] = \mathbb{E}[X^2] - (\mathbb{E}X)^2\). For independent \(X, Y\) variances add; for dependent ones a term \(2\operatorname{Cov}(X,Y)\) is added. Variance enters the time a fair game takes (Chapter 8) and the confidence intervals of every simulated figure.</p>
+
+  <h2>2.3 Fair games and martingales</h2>
+  <p>A sequence of balances \(X_0, X_1, \dots\) is a <em>martingale</em> if \(\mathbb{E}[X_{n+1} \mid X_0,\dots,X_n] = X_n\). "Zero skill" means this for the balance before costs: the price is a martingale, the balance is a sum of positions times price changes, and no rule for direction, size or timing that uses only the past can change that. With costs the expected next balance is lower by the cost: a <em>supermartingale</em>.</p>
+
+  <h2>2.4 Stopping times and the optional stopping theorem</h2>
+  <p>A <em>stopping time</em> \(\tau\) is a rule for when to stop that uses only information available at the time. The <em>optional stopping theorem</em>: if \(X\) is a martingale, \(\tau\) is almost surely finite, and the stopped process \(X_{n\wedge\tau}\) is bounded (or, more generally, uniformly integrable), then</p>
+  $$\mathbb{E}[X_\tau] = X_0 .$$
+  <p>Each use below states why the condition holds. For one phase it holds because the balance stays between the floor and the target plus one win. For a funded account whose profits are withdrawn the balance plus everything withdrawn is <em>not</em> bounded, so Chapter 7 applies the theorem to one payout cycle at a time, where it is.</p>
+
+  <h2>2.5 Wald's identity</h2>
+  <p>If each step adds an amount with mean \(\mu\) and \(\tau\) is a stopping time with \(\mathbb{E}[\tau] &lt; \infty\), then \(\mathbb{E}[X_\tau - X_0] = \mu\,\mathbb{E}[\tau]\). With costs, every trade's mean is minus its own cost (4.3), so the identity becomes \(\mathbb{E}[X_\tau - X_0] = -\mathbb{E}[\text{total cost}]\), which holds even when the cost varies from trade to trade.</p>
+
+  <h2>2.6 Brownian motion</h2>
+  <p>The continuous-time limit of a fair random walk is Brownian motion \(W_t\): it starts at 0, has independent increments, and \(W_{t+h} - W_t\) is normal with mean 0 and variance \(h\). A process \(X_t = \mu t + \sigma W_t\) has three martingales that carry the approximations of Chapters 5 and 8:</p>
+  $$X_t - \mu t, \qquad (X_t-\mu t)^2 - \sigma^2 t, \qquad \exp\!\left(-\tfrac{2\mu}{\sigma^2} X_t\right).$$
+  <p>The third follows from Itô's formula: \(d e^{\lambda X} = e^{\lambda X}(\lambda\mu + \tfrac12\lambda^2\sigma^2)\,dt + (\dots)\,dW\), whose \(dt\) term vanishes for \(\lambda = -2\mu/\sigma^2\). These formulas are exact for Brownian motion; applied to a sum of bracket trades, which jump, they are approximations (5.2).</p>
+
+  <h2>2.7 The reflection principle</h2>
+  <p>For a Brownian path from \(a\) to \(b\) over a time with variance \(v\), the chance that it rose above \(y \ge \max(a,b)\) in between is</p>
+  $$\Pr\big(\max \ge y \,\big|\, a \to b\big) = \exp\!\left(-\frac{2(y-a)(y-b)}{v}\right).$$
+  <p>This gives the <em>marginal</em> distribution of the maximum of a bridge (and, by symmetry, of the minimum). It does not by itself say which of a high and a low level was touched first. Chapter 3.3 describes how the simulation orders the two, and Chapter 11 measures what is left of the error.</p>
+</section>
+
+<!-- 3 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 3</span>
+  <h1>The price model</h1>
+  <h2>3.1 Hourly volatility</h2>
+  <p>Over one hour the log price changes by a random amount with standard deviation \(\sigma\), the <em>hourly volatility</em>, measured on two years of real hourly bars (Yahoo Finance, 2024&ndash;26, only hours that follow another trading hour):</p>
+  [[SIGMA_TABLE]]
+  <p>Over \(h\) hours the standard deviation grows like \(\sigma\sqrt h\): the Nasdaq moves about [[SIG_DAY]] in a 23-hour trading day. Every stop in the plan is a multiple of \(\sigma\), so the same rules fit every market.</p>
+
+  <h2>3.2 Zero drift, stated precisely</h2>
+  <p>The model gives the <em>price</em> no expected change: \(\mathbb{E}[P_{t+h} \mid P_t] = P_t\). That is the zero-skill assumption. For the price itself to be a martingale, the log price must drift down by \(\sigma^2/2\) per hour (about 0.0004% for the Nasdaq): \(\log P_{t+h} - \log P_t\) is normal with mean \(-\sigma^2 h/2\) and variance \(\sigma^2 h\). Version 6 said the log price had mean zero; the construction in 3.3 always included the correction, and the statement is now made about the price. The Nasdaq's real long-run rise (about 0.0025% per hour, a hundredth of \(\sigma\)) is left out: the plan is long and short equally often, so it would neither help nor hurt.</p>
+
+  <h2>3.3 Synthetic paths</h2>
+  <ol>
+    <li>Each hour is split into 12 sub-steps of normal increments of the log price with variance \(\sigma^2/12\) and mean \(-\sigma^2/24\).</li>
+    <li>Within each sub-step, the highest and the lowest point are drawn from the exact marginal distributions of a Brownian bridge between the sub-step's end points (2.7):
+    $$\max = \tfrac12\left(a+b+\sqrt{(b-a)^2 - 2v\ln U}\right),\qquad U\sim\text{Uniform}(0,1),$$
+    and the minimum is the mirror image with an independent draw.</li>
+    <li>When a stop and a target both fall inside one hourly bar, the engine replays that hour's twelve sub-steps in time order and takes the level the path touched first. The order is therefore exact unless both levels fall inside the <em>same</em> five-minute sub-step; only then does it fall back to the trade's overall fair chance, which is not the right conditional probability. Chapter 11 measures the remaining effect at 12 and at 60 sub-steps.</li>
+    <li>Markets that close at weekends are closed in the path from Friday to Sunday, but the price keeps moving underneath, so Monday can open with a gap. Under the plan's daily flat (6.5) no position is open then.</li>
+    <li>Every path is fixed by its seed. Each stage of the work uses its own seeds, never reused: the grid search paths 101&ndash;104, the refinement 111&ndash;114, the final value of every chosen setting 121&ndash;136 (sixteen independent paths), the sensitivities 141&ndash;144, the checks 401&ndash;444, and the portfolio simulation one new path per simulated life (seeds 100,000 and up). Gold, USDJPY and EURUSD use their own paths (seed + 50, + 60, + 70), independent of the Nasdaq; Chapter [[CH_LOCK]] measures what a correlation of 0.3 between all four markets changes.</li>
+  </ol>
+  <h2>3.4 What the model leaves out</h2>
+  <p>Real prices have volatility that changes (calm and wild months), fat tails, jumps at news, and spreads that widen at the daily break and around releases. The plan's stops are at least 0.35 hourly standard deviations so that average costs are a fair description, and the cost stress tests of Chapter [[CH_RISK]] double every cost. The synthetic model is the right tool for the question asked (what is the contract worth to a trader with no edge), not a forecast of any particular year.</p>
+</section>
