@@ -6,8 +6,8 @@ A prop-firm evaluation ("challenge") works like an option. You pay a fee. If you
 
 | File | Contents |
 |---|---|
-| [`docs/The_Prop_Firm_Option_v5.pdf`](docs/The_Prop_Firm_Option_v5.pdf) | Current version, 87 pages. Part 1: the mathematics. Chapters 17–23: price-path simulations, every firm compared, the per-person maximum, and a rule audit for each firm. Part 2 (chapters 24–32): the execution plan, a simulated sign-up diary, and month-by-month cash and odds. **Part 3 (chapters 33–35, new in version 5):** firm reliability tiers, payout-refusal scenarios, two added firms, and the revised per-person plan. |
-| `docs/archive/` | Versions 1–4, superseded. Version 3 overstated some results: The5ers was too high, and it ran several accounts at FXIFY and GFT, which their duplicate-account rules do not allow. Version 4 corrected both. Version 4 assumed every payout is paid at every firm; six of its eleven firms have since had their TrustPilot ratings withheld for fake reviews. |
+| [`docs/The_Prop_Firm_Option_v5.pdf`](docs/The_Prop_Firm_Option_v5.pdf) | Current version, 88 pages. Part 1: the mathematics. Chapters 17–23: price-path simulations, every firm compared, the per-person maximum, and a rule audit for each firm. Part 2 (chapters 24–32): the execution plan, a simulated sign-up diary, and month-by-month cash and odds. **Part 3 (chapters 33–36, new in version 5):** firm reliability tiers, payout-refusal scenarios, every rule re-checked (seven corrections), two added firms, and the revised per-person plan. |
+| `docs/archive/` | Versions 1–4, superseded. Version 3 overstated some results: The5ers was too high, and it ran several accounts at FXIFY and GFT, which their duplicate-account rules do not allow. Version 4 corrected both. Version 4 assumed every payout is paid at every firm; six of its eleven firms have since had their TrustPilot ratings withheld for fake reviews, and seven of its programmes' rules had changed or were recorded wrongly. |
 
 ## Key results (version 5, 4 October 2026)
 
@@ -28,26 +28,43 @@ Per person, steady month (months 3–12). Results are from 200 synthetic lives p
 
 | Version | Accounts | All paid | Tiered refusals | Harsh refusals | Cash low (median / 1 in 20) |
 |---|---:|---:|---:|---:|---|
-| Tier A only | 11 | 52.1K | 39.1K | 27.0K | −24.2K / −62.0K |
-| Tier A + B (adds Fintokei 4, Hola Prime 2) | 17 | 74.0K | 49.5K | 33.4K | −34.8K / −74.6K |
-| **Recommended: A + B + one account at each tier-D firm** | **23** | **100.5K** | **61.7K** | **39.0K** | −44.0K / −96.8K |
-| All tiers at full caps | 31 | 135.5K | 62.9K | 38.2K | −60.0K / −142.7K |
-| Tier A + B + futures (Topstep 5, Apex 20 at 90% off) | 42 | 94.7K | 53.6K | 34.9K | −46.0K / −103.1K |
-| Version 4 full caps | 25 | 113.6K | 52.4K | 32.1K | −51.9K / −126.1K |
+| Tier A only | 11 | 51.4K | 37.6K | 24.9K | −22.8K / −63.0K |
+| Tier A + B (adds Fintokei 4, Hola Prime 2) | 17 | 72.4K | 47.6K | 30.7K | −33.4K / −81.1K |
+| **Recommended: A + B + one account at each tier-D firm** | **23** | **95.7K** | **58.2K** | **35.6K** | −42.6K / −104.9K |
+| All tiers at full caps | 31 | 122.8K | 58.7K | 35.0K | −59.1K / −146.9K |
+| Tier A + B + futures (Topstep 5, Apex 20 at 90% off) | 42 | 92.4K | 50.7K | 31.6K | −46.0K / −111.9K |
+| Version 4 full caps, as published | 25 | 113.6K | 52.4K | 32.1K | −51.9K / −126.1K |
+| Version 4 full caps, rules corrected | 25 | 103.3K | 49.1K | 29.4K | −50.4K / −127.5K |
 
 Under refusal risk, spreading accounts across many firms beats stacking them at a few firms: each payout request is another chance to lose the whole firm. The refusal probabilities are judgements, not measurements. No firm publishes how often it refuses payouts.
+
+### Every rule re-checked
+
+Version 5 re-checked every firm's current rules, using the firm's own help pages where possible. Seven programmes had changed, or had been recorded wrongly in version 4. EV per month per 100K account (synthetic):
+
+| Programme | What changed | Version 4 | Version 5 |
+|---|---|---:|---:|
+| FXIFY | Now Two Phase Classic: 5% then 10%, 4% daily loss, 4 minimum days, $549; on funded accounts no day may exceed 25% of the payout's profit | 4,894 | 3,025 |
+| FundingPips Flex | No fee refund on Flex. Since 26 Aug 2026 the 95% option needs 3 profitable days per evaluation phase, so use the 85% option | 6,123 | 5,522 |
+| FundedNext Stellar 2-Step (gold) | 15% challenge reward only after Scale-Up; 21-day cycles | 4,316 | 3,490 |
+| GFT 2-Step Standard | 8% / 5% targets, 3 minimum days | 3,625 | 3,725 |
+| FunderPro Classic | Phase 2 target is 5%, not 8% | 4,222 | 5,020 |
+| BrightFunded 2-Step Classic | Fee refunded only with a paid add-on | 3,328 | 3,160 |
+| Blue Guardian 2-Step | $579 list, 3 profitable days per phase, refund after the 4th payout | 4,071 | 2,858 |
+
+FTMO, The5ers, Alpha Capital and Maven were re-checked and are unchanged.
 
 New programmes, EV per month per account (synthetic; `model/final_v5.json`):
 
 | Programme | EV per month |
 |---|---:|
 | Fintokei ProTrader 100K | 3,500 |
-| Hola Prime 2-Step Prime 100K, bi-weekly 80%, on USDJPY | 4,100 |
+| Hola Prime 2-Step Prime 100K, bi-weekly 80%, on USDJPY | 4,130 |
 | The5ers High Stakes 25K / 10K / 5K / 2.5K | 790 / 320 / 160 / 70 |
 | Topstep 50K | 960 |
 | Apex 50K EOD at 90% off | 550 |
 
-Hola Prime prohibits copying trades from other prop firms, so its accounts trade USDJPY, independently of the Nasdaq accounts. Each 10% fee discount adds 2–4% to an account's value (`model/discount_v5.json`).
+Hola Prime prohibits copying trades from other prop firms, so its accounts trade USDJPY, independently of the Nasdaq accounts. Each 10% fee discount adds 2–5% to an account's value (`model/discount_v5.json`).
 
 ### The trade (unchanged since version 4)
 
@@ -90,7 +107,7 @@ Version 4 per-person results, every payout assumed paid. Every account is run at
 - **Trading costs as modelled.** At 1.5× the costs, value falls 4–11%; at 2×, 12–19%.
 - **Rules as published in October 2026.** Firms change their rules often. Check the firm-by-firm sheet (chapter 27) against each firm's current terms before every purchase.
 - **One person, their own accounts, their own money.** Accounts are copied only where a firm allows copying between your own accounts. There is no hedging across accounts and no account in anyone else's name.
-- **Large drawdowns are normal.** In the recommended version, the cash balance typically falls about 44K before it recovers; in 1 case in 20 it falls about 97K.
+- **Large drawdowns are normal.** In the recommended version, the cash balance typically falls about 43K before it recovers; in 1 case in 20 it falls about 105K.
 - **Private use.** If several people traded the same written rules, the result would be prohibited group trading at several firms.
 - **This is research, not financial advice.**
 

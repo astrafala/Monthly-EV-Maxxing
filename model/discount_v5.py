@@ -4,18 +4,18 @@ import json, copy, random
 from multiprocessing import Pool
 import firms_v5 as F5, pathfirm as PF
 
-SET = [("FTMO 2-Step", "US100", .75, 10_000), ("FundingPips 2-Step Flex (95%)", "US100", .75, 12_000),
-       ("The5ers High Stakes", "US100", .75, 10_000), ("FXIFY Two-Phase", "US100", .75, 10_000),
-       ("FundedNext Stellar 2-Step", "XAUUSD", .75, 10_000), ("Fintokei ProTrader", "US100", .75, 10_000),
-       ("Hola Prime 2-Step Prime (bi-weekly 80%)", "USDJPY", 1.0, 10_000), ("Alpha Capital Pro 10%", "US100", .75, 10_000),
-       ("BrightFunded 2-Step Classic", "US100", .75, 10_000), ("Blue Guardian 2-Step", "US100", .75, 10_000),
-       ("FunderPro Classic", "US100", .75, 10_000), ("Maven 2-Step", "US100", .75, 8_000), ("GFT 2-Step Standard", "US100", .75, 10_000)]
+SET = [("FTMO 2-Step", "US100", .75, 10_000), ("FundingPips 2-Step Flex (85%) v5", "US100", .75, 12_000),
+       ("The5ers High Stakes", "US100", .75, 10_000), ("FXIFY Two Phase Classic (100%, 30 days)", "US100", .75, 10_000),
+       ("FundedNext Stellar 2-Step v5", "XAUUSD", .75, 10_000), ("Fintokei ProTrader", "US100", .75, 10_000),
+       ("Hola Prime 2-Step Prime (bi-weekly 80%)", "USDJPY", .75, 10_000), ("Alpha Capital Pro 10%", "US100", .75, 10_000),
+       ("BrightFunded 2-Step Classic v5", "US100", .75, 10_000), ("Blue Guardian 2-Step v5", "US100", .75, 10_000),
+       ("FunderPro Classic v5", "US100", .75, 10_000), ("Maven 2-Step", "US100", .75, 8_000), ("GFT 2-Step Standard v5", "US100", .75, 10_000)]
 
 def job(a):
     name, instr, m, X, disc, seed = a
     F = copy.deepcopy(F5.cfd_firms()[name])
     F["fee"] *= (1 - disc); F["funded"]["refund"] *= (1 - disc)
-    X1 = 7_000 if name.startswith("GFT") else X
+    X1 = 6_000 if name.startswith("GFT") else X
     r = PF.evaluate(F, instr, "synth", m, 1500, 5, X1, X, 6000, seed, 1.0, "random")
     return name, disc, seed, r["EV_month"], r["days"]
 

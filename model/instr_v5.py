@@ -6,7 +6,7 @@ import firms_v5 as F5, pathfirm as PF
 
 def job(a):
     instr, m, seed = a
-    F = F5.cfd_firms()["FundedNext Stellar 2-Step"]
+    F = F5.cfd_firms()["FundedNext Stellar 2-Step v5"]
     r = PF.evaluate(F, instr, "synth", m, 1500, 5, 10000, 10000, 6000, seed, 1.0, "random")
     return instr, m, seed, r["EV_month"], r["P"]
 

@@ -15,39 +15,57 @@ def S(firm, n=1, size=100_000, kind="cfd", instr=None, m=None, k=5, X=None, over
     if override: e["override"] = override
     return [dict(e) for _ in range(n)]
 
-FP = "FundingPips 2-Step Flex (95%)"
+# rule sets as re-checked on 4 October 2026 (firms_v5); version 4's own entries are kept for the comparison rows
+FP = "FundingPips 2-Step Flex (85%) v5"
 def THE5ERS_ALL():
     return (S("The5ers High Stakes") + S("The5ers High Stakes 25K", size=25_000) + S("The5ers High Stakes 10K", 3, 10_000) +
             S("The5ers High Stakes 5K", 3, 5_000) + S("The5ers High Stakes 2.5K", 3, 2_500))
 def TIER_A(small=False):
     return (S("FTMO 2-Step", 4) + S(FP, 4, X=12_000) + (THE5ERS_ALL() if small else S("The5ers High Stakes")) +
-            S("FXIFY Two-Phase") + S("FundedNext Stellar 2-Step", instr="XAUUSD"))
+            S("FXIFY Two Phase Classic (100%, 30 days)") + S("FundedNext Stellar 2-Step v5", instr="XAUUSD"))
 def TIER_B():
     return S("Fintokei ProTrader", 4) + S("Hola Prime 2-Step Prime (bi-weekly 80%)", 2, instr="USDJPY")
-def TIER_D():
-    return (S("Alpha Capital Pro 10%", 3) + S("BrightFunded 2-Step Classic", 4) + S("Blue Guardian 2-Step", 4) +
-            S("GFT 2-Step Standard") + S("FunderPro Classic") + S("Maven 2-Step", X=8_000))
-def TIER_D_SINGLES():
-    return (S("Alpha Capital Pro 10%") + S("BrightFunded 2-Step Classic") + S("Blue Guardian 2-Step") +
-            S("GFT 2-Step Standard") + S("FunderPro Classic") + S("Maven 2-Step", X=8_000))
+D_FIRMS = [("Alpha Capital Pro 10%", 3, None), ("BrightFunded 2-Step Classic v5", 4, None), ("Blue Guardian 2-Step v5", 4, None),
+           ("GFT 2-Step Standard v5", 1, 6_000), ("FunderPro Classic v5", 1, None), ("Maven 2-Step", 1, 8_000)]
+def TIER_D(single=False):
+    out = []
+    for f, n, X1 in D_FIRMS:
+        sl = S(f, 1 if single else n, X=8_000 if f == "Maven 2-Step" else None)
+        for s in sl:
+            if X1: s["X1"] = X1
+        out += sl
+    return out
 def FUTURES():
     return (S("Topstep 50K", 5, 50_000, "fut", L=950, X=0) +
             S("Apex 50K EOD", 20, 50_000, "fut", m=0.5, k=2, L=950, X=0, override=dict(fee=55, activation=99)))
 def _fix(slots):
     for s in slots:
-        if s["firm"] == "GFT 2-Step Standard": s["X1"] = 7_000
         if s["kind"] == "fut": s["X1"] = s["X"] = 0
     return slots
+V4C = {"FundingPips 2-Step Flex (95%)": FP, "FXIFY Two-Phase": "FXIFY Two Phase Classic (100%, 30 days)",
+       "FundedNext Stellar 2-Step": "FundedNext Stellar 2-Step v5", "GFT 2-Step Standard": "GFT 2-Step Standard v5",
+       "FunderPro Classic": "FunderPro Classic v5", "BrightFunded 2-Step Classic": "BrightFunded 2-Step Classic v5",
+       "Blue Guardian 2-Step": "Blue Guardian 2-Step v5"}
+def corrected(slots):
+    out = []
+    for s in slots:
+        s = dict(s); s["firm"] = V4C.get(s["firm"], s["firm"])
+        if s["firm"] == FP: s["X1"] = s["X"] = 12_000
+        if s["firm"] == "GFT 2-Step Standard v5": s["X1"] = 6_000
+        out.append(s)
+    return out
 
 PORTFOLIOS = {
     "Tier A (5 firms, 11 accounts)": TIER_A(),
     "Tier A + B (7 firms, 17 accounts)": TIER_A() + TIER_B(),
-    "Tier A + B + one account at each tier-D firm (13 firms, 23 accounts)": _fix(TIER_A() + TIER_B() + TIER_D_SINGLES()),
-    "The same + The5ers small accounts (13 firms, 33 accounts)": _fix(TIER_A(True) + TIER_B() + TIER_D_SINGLES()),
-    "All tiers at full caps (13 firms, 31 accounts)": _fix(TIER_A() + TIER_B() + TIER_D()),
+    "Tier A + B + one account at each tier-D firm (13 firms, 23 accounts)": TIER_A() + TIER_B() + TIER_D(True),
+    "The same + The5ers small accounts (13 firms, 33 accounts)": TIER_A(True) + TIER_B() + TIER_D(True),
+    "All tiers at full caps (13 firms, 31 accounts)": TIER_A() + TIER_B() + TIER_D(),
     "Tier A + B + futures (9 firms, 42 accounts)": _fix(TIER_A() + TIER_B() + FUTURES()),
     "Version 4 one per firm (11 firms)": [dict(s) for s in LP.PORTFOLIOS["One account per firm (11 firms)"]],
     "Version 4 full caps (11 firms, 25 accounts)": [dict(s) for s in LP.PORTFOLIOS["Full caps, rules-strict (25 accounts)"]],
+    "Version 4 one per firm, rules corrected (11 firms)": corrected(LP.PORTFOLIOS["One account per firm (11 firms)"]),
+    "Version 4 full caps, rules corrected (11 firms, 25 accounts)": corrected(LP.PORTFOLIOS["Full caps, rules-strict (25 accounts)"]),
 }
 LP.PORTFOLIOS.update(PORTFOLIOS)
 
