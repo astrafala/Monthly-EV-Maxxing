@@ -1,0 +1,31 @@
+FundedNext Stellar 2-Step v5       EURUSD m=0.75 k=20 cost x1.0: EV/mo=  4258± 310 P=0.321
+FundedNext Stellar 2-Step v5       EURUSD m=0.75 k=20 cost x1.5: EV/mo=  3220± 322 P=0.280
+FundedNext Stellar 2-Step v5       EURUSD m=0.75 k=20 cost x2.0: EV/mo=  -146± 366 P=0.169
+FundedNext Stellar 2-Step v5       EURUSD m=1.00 k=20 cost x1.0: EV/mo=  3630± 258 P=0.340
+FundedNext Stellar 2-Step v5       EURUSD m=1.00 k=20 cost x1.5: EV/mo=  3153± 277 P=0.299
+FundedNext Stellar 2-Step v5       EURUSD m=1.00 k=20 cost x2.0: EV/mo=  2273± 282 P=0.273
+FundedNext Stellar 2-Step v5       EURUSD m=1.25 k=20 cost x1.0: EV/mo=  3154± 217 P=0.341
+FundedNext Stellar 2-Step v5       EURUSD m=1.25 k=20 cost x1.5: EV/mo=  2820± 222 P=0.315
+FundedNext Stellar 2-Step v5       EURUSD m=1.25 k=20 cost x2.0: EV/mo=  2832± 237 P=0.303
+Hola Prime 2-Step Prime (bi-weekly EURUSD m=0.75 k=14 cost x1.0: EV/mo=  3674± 322 P=0.324
+Hola Prime 2-Step Prime (bi-weekly EURUSD m=0.75 k=14 cost x1.5: EV/mo=  1822± 323 P=0.279
+Hola Prime 2-Step Prime (bi-weekly EURUSD m=0.75 k=14 cost x2.0: EV/mo= -3657± 299 P=0.162
+Hola Prime 2-Step Prime (bi-weekly EURUSD m=1.00 k=14 cost x1.0: EV/mo=  3530± 264 P=0.332
+Hola Prime 2-Step Prime (bi-weekly EURUSD m=1.00 k=14 cost x1.5: EV/mo=  3156± 280 P=0.312
+Hola Prime 2-Step Prime (bi-weekly EURUSD m=1.00 k=14 cost x2.0: EV/mo=  1629± 277 P=0.272
+Hola Prime 2-Step Prime (bi-weekly EURUSD m=1.25 k=14 cost x1.0: EV/mo=  3206± 221 P=0.343
+Hola Prime 2-Step Prime (bi-weekly EURUSD m=1.25 k=14 cost x1.5: EV/mo=  2770± 218 P=0.316
+Hola Prime 2-Step Prime (bi-weekly EURUSD m=1.25 k=14 cost x2.0: EV/mo=  2466± 234 P=0.304
+FundingPips 2-Step Flex (85%) v6 c USDJPY m=0.35 k=20 cost x1.0: EV/mo=  4991± 487 P=0.218
+FundingPips 2-Step Flex (85%) v6 c USDJPY m=0.35 k=20 cost x1.5: EV/mo=  3155± 487 P=0.156
+FundingPips 2-Step Flex (85%) v6 c USDJPY m=0.35 k=20 cost x2.0: EV/mo=  1163± 464 P=0.107
+FundingPips 2-Step Flex (85%) v6 c USDJPY m=0.50 k=20 cost x1.0: EV/mo=  5341± 443 P=0.254
+FundingPips 2-Step Flex (85%) v6 c USDJPY m=0.50 k=20 cost x1.5: EV/mo=  4692± 449 P=0.216
+FundingPips 2-Step Flex (85%) v6 c USDJPY m=0.50 k=20 cost x2.0: EV/mo=  3510± 443 P=0.172
+FundingPips 2-Step Flex (85%) v6 c USDJPY m=0.75 k=20 cost x1.0: EV/mo=  5050± 361 P=0.279
+FundingPips 2-Step Flex (85%) v6 c USDJPY m=0.75 k=20 cost x1.5: EV/mo=  4130± 356 P=0.248
+FundingPips 2-Step Flex (85%) v6 c USDJPY m=0.75 k=20 cost x2.0: EV/mo=  3744± 343 P=0.223
+{'name': 'FTMO phase 1, bold setting', 'prog': 'FTMO 2-Step', 'm': 0.35, 'k': 30, 'P': 0.49835, 'ci': 0.006929608723600489, 'n': 20000}
+{'name': 'FTMO phase 1, k = 5', 'prog': 'FTMO 2-Step', 'm': 0.75, 'k': 5, 'P': 0.49855, 'ci': 0.006929617316403554, 'n': 20000}
+{'name': 'The5ers phase 1 with profitable days', 'prog': 'The5ers High Stakes', 'm': 0.6, 'k': 30, 'P': 0.4979, 'ci': 0.006929585335876887, 'n': 20000}
+{'name': 'The5ers phase 1 without profitable days', 'prog': 'The5ers High Stakes', 'm': 0.6, 'k': 30, 'P': 0.50485, 'ci': 0.006929320442741842, 'n': 20000}

@@ -1,0 +1,89 @@
+{'k': 1, 'm': 0.75, 'win': 0.5024, 'theory': 0.5, 'meanR': 0.004799999999999778, 'ci': 0.009799887103349593}
+{'k': 2, 'm': 0.75, 'win': 0.32855, 'theory': 0.3333333333333333, 'meanR': -0.014173633601955294, 'ci': 0.013823923501195023}
+{'k': 3, 'm': 0.75, 'win': 0.254425, 'theory': 0.25, 'meanR': 0.01722312978762943, 'ci': 0.017711654441746914}
+{'k': 5, 'm': 0.75, 'win': 0.164175, 'theory': 0.16666666666666666, 'meanR': -0.011137856228387687, 'ci': 0.023350199771758926}
+{'k': 10, 'm': 0.75, 'win': 0.0926, 'theory': 0.09090909090909091, 'meanR': 0.020032983644921933, 'ci': 0.03436435973319937}
+{'k': 1, 'm': 0.35, 'win': 0.50395, 'theory': 0.5, 'meanR': 0.00789999999999939, 'ci': 0.008001416797192636}
+{'k': 2, 'm': 0.35, 'win': 0.3286833333333333, 'theory': 0.3333333333333333, 'meanR': -0.01394999999998088, 'ci': 0.011275978963439546}
+{'k': 3, 'm': 0.35, 'win': 0.24878333333333333, 'theory': 0.25, 'meanR': -0.0048666666666520265, 'ci': 0.013836736995226749}
+{'k': 6, 'm': 0.35, 'win': 0.14243333333333333, 'theory': 0.14285714285714285, 'meanR': -0.004108540116121849, 'ci': 0.01978935913895831}
+{'P': 0.668, 'ci': 0.00595809911521004, 'n': 24000}
+{'P1': 0.4976375, 'P1_ci': 0.0034647845504261698, 'P': 0.330325, 'W': 9877.176233012586, 'W_ci': 168.95053631231553, 'n_funded': 26426, 'n': 80000}
+FTMO 2-Step                        US100   chosen     P 0.326/0.313/0.307 cash    7666/   7610/   7124 EV   1864/  1749/  1557
+FTMO 2-Step                        US100   uncapped   P 0.327/0.295/0.290 cash    7635/   7343/   7081 EV   1865/  1533/  1424
+FTMO 2-Step                        US100   v5 default P 0.313/0.311/0.306 cash    7668/   7621/   7529 EV   1768/  1735/  1670
+FTMO 1-Step                        US100   chosen     P 0.469/0.468/0.344 cash    8282/   8257/   6165 EV   3302/  3284/  1537
+FTMO 1-Step                        US100   v5 default P 0.469/0.468/0.336 cash    8228/   8200/   6390 EV   3276/  3256/  1566
+FundingPips 2-Step Flex (95%) v5   USDJPY  chosen     P 0.344/0.331/0.291 cash    9879/   9812/   8491 EV   2901/  2752/  1971
+FundingPips 2-Step Flex (95%) v5   USDJPY  uncapped   P 0.350/0.332/0.286 cash    9823/   9789/   8758 EV   2939/  2747/  2004
+FundingPips 2-Step Flex (95%) v5   USDJPY  v5 default P 0.321/0.318/0.291 cash    9667/   9582/   8810 EV   2603/  2545/  2066
+FundingPips 2-Step Flex (85%) v6 c USDJPY  chosen     P 0.261/0.259/0.252 cash    9177/   9092/   8766 EV   1893/  1860/  1708
+FundingPips 2-Step Flex (85%) v6 c USDJPY  uncapped   P 0.261/0.259/0.255 cash    9611/   9256/   8600 EV   2006/  1903/  1690
+FundingPips 2-Step Flex (85%) v6 c USDJPY  v5 default P 0.293/0.291/0.286 cash    8649/   8574/   8117 EV   2032/  1996/  1822
+FundingPips 2-Step Flex (85%) v6 4 USDJPY  chosen     P 0.340/0.325/0.308 cash    8588/   8534/   7193 EV   2424/  2278/  1720
+FundingPips 2-Step Flex (85%) v6 4 USDJPY  uncapped   P 0.353/0.326/0.314 cash    9057/   8939/   6663 EV   2695/  2414/  1595
+FundingPips 2-Step Flex (85%) v6 4 USDJPY  v5 default P 0.321/0.318/0.314 cash    8649/   8574/   7673 EV   2276/  2224/  1910
+The5ers High Stakes                US100   chosen     P 0.327/0.316/0.296 cash    7854/   7770/   7599 EV   2076/  1966/  1760
+The5ers High Stakes                US100   uncapped   P 0.327/0.316/0.296 cash    7588/   7539/   7394 EV   1989/  1893/  1698
+The5ers High Stakes                US100   v5 default P 0.313/0.311/0.297 cash    7601/   7553/   7415 EV   1888/  1855/  1708
+The5ers High Stakes Classic        US100   chosen     P 0.363/0.348/0.323 cash    7724/   7678/   7385 EV   2258/  2129/  1840
+The5ers High Stakes Classic        US100   v5 default P 0.351/0.348/0.329 cash    7627/   7579/   7535 EV   2129/  2091/  1931
+FXIFY Two Phase Classic (80%)      US100   chosen     P 0.331/0.323/0.314 cash    7182/   7181/   7007 EV   1826/  1771/  1651
+FXIFY Two Phase Classic (80%)      US100   uncapped   P 0.332/0.323/0.313 cash    7182/   7181/   7042 EV   1834/  1771/  1656
+FXIFY Two Phase Classic (80%)      US100   v5 default P 0.318/0.316/0.312 cash    6902/   6889/   6440 EV   1645/  1628/  1463
+FXIFY Two Phase Classic (80%)      USDJPY  chosen     P 0.320/0.311/0.306 cash    6210/   6227/   6405 EV   1435/  1389/  1408
+FXIFY Two Phase Classic (80%)      USDJPY  uncapped   P 0.328/0.312/0.301 cash    6328/   6351/   5894 EV   1525/  1430/  1224
+FXIFY Two Phase Classic (80%)      USDJPY  v5 default P 0.297/0.293/0.281 cash    5363/   5356/   5721 EV   1042/  1020/  1061
+FXIFY Two Phase Classic (100%, 30  US100   chosen     P 0.327/0.323/0.319 cash    8946/   8943/   8766 EV   2375/  2337/  2251
+FXIFY Two Phase Classic (100%, 30  US100   uncapped   P 0.329/0.323/0.316 cash    8988/   8988/   8163 EV   2412/  2354/  2031
+FXIFY Two Phase Classic (100%, 30  US100   v5 default P 0.318/0.316/0.310 cash    8565/   8549/   8001 EV   2174/  2153/  1932
+FXIFY Two Phase Classic (100%, 30  USDJPY  chosen     P 0.316/0.308/0.297 cash    7457/   7487/   7186 EV   1810/  1758/  1582
+FXIFY Two Phase Classic (100%, 30  USDJPY  uncapped   P 0.324/0.309/0.301 cash    7565/   7601/   7050 EV   1901/  1798/  1571
+FXIFY Two Phase Classic (100%, 30  USDJPY  v5 default P 0.297/0.293/0.283 cash    6650/   6641/   7024 EV   1423/  1397/  1437
+FundedNext Stellar 2-Step v5       XAUUSD  chosen     P 0.358/0.352/0.345 cash    7352/   7327/   7237 EV   2084/  2028/  1946
+FundedNext Stellar 2-Step v5       XAUUSD  v5 default P 0.346/0.343/0.344 cash    7495/   7442/   7217 EV   2046/  2003/  1930
+FundedNext Stellar 2-Step v5       EURUSD  refine best P 0.355/0.327/0.321 cash    7286/   7239/   6666 EV   2037/  1819/  1591
+FundedNext Stellar 2-Step v5       EURUSD  v5 default P 0.311/0.305/0.302 cash    6448/   6387/   6163 EV   1456/  1400/  1314
+Fintokei ProTrader                 US100   chosen     P 0.335/0.326/0.303 cash    7450/   7403/   6866 EV   1945/  1863/  1529
+Fintokei ProTrader                 US100   v5 default P 0.327/0.325/0.311 cash    7629/   7581/   7430 EV   1948/  1913/  1761
+Hola Prime 2-Step Prime (bi-weekly EURUSD  chosen     P 0.349/0.327/0.318 cash    5610/   5653/   5820 EV   1356/  1251/  1250
+Hola Prime 2-Step Prime (bi-weekly EURUSD  v5 default P 0.311/0.305/0.303 cash    5103/   5113/   5717 EV    989/   962/  1131
+Hola Prime 2-Step Prime (bi-weekly XAUUSD  chosen     P 0.358/0.352/0.350 cash    7000/   6987/   6954 EV   1909/  1859/  1836
+Hola Prime 2-Step Prime (bi-weekly XAUUSD  v5 default P 0.346/0.343/0.335 cash    6751/   6727/   6694 EV   1739/  1709/  1646
+Alpha Capital Pro 10%              US100   chosen     P 0.328/0.313/0.307 cash    7674/   7567/   7035 EV   2021/  1872/  1660
+Alpha Capital Pro 10%              US100   uncapped   P 0.328/0.313/0.309 cash    7593/   7561/   6582 EV   1995/  1870/  1536
+Alpha Capital Pro 10%              US100   v5 default P 0.313/0.311/0.312 cash    7366/   7319/   7145 EV   1808/  1776/  1730
+Alpha Capital Pro 10% (on-demand)  US100   chosen     P 0.320/0.313/0.309 cash    6712/   6703/   6657 EV   1654/  1599/  1559
+Alpha Capital Pro 10% (on-demand)  US100   v5 default P 0.313/0.311/0.307 cash    6858/   6837/   6902 EV   1649/  1626/  1624
+BrightFunded 2-Step Classic v5     US100   chosen     P 0.320/0.313/0.315 cash    7303/   7257/   6519 EV   1760/  1689/  1475
+BrightFunded 2-Step Classic v5     US100   v5 default P 0.313/0.311/0.313 cash    7366/   7319/   7249 EV   1725/  1693/  1688
+Blue Guardian 2-Step v5            US100   chosen     P 0.326/0.322/0.299 cash    6468/   6445/   6016 EV   1527/  1497/  1220
+Blue Guardian 2-Step v5            US100   v5 default P 0.321/0.319/0.301 cash    6503/   6461/   6346 EV   1509/  1480/  1330
+FunderPro Classic v5               US100   chosen     P 0.326/0.305/0.301 cash    7666/   7529/   7048 EV   1960/  1756/  1579
+FunderPro Classic v5               US100   uncapped   P 0.326/0.305/0.298 cash    7526/   7492/   7222 EV   1914/  1745/  1611
+FunderPro Classic v5               US100   v5 default P 0.313/0.311/0.311 cash    7624/   7576/   7429 EV   1847/  1814/  1770
+Maven 2-Step                       US100   chosen     P 0.299/0.296/0.275 cash    5881/   5863/   5749 EV   1318/  1297/  1139
+Maven 2-Step                       US100   uncapped   P 0.299/0.296/0.280 cash    5993/   5975/   5779 EV   1351/  1331/  1178
+Maven 2-Step                       US100   v5 default P 0.291/0.289/0.269 cash    5703/   5680/   5477 EV   1222/  1200/  1032
+GFT 2-Step Standard v5             US100   chosen     P 0.358/0.354/0.350 cash    6546/   7022/   7126 EV   1819/  1961/  1972
+GFT 2-Step Standard v5             US100   v5 default P 0.351/0.348/0.341 cash    6100/   6976/   7170 EV   1615/  1902/  1923
+FTMO 2-Step                        US100   200K       P 0.326/0.313/0.307 cash   15331/  15220/  14381 EV   3728/  3499/  3158
+FundedNext Stellar 2-Step v5       XAUUSD  200K       P 0.358/0.352/0.345 cash   14692/  14643/  14375 EV   4214/  4102/  3914
+FundedNext Stellar 2-Step v5       EURUSD  refine best 200K P 0.355/0.327/0.321 cash   14560/  14466/  13329 EV   4119/  3683/  3233
+Fintokei ProTrader                 US100   200K       P 0.335/0.326/0.303 cash   14940/  14846/  13743 EV   3752/  3589/  2911
+Alpha Capital Pro 10%              US100   200K       P 0.328/0.313/0.307 cash   15347/  15135/  14078 EV   4039/  3742/  3322
+BrightFunded 2-Step Classic v5     US100   200K       P 0.320/0.313/0.315 cash   14606/  14514/  12957 EV   3518/  3376/  2922
+Blue Guardian 2-Step v5            US100   200K       P 0.326/0.322/0.299 cash   12937/  12890/  12147 EV   3050/  2990/  2465
+FunderPro Classic v5               US100   200K       P 0.326/0.305/0.300 cash   15311/  15037/  14115 EV   4002/  3595/  3244
+GFT 2-Step Standard v5             US100   200K       P 0.358/0.354/0.348 cash   11632/  14112/  14066 EV   3190/  4020/  3917
+FXIFY Two Phase Classic (100%, 30  US100   50K        P 0.327/0.323/0.312 cash    4497/   4495/   4379 EV   1091/  1072/   987
+FXIFY Two Phase Classic (100%, 30  US100   25K        P 0.327/0.323/0.315 cash    2251/   2250/   2148 EV    537/   527/   476
+FXIFY Two Phase Classic (100%, 30  US100   10K        P 0.327/0.323/0.317 cash     902/    902/    863 EV    206/   202/   184
+FXIFY Two Phase Classic (100%, 30  US100   5K         P 0.327/0.323/0.316 cash     454/    454/    431 EV     90/    88/    77
+The5ers High Stakes 25K            US100   25K        P 0.327/0.316/0.291 cash    1981/   1959/   1875 EV    471/   443/   370
+The5ers High Stakes 10K            US100   10K        P 0.327/0.316/0.292 cash     792/    783/    760 EV    190/   179/   153
+The5ers High Stakes 5K             US100   5K         P 0.327/0.316/0.290 cash     396/    392/    385 EV     94/    89/    77
+The5ers High Stakes 2.5K           US100   2K         P 0.327/0.316/0.291 cash     199/    196/    193 EV     46/    43/    37
+FundedNext Stellar 2-Step v5       EURUSD  chosen     P 0.359/0.337/0.344 cash    7495/   7442/   7129 EV   2139/  1958/  1904
+FundedNext Stellar 2-Step v5       EURUSD  200K       P 0.359/0.337/0.342 cash   14978/  14871/  14259 EV   4324/  3962/  3821
+{'with': {'P': 0.31566666666666665, 'EV': 1504.8252458579873, 'EV_month': 5243.478483214376}, 'without': {'P': 0.30733333333333335, 'EV': 1599.5853810789342, 'EV_month': 6580.644793629698}}

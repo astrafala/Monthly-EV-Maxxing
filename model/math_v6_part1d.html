@@ -1,0 +1,106 @@
+<!-- 9 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 9</span>
+  <h1>Optimising every setting</h1>
+  <p>Four numbers define how the plan trades a programme: the risk per trade \(l\), the reward-to-risk ratio \(k\), the stop \(m\) (in hourly standard deviations) and the funded cycle target \(X\). A fifth choice is the market. This chapter explains what each one does, which are fixed by the rules, and how the rest were searched.</p>
+
+  <h2>9.1 What each setting does</h2>
+  <table>
+    <thead><tr><th>Setting</th><th>Value of an attempt</th><th>Time of an attempt</th><th>Set by</th></tr></thead>
+    <tbody>
+      <tr><td>Risk \(l\)</td><td>almost none (5.1); a little through costs</td><td>market time \(\propto 1/l^2\) (8.2)</td><td>the firms' rules and guidance: 1.5% (Chapter 10)</td></tr>
+      <tr><td>Reward:risk \(k\)</td><td>cost drag on pass probability \(\propto 1/k\) (5.2); fewer funded trades</td><td>none in theory (8.2); in practice longer trades meet weekends and payout dates</td><td>search</td></tr>
+      <tr><td>Stop \(m\)</td><td>cost per trade \(c/l \propto 1/m\)</td><td>market time \(\propto m^2\)</td><td>search, within the leverage limit</td></tr>
+      <tr><td>Cycle target \(X\)</td><td>none before costs (7.1); more funded trades with larger \(X\)</td><td>payout waiting against cycle length (7.3)</td><td>search, within payout rules</td></tr>
+      <tr><td>Market</td><td>cost per unit of movement \(\kappa/\sigma\)</td><td>trading hours</td><td>leverage, independence rules, cost</td></tr>
+    </tbody>
+  </table>
+  <p>The trade-offs are clear in direction but not in size, because the rules (minimum days, payout dates, daily limits, weekends) dominate the clock. So the values were found by simulation with the full rule engine, and the theory is used to check them (Chapter 11).</p>
+
+  <h2>9.2 The search</h2>
+  <ol>
+    <li><strong>Grid.</strong> For every programme and every market it may trade: \(k \in \{2,3,4,5,6,7,8,10,12\}\), \(m \in \{0.5, 0.75, 1, 1.25, 1.5\}\) (only stops the firm's leverage allows, Chapter 10), and three to five cycle targets suited to the programme's payout rules. That is [[N_GRID]] settings, each run for 4,000 attempts on four synthetic paths (21&ndash;24): [[N_GRID_ATTEMPTS]] simulated attempts.</li>
+    <li><strong>Refine.</strong> For each programme, the eight best grid settings, the version 5 default, and extensions wherever the best sat on the edge of the grid were run again for 24,000 attempts on four <em>different</em> paths (25&ndash;28).</li>
+    <li><strong>Edges.</strong> Wherever the refined best still sat on an edge, one more step was taken in that direction (\(k\) up to 20, stops down to the leverage limit, cycles up to 25%), again for 24,000 attempts on paths 25&ndash;28.</li>
+    <li><strong>Bold play.</strong> Because the best settings kept moving toward large \(k\), large cycles and tight stops, a last round tried \(k \in \{20, 30, 50\}\), cycles of 25%, 30%, 40% and 50%, and stops of 0.25, 0.3 and 0.35 where leverage allows. In all, [[N_REFINE]] settings were refined, [[N_REFINE_ATTEMPTS]] attempts.</li>
+    <li><strong>Choose, within practical limits.</strong> The plan's setting is the highest refined value per month among settings with a stop of at least 0.35 hourly moves, a cycle of at most 30% of the account and \(k\) of at most 30 (9.3 explains each limit). Where a wider stop is as good at the assumed cost and much better if costs are higher, the wider stop is used (FundedNext, 9.3).</li>
+    <li><strong>Report.</strong> The chosen setting is run a third time on four fresh paths (29&ndash;32; 33&ndash;36 for the one re-chosen for robustness) and on the real price history. Every figure reported for a programme comes from this last run, so none is inflated by having been picked as the best of many noisy estimates (the "winner's curse"). The curse is visible: the chosen settings average [[CURSE]] less on fresh paths than on the paths that chose them.</li>
+  </ol>
+
+  <h2>9.3 What the search found, in general</h2>
+  [[OPT_GENERAL]]
+
+  <h2>9.4 Every programme before and after</h2>
+  [[OPT_TABLE]]
+</section>
+
+<!-- 10 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 10</span>
+  <h1>Position size, leverage and margin</h1>
+  <p>A setting is only usable if the firm lets you open the position it implies. This chapter turns the settings into lots and checks them against each firm's leverage.</p>
+
+  <h2>10.1 From risk to lots</h2>
+  <p>The stop distance in price points is \(s\times\text{price} = m\sigma\times\text{price}\). If one lot gains or loses \(V\) dollars per point (read it from the firm's contract specification), then</p>
+  <div class="formula"><span class="lbl">Lots for a given risk</span>
+  $$\text{lots} = \frac{l}{\text{stop points}\times V} = \frac{l}{m\,\sigma\,\text{price}\,V}, \qquad \text{notional} = \text{lots}\times\text{price}\times V = \frac{l}{m\sigma}.$$
+  </div>
+  <p>Round lots <em>down</em> to the firm's lot step, so the realised risk is never above 1.5%. The take-profit in points is the stop in points times \((w + c)/l\), where \(c\) is the measured cost of the round trip in dollars for that lot size.</p>
+
+  <h2>10.2 Leverage and the smallest usable stop</h2>
+  <p>The firm holds margin of notional \(\div\) leverage. A position needs</p>
+  $$\text{margin} = \frac{\text{notional}}{\lambda} = \frac{l}{m\,\sigma\,\lambda}$$
+  <p>for leverage \(\lambda\) (1:\(\lambda\)). The plan allows at most 60% of the balance as margin, which leaves the margin level above 160% even after a full stop-out and keeps the account clear of the "excessive margin use" that some firms review. With \(l = 1.5\%\) of the account, this gives the smallest stop the firm allows:</p>
+  <div class="formula"><span class="lbl">Smallest stop that fits the leverage</span>
+  $$m \;\ge\; m_{\min} = \frac{l/S}{0.6\,\lambda\,\sigma} = \frac{0.025}{\lambda\,\sigma}.$$
+  </div>
+  [[LEV_TABLE]]
+  <p>The table changes the plan in three places. <strong>FundingPips</strong> applies "dynamic leverage" to indices and metals that falls to 1:5 above half a lot, which any position of this size exceeds: on the Nasdaq the smallest stop would be 1.8 hourly moves, so FundingPips trades USDJPY at 1:100 instead. <strong>FXIFY, FundedNext, Hola Prime and Blue Guardian</strong> give 1:10 on indices (and FundedNext 1:10 on gold since January 2026): their stops are wider, or they trade a currency pair. Leverage is the most frequently changed rule of all; read it on the firm's contract page before the first trade.</p>
+
+  <h2>10.3 Which market each account trades</h2>
+  <p>Three groups of markets are used, each with one shared direction (Chapter [[CH_LOCK]]):</p>
+  <ul>
+    <li><strong>Nasdaq 100</strong> (US100 CFD, or micro Nasdaq futures): every firm that allows the position on indices and allows the same trades as your own accounts elsewhere.</li>
+    <li><strong>USDJPY</strong>: FundingPips (leverage), and FXIFY if its Nasdaq stop would be too wide.</li>
+    <li><strong>Independent markets</strong> for firms that forbid copying trades from other firms' accounts or into funded accounts: Hola Prime and FundedNext each trade a market that no other account trades (gold, EURUSD), with their own direction rule, so their trades are never copies of anything.</li>
+  </ul>
+
+  <h2>10.4 The ten-minute rule</h2>
+  <p>FundingPips groups every position on the same market in the same direction, <em>including a position opened within 10 minutes of closing a losing one</em>, into one "trade idea", and closes the account if a trade idea loses 2% (realised and unrealised together). Two stopped-out 1.5% trades in a row in the same direction within 10 minutes would therefore break it. The plan waits at least 10 minutes after any losing trade before opening the next one in the same direction, at every firm. In the simulation the next entry is always at a later hour's open, which already satisfies this.</p>
+
+  <h2>10.5 Risk per trade: why 1.5%, and what more would give</h2>
+  <p>Time falls like \(1/l^2\) (8.2), so more risk per trade is the strongest lever there is. The plan does not use it, because the rules say no or come close:</p>
+  <ul>
+    <li>FTMO states a recommended risk of 1&ndash;1.5% per trade and monitors "gambling" behaviour;</li>
+    <li>FundingPips Flex closes the account at a 2% loss on one trade idea; Alpha Capital forbids risking or losing 2% or more on one trade; FunderPro and Hola Prime (funded) cap risk at 2%; Blue Guardian closes trades at a 2% open loss;</li>
+    <li>a 2% stop on a 2% limit leaves no room for slippage, so the usable maximum at those firms is about 1.5&ndash;1.75% anyway.</li>
+  </ul>
+  [[RISK_SENS]]
+</section>
+
+<!-- 11 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 11</span>
+  <h1>Checking the engine against the formulas</h1>
+  <p>The simulation and the formulas of Chapters 4&ndash;7 were written separately. The formulas leave out daily limits, minimum and profitable days, best-day caps, gaps, overnight financing and the calendar; the engine includes all of them. Where the two agree, both are right; where they differ, the difference should be explained by what the formulas leave out.</p>
+  <h2>11.1 Basic checks</h2>
+  <table>
+    <thead><tr><th>Check (synthetic path, no costs unless stated)</th><th class="n">Theory</th><th class="n">Engine</th></tr></thead>
+    <tbody>
+      <tr><td>Win rate of a 1 : 1 bracket</td><td class="n">50.0%</td><td class="n">[[CHK_W1]]</td></tr>
+      <tr><td>Win rate of a 1 : 2 bracket</td><td class="n">33.3%</td><td class="n">[[CHK_W2]]</td></tr>
+      <tr><td>Average result of a 1 : 3 bracket, in units of risk</td><td class="n">0</td><td class="n">[[CHK_R3]]</td></tr>
+      <tr><td>Win rate of 1 : 1, 1 : 2, 1 : 3, 1 : 6 brackets with a tight stop (\(m = 0.35\))</td><td class="n">[[CHK_TIGHT_TH]]</td><td class="n">[[CHK_TIGHT]]</td></tr>
+      <tr><td>FundingPips Flex phase 2 (wins capped at 55% of the target), zero cost</td><td class="n">66.7%</td><td class="n">[[TIE_FP_AFTER]]</td></tr>
+      <tr><td>FTMO phase 1 pass rate, zero cost, \(k = 5\)</td><td class="n">50.0%</td><td class="n">[[CHK_P1_ZERO]]</td></tr>
+      <tr><td>FTMO funded account, zero cost: average withdrawn before split</td><td class="n">$10,000</td><td class="n">[[CHK_W_ZERO]]</td></tr>
+      <tr><td>FTMO phase 1 pass rate, zero cost, a bold setting (\(k = 30\), \(m = 0.35\))</td><td class="n">50.0%</td><td class="n">[[CHK_BOLD_ZERO]]</td></tr>
+      <tr><td>The5ers phase 1 pass rate, zero cost, with its profitable-days rule / without it</td><td class="n">50.0%</td><td class="n">[[CHK_T5_ZERO]]</td></tr>
+      <tr><td>FTMO 2-Step pass rate with the plan's direction rule / with a coin flip (with costs)</td><td class="n">equal</td><td class="n">[[CHK_DIR]]</td></tr>
+      <tr><td>Independent coin-flip program (verify.py), FTMO pass rate</td><td class="n">33.3%</td><td class="n">33.3%</td></tr>
+    </tbody>
+  </table>
+  <h2>11.2 Every chosen programme: formulas against the engine</h2>
+  [[VERIFY_TABLE]]
+  [[VERIFY_TEXT]]
+</section>

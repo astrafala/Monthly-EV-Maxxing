@@ -6,10 +6,52 @@ A prop-firm evaluation ("challenge") works like an option. You pay a fee. If you
 
 | File | Contents |
 |---|---|
-| [`docs/The_Prop_Firm_Option_v5.pdf`](docs/The_Prop_Firm_Option_v5.pdf) | Current version, 88 pages. Part 1: the mathematics. Chapters 17–23: price-path simulations, every firm compared, the per-person maximum, and a rule audit for each firm. Part 2 (chapters 24–32): the execution plan, a simulated sign-up diary, and month-by-month cash and odds. **Part 3 (chapters 33–36, new in version 5):** firm reliability tiers, payout-refusal scenarios, every rule re-checked (seven corrections), two added firms, and the revised per-person plan. |
-| `docs/archive/` | Versions 1–4, superseded. Version 3 overstated some results: The5ers was too high, and it ran several accounts at FXIFY and GFT, which their duplicate-account rules do not allow. Version 4 corrected both. Version 4 assumed every payout is paid at every firm; six of its eleven firms have since had their TrustPilot ratings withheld for fake reviews, and seven of its programmes' rules had changed or were recorded wrongly. |
+| [`docs/The_Prop_Firm_Option_v6_Mathematics.pdf`](docs/The_Prop_Firm_Option_v6_Mathematics.pdf) | **Current version, 98 pages.** The expected cash per month for one person first, then every formula derived from first principles (Part I), one chapter per programme with every number worked through at its optimised setting (Part II), the per-person allocation, the portfolio simulation and payout-refusal scenarios (Part III), and the execution routine and risks (Part IV). |
+| `docs/archive/` | Versions 1–5, superseded. Version 5 (88 pages) holds the execution plan, the sign-up diary and the firm-by-firm rule audit that version 6 builds on. |
 
-## Key results (version 5, 4 October 2026)
+## Key results (version 6, 4 October 2026)
+
+**Expected cash per month for one person, recommended plan: $138,400 ± $4,900** (first-year average, 400 simulated years; 28 accounts at 13 firms, zero predictive skill, every written rule followed). From the second month on the average is $151,600 a month. If payouts are refused 2% / 5% / 15% of the time by tier, it is $93,700; at 5% / 10% / 30%, $64,500.
+
+| Portfolio | Accounts | EV/month, first year | Tiered refusals | Harsh refusals | First-year cash: median (5th–95th) | Cash low: median / 1 in 20 |
+|---|---:|---:|---:|---:|---|---|
+| Tier A only | 15 | 63.4K ± 2.7K | 52.2K | 39.9K | 0.71M (0.30–1.40M) | 36K / 93K |
+| Tiers A and B | 22 | 95.6K ± 3.7K | 70.8K | 52.0K | 1.11M (0.47–1.97M) | 47K / 111K |
+| **Recommended (A + B + one account per tier-D firm)** | **28** | **138.4K ± 4.9K** | **93.7K** | **64.5K** | 1.55M (0.86–2.75M) | 59K / 136K |
+| Recommended, FTMO as 2 × 200K | 26 | 138.4K ± 4.8K | 95.9K | 68.3K | 1.55M (0.84–2.75M) | 59K / 136K |
+| All firms at full allowance | 35 | 163.2K ± 6.0K | 96.7K | 63.0K | 1.85M (0.93–3.21M) | 75K / 176K |
+| Full allowance + The5ers small accounts | 45 | 169.6K ± 5.9K | 98.8K | 63.3K | 1.93M (1.04–3.42M) | 76K / 179K |
+| Recommended + futures (Topstep 5, Apex 20) | 53 | 151.7K ± 5.6K | 94.6K | 62.8K | 1.71M (0.87–3.05M) | 71K / 155K |
+
+The recommended plan, account by account (k / m / X = reward-to-risk, stop in hourly standard deviations, funded cycle target as a share of the account; EV per month from fresh paths not used to choose the setting):
+
+| Programme | Market | Accounts | k / m / X | EV/month each | EV/month |
+|---|---|---|---|---:|---:|
+| FTMO 2-Step | Nasdaq | 4 × 100K | 20 / 0.5 / 30% | 5,463 | 21,852 |
+| FundingPips 2-Step Flex (85%), single trades capped at 55% of the phase target | USDJPY | 4 × 100K | 20 / 0.5 / 25% | 5,716 | 22,866 |
+| The5ers High Stakes Classic | Nasdaq | 1 × 100K | 20 / 0.5 / 25% | 4,775 | 4,775 |
+| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 100K + 50K + 25K + 10K + 5K | 12 / 1 / 30% | 4,046 (100K) | 7,096 |
+| FundedNext Stellar 2-Step | EURUSD | 1 × 200K | 20 / 1 / 25% | 7,679 | 7,679 |
+| Fintokei ProTrader | Nasdaq | 5 × 100K | 12 / 0.5 / 25% | 4,072 | 20,361 |
+| Hola Prime 2-Step Prime | gold | 2 × 100K | 10 / 1 / 20% | 4,578 | 9,156 |
+| Alpha Capital Pro 10% | Nasdaq | 1 × 200K | 30 / 0.5 / 30% | 12,757 | 12,757 |
+| FunderPro Classic | Nasdaq | 1 × 200K | 30 / 0.35 / 30% | 15,903 | 15,903 |
+| GFT 2-Step Standard | Nasdaq | 1 × 200K | 8 / 0.75 / 8% | 7,591 | 7,591 |
+| BrightFunded 2-Step Classic | Nasdaq | 1 × 100K | 12 / 0.5 / 25% | 4,183 | 4,183 |
+| Blue Guardian 2-Step | Nasdaq | 1 × 100K | 8 / 1 / 18% | 2,810 | 2,810 |
+| Maven 2-Step | Nasdaq | 1 × 100K | 7 / 1 / 8% | 2,341 | 2,341 |
+| **Total** | | **28 accounts** | | | **139,369** |
+
+What changed from version 5:
+
+- **Every setting optimised.** Each programme was searched over reward-to-risk, stop, funded cycle target and market: 4,950 grid settings, then about 1,300 refined ones. The optimum moves toward *bold play* (Dubins–Savage): a large k, so that one win reaches the target, the tightest stop the leverage allows, and cycles of 20–30%. The plan stops at a stop of 0.35, a cycle of 30% and k = 30, for reasons the model cannot price: spread widening against tight stops, and the review risk of very large single payouts.
+- **More allocation.** FXIFY allows one active account of each size, so the plan adds 50K, 25K, 10K and 5K Classic accounts. Fintokei's €500,000 limit fits a fifth 100K account. FundedNext moves to one 200K account, which is cheaper per dollar.
+- **An exact check.** `model/analytic_v6.py` solves the trade-level Markov chain exactly for any k. The pass probability is exactly (B − expected total cost)/(A + B). It agrees with the engine on every programme to within what the chain leaves out (financing, gaps, calendar).
+- **An engine bias found and fixed.** When a stop and a target were both touched within one hourly bar, the engine decided the order with the trade's overall fair chance. For narrow brackets this gave about +0.03 R per trade. The engine now replays the bar's five-minute sub-steps; everything was re-run on the corrected engine.
+- **Robust choices.** FundedNext on EURUSD uses a stop of 1.0 instead of the searched 0.75. That costs about $600 a month at the assumed cost but keeps the account valuable if costs are twice the assumption.
+
+## Version 5 results (superseded by version 6)
+
 
 ### Firm reliability changes the plan
 
@@ -104,10 +146,10 @@ Version 4 per-person results, every payout assumed paid. Every account is run at
 
 - **No skill.** Trades are fair bets. The value comes from the fee-versus-payout structure, not from predicting prices.
 - **The firm pays as its rules say.** If it might not, see the refusal scenarios above. The value lost depends on how many accounts sit at each firm.
-- **Trading costs as modelled.** At 1.5× the costs, value falls 4–11%; at 2×, 12–19%.
-- **Rules as published in October 2026.** Firms change their rules often. Check the firm-by-firm sheet (chapter 27) against each firm's current terms before every purchase.
+- **Trading costs as modelled.** At 1.5× the costs the recommended plan is worth about 7% less, and at 2× about 17% less (version 6, chapter 31). The currency accounts are the most sensitive, so measure real costs in the first week.
+- **Rules as published in October 2026.** Firms change their rules often. Check each programme's rule table (version 6, Part II) against the firm's current terms before every purchase.
 - **One person, their own accounts, their own money.** Accounts are copied only where a firm allows copying between your own accounts. There is no hedging across accounts and no account in anyone else's name.
-- **Large drawdowns are normal.** In the recommended version, the cash balance typically falls about 43K before it recovers; in 1 case in 20 it falls about 105K.
+- **Large drawdowns are normal.** In the recommended version 6 plan, the cash balance typically falls about 59K (fees paid before payouts arrive) before it recovers; in 1 case in 20 it falls about 136K.
 - **Private use.** If several people traded the same written rules, the result would be prohibited group trading at several firms.
 - **This is research, not financial advice.**
 
@@ -137,10 +179,27 @@ The main pipeline is in `model/`:
 | `build_doc4.py`, `build_doc5.py` | `prop_firm_option_v5.html`, PDF | Build the document (needs Playwright with Chromium); version 5 runs the version 4 build and adds Part 3 |
 | `fetch_data.py` | `*_1h.csv` | Downloads the hourly price history (not included; see below) |
 | `verify.py` | | Independent check: a pure coin-flip FTMO attempt, written from scratch |
+| `optimize_v6.py` | `opt_v6_grid.jsonl`, `opt_v6_refine.jsonl`, `opt_v6_futures.jsonl`, `opt_v6_final.json` | Version 6 search: grid, refine, edges, futures, bold play, the final run inside the plan's limits, the robust re-choice |
+| `analytic_v6.py` | | Brownian formulas and the exact trade-level chain (pass probability, trades, expected cost, funded cash), written independently of the engine |
+| `verify_v6.py`, `extra_v6.py`, `sens_v6.py`, `timing_v6.py` | `verify_v6.json`, `extra_v6.json`, `sens_v6.json`, `timing_v6.json` | Checks against theory; zero-cost and robustness checks; cost, risk, k, direction and financing sensitivities; time per attempt |
+| `lockstep_portfolio_v6.py` | `lockstep_v6.json` | Version 6 portfolios, 400 simulated first years each, with the refusal scenarios |
+| `build_math_v6.py`, `doc6_*.py`, `math_v6_*.html`, `katex/` | `prop_firm_math_v6.html`, PDF | Build the version 6 document; formulas typeset with KaTeX (MIT licence, `katex/LICENSE`) |
+| `tie_v0/` | | Results of the first version 6 run, before the same-bar tie correction, kept for the record |
 
 The other scripts are earlier versions and checks, kept for the record.
 
-## Reproducing
+## Reproducing version 6
+
+```bash
+cd model
+./rerun_v6.sh                    # grid, refine, edges, futures, bold play, final run (about 25 minutes on 4 cores)
+python3 extra_v6.py              # cost robustness of the currency accounts; zero-cost checks
+python3 optimize_v6.py robust    # FundedNext EURUSD at the robust stop, on fresh paths 33-36
+./downstream_v6.sh               # sensitivities, timing, verification against the exact chain, portfolios
+python3 build_math_v6.py         # writes prop_firm_math_v6.html and The_Prop_Firm_Option_v6_Mathematics.pdf
+```
+
+## Reproducing version 5
 
 ```bash
 pip install numpy pandas yfinance playwright pypdf

@@ -69,6 +69,17 @@ def cfd_firms(size=100_000):
         ph["profit_days"] = (3, 0.005 * size)
     F["FundingPips 2-Step Flex (85%) v5"] = V3._cfd_2step(size, 499 * K, 0.10, 0.06, dll=0.04, dd=0.12, min_days=1,
         split=0.85, refund=False)
+    # FundingPips Profit Concentration Policy (evaluations bought from 27 June 2026, accounts of $25K and more): if one
+    # trade idea makes more than 60% of a phase's target the phase still passes, but the funded account then needs four
+    # profitable days (+0.5%) before every reward request, for good. Two ways to live with it:
+    #   "cap"   - cap every evaluation trade's win at 55% of the phase target, so it never triggers;
+    #   "4days" - let it trigger and meet four profitable days per reward cycle on the funded account.
+    f = V3._cfd_2step(size, 499 * K, 0.10, 0.06, dll=0.04, dd=0.12, min_days=1, split=0.85, refund=False)
+    for ph in f["phases"]:
+        ph["max_win"] = 0.55 * ph["target"]          # every trade idea makes at most 55% of the phase target
+    F["FundingPips 2-Step Flex (85%) v6 cap"] = f
+    F["FundingPips 2-Step Flex (85%) v6 4days"] = V3._cfd_2step(size, 499 * K, 0.10, 0.06, dll=0.04, dd=0.12, min_days=1,
+        split=0.85, refund=False, funded_extra=dict(profit_days=(4, 0.005 * size)))
     # FundedNext Stellar 2-Step, corrected in version 5 (help centre, updated 2 October 2026): for accounts bought or reset
     # from 12 January 2026 the 15% challenge reward is tied to Scale-Up eligibility, so it is not paid with the first
     # reward; rewards on the default 21-day cycle. Fee refunded with the first reward; 80%.
@@ -77,7 +88,7 @@ def cfd_firms(size=100_000):
     # GFT 2-Step Standard: 8% / 5% (not 10% / 5%), 5% daily, 10% static, 3 trading days per phase, 80% every 14 days,
     # first payout needs 3% profit, first two payouts capped at 6%, $524, fee refundable; funded $3,000-a-day cap kept.
     F["GFT 2-Step Standard v5"] = V3._cfd_2step(size, 524 * K, 0.08, 0.05, min_days=3, flat_weekend=True,
-        funded_extra=dict(day_profit_cap=3_000 * K, caps=[0.06 * size, 0.06 * size] + [1e12] * 98, min_payout=0.03 * size))
+        funded_extra=dict(day_profit_cap=3_000 * K, caps=[min(0.06 * size, 10_000)] * 2 + [1e12] * 98, min_payout=0.03 * size))
     # FunderPro Classic: 10% / 5% (not 10% / 8%), 5% daily, 10% static, bi-weekly 80%, fee refunded with the first reward, $431.
     F["FunderPro Classic v5"] = V3._cfd_2step(size, 431 * K, 0.10, 0.05, min_days=0)
     # BrightFunded 2-Step Classic: the fee comes back only with a paid refund add-on; without it, no refund.
@@ -100,3 +111,18 @@ def cfd_firms(size=100_000):
 
 def futures_firms():
     return V3.futures_firms()
+
+def rules_for(prog, size=100_000, kind="cfd", fee=None, override=None):
+    """A programme's rule set at a given size, with an exact fee where the stored one would be scaled linearly
+    (the refund follows the fee actually paid) and safety margins scaled to the account."""
+    import copy
+    F = cfd_firms(size)[prog] if kind == "cfd" else futures_firms()[prog]
+    if fee is None and not override and size == 100_000:
+        return F
+    F = copy.deepcopy(F)
+    if kind == "cfd": F["buffer_scale"] = size / 100_000
+    if fee is not None:
+        F["fee"] = fee
+        if F["funded"].get("refund"): F["funded"]["refund"] = fee
+    F.update(override or {})
+    return F

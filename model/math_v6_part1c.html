@@ -1,0 +1,75 @@
+<!-- 7 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 7</span>
+  <h1>What a funded account pays</h1>
+  <p>On the funded account the plan trades each <em>payout cycle</em> to a profit target \(X\) above the starting balance, stops, requests the payout on the first allowed day, and withdraws every dollar above the start. The balance is back at the start, the floor (static) is still \(D\) below it, and the next cycle begins. The account ends the first time the balance touches the floor. This chapter computes what that pays.</p>
+
+  <h2>7.1 The withdrawal identity</h2>
+  <p>Let \(Y_t\) be the balance above the start plus everything withdrawn so far (before the split). A withdrawal moves money from the first term to the second and leaves \(Y\) unchanged; a trade changes \(Y\) by its result. So \(Y\) behaves exactly like the trading result itself: a fair game before costs. The account ends when the balance is at \(-D\), at which time \(Y_\tau = -D + W\), where \(W\) is the total withdrawn. Optional stopping on \(Y\), allowing for the cost \(c\) of each of the \(N_f\) funded trades (Wald):</p>
+  $$\mathbb{E}[Y_\tau] = -c\,\mathbb{E}[N_f] \quad\Rightarrow\quad \mathbb{E}[W] = D - c\,\mathbb{E}[N_f].$$
+  <div class="formula"><span class="lbl">The withdrawal identity</span>
+  $$\mathbb{E}[\text{cash from a funded account}] = \alpha\left(D - c\,\mathbb{E}[N_f]\right) + R\cdot\Pr(\text{refund reached}).$$
+  </div>
+  <p>Before costs, a funded account pays out on average its whole allowance times the split, whatever the cycle target, the stop, \(k\), the payout calendar or the trading rule. A $100,000 account with a $10,000 static allowance and an 80% split is worth $8,000 plus the refund term, less the cost of the trades it takes to get there. The identity needs only that profits are eventually withdrawn and that the account can end only at its floor; it holds with best-day rules, payout caps and minimum days, which change time, never the average.</p>
+
+  <h2>7.2 The same result, cycle by cycle</h2>
+  <p>The identity can also be built from the parts, which gives the time and the number of payouts. Each cycle is a fresh gambler's ruin from the start: reach \(+X\) before \(-D\). Its success chance is \(q\) from 5.2 with \(A = X\), \(B = D\). Cycles succeed independently until the first failure, so the number of paid cycles \(K\) satisfies \(\Pr(K \ge j) = q^j\):</p>
+  $$\mathbb{E}[K] = \sum_{j\ge1} q^j = \frac{q}{1-q}.$$
+  <p>With no cost \(q = D/(X+D)\), so \(\mathbb{E}[K] = D/X\) and the expected total withdrawn is \(X\cdot D/X = D\): the identity again. With a first cycle \(X_1\) different from later ones \(X\) (first-payout rules) and success chances \(q_1, q\):</p>
+  <div class="formula"><span class="lbl">Funded cash, cycle form</span>
+  $$\mathbb{E}[C] = \alpha\left(X_1 q_1 + X\,\frac{q_1\,q}{1-q}\right) + R\cdot q_1 q^{\,r-1},$$
+  </div>
+  <p>where the refund comes with the \(r\)-th payout (\(r=1\) at most firms; FundingPips Standard and Blue Guardian 4, Maven 3). Where a refund is paid in \(r\) equal parts with the first \(r\) payouts (Hola Prime), the last term is \(\frac{R}{r}\sum_{j=1}^{r} q_1 q^{\,j-1}\).</p>
+
+  <h2>7.3 What the cycle target changes</h2>
+  <p>Before costs, nothing about the average. With costs, the expected number of funded trades is, by the zero-cost formula of 5.3 summed over the expected \(1/(1-q) = (X+D)/X\) cycles,</p>
+  $$\mathbb{E}[N_f] \approx \frac{X\,D}{v}\cdot\frac{X+D}{X} = \frac{D\,(X+D)}{v} = \frac{D\,(X+D)}{l^2 k}.$$
+  <p>A larger cycle target means more trades over the account's life, more cost, and more time between payouts; a smaller one means more payout requests, each followed by waiting for the payout date. The best \(X\) balances the two, and depends on the firm's payout calendar (Chapter 9 finds it by search). It also changes how many payout requests a firm sees, which matters if payouts can be refused (Chapter [[CH_REF]]).</p>
+
+  <h2>7.4 Rules that change only time</h2>
+  <ul>
+    <li><strong>Best-day (consistency) rules.</strong> If no day may exceed a share \(\beta\) of a payout's profit, the plan caps each day's take-profit at \(\beta X\) less what the day has already made, so a cycle needs at least \(1/\beta\) profitable days. FXIFY Classic (\(\beta = 25\%\)) needs four, Hola Prime (40%) three.</li>
+    <li><strong>Profitable days per cycle</strong> (FundingPips 95%, Hola Prime): the daily profit target of 6.4, applied per cycle.</li>
+    <li><strong>Payout calendars.</strong> The first payout is allowed 14 to 30 days after the account opens, then every 10 to 30 days. A cycle that reaches its target early waits, flat, for the date.</li>
+    <li><strong>Payout caps</strong> (GFT: the first two payouts at most 6% of the account): the cycle target is set to the cap.</li>
+    <li><strong>Daily profit caps</strong> (GFT funded $3,000 a day): the take-profit is capped at what is left of the day's cap.</li>
+  </ul>
+
+  <h2>7.5 The plan's funded account, worked through</h2>
+  [[FUNDED_EXAMPLE]]
+</section>
+
+<!-- 8 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 8</span>
+  <h1>Time, and value per month</h1>
+
+  <h2>8.1 How long one trade lasts</h2>
+  <p>For a driftless price with variance \(\sigma^2\) per hour, the second martingale of 2.6 is \(Z_t^2 - \sigma^2 t\), where \(Z\) is the log-price move since entry. Stopping when \(Z\) first touches \(+d_t\) (target) or \(-d_s\) (stop), with \(\Pr(\text{target}) = d_s/(d_s+d_t)\):</p>
+  $$\sigma^2\,\mathbb{E}[\tau] = \mathbb{E}[Z_\tau^2] = \frac{d_s}{d_s+d_t}\,d_t^2 + \frac{d_t}{d_s+d_t}\,d_s^2 = d_s\,d_t .$$
+  <div class="formula"><span class="lbl">Expected duration of a bracket (hours of open market)</span>
+  $$\mathbb{E}[\tau] = \frac{d_s\,d_t}{\sigma^2} = \frac{(m\sigma)\cdot m\sigma(k + c/l)}{\sigma^2} = m^2\,(k + c/l).$$
+  </div>
+  <p>A 1 : 6 bracket with its stop at half an hourly move lasts on average \(0.25\times 6.03 \approx 1.5\) hours of open market; at 0.75 hourly moves, 3.4 hours. Most trades are short (the stop is close) and a few are long (the wins).</p>
+
+  <h2>8.2 How long a phase lasts</h2>
+  <p>Multiply the number of trades (5.3) by the duration of each (8.1). In the zero-cost limit:</p>
+  $$\mathbb{E}[T_{\text{phase}}] \approx \frac{A\,B}{l^2\,k}\cdot m^2 k = \left(\frac{A}{l}\right)\!\left(\frac{B}{l}\right) m^2 \text{ hours}.$$
+  <p>The \(k\) cancels: bigger wins come more rarely and take longer, exactly offsetting. What sets the speed is \(m/l\), i.e. the size of the position: the account's balance moves like a Brownian motion whose variance per hour is \((N\sigma)^2\), and the time to cover distances \(A\) and \(B\) is \(AB/(N\sigma)^2\). For FTMO phase 1 at \(m = 0.5\) this is \(6.67^2\times 0.25 \approx 11\) hours of open market. In practice the minimum trading days, the trading window, weekends, news and reviews dominate: phase 1 takes about four calendar days at FTMO because the rules require four trading days, not because the market is slow.</p>
+  <p>This is why the plan's risk per trade matters so much: time scales like \(1/l^2\). Doubling the risk would quarter the market time. The plan keeps 1.5% because that is what the firms' rules and stated guidance allow (Chapter 10), and gets its speed from a short stop instead, which raises the notional at the same risk.</p>
+
+  <h2>8.3 Value per month: the renewal&ndash;reward theorem</h2>
+  <p>The plan runs <em>slots</em>: one account position at a firm, refilled with a new evaluation the moment an attempt ends (a failed phase or a lost funded account). Over a long run a slot completes many attempts, each with value \(V_i\) and duration \(T_i\), independent and identically distributed. The average value per unit time after \(n\) attempts is \(\sum V_i / \sum T_i\), and by the law of large numbers</p>
+  <div class="formula"><span class="lbl">Renewal&ndash;reward theorem</span>
+  $$\lim_{n\to\infty}\frac{\sum_{i=1}^n V_i}{\sum_{i=1}^n T_i} = \frac{\mathbb{E}[V]}{\mathbb{E}[T]}, \qquad \text{EV per month} = 30.44\times\frac{\mathbb{E}[V]}{\mathbb{E}[T\ \text{in days}]}.$$
+  </div>
+  <p>The ratio of expectations, not the expectation of ratios: an attempt that lasts five months and one that lasts five days are weighted by their length. This is the objective the plan maximises for every programme.</p>
+
+  <h2>8.4 How precise a simulated figure is</h2>
+  <p>With \(n\) simulated attempts, the estimate \(\hat r = \bar V/\bar T\) has, by the delta method, standard error</p>
+  $$\operatorname{se}(\hat r) \approx \frac{\operatorname{sd}(V_i - \hat r\,T_i)}{\sqrt{n}\;\bar T}.$$
+  <p>Every "&plusmn;" in this document is \(1.96\) of these standard errors (a 95% interval), converted to dollars per month. With 24,000 attempts it is typically &plusmn;$100&ndash;$200 a month per account.</p>
+
+  <h2>8.5 The plan's attempt, timed</h2>
+  [[TIME_EXAMPLE]]
+</section>

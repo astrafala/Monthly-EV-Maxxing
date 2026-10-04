@@ -1,0 +1,56 @@
+== Tier A: 15 accounts, lives=400 conflicts=0
+   mean monthly cash: [-4955.0, 58250.0, 74091.0, 72206.0, 70082.0, 75899.0, 68891.0, 70330.0, 68240.0, 72031.0, 73979.0, 62084.0]
+   EV/month (12-mo avg) 63427 ± 2734, months 3-12 avg 70783
+   refusal tiered: 52223/month
+   refusal harsh: 39868/month
+   P(ahead) 1/2/3/6/12 m: [0.24, 0.62, 0.82, 0.95, 1.0]
+   12m cash p05/p50/p95: [297194.0, 714850.0, 1400570.0]
+   trough p50/p05: [-36112.0, -93049.0]
+== Tier A + B: 22 accounts, lives=400 conflicts=0
+   mean monthly cash: [-7004.0, 91273.0, 108571.0, 106179.0, 102965.0, 110861.0, 107703.0, 109752.0, 106588.0, 109240.0, 109908.0, 90685.0]
+   EV/month (12-mo avg) 95560 ± 3735, months 3-12 avg 106245
+   refusal tiered: 70847/month
+   refusal harsh: 52012/month
+   P(ahead) 1/2/3/6/12 m: [0.27, 0.69, 0.86, 0.97, 1.0]
+   12m cash p05/p50/p95: [471249.0, 1107338.0, 1966711.0]
+   trough p50/p05: [-46619.0, -110946.0]
+== Recommended: A + B + one account at each tier-D firm: 28 accounts, lives=400 conflicts=0
+   mean monthly cash: [-6181.0, 141322.0, 171133.0, 150901.0, 149602.0, 156353.0, 153367.0, 155534.0, 148325.0, 152356.0, 157300.0, 130932.0]
+   EV/month (12-mo avg) 138412 ± 4867, months 3-12 avg 152580
+   refusal tiered: 93711/month
+   refusal harsh: 64499/month
+   P(ahead) 1/2/3/6/12 m: [0.38, 0.73, 0.91, 0.99, 1.0]
+   12m cash p05/p50/p95: [858837.0, 1552019.0, 2745202.0]
+   trough p50/p05: [-59276.0, -136015.0]
+== Recommended, FTMO as 2 x 200K: 26 accounts, lives=400 conflicts=0
+   mean monthly cash: [-6186.0, 141046.0, 170602.0, 150602.0, 148516.0, 157152.0, 153411.0, 156700.0, 147674.0, 153322.0, 157898.0, 130602.0]
+   EV/month (12-mo avg) 138445 ± 4850, months 3-12 avg 152648
+   refusal tiered: 95853/month
+   refusal harsh: 68340/month
+   P(ahead) 1/2/3/6/12 m: [0.38, 0.73, 0.91, 0.99, 1.0]
+   12m cash p05/p50/p95: [844137.0, 1548773.0, 2750231.0]
+   trough p50/p05: [-59381.0, -136015.0]
+== All firms at full caps: 35 accounts, lives=400 conflicts=0
+   mean monthly cash: [-15058.0, 168221.0, 204211.0, 179457.0, 178791.0, 184734.0, 178455.0, 184768.0, 174510.0, 180773.0, 184011.0, 155937.0]
+   EV/month (12-mo avg) 163234 ± 5965, months 3-12 avg 180565
+   refusal tiered: 96684/month
+   refusal harsh: 62967/month
+   P(ahead) 1/2/3/6/12 m: [0.34, 0.71, 0.9, 0.99, 1.0]
+   12m cash p05/p50/p95: [926528.0, 1846874.0, 3211693.0]
+   trough p50/p05: [-74793.0, -175933.0]
+== All firms at full caps + The5ers small accounts: 45 accounts, lives=400 conflicts=0
+   mean monthly cash: [-14922.0, 172723.0, 208976.0, 180677.0, 189625.0, 196274.0, 189829.0, 195336.0, 177724.0, 188325.0, 189642.0, 161533.0]
+   EV/month (12-mo avg) 169645 ± 5872, months 3-12 avg 187794
+   refusal tiered: 98766/month
+   refusal harsh: 63264/month
+   P(ahead) 1/2/3/6/12 m: [0.34, 0.71, 0.89, 0.99, 1.0]
+   12m cash p05/p50/p95: [1035617.0, 1933346.0, 3420906.0]
+   trough p50/p05: [-75575.0, -178542.0]
+== Recommended + futures (Topstep 5, Apex 20): 53 accounts, lives=400 conflicts=0
+   mean monthly cash: [-10177.0, 153981.0, 184234.0, 167270.0, 160887.0, 176285.0, 169435.0, 169671.0, 168975.0, 165804.0, 169775.0, 144444.0]
+   EV/month (12-mo avg) 151715 ± 5631, months 3-12 avg 167678
+   refusal tiered: 94644/month
+   refusal harsh: 62850/month
+   P(ahead) 1/2/3/6/12 m: [0.34, 0.73, 0.91, 0.99, 1.0]
+   12m cash p05/p50/p95: [867693.0, 1707147.0, 3051054.0]
+   trough p50/p05: [-70688.0, -155078.0]

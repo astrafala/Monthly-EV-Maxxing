@@ -32,7 +32,23 @@ def market(instr, data):
                           sig=d["sig"], cost=d["cost"], fin=d["fin"],
                           fri_late=((wd == 4) & (hr >= 19)).tolist(), fri_close=((wd == 4) & (hr == 20)).tolist(),
                           T=len(idx), h0=int(hr[0]), hour=hr.tolist())
+        if "sH" in d: _DATA[key].update(sH=d["sH"], sL=d["sL"], sub=d["sub"])
     return _DATA[key]
+
+def first_touch(M, i, d, sl, tp, p_fair, rng):
+    """stop and target both inside hourly bar i: replay the bar's sub-steps in time order (synthetic paths);
+    only if both fall inside the same sub-step, or no sub-steps exist (real data), use the fair chance p_fair"""
+    sH = M.get("sH")
+    if sH is not None:
+        sL = M["sL"]; n = M["sub"]; b = i * n
+        for j in range(b, b + n):
+            h = float(sH[j]); lo = float(sL[j])
+            if d > 0: hs = lo <= sl; ht = h >= tp
+            else:     hs = h >= sl; ht = lo <= tp
+            if hs and ht: break
+            if ht: return True
+            if hs: return False
+    return rng.random() < p_fair
 
 class PathTrader:
     def __init__(self, instr, data, m, L, k, rng, cost_mult=1.0, dir_rule="random", flat_daily=None):
@@ -86,7 +102,7 @@ class PathTrader:
                 if d > 0: hs = M["L"][i] <= sl; ht = M["H"][i] >= tp
                 else:     hs = M["H"][i] >= sl; ht = M["L"][i] <= tp
                 if hs or ht:
-                    won = ht if not (hs and ht) else (self.rng.random() < l / (l + wg))
+                    won = ht if not (hs and ht) else first_touch(M, i, d, sl, tp, l / (l + wg), self.rng)
                     exit_px = tp if won else sl; break
                 last = M["C"][i]
                 if flat_weekend and M["fri_close"][i]:

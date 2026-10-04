@@ -164,6 +164,7 @@ def run_stage(st, tr, rng, firm, clock, eval_phase=True, fund=None):
             w = min(tr.k * l, room_cap)                    # profitable days still missing: aim at today's target
         else:
             w = min(tr.k * l, target - x, room_cap if cap_day is not None else 1e18)
+        if st.get("max_win"): w = min(w, st["max_win"])      # per-trade cap on a win (e.g. a profit-concentration rule)
         w = max(w, 1.0)
         pnl, h = tr.trade(l, w, clock, firm.get("flat_weekend_eval", False))
         x += pnl; clock += h; day_pnl += pnl

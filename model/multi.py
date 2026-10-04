@@ -87,6 +87,10 @@ def load_synth(names, rho, years=12, sub=12, seed=11):
             closed = idx.weekday.values >= 5
             O[closed] = np.nan; H[closed] = np.nan; L[closed] = np.nan; C[closed] = np.nan
         data[nm] = _finish(idx, nm, O, H, L, C, sig)
+        # the sub-step extremes, in time order inside each hour: used to decide which of a stop and a target that
+        # are both touched within one hourly bar was touched first (version 6; before, a fair coin decided)
+        data[nm]["sH"] = (100.0 * np.exp(hi)).astype(np.float32); data[nm]["sL"] = (100.0 * np.exp(lo)).astype(np.float32)
+        data[nm]["sub"] = sub
     day = pd.factorize(idx.tz_convert("Europe/Prague").normalize())[0]
     return idx, data, day
 

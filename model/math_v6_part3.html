@@ -1,0 +1,67 @@
+<!-- ================================================================ PART III -->
+<section class="part">
+  <span class="num">Part III</span>
+  <h1>One person, many accounts</h1>
+  <p>Part II valued one account at a time. This part adds them up for one person: how much each firm allows, how to fill it (four 100K accounts or two 200K), how accounts at different firms move together, what happens if payouts can be refused, how much cash it takes, and the routine that runs it.</p>
+</section>
+
+<!-- 12 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter [[CH_ALLOC]]</span>
+  <h1>The maximum allocation per person</h1>
+  <p>Every firm limits how much simulated capital one person may hold, and many limit how many of their accounts may carry the same trades. Those two rules, firm by firm, decide how many accounts the plan can run.</p>
+  <h2>[[CH_ALLOC]].1 Firm by firm</h2>
+  [[ALLOC_TABLE]]
+  <h2>[[CH_ALLOC]].2 Four 100K accounts or two 200K?</h2>
+  <p>At a firm whose cap is \(\$400{,}000\), the cap can be filled with four 100K accounts, two 200K accounts, or a mix. Scale every dollar amount of a programme by a factor \(\lambda\) (account, targets, limits, risk, cycle target) and every formula of Part I scales with it: the pass probabilities (ratios of distances) are unchanged, the funded cash scales by \(\lambda\), the cost per trade scales by \(\lambda\) (it is a fraction of the notional, which scales by \(\lambda\)), and the time is unchanged (it depends on ratios of distances and on \(m\)). Only the fee may not scale. Hence</p>
+  <div class="formula"><span class="lbl">Scaling an account</span>
+  $$\mathbb{E}[V](\lambda S) = \lambda\left(\Pr(\text{pass})\,\mathbb{E}[C](S)\right) - F(\lambda S), \qquad \mathbb{E}[T](\lambda S) = \mathbb{E}[T](S).$$
+  </div>
+  <p>Two 200K accounts and four 100K accounts have the same value per month if and only if the 200K fee is exactly twice the 100K fee. Where it is cheaper per dollar, 200K is better by the saving times the attempts per month; where dearer, 100K is better. Beyond the fee, five differences decide:</p>
+  <ol>
+    <li><strong>Rules by size.</strong> Some programmes change at 200K (Hola Prime's daily and maximum loss fall to 4% and 8%) or stop at 100K (FundingPips Flex, The5ers High Stakes, FXIFY Classic, Maven).</li>
+    <li><strong>One account allowed.</strong> Where the copying rules allow only one account (FunderPro, GFT, FundedNext's independent account), the largest size the cap allows is simply worth more: twice the value per month at 200K.</li>
+    <li><strong>Payout requests.</strong> Two 200K accounts make half as many payout requests for the same money. If refusals are a risk per request (Chapter [[CH_REF]]), fewer, larger requests lose the firm less often.</li>
+    <li><strong>Spread of outcomes.</strong> Four accounts started at different times are not perfectly correlated, so four 100K accounts give a smoother cash path than two 200K accounts with the same mean.</li>
+    <li><strong>Work and lot size.</strong> Fewer accounts mean fewer orders; larger accounts round lot sizes less.</li>
+  </ol>
+  [[SIZE_TABLE]]
+  [[SIZE_TEXT]]
+</section>
+
+<!-- 13 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter [[CH_LOCK]]</span>
+  <h1>Running every account at once</h1>
+  <h2>[[CH_LOCK]].1 Why the values add</h2>
+  <p>By linearity (2.1), the expected value per month of a set of slots is the sum of their values, however the accounts are correlated. What correlation changes is the spread: in a bad week every Nasdaq account loses together.</p>
+  <h2>[[CH_LOCK]].2 One direction per market</h2>
+  <p>No two of your accounts ever hold opposite positions on the same market at the same time. Most firms call that hedging across accounts, and FTMO forbids it across firms as well. So the plan uses one direction rule per market group: when a new trade opens and another of your accounts already holds that market, the new trade takes the same direction; when none does, the rule decides (the sign of the last five hourly closes). This rule has no edge (version 4 tested it on eight independent paths: +$280 &plusmn; $529 a month against random). Its only job is to keep every account on the same side.</p>
+  <h2>[[CH_LOCK]].3 The lockstep simulation</h2>
+  <p>The portfolio results come from an engine that runs every account of one person on one shared price path and one calendar (lockstep.py). Trades are processed in the order of their entry time, so the shared-direction rule is enforced exactly, every firm's rules are applied to its own accounts, and every fee, phase result and payout is written to a dated ledger. Each portfolio is run for 400 simulated years: 50 independent first years of the plan on each of 8 independent sets of paths (Nasdaq paths 21&ndash;28 with their own gold, yen and euro paths). The real history is not used here, because it has no independent gold, yen and euro histories aligned with the Nasdaq; each programme's real-history check is in its own chapter. In [[LIVES]] simulated years, no two accounts ever held opposite positions.</p>
+  <h2>[[CH_LOCK]].4 The portfolios</h2>
+  [[PORTF_TABLE]]
+  [[PORTF_TEXT]]
+  <h2>[[CH_LOCK]].5 Month by month</h2>
+  [[MONTH_FIG]]
+  [[MONTH_TABLE]]
+</section>
+
+<!-- 14 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter [[CH_REF]]</span>
+  <h1>If payouts can be refused</h1>
+  <p>Every firm keeps the right to refuse a payout it judges to break its rules, so each payout is, in the end, the firm's decision. Nobody publishes how often it happens. This chapter turns that uncertainty into numbers.</p>
+  <h2>[[CH_REF]].1 A model</h2>
+  <p>Suppose each payout request at a firm is refused with probability \(\rho\), independently, and that a refusal ends your use of that firm (in practice it usually comes with the account closed). The number of paid requests before the first refusal is geometric:</p>
+  $$\Pr(\text{first refusal at request } j) = (1-\rho)^{j-1}\rho, \qquad \mathbb{E}[\text{paid requests}] = \frac{1-\rho}{\rho}.$$
+  <p>If a firm's accounts make \(r\) requests a month, the firm is expected to last \(1/(\rho r)\) months, and over a horizon of \(H\) months the fraction of its all-paid value you keep is about</p>
+  $$\frac{1 - e^{-\rho r H}}{\rho r H}.$$
+  <p>Two consequences follow. A firm with many accounts makes many requests and is lost sooner, so stacking accounts at one firm is worth less than it looks; and spreading the same money over more firms keeps more of it. [[REF_EXAMPLE]]</p>
+  <h2>[[CH_REF]].2 Tiers and scenarios</h2>
+  [[TIER_TABLE]]
+  <p>The refusal chances are judgements, not measurements. The tiers come from public evidence: in August and September 2026 TrustPilot withheld the ratings of six firms for fake reviews (checked on their pages on 4 October 2026), and PropFirmMap grades them D. Two scenarios are used: <em>tiered</em> (2% / 5% / 15% for tiers A / B / D) and <em>harsh</em> (5% / 10% / 30%).</p>
+  <h2>[[CH_REF]].3 What it does to each portfolio</h2>
+  [[REFUSAL_TABLE]]
+  [[REFUSAL_TEXT]]
+</section>

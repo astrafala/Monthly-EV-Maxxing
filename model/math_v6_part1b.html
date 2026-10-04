@@ -1,0 +1,149 @@
+<!-- 4 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 4</span>
+  <h1>The bracket trade</h1>
+  <p>Every trade in the plan is a <em>bracket</em>: one position with a stop-loss and a take-profit attached the moment it opens, never moved. This chapter derives everything about one such trade.</p>
+
+  <h2>4.1 Set-up</h2>
+  <p>Open a long position at price \(e\) with notional size \(N\) dollars (a short position is the mirror image). Place the stop a fraction \(s\) below the entry and the target a fraction \(u\) above:</p>
+  $$\text{stop} = e(1-s), \qquad \text{target} = e(1+u).$$
+  <p>The plan fixes three things and derives the rest:</p>
+  <ul>
+    <li>the <strong>risk</strong> \(l\): what a stopped-out trade loses before costs, 1.5% of the account;</li>
+    <li>the <strong>stop distance</strong> \(s = m\sigma\): \(m\) hourly standard deviations of the market;</li>
+    <li>the <strong>reward-to-risk ratio</strong> \(k\): a winning trade nets \(w = k\,l\) <em>after</em> costs.</li>
+  </ul>
+  <p>The notional follows from the risk and the stop, and the target from the requirement that a win nets exactly \(w\) after the round-trip cost \(c\):</p>
+  <div class="formula"><span class="lbl">Position and target</span>
+  $$N = \frac{l}{s}, \qquad N u - c = w \;\Rightarrow\; u = \frac{s\,(w+c)}{l}.$$
+  </div>
+  <p>So a win pays \(+w\) and a loss costs \(-(l+c)\): the cost is paid on every trade, and the target is moved out by exactly the cost so that a win is worth what the plan intends. (Chapter 17 of version 4 found that a take-profit set without the cost turns the last "win" before a target into a small loss; this is that fix, in formula form.)</p>
+
+  <h2>4.2 The win probability</h2>
+  <p>The price is a martingale and the trade ends the first time it touches the stop or the target, a stopping time. By optional stopping (2.4), the expected exit price equals the entry price:</p>
+  $$p\cdot e(1+u) + (1-p)\cdot e(1-s) = e \;\;\Rightarrow\;\; p\,u = (1-p)\,s \;\;\Rightarrow\;\; p = \frac{s}{s+u}.$$
+  <p>Substituting \(u\):</p>
+  <div class="formula"><span class="lbl">Win probability of a zero-skill bracket</span>
+  $$p = \frac{s}{s + s(w+c)/l} = \frac{l}{l + w + c} = \frac{1}{1 + k + c/l}.$$
+  </div>
+  <p>With no cost, a 1 : 5 bracket wins one time in six. The cost makes the target slightly farther and the win slightly rarer.</p>
+
+  <h2>4.3 The mean and the variance of one trade</h2>
+  <p>The trade pays \(+w\) with probability \(p\) and \(-(l+c)\) otherwise. Its mean is</p>
+  $$\mathbb{E}[\text{pnl}] = p\,w - (1-p)(l+c) = \frac{l\,w - (w+c)(l+c)}{l+w+c} = \frac{-c\,(l+w+c)}{l+w+c} = -c .$$
+  <p>For the variance, look at the result before cost, \(Y = \text{pnl} + c\). It takes the values \(w+c\) (probability \(p\)) and \(-l\), and its mean is \(p(w+c) - (1-p)l = \frac{l(w+c) - (w+c)l}{l+w+c} = 0\). So</p>
+  $$\operatorname{Var}(\text{pnl}) = \operatorname{Var}(Y) = \mathbb{E}[Y^2] = p\,(w+c)^2 + (1-p)\,l^2 = \frac{l\,(w+c)^2 + (w+c)\,l^2}{l+w+c} = l\,(w+c).$$
+  <div class="formula"><span class="lbl">The trade's mean is minus its cost, exactly; its variance is k times the risk squared</span>
+  $$\mathbb{E}[\text{pnl}] = -c, \qquad v \equiv \operatorname{Var}(\text{pnl}) = l\,(w+c) = l^2\left(k + \tfrac{c}{l}\right).$$
+  </div>
+  <p>The variance of one trade is \(k\) times the risk squared, plus a small cost term. Larger \(k\) means fewer, bigger moves of the balance; Chapter 8 shows this leaves the <em>time</em> to a target unchanged and lowers the total cost.</p>
+
+  <h2>4.4 What a trade costs</h2>
+  <p>The round-trip cost is a fraction \(\kappa\) of the notional (spread, commission and an allowance for slippage), plus overnight financing \(\varphi\) of the notional for each daily rollover the position is held through:</p>
+  $$c = \kappa\,N + \varphi\,N\cdot(\text{rollovers}) = \frac{\kappa\,l}{m\sigma} + \dots, \qquad \frac{c}{l} \approx \frac{\kappa}{m\sigma}.$$
+  [[COST_TABLE]]
+  <p>The cost in units of risk, \(c/l = \kappa/(m\sigma)\), is the number that decides which markets are worth trading: it is the price of movement. The Nasdaq is cheap (a tight spread on a fast market); EURUSD is about three times dearer per unit of movement, which is why it gives up about a third of the value (Chapter 9).</p>
+
+  <h2>4.5 The plan's trade on the Nasdaq, worked through</h2>
+  [[TRADE_EXAMPLE]]
+
+  <h2>4.6 Four ways a simulation can flatter a trade</h2>
+  <p>Each of these was found and fixed in earlier versions; each makes a zero-skill bracket look profitable when it is not.</p>
+  <ol>
+    <li><strong>Skipping the entry bar.</strong> If stops and targets are checked only from the next hour, a move that would have stopped the trade inside the entry hour is ignored. Measured effect on a 1 : 3 bracket: +0.14 units of risk per trade, all of it fake.</li>
+    <li><strong>Checking prices too rarely.</strong> A price sampled a few times an hour misses touches in between; the stop (closer) is missed more often than the target. Effect: +0.11 R. The Brownian-bridge extremes (3.3) remove it.</li>
+    <li><strong>Ties inside one bar.</strong> When one hourly bar's range contains both the stop and the target, the bar alone does not say which came first. Version 5's engine (and the first run of this version) decided it with the overall fair chance \(l/(l+w+c)\). That chance is right for the whole trade but not for a trade <em>given</em> that both levels fell inside one hour, and for narrow brackets (a stop of 0.35 hourly moves with \(k = 2\) or 3) it gave the trade an edge of [[TIE_BEFORE]] per trade, enough to lift FundingPips' capped phase 2 from its exact zero-cost value of 66.7% to [[TIE_FP_BEFORE]]. The engine now replays the twelve five-minute sub-steps of that hour in order and takes whichever level the path reached first; only a tie inside one five-minute step falls back to the fair chance. After the fix: [[TIE_AFTER]], and FundingPips' phase 2 at zero cost [[TIE_FP_AFTER]]. Every figure in this document comes from the corrected engine. On the real history, which has only hourly bars, ties still use the fair chance.</li>
+    <li><strong>Gaps.</strong> A price that opens beyond the stop (after a weekend, say) fills at the open, not at the stop. The engine fills it at the open; the loss can then exceed \(l\), and if it breaks a daily or maximum loss limit the account fails, as it would in reality.</li>
+  </ol>
+  <p>The engine's checks against theory are in Chapter 11: a 1 : 1 bracket wins [[CHK_W1]] of the time (theory 50%), a 1 : 2 bracket [[CHK_W2]] (33.3%), and the average result of a 1 : 3 bracket is [[CHK_R3]] R (theory 0).</p>
+</section>
+
+<!-- 5 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 5</span>
+  <h1>Reaching a target before a floor</h1>
+  <p>A phase of an evaluation is passed when the balance gains \(A\) before it loses \(B\). This is the oldest problem in probability, the <em>gambler's ruin</em>. This chapter solves it exactly with and without costs, and counts the trades it takes.</p>
+
+  <h2>5.1 No costs: \(P = B/(A+B)\)</h2>
+  <p>Let \(X_n\) be the balance relative to the start after \(n\) trades, a martingale with \(X_0 = 0\), and \(\tau\) the first time it reaches \(+A\) or \(-B\). The plan sizes trades so the balance lands exactly on the target or the floor (5.5), so \(X_\tau\) is \(+A\) with probability \(P\) and \(-B\) otherwise. Optional stopping:</p>
+  $$0 = \mathbb{E}[X_\tau] = P\cdot A - (1-P)\cdot B \;\;\Rightarrow\;\; \boxed{P = \frac{B}{A+B}}.$$
+  <p>The answer depends on nothing but the two distances: not on \(k\), not on the stop, not on how many trades it takes. No way of trading changes it. This is why "skill-free" pass rates are so predictable: FTMO phase 1 is a coin flip (\(10/20 = 50\%\)), phase 2 is two in three (\(10/15\)).</p>
+
+  <h2>5.2 With costs: the exponential martingale</h2>
+  <p>With a cost \(c\) per trade the balance drifts down by \(c\) per trade and has variance \(v\) per trade (4.3). Treat it as a Brownian motion with drift \(-c\) and variance \(v\) per trade. By 2.6, \(e^{\theta X}\) is a martingale for</p>
+  $$\theta = \frac{2c}{v}.$$
+  <p>Optional stopping on it:</p>
+  $$1 = \mathbb{E}\!\left[e^{\theta X_\tau}\right] = P e^{\theta A} + (1-P)e^{-\theta B}.$$
+  <div class="formula"><span class="lbl">Pass probability with costs</span>
+  $$P = \frac{1 - e^{-\theta B}}{e^{\theta A} - e^{-\theta B}} = \frac{e^{\theta B} - 1}{e^{\theta (A+B)} - 1}, \qquad \theta = \frac{2c}{v} = \frac{2\,c/l}{l\,(k + c/l)} .$$
+  </div>
+  <p>As \(c\to 0\), \(\theta\to 0\) and \(P \to B/(A+B)\). For small \(\theta\), expanding both exponentials to second order,</p>
+  $$P \approx \frac{B}{A+B}\left(1 - \frac{\theta A}{2}\right), \qquad \frac{\theta A}{2} = \frac{c\,A}{v} \approx \frac{(c/l)\,(A/l)}{k}.$$
+  <p>The relative loss of pass probability is the cost per trade in units of risk, times the target in units of risk, divided by \(k\). Three levers reduce it: a cheaper market (smaller \(c/l\)), a wider stop (also smaller \(c/l\), but slower, Chapter 8), and a larger \(k\).</p>
+
+  <h2>5.3 How many trades: Wald's identity</h2>
+  <p>Each trade adds \(-c\) on average, so by Wald (2.5), \(\mathbb{E}[X_\tau] = -c\,\mathbb{E}[\tau]\), and \(\mathbb{E}[X_\tau] = PA - (1-P)B\):</p>
+  <div class="formula"><span class="lbl">Expected number of trades in a phase</span>
+  $$\mathbb{E}[\tau] = \frac{(1-P)\,B - P\,A}{c} \;\xrightarrow{\;c\to0\;}\; \frac{A\,B}{v} = \frac{A\,B}{l^2 k}.$$
+  </div>
+  <p>The zero-cost limit follows from the second martingale of 2.6, \(X_n^2 - n v\): \(\mathbb{E}[X_\tau^2] = v\,\mathbb{E}[\tau]\), and \(\mathbb{E}[X_\tau^2] = PA^2 + (1-P)B^2 = AB\) when \(P = B/(A+B)\). In units of risk, FTMO phase 1 (\(A = B = 6.67\,l\)) takes \(44.4/k\) trades: about 9 at \(k=5\), 7 at \(k=6\).</p>
+
+  <h2>5.4 The plan's phases, worked through</h2>
+  [[PHASE_EXAMPLE]]
+
+  <h2>5.5 Landing exactly on the target or the floor</h2>
+  <p>The formulas assume the balance ends exactly at \(+A\) or \(-B\). Two sizing rules make that true in practice:</p>
+  <ul>
+    <li><strong>Take-profit capped at what is left.</strong> When the remaining distance to the target is less than \(k\,l\), the win \(w\) is set to the remaining distance (plus cost, 4.1). Profit beyond the target would be wasted: it raises no probability and was paid for with risk.</li>
+    <li><strong>Risk capped near the floor.</strong> The risk is the smallest of 1.5% of the account, the room above the floor less 0.1% of the account, and the room left in today's loss limit less 0.2%. A stop-out can then never break a limit; only a price gap through the stop can (4.6).</li>
+  </ul>
+  <p>Both rules keep every trade a fair bracket, so the martingale arguments still apply exactly; they only change the number of trades.</p>
+
+  <h2>5.6 The exact chain, and bold play</h2>
+  <p>The formulas of 5.2 treat the balance as a Brownian motion, which is accurate when each trade is small next to the distances \(A\) and \(B\). The plan's optimised settings are not like that: with \(k = 30\) a single win is worth 45% of the account, so the take-profit is almost always cut to the distance that is left (5.5), and one win ends the phase. For such settings the balance is better described exactly, as a chain that jumps from trade to trade. At a balance \(x\) above the start (\(-B < x < A\)) the next trade has</p>
+  <div class="formula"><span class="lbl">One step of the exact chain</span>
+  $$l(x) = \min\big(L,\; x + B - \text{buffer}\big), \qquad w(x) = \min\big(k\,l(x),\; A - x,\; \text{cap}\big), \qquad c(x) = \rho\, l(x), \qquad p(x) = \frac{l}{l + w + c},$$
+  $$x \;\to\; x + w \text{ with probability } p, \qquad x \;\to\; x - l - c \text{ otherwise},$$
+  </div>
+  <p>where \(L\) is the normal risk, \(\rho = \kappa/(m\sigma)\) the cost per dollar of risk, and the cap is any limit a rule puts on one win (a best-day share, a daily profit cap, FundingPips' profit concentration). The chance \(V(x)\) of reaching \(A\) before \(-B\), the expected number of trades \(N(x)\) and the expected total cost \(K(x)\) solve</p>
+  $$V(x) = p\,V(x+w) + (1-p)\,V(x-l-c), \qquad N(x) = 1 + p\,N(x+w) + (1-p)\,N(x-l-c), \qquad K(x) = c + p\,K(x+w) + (1-p)\,K(x-l-c),$$
+  <p>with \(V = 1\) at the target, \(V = 0\) at the floor and \(N = K = 0\) at both. These are solved by iteration on a grid of 6,000 points (analytic_v6.py). Two exact facts check the solution. First, optional stopping on the balance (whose mean falls by exactly the cost of each trade) gives</p>
+  <div class="formula"><span class="lbl">Pass probability, exact, any k</span>
+  $$P\cdot A - (1-P)\cdot B = -K(0) \quad\Longrightarrow\quad P = \frac{B - \mathbb{E}[\text{total cost}]}{A + B}.$$
+  </div>
+  <p>Every dollar of expected cost lowers the pass probability by exactly \(1/(A+B)\). Second, when \(k\,L \ge A + B\) every win ends the phase, and the chain becomes a simple sequence: the \(j\)-th trade starts at \(x_j = -j\,(L + c)\) and wins the whole distance \(A - x_j\) with chance \(p_j = L/(L + A - x_j + c)\), so</p>
+  <div class="formula"><span class="lbl">Bold play, written out</span>
+  $$P = 1 - \prod_{j=0}^{n-1}\left(1 - p_j\right) = p_0 + (1-p_0)\,p_1 + (1-p_0)(1-p_1)\,p_2 + \cdots$$
+  </div>
+  <p>The last factor uses the smaller risk that fits above the floor. This is <em>bold play</em>, studied by Dubins and Savage (1965): in a game that is fair or slightly unfavourable, the strategy that maximises the chance of reaching a goal is to stake, each time, enough to reach the goal in one win (or everything, if that is less). The reason is the cost: each trade loses \(c\) on average, and the expected total cost \(K(0)\) is what lowers \(P\). Bold play reaches the goal or the floor in the fewest trades, so it pays the least cost. Chapter 9 finds that the optimiser, left free, moves every programme toward this corner.</p>
+  [[BOLD_EXAMPLE]]
+</section>
+
+<!-- 6 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 6</span>
+  <h1>The evaluation in full</h1>
+
+  <h2>6.1 Two phases</h2>
+  <p>A 2-step evaluation starts phase 2 on a fresh account once phase 1 is passed. The phases share nothing but the trader, so with zero skill they are independent and</p>
+  $$\Pr(\text{pass}) = P_1 \cdot P_2 .$$
+  <p>The order of the targets does not matter for this product when costs are zero (\(B/(A_1+B)\cdot B/(A_2+B)\) is symmetric), but it does for time and cost: the larger target first means fewer second phases are ever started, which saves the second phase's trades on the attempts that would fail anyway.</p>
+
+  <h2>6.2 The daily loss limit</h2>
+  <p>Most firms add a second floor that moves: the balance (or equity) may not fall more than \(d\) below its level at the start of the day. Breaking it fails the account at once. The plan never risks breaking it by its own stop: each trade's risk is at most today's remaining room less 0.2% of the account, and when less than a tenth of the normal risk remains, it stops for the day. With a 1.5% risk and a 4&ndash;5% limit, that takes two or three losses in one day, which happens on a minority of days (counted in each programme's chapter).</p>
+  <p>Because the plan reacts to the daily limit only by trading smaller or stopping, every trade is still a fair bracket and the pass probability is unchanged except through costs: smaller trades cost the same fraction of their size but there are more of them. The engine models the limit exactly, including the rare gap that breaks it.</p>
+
+  <h2>6.3 Minimum trading days</h2>
+  <p>Some firms require a minimum number of days with at least one trade in each phase (FTMO 4, FundedNext 5, BrightFunded 5, FXIFY Classic 4, Alpha 3). If the target is reached earlier, the plan places one minimal trade (the smallest lot) on each remaining required day. This is allowed at every firm that counts <em>trading</em> days, adds a negligible cost and only adds time. It is never done where the rule counts <em>profitable</em> days (6.4).</p>
+
+  <h2>6.4 Profitable-day rules</h2>
+  <p>Some firms require days with at least +0.5% profit (The5ers, Fintokei, Maven, Blue Guardian, FundingPips' 95% option), and forbid manufacturing them. The plan uses a <em>daily profit target</em>: while profitable days are missing, each day it trades normally until the day's profit reaches</p>
+  $$g_{\text{today}} = \max\!\left(0.55\%\,S,\; \frac{\text{distance left to the target}}{\text{profitable days still needed}}\right)$$
+  <p>and then stops for the day. Every trade is still a full-size fair bracket (its take-profit is capped at what is left of today's target), so nothing is manufactured. Stopping at a daily target is another stopping time, so in a fair game it leaves the probability of the final outcome unchanged; what changes is the time, because a phase now takes at least as many days as profitable days required. If the target is reached with profitable days still missing, trading continues under the daily target until they are complete, which exposes the balance a little longer and lowers the pass probability slightly (The5ers phase 1: [[THE5ERS_P1]] against 50%).</p>
+
+  <h2>6.5 Weekends, nights and news</h2>
+  <p>The plan holds no position over a weekend at any firm (no new trade after 19:00 UTC on Friday; everything closed by 20:30 UTC), places no new trade from 15 minutes before to 5 minutes after a high-impact US release, and on funded accounts is flat 10 minutes before such releases. Positions may run through the night on weekdays where the firm allows it (all CFD firms here); the futures layer is flat by 20:00 UTC every day. These rules cost a little time (forced closes end some trades early at a price between stop and target, which is still a fair outcome) and remove the largest gap risk.</p>
+
+  <h2>6.6 Review time</h2>
+  <p>Firms take one to three working days to check a passed phase and issue the next account. The engine adds one day after phase 1 and the firm's stated time after phase 2.</p>
+</section>

@@ -77,7 +77,7 @@ class Market:
                 if d > 0: hs = M["L"][i] <= sl; ht = M["H"][i] >= tp
                 else:     hs = M["H"][i] >= sl; ht = M["L"][i] <= tp
                 if hs or ht:
-                    won = ht if not (hs and ht) else (rng.random() < l / (l + wg))
+                    won = ht if not (hs and ht) else PF.first_touch(M, i, d, sl, tp, l / (l + wg), rng)
                     exit_px = tp if won else sl; break
                 last = M["C"][i]
                 if flat_weekend and M["fri_close"][i]: exit_px = last; break
@@ -103,11 +103,15 @@ def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stag
         assert data.startswith("synth"), "gold slots are simulated on synthetic paths only"
         mk["XAUUSD"] = Market("XAUUSD", gold_data)          # independent path: gold is not the Nasdaq
         assert mk["XAUUSD"].M["T"] == mk["US100"].M["T"]
+    if any(sp.get("instr") == "EURUSD" for sp in slots):
+        assert data.startswith("synth"), "euro slots are simulated on synthetic paths only"
+        mk["EURUSD"] = Market("EURUSD", f"synth{(int(data[5:]) if len(data) > 5 else 11) + 70}")
+        assert mk["EURUSD"].M["T"] == mk["US100"].M["T"]
     if any(sp.get("instr") == "USDJPY" for sp in slots):
         assert data.startswith("synth"), "yen slots are simulated on synthetic paths only"
         mk["USDJPY"] = Market("USDJPY", f"synth{(int(data[5:]) if len(data) > 5 else 11) + 60}")
         assert mk["USDJPY"].M["T"] == mk["US100"].M["T"]
-    GROUP = {"US100": "NQ", "MNQ_fut": "NQ", "XAUUSD": "XAU", "USDJPY": "JPY"}
+    GROUP = {"US100": "NQ", "MNQ_fut": "NQ", "XAUUSD": "XAU", "USDJPY": "JPY", "EURUSD": "EUR"}
     T = mk["US100"].M["T"]
     # one calendar for everybody: clock 0 = 22:00 UTC on a random day early in the path
     h0 = mk["US100"].M["h0"]
@@ -116,8 +120,7 @@ def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stag
     t_end = months * 30.44 * DAY
     ledger = []; gens = {}; pend = {}; heap = []; info = {}
     for sid, sp in enumerate(slots):
-        F = (F5.cfd_firms(sp.get("size", 100_000)) if sp["kind"] == "cfd" else F5.futures_firms())[sp["firm"]]
-        if sp.get("override"): F = dict(F, **sp["override"])
+        F = F5.rules_for(sp["firm"], sp.get("size", 100_000), sp["kind"], sp.get("fee"), sp.get("override"))
         instr = sp.get("instr") or ("US100" if sp["kind"] == "cfd" else "MNQ_fut")
         srng = random.Random(seed * 1000 + sid)
         g = g_slot(sid, F, sp["L"], sp["k"], sp["X1"], sp["X"], srng, t_end, ledger, sp.get("start_day", 0) * DAY)

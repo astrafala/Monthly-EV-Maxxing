@@ -1,0 +1,4 @@
+{"note": "Measured on 4 October 2026 with the first version 6 engine (same-bar stop/target ties decided by the fair chance l/(l+w+c)), zero costs, synthetic path 29 (brackets, 30,000 each) and paths 29-32 (FundingPips Flex phase 2, 24,000 attempts). Kept for the record; the engine was then corrected.",
+ "brackets_m035": [{"k": 2, "win": 0.3416, "theory": 0.3333, "meanR": 0.0247, "ci": 0.0161},
+                   {"k": 3, "win": 0.2586, "theory": 0.25, "meanR": 0.0344, "ci": 0.0198}],
+ "fp_phase2_zero": {"with_daily_limit": 0.6781, "cap_only": 0.6882, "neither": 0.6699, "ci": 0.0059, "theory": 0.6667}}

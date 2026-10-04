@@ -1,0 +1,157 @@
+78 final configurations
+Alpha Capital Pro 10%                  US100   200K 200K       real  k=30 m=0.50 X= 60.0K EV/mo= 14463±1195 P=0.340 days=  9.9
+Alpha Capital Pro 10%                  US100   200K 200K       synth k=30 m=0.50 X= 60.0K EV/mo= 12757± 726 P=0.307 days=  7.9
+Alpha Capital Pro 10%                  US100   100K chosen     real  k=30 m=0.50 X= 30.0K EV/mo=  7445± 602 P=0.342 days=  9.9
+Alpha Capital Pro 10%                  US100   100K chosen     synth k=30 m=0.50 X= 30.0K EV/mo=  6372± 363 P=0.307 days=  7.9
+Alpha Capital Pro 10%                  US100   100K uncapped   real  k=30 m=0.50 X= 40.0K EV/mo=  7290± 664 P=0.340 days=  9.6
+Alpha Capital Pro 10%                  US100   100K uncapped   synth k=30 m=0.50 X= 40.0K EV/mo=  6033± 404 P=0.309 days=  7.8
+Alpha Capital Pro 10%                  US100   100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  4406± 242 P=0.323 days= 14.8
+Alpha Capital Pro 10%                  US100   100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  4653± 154 P=0.312 days= 11.3
+Alpha Capital Pro 10% (on-demand)      US100   100K chosen     real  k=12 m=0.50 X= 20.0K EV/mo=  6700± 505 P=0.338 days= 10.2
+Alpha Capital Pro 10% (on-demand)      US100   100K chosen     synth k=12 m=0.50 X= 20.0K EV/mo=  5910± 310 P=0.309 days=  8.0
+Alpha Capital Pro 10% (on-demand)      US100   100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  4676± 295 P=0.326 days= 13.4
+Alpha Capital Pro 10% (on-demand)      US100   100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  4966± 204 P=0.307 days= 10.0
+Apex 50K EOD                           MNQ_fut  50K chosen     real  k= 2 m=0.50 X=  0.0K EV/mo=   378±  72 P=0.352 days=  7.6
+Apex 50K EOD                           MNQ_fut  50K chosen     synth k= 2 m=0.50 X=  0.0K EV/mo=   594±  51 P=0.350 days=  7.1
+Blue Guardian 2-Step v5                US100   200K 200K       real  k= 8 m=1.00 X= 36.0K EV/mo=  4482± 512 P=0.291 days= 15.4
+Blue Guardian 2-Step v5                US100   200K 200K       synth k= 8 m=1.00 X= 36.0K EV/mo=  5669± 344 P=0.299 days= 13.2
+Blue Guardian 2-Step v5                US100   100K chosen     real  k= 8 m=1.00 X= 18.0K EV/mo=  2397± 256 P=0.295 days= 15.7
+Blue Guardian 2-Step v5                US100   100K chosen     synth k= 8 m=1.00 X= 18.0K EV/mo=  2810± 169 P=0.299 days= 13.2
+Blue Guardian 2-Step v5                US100   100K v5 default real  k= 5 m=1.00 X=  8.0K EV/mo=  2272± 188 P=0.292 days= 16.8
+Blue Guardian 2-Step v5                US100   100K v5 default synth k= 5 m=1.00 X=  8.0K EV/mo=  2761± 120 P=0.301 days= 14.7
+BrightFunded 2-Step Classic v5         US100   200K 200K       real  k=12 m=0.50 X= 50.0K EV/mo= 10046± 760 P=0.333 days= 12.8
+BrightFunded 2-Step Classic v5         US100   200K 200K       synth k=12 m=0.50 X= 50.0K EV/mo=  8297± 468 P=0.315 days= 10.7
+BrightFunded 2-Step Classic v5         US100   100K chosen     real  k=12 m=0.50 X= 25.0K EV/mo=  4879± 374 P=0.330 days= 12.7
+BrightFunded 2-Step Classic v5         US100   100K chosen     synth k=12 m=0.50 X= 25.0K EV/mo=  4183± 234 P=0.315 days= 10.7
+BrightFunded 2-Step Classic v5         US100   100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  3521± 186 P=0.333 days= 19.2
+BrightFunded 2-Step Classic v5         US100   100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  3382± 121 P=0.313 days= 15.2
+FTMO 1-Step                            US100   100K chosen     real  k=12 m=0.75 X= 12.0K EV/mo=  3049± 246 P=0.328 days= 15.2
+FTMO 1-Step                            US100   100K chosen     synth k=12 m=0.75 X= 12.0K EV/mo=  3386± 153 P=0.344 days= 13.8
+FTMO 1-Step                            US100   100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  2985± 215 P=0.330 days= 15.7
+FTMO 1-Step                            US100   100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  3366± 139 P=0.336 days= 14.2
+FTMO 2-Step                            US100   200K 200K       real  k=20 m=0.50 X= 60.0K EV/mo= 12390±1087 P=0.328 days= 10.5
+FTMO 2-Step                            US100   200K 200K       synth k=20 m=0.50 X= 60.0K EV/mo= 11061± 685 P=0.307 days=  8.7
+FTMO 2-Step                            US100   100K chosen     real  k=20 m=0.50 X= 30.0K EV/mo=  5971± 540 P=0.328 days= 10.5
+FTMO 2-Step                            US100   100K chosen     synth k=20 m=0.50 X= 30.0K EV/mo=  5463± 342 P=0.307 days=  8.7
+FTMO 2-Step                            US100   100K uncapped   real  k=50 m=0.25 X= 40.0K EV/mo=  6004± 749 P=0.288 days=  7.1
+FTMO 2-Step                            US100   100K uncapped   synth k=50 m=0.25 X= 40.0K EV/mo=  6560± 482 P=0.290 days=  6.6
+FTMO 2-Step                            US100   100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  4287± 251 P=0.322 days= 15.6
+FTMO 2-Step                            US100   100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  4246± 159 P=0.306 days= 12.0
+FXIFY Two Phase Classic (100%, 30 days US100    10K 10K        real  k=12 m=1.00 X=  3.0K EV/mo=   247±  27 P=0.314 days= 20.6
+FXIFY Two Phase Classic (100%, 30 days US100    10K 10K        synth k=12 m=1.00 X=  3.0K EV/mo=   321±  19 P=0.317 days= 17.5
+FXIFY Two Phase Classic (100%, 30 days US100    25K 25K        real  k=12 m=1.00 X=  7.5K EV/mo=   628±  68 P=0.308 days= 20.2
+FXIFY Two Phase Classic (100%, 30 days US100    25K 25K        synth k=12 m=1.00 X=  7.5K EV/mo=   836±  49 P=0.315 days= 17.3
+FXIFY Two Phase Classic (100%, 30 days US100    50K 50K        real  k=12 m=1.00 X= 15.0K EV/mo=  1414± 137 P=0.309 days= 20.2
+FXIFY Two Phase Classic (100%, 30 days US100    50K 50K        synth k=12 m=1.00 X= 15.0K EV/mo=  1759±  99 P=0.312 days= 17.1
+FXIFY Two Phase Classic (100%, 30 days US100     5K 5K         real  k=12 m=1.00 X=  1.5K EV/mo=   112±  14 P=0.314 days= 20.6
+FXIFY Two Phase Classic (100%, 30 days US100     5K 5K         synth k=12 m=1.00 X=  1.5K EV/mo=   134±  10 P=0.316 days= 17.5
+FXIFY Two Phase Classic (100%, 30 days US100   100K chosen     real  k=12 m=1.00 X= 30.0K EV/mo=  3167± 273 P=0.318 days= 19.9
+FXIFY Two Phase Classic (100%, 30 days US100   100K chosen     synth k=12 m=1.00 X= 30.0K EV/mo=  4046± 195 P=0.319 days= 16.9
+FXIFY Two Phase Classic (100%, 30 days US100   100K uncapped   real  k=20 m=1.00 X= 40.0K EV/mo=  2988± 307 P=0.318 days= 19.6
+FXIFY Two Phase Classic (100%, 30 days US100   100K uncapped   synth k=20 m=1.00 X= 40.0K EV/mo=  3763± 210 P=0.316 days= 16.4
+FXIFY Two Phase Classic (100%, 30 days US100   100K v5 default real  k= 5 m=1.00 X= 10.0K EV/mo=  2137± 147 P=0.304 days= 23.1
+FXIFY Two Phase Classic (100%, 30 days US100   100K v5 default synth k= 5 m=1.00 X= 10.0K EV/mo=  2796±  94 P=0.310 days= 21.0
+FXIFY Two Phase Classic (100%, 30 days USDJPY  100K chosen     real  k=11 m=0.75 X= 30.0K EV/mo=  3793± 365 P=0.316 days= 15.7
+FXIFY Two Phase Classic (100%, 30 days USDJPY  100K chosen     synth k=11 m=0.75 X= 30.0K EV/mo=  3570± 219 P=0.297 days= 13.5
+FXIFY Two Phase Classic (100%, 30 days USDJPY  100K uncapped   real  k=20 m=0.75 X= 40.0K EV/mo=  4070± 421 P=0.310 days= 15.7
+FXIFY Two Phase Classic (100%, 30 days USDJPY  100K uncapped   synth k=20 m=0.75 X= 40.0K EV/mo=  3545± 242 P=0.301 days= 13.5
+FXIFY Two Phase Classic (100%, 30 days USDJPY  100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  2406± 177 P=0.272 days= 18.5
+FXIFY Two Phase Classic (100%, 30 days USDJPY  100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  2526± 103 P=0.283 days= 17.3
+FXIFY Two Phase Classic (80%)          US100   100K chosen     real  k=30 m=1.00 X= 30.0K EV/mo=  3122± 260 P=0.311 days= 18.3
+FXIFY Two Phase Classic (80%)          US100   100K chosen     synth k=30 m=1.00 X= 30.0K EV/mo=  3280± 165 P=0.314 days= 15.3
+FXIFY Two Phase Classic (80%)          US100   100K uncapped   real  k=50 m=1.00 X= 30.0K EV/mo=  3113± 259 P=0.312 days= 18.3
+FXIFY Two Phase Classic (80%)          US100   100K uncapped   synth k=50 m=1.00 X= 30.0K EV/mo=  3293± 165 P=0.313 days= 15.3
+FXIFY Two Phase Classic (80%)          US100   100K v5 default real  k= 5 m=1.00 X= 10.0K EV/mo=  2019± 148 P=0.311 days= 20.5
+FXIFY Two Phase Classic (80%)          US100   100K v5 default synth k= 5 m=1.00 X= 10.0K EV/mo=  2534± 101 P=0.312 days= 17.6
+FXIFY Two Phase Classic (80%)          USDJPY  100K chosen     real  k=12 m=0.85 X= 30.0K EV/mo=  3105± 289 P=0.307 days= 15.0
+FXIFY Two Phase Classic (80%)          USDJPY  100K chosen     synth k=12 m=0.85 X= 30.0K EV/mo=  3253± 186 P=0.306 days= 13.2
+FXIFY Two Phase Classic (80%)          USDJPY  100K uncapped   real  k=30 m=0.85 X= 50.0K EV/mo=  3486± 319 P=0.303 days= 14.8
+FXIFY Two Phase Classic (80%)          USDJPY  100K uncapped   synth k=30 m=0.85 X= 50.0K EV/mo=  2921± 200 P=0.301 days= 12.7
+FXIFY Two Phase Classic (80%)          USDJPY  100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  2140± 195 P=0.269 days= 15.7
+FXIFY Two Phase Classic (80%)          USDJPY  100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  2222± 109 P=0.281 days= 14.5
+Fintokei ProTrader                     US100   200K 200K       real  k=12 m=0.50 X= 50.0K EV/mo=  8027± 801 P=0.318 days= 12.9
+Fintokei ProTrader                     US100   200K 200K       synth k=12 m=0.50 X= 50.0K EV/mo=  7748± 481 P=0.303 days= 11.4
+Fintokei ProTrader                     US100   100K chosen     real  k=12 m=0.50 X= 25.0K EV/mo=  4196± 399 P=0.314 days= 12.8
+Fintokei ProTrader                     US100   100K chosen     synth k=12 m=0.50 X= 25.0K EV/mo=  4072± 239 P=0.303 days= 11.4
+Fintokei ProTrader                     US100   100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  3568± 227 P=0.306 days= 16.7
+Fintokei ProTrader                     US100   100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  3757± 140 P=0.311 days= 14.3
+FundedNext Stellar 2-Step v5           EURUSD  200K 200K       real  k=20 m=0.75 X= 50.0K EV/mo=  8892± 700 P=0.364 days= 13.4
+FundedNext Stellar 2-Step v5           EURUSD  200K 200K       synth k=20 m=0.75 X= 50.0K EV/mo=  8489± 440 P=0.321 days= 11.6
+FundedNext Stellar 2-Step v5           EURUSD  100K chosen     real  k=20 m=0.75 X= 25.0K EV/mo=  4416± 351 P=0.366 days= 13.5
+FundedNext Stellar 2-Step v5           EURUSD  100K chosen     synth k=20 m=0.75 X= 25.0K EV/mo=  4178± 221 P=0.321 days= 11.6
+FundedNext Stellar 2-Step v5           EURUSD  100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  3991± 176 P=0.362 days= 17.4
+FundedNext Stellar 2-Step v5           EURUSD  100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  2936± 118 P=0.302 days= 13.6
+FundedNext Stellar 2-Step v5           XAUUSD  200K 200K       real  k=10 m=1.00 X= 60.0K EV/mo=  7937± 564 P=0.359 days= 20.2
+FundedNext Stellar 2-Step v5           XAUUSD  200K 200K       synth k=10 m=1.00 X= 60.0K EV/mo=  8438± 415 P=0.345 days= 14.1
+FundedNext Stellar 2-Step v5           XAUUSD  100K chosen     real  k=10 m=1.00 X= 30.0K EV/mo=  3991± 273 P=0.363 days= 20.3
+FundedNext Stellar 2-Step v5           XAUUSD  100K chosen     synth k=10 m=1.00 X= 30.0K EV/mo=  4187± 209 P=0.345 days= 14.1
+FundedNext Stellar 2-Step v5           XAUUSD  100K v5 default real  k= 5 m=1.00 X= 10.0K EV/mo=  3076± 156 P=0.350 days= 21.9
+FundedNext Stellar 2-Step v5           XAUUSD  100K v5 default synth k= 5 m=1.00 X= 10.0K EV/mo=  3526± 106 P=0.344 days= 16.7
+FunderPro Classic v5                   US100   200K 200K       real  k=30 m=0.35 X= 60.0K EV/mo= 12777±1283 P=0.330 days=  7.1
+FunderPro Classic v5                   US100   200K 200K       synth k=30 m=0.35 X= 60.0K EV/mo= 15903± 889 P=0.300 days=  6.2
+FunderPro Classic v5                   US100   100K chosen     real  k=30 m=0.35 X= 30.0K EV/mo=  6555± 648 P=0.333 days=  7.2
+FunderPro Classic v5                   US100   100K chosen     synth k=30 m=0.35 X= 30.0K EV/mo=  7734± 448 P=0.301 days=  6.2
+FunderPro Classic v5                   US100   100K uncapped   real  k=30 m=0.35 X= 40.0K EV/mo=  7517± 776 P=0.328 days=  6.9
+FunderPro Classic v5                   US100   100K uncapped   synth k=30 m=0.35 X= 40.0K EV/mo=  8184± 536 P=0.298 days=  6.0
+FunderPro Classic v5                   US100   100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  4664± 260 P=0.319 days= 14.2
+FunderPro Classic v5                   US100   100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  5072± 168 P=0.311 days= 10.6
+FundingPips 2-Step Flex (85%) v6 4days USDJPY  100K chosen     real  k=14 m=0.50 X= 30.0K EV/mo=  5911± 469 P=0.337 days= 11.2
+FundingPips 2-Step Flex (85%) v6 4days USDJPY  100K chosen     synth k=14 m=0.50 X= 30.0K EV/mo=  5376± 299 P=0.308 days=  9.7
+FundingPips 2-Step Flex (85%) v6 4days USDJPY  100K uncapped   real  k=30 m=0.50 X= 50.0K EV/mo=  7056± 595 P=0.342 days= 11.7
+FundingPips 2-Step Flex (85%) v6 4days USDJPY  100K uncapped   synth k=30 m=0.50 X= 50.0K EV/mo=  4882± 341 P=0.314 days=  9.9
+FundingPips 2-Step Flex (85%) v6 4days USDJPY  100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  3786± 233 P=0.303 days= 15.7
+FundingPips 2-Step Flex (85%) v6 4days USDJPY  100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  4161± 143 P=0.314 days= 14.0
+FundingPips 2-Step Flex (85%) v6 cap   USDJPY  100K chosen     real  k=20 m=0.50 X= 25.0K EV/mo=  5423± 507 P=0.261 days= 10.4
+FundingPips 2-Step Flex (85%) v6 cap   USDJPY  100K chosen     synth k=20 m=0.50 X= 25.0K EV/mo=  5716± 316 P=0.252 days=  9.1
+FundingPips 2-Step Flex (85%) v6 cap   USDJPY  100K uncapped   real  k=50 m=0.50 X= 40.0K EV/mo=  6548± 654 P=0.265 days= 10.4
+FundingPips 2-Step Flex (85%) v6 cap   USDJPY  100K uncapped   synth k=50 m=0.50 X= 40.0K EV/mo=  5705± 383 P=0.255 days=  9.0
+FundingPips 2-Step Flex (85%) v6 cap   USDJPY  100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  3763± 266 P=0.274 days= 14.8
+FundingPips 2-Step Flex (85%) v6 cap   USDJPY  100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  4219± 157 P=0.286 days= 13.1
+FundingPips 2-Step Flex (95%) v5       USDJPY  100K chosen     real  k=14 m=0.60 X= 30.0K EV/mo=  4267± 389 P=0.298 days= 16.3
+FundingPips 2-Step Flex (95%) v5       USDJPY  100K chosen     synth k=14 m=0.60 X= 30.0K EV/mo=  4055± 231 P=0.291 days= 14.8
+FundingPips 2-Step Flex (95%) v5       USDJPY  100K uncapped   real  k=20 m=0.60 X= 50.0K EV/mo=  4030± 409 P=0.303 days= 16.3
+FundingPips 2-Step Flex (95%) v5       USDJPY  100K uncapped   synth k=20 m=0.60 X= 50.0K EV/mo=  4148± 263 P=0.286 days= 14.7
+FundingPips 2-Step Flex (95%) v5       USDJPY  100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  3437± 244 P=0.288 days= 18.9
+FundingPips 2-Step Flex (95%) v5       USDJPY  100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  3620± 136 P=0.291 days= 17.4
+GFT 2-Step Standard v5                 US100   200K 200K       real  k= 8 m=0.75 X= 16.0K EV/mo=  6802± 310 P=0.352 days= 18.0
+GFT 2-Step Standard v5                 US100   200K 200K       synth k= 8 m=0.75 X= 16.0K EV/mo=  7591± 198 P=0.348 days= 15.7
+GFT 2-Step Standard v5                 US100   100K chosen     real  k= 8 m=0.75 X=  8.0K EV/mo=  3608± 162 P=0.350 days= 17.8
+GFT 2-Step Standard v5                 US100   100K chosen     synth k= 8 m=0.75 X=  8.0K EV/mo=  3953± 103 P=0.350 days= 15.2
+GFT 2-Step Standard v5                 US100   100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  3604± 170 P=0.371 days= 17.9
+GFT 2-Step Standard v5                 US100   100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  3982± 112 P=0.341 days= 14.7
+Hola Prime 2-Step Prime (bi-weekly 80% EURUSD  100K chosen     real  k=14 m=0.75 X= 20.0K EV/mo=  5426± 389 P=0.364 days= 12.0
+Hola Prime 2-Step Prime (bi-weekly 80% EURUSD  100K chosen     synth k=14 m=0.75 X= 20.0K EV/mo=  3922± 232 P=0.318 days=  9.7
+Hola Prime 2-Step Prime (bi-weekly 80% EURUSD  100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  4295± 234 P=0.360 days= 13.9
+Hola Prime 2-Step Prime (bi-weekly 80% EURUSD  100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  3094± 146 P=0.303 days= 11.1
+Hola Prime 2-Step Prime (bi-weekly 80% XAUUSD  100K chosen     real  k=10 m=1.00 X= 20.0K EV/mo=  4223± 267 P=0.369 days= 18.2
+Hola Prime 2-Step Prime (bi-weekly 80% XAUUSD  100K chosen     synth k=10 m=1.00 X= 20.0K EV/mo=  4578± 210 P=0.350 days= 12.2
+Hola Prime 2-Step Prime (bi-weekly 80% XAUUSD  100K v5 default real  k= 5 m=1.00 X= 10.0K EV/mo=  3472± 191 P=0.353 days= 19.2
+Hola Prime 2-Step Prime (bi-weekly 80% XAUUSD  100K v5 default synth k= 5 m=1.00 X= 10.0K EV/mo=  3735± 140 P=0.335 days= 13.4
+Maven 2-Step                           US100   100K chosen     real  k= 7 m=1.00 X=  8.0K EV/mo=  2015± 160 P=0.283 days= 17.4
+Maven 2-Step                           US100   100K chosen     synth k= 7 m=1.00 X=  8.0K EV/mo=  2341± 105 P=0.275 days= 14.8
+Maven 2-Step                           US100   100K uncapped   real  k= 7 m=1.00 X= 18.0K EV/mo=  1802± 224 P=0.272 days= 15.3
+Maven 2-Step                           US100   100K uncapped   synth k= 7 m=1.00 X= 18.0K EV/mo=  2738± 158 P=0.280 days= 13.1
+Maven 2-Step                           US100   100K v5 default real  k= 5 m=0.75 X=  8.0K EV/mo=  2649± 185 P=0.283 days= 15.9
+Maven 2-Step                           US100   100K v5 default synth k= 5 m=0.75 X=  8.0K EV/mo=  2335± 111 P=0.269 days= 13.5
+The5ers High Stakes                    US100   100K chosen     real  k=20 m=0.60 X= 20.0K EV/mo=  4674± 379 P=0.305 days= 13.7
+The5ers High Stakes                    US100   100K chosen     synth k=20 m=0.60 X= 20.0K EV/mo=  4482± 218 P=0.296 days= 12.0
+The5ers High Stakes                    US100   100K uncapped   real  k=20 m=0.60 X= 40.0K EV/mo=  5667± 519 P=0.303 days= 13.3
+The5ers High Stakes                    US100   100K uncapped   synth k=20 m=0.60 X= 40.0K EV/mo=  4482± 289 P=0.296 days= 11.5
+The5ers High Stakes                    US100   100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  3867± 230 P=0.300 days= 17.1
+The5ers High Stakes                    US100   100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  3759± 141 P=0.297 days= 13.8
+The5ers High Stakes 10K                US100    10K 10K        real  k=20 m=0.60 X=  2.0K EV/mo=   459±  38 P=0.312 days= 14.6
+The5ers High Stakes 10K                US100    10K 10K        synth k=20 m=0.60 X=  2.0K EV/mo=   381±  22 P=0.292 days= 12.2
+The5ers High Stakes 2.5K               US100     2K 2K         real  k=20 m=0.60 X=  0.5K EV/mo=   102±   9 P=0.302 days= 14.5
+The5ers High Stakes 2.5K               US100     2K 2K         synth k=20 m=0.60 X=  0.5K EV/mo=    92±   5 P=0.291 days= 12.3
+The5ers High Stakes 25K                US100    25K 25K        real  k=20 m=0.60 X=  5.0K EV/mo=   943±  88 P=0.304 days= 14.1
+The5ers High Stakes 25K                US100    25K 25K        synth k=20 m=0.60 X=  5.0K EV/mo=   927±  54 P=0.291 days= 12.2
+The5ers High Stakes 5K                 US100     5K 5K         real  k=20 m=0.60 X=  1.0K EV/mo=   206±  18 P=0.303 days= 14.4
+The5ers High Stakes 5K                 US100     5K 5K         synth k=20 m=0.60 X=  1.0K EV/mo=   190±  11 P=0.290 days= 12.3
+The5ers High Stakes Classic            US100   100K chosen     real  k=20 m=0.50 X= 25.0K EV/mo=  4174± 400 P=0.324 days= 12.7
+The5ers High Stakes Classic            US100   100K chosen     synth k=20 m=0.50 X= 25.0K EV/mo=  4775± 250 P=0.323 days= 11.7
+The5ers High Stakes Classic            US100   100K v5 default real  k= 5 m=0.75 X= 10.0K EV/mo=  4001± 231 P=0.332 days= 17.3
+The5ers High Stakes Classic            US100   100K v5 default synth k= 5 m=0.75 X= 10.0K EV/mo=  4030± 138 P=0.329 days= 14.6
+Topstep 50K                            MNQ_fut  50K chosen     real  k= 5 m=0.50 X=  0.0K EV/mo=  1477± 400 P=0.241 days=  4.4
+Topstep 50K                            MNQ_fut  50K chosen     synth k= 5 m=0.50 X=  0.0K EV/mo=   832± 280 P=0.238 days=  2.9
+Topstep 50K                            MNQ_fut  50K v5 default real  k= 5 m=0.75 X=  0.0K EV/mo=  1949± 371 P=0.234 days=  6.3
+Topstep 50K                            MNQ_fut  50K v5 default synth k= 5 m=0.75 X=  0.0K EV/mo=  1220± 295 P=0.244 days=  3.7

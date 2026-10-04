@@ -1,0 +1,116 @@
+<!-- ================================================================ PART I -->
+<section class="part">
+  <span class="num">Part I</span>
+  <h1>The mathematics, from zero</h1>
+  <p>Every result in this document follows from a handful of facts about fair games. This part derives each of them from the beginning, with the numbers of the real plan worked through at every step. Nothing is assumed that is not proved or measured.</p>
+</section>
+
+<!-- 1 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 1</span>
+  <h1>What is being bought</h1>
+  <p>A proprietary trading firm ("prop firm") sells an <em>evaluation</em>. You pay a fee, you trade a simulated account under written rules, and if you meet the profit targets without breaking a loss limit, the firm gives you a <em>funded</em> account. On the funded account you keep a share of every profit you withdraw, and the firm absorbs every loss. You never owe the firm money beyond the fee.</p>
+  <p>That last sentence is the whole opportunity. Your downside is capped at the fee, and your upside is a share of profits that, as Chapter 7 proves, have a positive expected size even when every trade is a coin flip. The contract is an <em>option</em>: you pay a premium (the fee) for the right to keep part of the gains of a game whose losses fall on someone else.</p>
+
+  <h2>1.1 The parts of the contract</h2>
+  <table>
+    <thead><tr><th>Symbol</th><th>Meaning</th><th>FTMO 2-Step 100K, as an example</th></tr></thead>
+    <tbody>
+      <tr><td>\(S\)</td><td>account size (simulated money)</td><td>$100,000</td></tr>
+      <tr><td>\(F\)</td><td>fee for one attempt</td><td>$632 (&euro;540)</td></tr>
+      <tr><td>\(A_1, A_2\)</td><td>profit targets of phase 1 and phase 2</td><td>$10,000 and $5,000</td></tr>
+      <tr><td>\(B\)</td><td>maximum loss: the floor sits \(B\) below the starting balance and never moves ("static")</td><td>$10,000</td></tr>
+      <tr><td>\(d\)</td><td>daily loss limit, measured from the balance at the start of each day</td><td>$5,000</td></tr>
+      <tr><td>\(D\)</td><td>maximum loss on the funded account (the "allowance")</td><td>$10,000</td></tr>
+      <tr><td>\(\alpha\)</td><td>your share ("split") of every profit withdrawn</td><td>80%</td></tr>
+      <tr><td>\(R\)</td><td>fee refund, paid with the first payout</td><td>$632</td></tr>
+      <tr><td>&mdash;</td><td>minimum trading days, payout cycle, other rules</td><td>4 days per phase; payouts every 14 days</td></tr>
+    </tbody>
+  </table>
+
+  <h2>1.2 The value of one attempt</h2>
+  <p>Call the cash an attempt brings you \(V\). It is the fee (always paid), plus, if both phases are passed, whatever the funded account pays out (the refund included):</p>
+  <div class="formula"><span class="lbl">Value of one attempt</span>
+  $$V = -F + \mathbf{1}\{\text{pass}\}\cdot C, \qquad \mathbb{E}[V] = -F + \Pr(\text{pass})\cdot \mathbb{E}[C \mid \text{pass}]$$
+  </div>
+  <p>Here \(\mathbf{1}\{\text{pass}\}\) is 1 if both phases are passed and 0 otherwise, and \(C\) is the total cash from the funded account. The second form uses the fact that the expectation of a product with an indicator is the probability times the conditional expectation. The rest of Part I computes the two unknowns, \(\Pr(\text{pass})\) and \(\mathbb{E}[C\mid\text{pass}]\), and then the time an attempt takes.</p>
+
+  <h2>1.3 The whole argument in five lines</h2>
+  <p>Before the details, the result in its simplest form, with no trading costs and no time. Chapter 5 proves that a fair game reaches a target \(A\) above its start before a floor \(B\) below with probability \(B/(A+B)\). Chapter 7 proves that a funded account whose profits are withdrawn every cycle pays out, on average, exactly its allowance \(D\) before it is lost. Therefore:</p>
+  <div class="formula"><span class="lbl">FTMO 2-Step, zero cost, zero skill</span>
+  $$\Pr(\text{pass}) = \frac{B}{A_1+B}\cdot\frac{B}{A_2+B} = \frac{10{,}000}{20{,}000}\cdot\frac{10{,}000}{15{,}000} = \frac{1}{3}$$
+  $$\mathbb{E}[V] = -632 + \tfrac13\left(0.8\times 10{,}000 + 632\right) = -632 + 2{,}877 = +\$2{,}245$$
+  </div>
+  <p>A coin-flipper who buys this contract makes, on average, $2,245 per attempt. Everything else in this document refines this number: trading costs lower it, daily limits and rules change the time it takes, and the plan's settings are chosen to make the most of it per month and per person. The refinement takes the full engine of Part I; the sign of the answer is already settled here.</p>
+
+  <h2>1.4 Why the firm still makes money</h2>
+  <p>The firm's revenue is the fees of everyone, and most traders are not zero-skill coin-flippers with a plan built around the contract: they over-trade, break rules, abandon accounts and stop after one failure. The firm also pays out simulated profits only, so it carries no market risk of its own unless it copies trades. A plan that treats the contract as a mathematical object, follows every rule, and repeats it many times is the case the firm's pricing does not cover. That is also why every firm keeps the right to refuse payouts it judges to be "gambling" (Chapter [[CH_REF]]) and why this plan follows every written rule.</p>
+</section>
+
+<!-- 2 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 2</span>
+  <h1>The probability toolkit</h1>
+  <p>Seven ideas carry the whole analysis. Each is stated, explained and, where short, proved.</p>
+
+  <h2>2.1 Expected value and linearity</h2>
+  <p>A random quantity \(X\) that takes values \(x_1, x_2, \dots\) with probabilities \(p_1, p_2, \dots\) has expected value</p>
+  $$\mathbb{E}[X] = \sum_i p_i\, x_i .$$
+  <p>The single most useful fact is <em>linearity</em>: for any random quantities, dependent or not,</p>
+  $$\mathbb{E}[X+Y] = \mathbb{E}[X] + \mathbb{E}[Y], \qquad \mathbb{E}[cX] = c\,\mathbb{E}[X].$$
+  <p>Linearity is why the value of many accounts is the sum of their values, however strongly they move together (Chapter [[CH_LOCK]]). Correlation changes the spread of outcomes, never the average.</p>
+
+  <h2>2.2 Variance</h2>
+  <p>The variance measures spread around the mean: \(\operatorname{Var}(X) = \mathbb{E}[(X-\mathbb{E}X)^2] = \mathbb{E}[X^2] - (\mathbb{E}X)^2\). Its square root is the standard deviation. For independent \(X, Y\) variances add, \(\operatorname{Var}(X+Y) = \operatorname{Var}X + \operatorname{Var}Y\); for dependent ones a covariance term \(2\operatorname{Cov}(X,Y)\) is added. Variance enters in two places: the time a fair game takes to reach a target (Chapter 8), and the confidence intervals of every simulated number (Chapter 9).</p>
+
+  <h2>2.3 Fair games and martingales</h2>
+  <p>A sequence of account balances \(X_0, X_1, X_2, \dots\) (one per trade, or per instant) is a <em>martingale</em> if, given everything known at step \(n\), the expected next value is the current one:</p>
+  $$\mathbb{E}[X_{n+1} \mid X_0,\dots,X_n] = X_n .$$
+  <p>"Zero skill" means exactly this for the account balance before costs: no rule for choosing direction, size or timing can make the expected next balance higher than the current one, because the price itself is a martingale and the balance is a sum of positions times price changes. With costs, the expected next balance is <em>lower</em> by the cost: the balance is a <em>supermartingale</em>.</p>
+
+  <h2>2.4 Stopping times and the optional stopping theorem</h2>
+  <p>A <em>stopping time</em> \(\tau\) is a rule for when to stop that uses only information available at the time: "stop when the balance first reaches the target or the floor" is one; "stop the day before the price falls" is not. The <em>optional stopping theorem</em> says that for a martingale and a stopping time that is almost surely finite, with the martingale bounded up to \(\tau\) (true here: the balance lives between the floor and the target),</p>
+  $$\mathbb{E}[X_\tau] = X_0 .$$
+  <p>No stopping rule turns a fair game into a profitable one. This single theorem gives the pass probability (Chapter 5), the win probability of a bracket (Chapter 4) and the funded account's value (Chapter 7).</p>
+
+  <h2>2.5 Wald's identity</h2>
+  <p>If each step adds an amount with mean \(\mu\) (the same every step) and \(\tau\) is a stopping time with finite mean, then the total gained by time \(\tau\) has mean</p>
+  $$\mathbb{E}[X_\tau - X_0] = \mu\,\mathbb{E}[\tau].$$
+  <p>It converts a known final distribution into an expected number of steps: it gives the expected number of trades in a phase when trades cost money (Chapter 5).</p>
+
+  <h2>2.6 Brownian motion</h2>
+  <p>The continuous-time limit of a fair random walk is Brownian motion \(W_t\): it starts at 0, its increments over disjoint intervals are independent, and \(W_{t+h} - W_t\) is normally distributed with mean 0 and variance \(h\). A process \(X_t = \mu t + \sigma W_t\) has drift \(\mu\) and variance \(\sigma^2\) per unit time. Three of its martingales carry most of the analysis:</p>
+  $$X_t - \mu t, \qquad (X_t-\mu t)^2 - \sigma^2 t, \qquad \exp\!\left(-\tfrac{2\mu}{\sigma^2} X_t\right).$$
+  <p>The first is the definition of drift. The second follows because the variance grows linearly in time. The third is the <em>exponential martingale</em>: for \(\lambda = -2\mu/\sigma^2\), Itô's formula gives \(d e^{\lambda X} = e^{\lambda X}(\lambda\mu + \tfrac12\lambda^2\sigma^2)\,dt + (\dots)\,dW\), and the \(dt\) term vanishes exactly when \(\lambda = -2\mu/\sigma^2\).</p>
+
+  <h2>2.7 The reflection principle</h2>
+  <p>For a Brownian path that goes from \(a\) to \(b\) over a time interval with variance \(v\), the chance that it rose above a level \(y \ge \max(a,b)\) somewhere in between is</p>
+  $$\Pr\big(\max \ge y \,\big|\, a \to b\big) = \exp\!\left(-\frac{2(y-a)(y-b)}{v}\right).$$
+  <p>Reflect the path at its first touch of \(y\): every path that touches \(y\) and ends at \(b\) corresponds one-to-one to a path that ends at \(2y-b\), whose density relative to ending at \(b\) is the exponential above. This formula is how the simulation draws the highs and lows inside each hour exactly (Chapter 3), so that stops and targets are touched as often as a real continuous price touches them.</p>
+</section>
+
+<!-- 3 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 3</span>
+  <h1>The price model</h1>
+  <h2>3.1 Hourly volatility</h2>
+  <p>Prices are modelled in logarithms. Over one hour the log price changes by a random amount with mean zero and standard deviation \(\sigma\), the <em>hourly volatility</em>, measured on two years of real hourly bars (Yahoo Finance, 2024&ndash;26, only hours that follow another trading hour):</p>
+  [[SIGMA_TABLE]]
+  <p>Over \(h\) hours the standard deviation grows like \(\sigma\sqrt h\): the Nasdaq moves about [[SIG_DAY]] in a 23-hour trading day. Every stop and target in the plan is expressed in multiples of \(\sigma\), so the same rules fit every market.</p>
+
+  <h2>3.2 Zero drift</h2>
+  <p>The model gives the price no trend at all. This is the zero-skill assumption: whatever direction rule the plan uses, it has no information about the next move. The Nasdaq has risen on average over decades, but that drift is about 0.0025% per hour, roughly a hundredth of the hourly volatility, and the plan is long and short equally often, so it neither helps nor hurts.</p>
+
+  <h2>3.3 Synthetic paths</h2>
+  <p>Results are computed on synthetic price histories built to be exactly fair:</p>
+  <ol>
+    <li>Twelve years of hourly bars per path. Each hour is split into 12 sub-steps of independent normal increments with variance \(\sigma^2/12\), less a correction \(-\sigma^2/24\) per step so that the price itself, not just its logarithm, has zero drift.</li>
+    <li>Within each sub-step the highest and lowest point is drawn from the exact distribution of a Brownian bridge (2.7): with endpoints \(a,b\) and variance \(v\), the maximum is
+    $$\max = \tfrac12\left(a+b+\sqrt{(b-a)^2 - 2v\ln U}\right),\qquad U\sim\text{Uniform}(0,1),$$
+    which is the inverse of the reflection-principle distribution. The minimum is the mirror image.</li>
+    <li>Markets that close at weekends are closed in the path from Friday to Sunday, but the price keeps moving underneath, so Monday can open with a gap.</li>
+    <li>Each path is fixed by its random seed, so any path can be rebuilt exactly. The optimiser searches on paths 21&ndash;24, confirms on 25&ndash;28 and reports final figures on 29&ndash;32 (33&ndash;36 for the one setting re-chosen for robustness), so no reported number is measured on the paths that chose the settings (Chapter 9). Gold, USDJPY and EURUSD accounts use their own independent paths (seed + 50, + 60, + 70), because those markets do not move with the Nasdaq.</li>
+  </ol>
+  <h2>3.4 Real paths</h2>
+  <p>Every final figure is also run on the real 2024&ndash;26 hourly history of its market. One two-year history carries its own trends and calm or wild months, so real-path figures scatter around the synthetic ones by a few hundred dollars a month. They are a check, not the estimate.</p>
+</section>
