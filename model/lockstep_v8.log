@@ -1,0 +1,32 @@
+lockstep_v8.json: 0 accounts ended by the stall detector
+== Tier A: lives=1200 EV/month 25306 ± 947  months 2-12 28756  P(ahead 12m) 0.95  trough p50/p05 [-27534.0, -78984.0]
+== Tier A + B: lives=1200 EV/month 41571 ± 1392  months 2-12 47010  P(ahead 12m) 0.98  trough p50/p05 [-38442.0, -96416.0]
+== Recommended: A + B + one account at each tier-D firm: lives=1200 EV/month 62198 ± 2116  months 2-12 70488  P(ahead 12m) 0.98  trough p50/p05 [-55519.0, -136974.0]
+== Recommended, FTMO as 2 x 200K: lives=1200 EV/month 62198 ± 2116  months 2-12 70488  P(ahead 12m) 0.98  trough p50/p05 [-55519.0, -136974.0]
+== All firms at full caps: lives=1200 EV/month 71913 ± 2563  months 2-12 81604  P(ahead 12m) 0.97  trough p50/p05 [-66194.0, -167373.0]
+== All firms at full caps + The5ers small accounts: lives=1200 EV/month 73526 ± 2623  months 2-12 83441  P(ahead 12m) 0.98  trough p50/p05 [-67774.0, -167929.0]
+== Recommended + futures: lives=1200 EV/month 68223 ± 2442  months 2-12 77346  P(ahead 12m) 0.98  trough p50/p05 [-63832.0, -163748.0]
+lockstep_v8_long.json: 0 accounts ended by the stall detector
+== 36 months: lives=800 EV/month 70059 ± 1515  months 2-12 72383  P(ahead 12m) 0.98  trough p50/p05 [-53058.0, -134156.0]
+months 13-36: 73157.0 open at 12: 168447.0
+lockstep_v8_pairfirms_lives.json: 0 accounts ended by the stall detector
+pairfirms {'n': 200, 'diff': -1699.906965567163, 'ci': 2566.155202704209, 'diff_y1': 595.4553199371453, 'ci_y1': 3296.719205844562, 'full': 74147.23243878517, 'sum_alone': 75847.13940435233}
+lockstep_v8_budget.json: 0 accounts ended by the stall detector
+== budget 5000: lives=200 EV/month 11327 ± 4021  months 2-12 12529  P(ahead 12m) 0.18  trough p50/p05 [-4985.0, -4988.0]
+== budget 10000: lives=200 EV/month 17907 ± 4798  months 2-12 20061  P(ahead 12m) 0.28  trough p50/p05 [-9989.0, -9994.0]
+== budget 20000: lives=200 EV/month 27517 ± 5597  months 2-12 30942  P(ahead 12m) 0.45  trough p50/p05 [-19973.0, -19999.0]
+== budget 30000: lives=200 EV/month 38757 ± 5991  months 2-12 43959  P(ahead 12m) 0.62  trough p50/p05 [-29979.0, -29997.0]
+== budget 50000: lives=200 EV/month 52210 ± 6139  months 2-12 59474  P(ahead 12m) 0.79  trough p50/p05 [-49847.0, -49997.0]
+== budget 75000: lives=200 EV/month 56693 ± 5876  months 2-12 64463  P(ahead 12m) 0.88  trough p50/p05 [-55790.0, -74996.0]
+== budget 100000: lives=200 EV/month 59009 ± 5720  months 2-12 66989  P(ahead 12m) 0.92  trough p50/p05 [-55790.0, -99987.0]
+== budget None: lives=200 EV/month 61227 ± 5422  months 2-12 69409  P(ahead 12m) 0.97  trough p50/p05 [-55790.0, -150311.0]
+lockstep_v8_stress.json: 0 accounts ended by the stall detector
+== cost x1.5: lives=200 EV/month 52910 ± 4996  months 2-12 60615  P(ahead 12m) 0.96  trough p50/p05 [-65999.0, -154009.0]
+== cost x2.0: lives=200 EV/month 44146 ± 5073  months 2-12 51305  P(ahead 12m) 0.93  trough p50/p05 [-68374.0, -182319.0]
+lockstep_v8_corr.json: 0 accounts ended by the stall detector
+== correlation 0.3: lives=200 EV/month 61080 ± 5137  months 2-12 69707  P(ahead 12m) 0.98  trough p50/p05 [-55230.0, -127536.0]
+lockstep_v8_news.json: 0 accounts ended by the stall detector
+== news proxy: lives=200 EV/month 57114 ± 5003  months 2-12 65146  P(ahead 12m) 0.97  trough p50/p05 [-59315.0, -150735.0]
+lockstep_v8_behav.json: 0 accounts ended by the stall detector
+== FundedNext 1% risk: lives=200 EV/month 60002 ± 5454  months 2-12 68034  P(ahead 12m) 0.97  trough p50/p05 [-57366.0, -154286.0]
+== FundedNext 7-day pause: lives=200 EV/month 60842 ± 5454  months 2-12 68952  P(ahead 12m) 0.97  trough p50/p05 [-56358.0, -150311.0]

@@ -1,0 +1,8 @@
+{
+ "python": "3.11.15",
+ "numpy": "2.4.6",
+ "pandas": "3.0.6",
+ "platform": "Linux-6.18.44-fc-v64-x86_64-with-glibc2.39",
+ "note": "results reproduce bit for bit only with these versions (numpy's SeedSequence and Generator streams are stable across numpy >= 1.17, but floating-point sums can differ across platforms)",
+ "playwright": "installed (document build only)"
+}

@@ -1,0 +1,178 @@
+{
+ "key_format": "(path number, number of markets + 1, market group..., years x 1000, sub-steps per hour, rho x 1e6)",
+ "groups": {
+  "US100": 1,
+  "MNQ_fut": 1,
+  "US100free": 1,
+  "XAUUSD": 2,
+  "USDJPY": 3,
+  "EURUSD": 4,
+  "GBPUSD": 5,
+  "US500": 6,
+  "BTC": 7,
+  "ETH": 8
+ },
+ "stages": {
+  "grid (search)": {
+   "streams": 16,
+   "first": [
+    101,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ],
+   "last": [
+    104,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ]
+  },
+  "refine (search)": {
+   "streams": 16,
+   "first": [
+    111,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ],
+   "last": [
+    114,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ]
+  },
+  "final (validation)": {
+   "streams": 64,
+   "first": [
+    121,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ],
+   "last": [
+    136,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ]
+  },
+  "sensitivities": {
+   "streams": 20,
+   "first": [
+    141,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ],
+   "last": [
+    464,
+    2,
+    1,
+    4000,
+    60,
+    0
+   ]
+  },
+  "verification": {
+   "streams": 183,
+   "first": [
+    401,
+    2,
+    1,
+    4000,
+    60,
+    0
+   ],
+   "last": [
+    441,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ]
+  },
+  "rule tests": {
+   "streams": 2,
+   "first": [
+    901,
+    2,
+    1,
+    4000,
+    60,
+    0
+   ],
+   "last": [
+    901,
+    2,
+    1,
+    4000,
+    60,
+    0
+   ]
+  },
+  "portfolios, 12-month lives": {
+   "streams": 5000,
+   "first": [
+    100000,
+    2,
+    1,
+    2000,
+    60,
+    0
+   ],
+   "last": [
+    100199,
+    5,
+    1,
+    2,
+    4,
+    3,
+    2000,
+    60,
+    300000
+   ]
+  },
+  "portfolios, 36-month lives": {
+   "streams": 3200,
+   "first": [
+    300000,
+    2,
+    1,
+    5000,
+    60,
+    0
+   ],
+   "last": [
+    300799,
+    2,
+    1,
+    5000,
+    60,
+    0
+   ]
+  }
+ },
+ "clashes": [],
+ "shared_on_purpose": [
+  "Nasdaq CFD and micro Nasdaq future: one market group (one index path)",
+  "budget, cost, news and behaviour scenarios: lives 100,000-100,199 of the main stage (paired)",
+  "linearity check: lives 300,000-300,199 of the 36-month stage (paired)"
+ ]
+}

@@ -63,11 +63,27 @@ def hourly_sigma(nm):
     _, rd, _ = load_aligned([nm])
     return rd[nm]["sig"]
 
-def load_synth(names, rho, years=12, sub=12, seed=11):
-    """zero-drift correlated log random walks with each instrument's real hourly sigma.
-    Non-crypto markets are closed at weekends (the price keeps moving, so Monday can gap)."""
+# random-number streams (version 8): every path is drawn from its own stream, keyed by the path number, the market
+# group, the length, the sub-step count and the correlation, so two paths share random numbers only if every key matches.
+# Version 7 seeded numpy with the path number alone and gave other markets offset numbers (+50, +60, +70), so a gold
+# path could reuse the random numbers of a yen path with another number (review of version 7, finding 14).
+# The Nasdaq CFD and the micro Nasdaq future are one market group: they follow the same index path.
+MARKET_GROUP = {"US100": 1, "MNQ_fut": 1, "US100free": 1, "XAUUSD": 2, "USDJPY": 3, "EURUSD": 4, "GBPUSD": 5,
+                "US500": 6, "BTC": 7, "ETH": 8}
+STREAM_LOG = []          # (seed, group key, years, sub, rho) of every path built in this process (stream manifest)
+
+def stream_key(names, rho, years, sub, seed):
+    g = [MARKET_GROUP.get(nm, 100 + sum(map(ord, nm))) for nm in names]
+    return [int(seed), 1 + len(g)] + g + [int(round(years * 1000)), int(sub), int(round(rho * 1e6))]
+
+def load_synth(names, rho, years=12, sub=60, seed=11):
+    """correlated random walks of the log price with each instrument's real hourly sigma and drift -sigma^2/2 per hour,
+    so that the price itself is a martingale (zero expected change: the zero-skill model of 3.2).
+    Non-crypto markets are closed at weekends (the price keeps moving, so Monday can gap).
+    sub sub-steps per hour (version 8: 60, one minute each; version 7: 12)."""
     idx = pd.date_range("2030-01-01", periods=int(years * 365.25 * 24), freq="h", tz="UTC")
-    n = len(idx); k = len(names); rs = np.random.default_rng(seed)
+    key = stream_key(names, rho, years, sub, seed); STREAM_LOG.append(tuple(key))
+    n = len(idx); k = len(names); rs = np.random.default_rng(np.random.SeedSequence(key))
     cov = np.full((k, k), rho) + (1 - rho) * np.eye(k)
     Lc = np.linalg.cholesky(cov)
     z = rs.standard_normal((n * sub, k)) @ Lc.T
@@ -76,8 +92,11 @@ def load_synth(names, rho, years=12, sub=12, seed=11):
         sig = hourly_sigma(nm)
         inc = z[:, j] * sig / math.sqrt(sub) - 0.5 * sig * sig / sub
         lp = np.concatenate([[0.0], np.cumsum(inc)])
-        # exact continuous-path extremes between sample points (Brownian bridge), so stops are
-        # 'monitored continuously' as real stop orders are
+        # the maximum and the minimum of the Brownian bridge between two sample points, each drawn from its exact
+        # marginal law, independently of each other. The joint law differs only through the chance that one sub-step's
+        # path spans both a stop and a target: at most exp(-W^2 / v) per sub-step for a bracket of width W, i.e.
+        # exp(-60 m^2) for a stop of m hourly sd with one-minute sub-steps (below 5e-10 for m >= 0.6); verify_v8
+        # adds this bound up over every simulated trade
         a, b = lp[:-1], lp[1:]; v = sig * sig / sub
         hi = 0.5 * (a + b + np.sqrt((b - a) ** 2 - 2 * v * np.log(rs.random(len(a)))))
         lo = 0.5 * (a + b - np.sqrt((b - a) ** 2 - 2 * v * np.log(rs.random(len(a)))))
@@ -89,8 +108,9 @@ def load_synth(names, rho, years=12, sub=12, seed=11):
         data[nm] = _finish(idx, nm, O, H, L, C, sig)
         # the sub-step extremes, in time order inside each hour: used to decide which of a stop and a target that
         # are both touched within one hourly bar was touched first (version 6; before, a fair coin decided)
-        data[nm]["sH"] = (100.0 * np.exp(hi)).astype(np.float32); data[nm]["sL"] = (100.0 * np.exp(lo)).astype(np.float32)
+        data[nm]["sH"] = 100.0 * np.exp(hi); data[nm]["sL"] = 100.0 * np.exp(lo)      # float64: exactly the hourly H/L
         data[nm]["sub"] = sub
+        data[nm]["norm"] = True                  # normalised to 100 at the start (futures: see pathfirm.contract_value)
     day = pd.factorize(idx.tz_convert("Europe/Prague").normalize())[0]
     return idx, data, day
 

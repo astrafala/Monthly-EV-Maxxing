@@ -4,3 +4,7 @@ __pycache__/
 *.pyc
 *.png
 model/*.pdf
+
+# pipeline stage markers and checkpoints (local state of an interrupted run)
+model/stage_v*_*.done
+model/*.partial

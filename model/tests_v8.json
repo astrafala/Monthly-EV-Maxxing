@@ -1,0 +1,58 @@
+{
+ "dll_rel": {
+  "ok": true,
+  "info": "FundingPips at $94,000: allowance $3,760"
+ },
+ "dll_fixed": {
+  "ok": true,
+  "info": "Blue Guardian: $4,000 at any balance"
+ },
+ "dll_min": {
+  "ok": true,
+  "info": "FunderPro: the stricter of the two"
+ },
+ "terminal_floor": {
+  "ok": true,
+  "info": "163 phase-1 failures; largest end P&L -10000.00 (floor -10000); the engine clamps losses at the floor"
+ },
+ "gap_rule": {
+  "ok": true,
+  "info": "10382 consecutive trades: shortest time from an exit to the next entry 10 minutes"
+ },
+ "gap_resolver": {
+  "ok": true,
+  "info": "402 of 3000 brackets exited after minute 50 and got the extra hour"
+ },
+ "target_distance": {
+  "ok": true,
+  "info": "10682 trades, 0 with a take-profit closer than 0.6 sd"
+ },
+ "filler_calendar": {
+  "ok": true,
+  "info": "target reached on a Friday: filler days [3, 1] days later (Monday, Tuesday)"
+ },
+ "payout_clock_alpha_maven": {
+  "ok": true,
+  "info": "207 first payouts checked (clock from the first trade; Alpha's 5 days; Maven's caps): 0 violations {}"
+ },
+ "futures_price": {
+  "ok": true,
+  "info": "contract value x1.169 where the price is x1.169; at the start $62,140 per 100% move"
+ },
+ "streams": {
+  "ok": true,
+  "info": "keys differ; hourly-return correlation -0.030"
+ },
+ "day_limits": {
+  "ok": true,
+  "info": "28,833 account-days of 16 programmes, days from each trade's entry: largest day loss beyond the firm's allowance -200.00, largest day profit beyond the plan's 40% cap +0.00, beyond GFT's day cap -600.00 (all must be <= 0)"
+ },
+ "fxify_best_day": {
+  "ok": true,
+  "info": "89 FXIFY payouts: largest best calendar day beyond 25% of the payout -1.00 (must be <= 0)"
+ },
+ "no_stall": {
+  "ok": true,
+  "info": "0 stalled accounts in 1,500 attempts at the settings where small caps meet the minimum target distance"
+ }
+}

@@ -1,0 +1,140 @@
+<!-- 4 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 4</span>
+  <h1>The bracket trade</h1>
+  <p>Every trade in the plan is a <em>bracket</em>: one position with a stop-loss and a take-profit attached the moment it opens, never moved, and closed at the latest at 20:00 UTC the same day.</p>
+
+  <h2>4.1 Set-up</h2>
+  <p>Open a long position at price \(e\) with notional \(N\) dollars (a short is the mirror image), stop a fraction \(s\) below the entry and target a fraction \(u\) above. The plan fixes three things and derives the rest:</p>
+  <ul>
+    <li>the <strong>risk</strong> \(l\): what a stopped trade loses before costs. Normally \(l = L\) (1&ndash;1.75% of the account, searched in Chapter 9), but never more than the room left, net of the trade's own cost (5.4);</li>
+    <li>the <strong>stop distance</strong> \(s = m\sigma\): \(m\) hourly standard deviations;</li>
+    <li>the <strong>win</strong> \(w\) the trade nets after costs if it reaches its target: \(w = \min\big(\max(\min(k\,l,\ \text{distance to the target}),\ w_{\min}),\ \text{caps}\big)\), where \(k\) is the reward-to-risk setting, the caps are the plan's 40% concentration policy (6.7) and any firm cap, and \(w_{\min} = l\,(0.6/m - \rho)\) keeps the take-profit at least 0.6 hourly standard deviations from the entry (a target closer than that is reached a little past it). If a cap leaves less than \(w_{\min}\): with nothing made yet that day, the risk is lowered until the cap is a full minimum-distance win (a small payout target, Maven's ceiling), never below one futures contract; with profit already made that day, no further trade until tomorrow.</li>
+  </ul>
+  <div class="formula"><span class="lbl">Position and target</span>
+  $$N = \frac{l}{s}, \qquad N u - c = w \;\Rightarrow\; u = \frac{s\,(w+c)}{l}.$$
+  </div>
+  <p>A win pays \(+w\) and a loss costs \(-(l+c)\), where \(c = \kappa N\) is the round-trip cost (spread, commission, slippage allowance) of this position.</p>
+
+  <h2>4.2 The win probability</h2>
+  <p>The price is a martingale and the trade ends at the first touch of the stop or the target. If nothing else can end it and fills are exact, the exit price is bounded, so optional stopping (2.4) gives \(p\,e(1+u) + (1-p)\,e(1-s) = e\), i.e. \(p = s/(s+u)\):</p>
+  <div class="formula"><span class="lbl">Win probability of a zero-skill bracket (fixed cost, exact fills)</span>
+  $$p = \frac{l}{l + w + c} = \frac{1}{1 + w/l + c/l}.$$
+  </div>
+
+  <h2>4.3 The mean and the variance of one trade</h2>
+  <p>With outcomes \(+w\) (probability \(p\)) and \(-(l+c)\):</p>
+  $$\mathbb{E}[\text{pnl}] = p\,w - (1-p)(l+c) = \frac{l\,w - (w+c)(l+c)}{l+w+c} = -c,$$
+  $$\operatorname{Var}(\text{pnl}) = p\,(w+c)^2 + (1-p)\,l^2 = l\,(w+c).$$
+  <p>These hold for the binary trade of 4.2 with a cost known at entry. Two things in the plan make some outcomes non-binary. A trade still open at 20:00 UTC is closed at that hour's price, somewhere between stop and target; the price is still a martingale and the closing time a bounded stopping time, so the mean is still \(-c\), but the variance is smaller and the distribution has three parts. And a price that gaps through a level fills at the gap. The engine simulates both; the chain of Chapter 5 uses the binary trade.</p>
+
+  <h2>4.4 What a trade costs</h2>
+  <p>The round-trip cost is a fraction \(\kappa\) of the notional, so per dollar of risk</p>
+  $$\rho \equiv \frac{c}{l} = \frac{\kappa N}{l} = \frac{\kappa}{m\sigma}.$$
+  [[COST_TABLE]]
+  <p>Version 6 held winning trades through nights and paid overnight financing \(\varphi N\) per rollover, a cost that is random (it depends on how long the trade lasts) and was not in the formulas. Versions 7 and 8 hold no position through a daily reset (6.5), so there is no financing to add, and \(\rho\) is the whole cost.</p>
+
+  <h2>4.5 The plan's trade on the Nasdaq, worked through</h2>
+  [[TRADE_EXAMPLE]]
+
+  <h2>4.6 Ways a simulation can flatter a trade</h2>
+  <ol>
+    <li><strong>Skipping the entry bar.</strong> Checking levels only from the next hour ignores stop-outs inside the entry hour. (Measured in version 4: +0.14 R per trade, all fake.)</li>
+    <li><strong>Sampling prices too rarely.</strong> A few prices an hour miss touches in between, and the nearer level (the stop) is missed more often. The bridge extremes of 3.3 remove it.</li>
+    <li><strong>Ties inside one bar.</strong> When one bar's range contains both levels, the bar alone does not say which came first. Version 5 used the fair chance; versions 6 and 7 replay five-minute sub-steps; version 8 replays one-minute sub-steps, and the remaining error is bounded in 3.3.</li>
+    <li><strong>Gaps.</strong> A price that opens beyond the stop fills at the open. Under the daily flat there is no overnight or weekend position to gap.</li>
+    <li><strong>A rounding error at the target.</strong> A win sized to close the gap to the target lands a few billionths of a dollar short in floating point; version 6's exact comparison then placed a pointless extra trade (risking $1,500 to make $1). Since version 7 the engine compares with a one-cent tolerance.</li>
+    <li><strong>Re-entering at once.</strong> Checking only whole hours lets a trade close at 12:59 and the next open at 13:00. The engine uses the exit minute and waits at least 10 minutes (10.4).</li>
+  </ol>
+</section>
+
+<!-- 5 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 5</span>
+  <h1>Reaching a target before a floor</h1>
+  <p>A phase is passed when the balance gains \(A\) before it loses \(B\): the gambler's ruin. This chapter solves it in an idealised model, then exactly for the plan's actual rule.</p>
+
+  <h2>5.1 The idealised model: \(P = B/(A+B)\)</h2>
+  <p>Let \(X_n\) be the balance after \(n\) trades, a martingale with \(X_0 = 0\), and \(\tau\) the first time it reaches \(+A\) or \(-B\). <em>If</em> every trade is sized so the balance lands exactly on one of the two, \(X_\tau\) is \(+A\) with probability \(P\) and \(-B\) otherwise, and optional stopping gives</p>
+  $$0 = \mathbb{E}[X_\tau] = P\,A - (1-P)\,B \;\;\Rightarrow\;\; P = \frac{B}{A+B}.$$
+  <p>The exact-landing assumption is what this formula needs. Under the plan's rule every failure does end exactly on the floor (5.4), but a pass can end a little above the target (the minimum target distance of 4.1 and the $20 filler margin of 6.3), so the formula is the benchmark and 5.5 gives the exact value.</p>
+
+  <h2>5.2 With costs, approximately: the Brownian formula</h2>
+  <p>Treat the balance as a Brownian motion with drift \(-c\) and variance \(v = l(w+c)\) per trade. By 2.6, \(e^{\theta X}\) with \(\theta = 2c/v\) is a martingale, and optional stopping gives</p>
+  <div class="formula"><span class="lbl">Pass probability with costs (Brownian approximation)</span>
+  $$P \approx \frac{e^{\theta B} - 1}{e^{\theta (A+B)} - 1}, \qquad \theta = \frac{2c}{v} = \frac{2\rho}{l\,(w/l + \rho)},\qquad P \approx \frac{B}{A+B}\left(1 - \frac{c\,A}{v}\right).$$
+  </div>
+  <p>This is accurate when each trade is small next to \(A\) and \(B\) and its size does not change. The plan's trades are capped (40% of the target), shrink near the floor and the daily limit, and jump: the exact chain of 5.5 is used instead, and the Brownian value is shown only for comparison.</p>
+
+  <h2>5.3 How many trades, approximately</h2>
+  <p>With a constant trade, \((X_n)^2 - n v\) is a martingale before costs, so \(\mathbb{E}[\tau] = \mathbb{E}[X_\tau^2]/v = AB/v\) in the idealised model. With trades that change size the relevant quantity is the accumulated variance \(\sum_n v(X_n)\), not \(v\) times the count; the chain computes the expected count exactly.</p>
+
+  <h2>5.4 The plan's rule near the floor</h2>
+  <p>Version 6's written rule could leave an account a few dollars above its floor with no trade ever allowed. Version 7 ended the attempt there and bought a replacement; but an account that has not breached is still open, and at firms with a per-person limit (FTMO's $400,000, FXIFY's one account per size) it may still count against it. Version 8 ends every account in a way the firm records: a breach. At a balance \(x\) (relative to the start), with floor \(-B\), buffer \(b\) ($100 per $100K) and the cost per dollar of risk \(\rho\):</p>
+  <div class="formula"><span class="lbl">Risk of the next trade, and the terminal trade</span>
+  $$\text{room}(x) = \frac{x + B - b}{1+\rho}, \qquad l(x) = \min\big(L,\ \text{room}(x),\ \text{today's room},\ \text{margin room}\big) \quad\text{if room}(x) \ge l_{\min} = \max(0.1\,L,\ \text{one futures contract}),$$
+  $$\text{otherwise (the terminal trade):}\quad l(x) = \min\Big(\frac{x + B}{1+\rho},\ \text{today's room}\Big)\ \text{(at least the smallest lot; one contract on futures), with its stop at the floor itself.}$$
+  </div>
+  <p>On futures \(L\) in the first line is at least one contract: where one contract at the planned stop risks more than \(L\), the plan trades one contract if the rooms allow it (Appendix A, n11).</p>
+  <p>A normal trade loses at most \(l(1+\rho) \le x + B - b\), so it never reaches the floor. A terminal trade is an ordinary bracket at the plan's reward:risk, small (under a tenth of the normal risk), whose stop sits at the floor: a loss ends the account in a breach, which the firm closes, freeing the allocation; a win continues it, and the account returns to normal trades once the room allows. So every failure ends exactly at \(-B\), the text, the engine and the chain follow the same rule, and no account is left open and unused. (When only today's room is too small, the account waits for tomorrow; today's room resets, the static room does not.)</p>
+
+  <h2>5.5 The exact chain</h2>
+  <p>The balance after each trade is a Markov chain on \([-B, A]\), plus a small overshoot above \(A\). At \(x\) the next trade has risk \(l(x)\) as in 5.4, win \(w(x) = \min(\max(\min(k\,l,\ A - x),\ w_{\min},\ \$1),\ \text{cap})\) (4.1), cost \(c(x) = \rho\,l(x)\) and win chance \(p(x) = l/(l + w + c)\), and moves to \(x + w\) (a pass if \(x + w \ge A\), possibly above \(A\)) or to \(\max(x - l - c, -B)\) (a failure at \(-B\) after a terminal trade). Four functions solve the same recursion with different end values:</p>
+  <div class="formula"><span class="lbl">One step of the exact chain</span>
+  $$V(x) = p\,V(x+w) + (1-p)\,V(x-l-c), \qquad V = 1 \text{ from } A \text{ up},\ 0 \text{ at } -B,$$
+  $$N(x) = 1 + p\,N(x+w) + (1-p)\,N(x-l-c), \qquad K(x) = c(x) + p\,K(x+w) + (1-p)\,K(x-l-c),$$
+  $$T(x) = p\,T(x+w) + (1-p)\,T(x-l-c), \qquad T = \text{the balance where the attempt ends}.$$
+  </div>
+  <p>\(V\) is the pass probability, \(N\) the expected number of trades, \(K\) the expected total cost and \(T\) the expected final balance. They are solved by value iteration on a grid of about 8,000 points (analytic_v8.py). Because every trade's conditional mean is exactly minus its own cost (4.3), the stopped balance is bounded and the number of trades has finite mean, optional stopping (2.4, 2.5) gives the accounting identity, which the solver checks:</p>
+  <div class="formula"><span class="lbl">The accounting identity, exact</span>
+  $$P\,\mathbb{E}[X_{\text{end}} \mid \text{pass}] + (1-P)\,\mathbb{E}[X_{\text{end}} \mid \text{fail}] = -K(0), \qquad\text{and with every failure at } -B:\quad P = \frac{B - K(0)}{\mathbb{E}[X_{\text{end}} \mid \text{pass}] + B}.$$
+  </div>
+  <p>The textbook form \(P = (B - K)/(A+B)\) is the special case where every pass ends exactly at \(A\). Under the plan's rule a pass ends a little above \(A\), so the textbook form overstates \(P\) slightly ([[TEXTBOOK_DIFF]] over the chosen programmes).</p>
+  [[PHASE_EXAMPLE]]
+
+  <h2>5.6 Bold play, and why the plan does not use it</h2>
+  <p>Each trade costs \(c\) on average, so a phase's pass probability falls with its expected total cost (5.5). The way to pay the least cost is to need the fewest trades: stake enough to reach the target in one win. This is <em>bold play</em>, which Dubins and Savage (1965) proved optimal for reaching a goal in a fair or slightly unfavourable game. Version 6's search found it: left free, every programme moved to \(k\) of 20&ndash;30 and payout cycles of 25&ndash;30% of the account, so that a single trade could pass a phase or fill a payout.</p>
+  <p>Version 7 gave that up, deliberately, and version 8 keeps it so. Several firms forbid exactly this behaviour: Fintokei forbids reaching a target "in one or a few identical trades", The5ers bans "one-trade target attainment" permanently, Alpha forbids "all or nothing" trading, FundingPips' Profit Concentration Policy reacts to one trade idea above 60% of a target, and FundedNext, Hola Prime, FTMO and FXIFY reserve the right to treat concentrated outcomes as gambling. The plan therefore caps every trade and every day at 40% of the current target (6.7), so that every phase takes at least three winning days (a payout taken on its date before the target can rest on fewer, 6.7). Under that cap one win can never end a phase, the product formula for bold play (the chance of passing as a sequence of all-or-nothing trades) never applies, and the chain of 5.5 is the exact value.</p>
+  <p>For reference, the bold product formula, \(P = \sum_j p_j \prod_{i&lt;j}(1-p_i)\) with \(x_{j+1} = x_j - l_j - c_j\), is exact only if <em>every</em> possible win ends the phase, i.e. \(k\,l(x_j) \ge A - x_j\) at every state on the all-loss path; \(k L \ge A + B\) is not enough, because \(l(x)\) shrinks near the floor. Version 6's tables printed wins of \(A - x_j\) even where \(k\,l(x_j)\) was smaller; those rows described trades the plan would not place.</p>
+  [[BOLD_EXAMPLE]]
+</section>
+
+<!-- 6 -->
+<section class="chapter">
+  <span class="eyebrow">Chapter 6</span>
+  <h1>The evaluation in full</h1>
+
+  <h2>6.1 Two phases</h2>
+  <p>Always, \(\Pr(\text{pass both}) = P_1 \cdot \Pr(\text{pass 2} \mid \text{passed 1})\). In the simulation's model the second phase starts on a fresh account and its trades are independent of the first's, so the conditional probability equals the unconditional \(P_2\) and the product \(P_1P_2\) holds. On real markets a volatile month that carries from one phase into the next could link them; zero edge alone does not rule that out, and the product is a model statement, not a theorem about markets. The engine simulates the two phases in sequence on one path, so whatever its path carries over is included.</p>
+  <p>Version 6 also said that putting the larger target first saves time and cost. It does not in general: with the Brownian trade count of 5.3 and targets \(A, C\) over a common \(B\), the expected number of trades is \(AB/v + \frac{B}{A+B}\cdot CB/v\), which for \(A = 10{,}000\), \(C = 5{,}000\), \(B = 10{,}000\) and \(v = 1{,}500^2 \times 5\) is 11.11 trades, against 10.37 with the targets reversed. The claim is withdrawn.</p>
+
+  <h2>6.2 The daily loss limit</h2>
+  <p>Most firms add a floor that is reset every day: the account may not fall more than \(d\) below a reference level fixed at the reset. Firms fix that level differently:</p>
+  [[DLL_TABLE]]
+  <p>Two things differ by firm: the <em>reference</em> fixed at the reset (balance, equity, the higher of the two, the previous day's close) and the <em>base</em> of the percentage. At FTMO, FundedNext, BrightFunded and Blue Guardian the allowance is a fixed share of the initial balance, subtracted from the day's reference. At FundingPips, The5ers, FXIFY, GFT, Hola Prime, Maven, Alpha Capital and Fintokei it is the same share of the day's reference itself: The5ers' own example is a $100,000 account at $110,000 of equity at the reset, whose loss allowance for the day becomes $5,500; a FundingPips account starting a day at $94,000 has $3,760, not $4,000. FunderPro says only that its 5% is balance-based at the start of the day; the engine takes the stricter of the two bases there. Version 7 used the initial balance at every firm except Fintokei, and its response said that being flat at the reset made the engine's limit the firm's. Being flat makes balance and equity equal at the reset; it does not change the base. Version 8 recomputes each firm's allowance at every reset with its own base (acct_mc._dll_at).</p>
+  <p>With an open position at the reset, an equity-based or higher-of reference rises with the open profit, and a smooth reversal can then break the day's limit with no gap at all. The plan is flat at every reset (6.5), so the reference is the balance. Within the day, every trade's risk plus its cost fits the room left (5.4); after two or three losses the account waits for the next day.</p>
+
+  <h2>6.3 Minimum trading days: the joint condition</h2>
+  <p>FTMO (4), FundedNext (5), BrightFunded (5), FXIFY Classic (4), FunderPro Classic (4), Alpha (3), Hola Prime (3) and Fintokei (3) require days with at least one trade in each phase; Fintokei also before every payout, and Alpha five before its first. A phase is passed when the target is met <em>and</em> the days are complete. If the target is reached first, the plan stops trading the strategy and places one minimal filler trade (smallest lot, held at least 2 minutes, stop at most $3 per $100K) on each of the next trading days not yet traded, found on the market's real calendar (version 7 added 1.4 calendar days per missing day, an average: a target reached on a Friday needs its next filler on Monday). The target the engine trades to is the firm's target plus $20 per $100K, and at most five fillers with stops of $3 cannot take the balance back under the firm's target unless a price gaps through a stop. At Alpha's funded accounts minimal-lot fillers are not allowed; there the plan places at most one normal trade a day until it has five trading days. Fillers are not used where a rule counts <em>profitable</em> days (6.4).</p>
+
+  <h2>6.4 Profitable-day rules</h2>
+  <p>The5ers, Maven, Blue Guardian, GFT (whose days count only with +0.5%) and FundingPips' 95% option require days with at least +0.5% profit in each phase; FundingPips' 95% option, GFT (4), Hola Prime, Maven and, in its stricter reading, Blue Guardian also in each payout cycle. (Version 7 also applied +0.5% to Fintokei, whose rule counts any trading day.) While such days are missing, the plan trades normally until the day's profit reaches</p>
+  $$g_{\text{today}} = \max\!\left(0.55\%\,S,\; \frac{\text{distance left to the target}}{\text{profitable days still needed}}\right)$$
+  <p>and then stops for the day; every trade is a full fair bracket whose take-profit is capped at what is left of today's target (but never closer than the minimum distance of 4.1). Stopping at a daily target is a stopping time, so in a cost-free fair game the pass probability is unchanged; with costs, every extra trade costs \(c\), so these rules lower the value as well as stretching the time. The engine measures their effect in every programme's chapter. Under Maven's funded ceiling (profit kept at or below $4,900, 7.4) the plan also keeps room for the days still needed: every win leaves 0.55% of the account below the ceiling for each profitable day still needed after today, and for today as well if the win would leave today short of +0.5%; otherwise it is cut, or the plan waits for tomorrow. Without that reserve an account can reach the ceiling a profitable day short and never be paid (Appendix A, n10).</p>
+
+  <h2>6.5 The daily flat, weekends and news</h2>
+  <p>The plan opens no position from 19:00 UTC and closes every position at the 20:00 UTC open, every weekday. Every daily reset in the plan falls between 20:00 and 00:00 UTC (FTMO and BrightFunded near midnight Prague time, GFT and Blue Guardian at 5 pm New York, Fintokei and Maven at 00:00 UTC), so the account is flat at each of them. This also removes overnight financing, overnight and weekend gaps, and the widened spreads of the daily break. The cost is time: a trade still open at 20:00 is closed between its stop and its target (a fair outcome) and the next one waits until the next day's open. Such a trade is decided at that open, with that day's loss allowance and caps: every daily figure in the engine (loss, profit, profitable and trading days) belongs to the day a trade opens, and a payout requested during a day does not restart that day's caps (Appendix A, n12 and n13).</p>
+  <p><strong>News.</strong> Restricted news windows differ by firm (Maven: no opening or closing within 2 minutes of a red-folder release, in evaluations too; FundingPips: profits from 5 minutes before to 5 minutes after may be deducted; FTMO funded: no new orders within 2 minutes; FundedNext: 40% of news profit counted on funded accounts). A bracket opened earlier can still reach its stop or target inside a window. The plan closes positions before any release that a firm restricts for the account's stage and market (US, euro-area and Japanese releases alike) and opens nothing until the window has passed. The engine has no news calendar, so the headline is a model without news restrictions. Chapter [[CH_LOCK]] runs a stylised news-hours sensitivity in which every account is flat from 12:00 to 14:00 UTC (and 08:00 to 09:00 on EURUSD) every weekday; it is a scenario, not a bound: those hours do not contain every restricted release, and removing trading hours has no proven one-way effect on cash per month (it changes which trades happen, when days qualify and when payouts fall).</p>
+
+  <h2>6.6 Review time</h2>
+  <p>Firms take one to three working days to check a passed phase and issue the next account. The engine adds one day after phase 1 and the firm's stated time after phase 2.</p>
+
+  <h2>6.7 The concentration policy</h2>
+  <p>On every account the plan caps the win of every trade at 40% of the current target (the phase target in an evaluation, the payout target on a funded account), and stops for the day once the day's profit reaches 40% of that target. Three consequences follow:</p>
+  <ul>
+    <li>every phase needs at least three winning days, so no pass rests on one trade or one day. A funded cycle that reaches its target needs three too, but a payout taken on its date before the target can rest on fewer: where a firm requires profitable days per payout, that is a rule of the programme (6.4), not a consequence of the cap;</li>
+    <li>FundingPips' Profit Concentration Policy (60% of a phase target from one trade idea) can never trigger, and FXIFY's 25% best-day rule is met by its own tighter cap;</li>
+    <li>the effective reward-to-risk is capped: in phase 2 of a 5% target on 100K a win is at most $2,000, so at 1.75% risk at most 1.14 : 1. The search (Chapter 9) therefore covers smaller \(k\) and the risk per trade.</li>
+  </ul>
+  <p>Chapter 9 measures what the policy costs against the uncapped strategy of version 6, programme by programme.</p>
+</section>

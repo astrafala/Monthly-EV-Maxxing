@@ -12,6 +12,10 @@ import json, math, random
 
 DAY = 24.0
 PAYLOG = None      # if a list, run_funded appends (clock_hours, cash) for every payout
+TRADELOG = None    # if a list, every trade appends (stage, entry clock, balance before, pnl) (rule tests)
+STUCK = [0]        # accounts ended because nothing could happen for STALL_DAYS (should stay 0: a check, not a rule)
+STALL_DAYS = 120
+STUCK_INFO = []     # (stage, state) of each stalled account, for diagnosis
 
 def firm_defs(size=100_000):
     K = size / 100_000
@@ -106,10 +110,76 @@ class Trader:
         return (w if self.rng.random() < p else -l), hrs
 
 
+def _dll_at(dll, mode, size, day_ref):
+    """today's loss allowance. 'fixed': a share of the initial balance (FTMO, FundedNext, BrightFunded, Blue Guardian);
+    'rel': the same share of the day's starting balance (FundingPips, The5ers, FXIFY, GFT, Hola Prime, Maven, Alpha
+    Capital, Fintokei); 'min': the smaller of the two, where the firm's wording does not settle it (FunderPro). The plan
+    is flat at every reset, so the day's starting balance is also its starting equity. (Version 7 used 'fixed' for every
+    firm but Fintokei: review of version 7, finding 1.)"""
+    if not dll: return None
+    f = (size + day_ref) / size
+    if mode == "rel": return dll * f
+    if mode == "min": return dll * min(1.0, f)
+    return dll
+
+def _mode(st):
+    return st.get("dll_mode") or ("rel" if st.get("dll_rel") else "fixed")
+
+def _next_entry(tr, clock, fw):
+    """when the next trade would open (the market's entry hours, the daily cut-off, weekends, blocked news hours). Every
+    trade is decided on the day it opens, with that day's limits and caps: version 8's first engine decided a trade after
+    the cut-off or on a weekend with the previous day's figures and booked its result there, so the next day's daily
+    loss allowance and profit caps restarted after it (version 8, n12)"""
+    return tr.next_entry(clock, fw) if hasattr(tr, "next_entry") else clock
+
+def _lmin(tr, clock, fw):
+    """smallest real trade: a tenth of the planned risk, or one whole futures contract at the next entry's price"""
+    lm = tr.lmin_at(clock, fw) if hasattr(tr, "lmin_at") else getattr(tr, "min_l", 0.0)
+    return max(0.1 * tr.L, lm), lm
+
+def _risk(tr, x, floor, room_day, lmin, lc, bs, rho, max_rule):
+    """(risk, terminal) for the next trade, or (None, False) to wait for tomorrow.
+    Normal: l = min(L, room above floor + buffer, today's room) net of cost. Terminal (version 8): when the room above the
+    floor is below a real trade, the plan trades the rest - stop at the floor itself - so the account either recovers or
+    ends in a breach that closes it and frees its allocation (version 7 stopped trading it, which leaves the account open
+    and its allocation taken: review of version 7, finding 12)."""
+    room_floor = (x - floor - 100.0 * bs) / (1.0 + rho)
+    if room_floor >= lmin:
+        # futures: never less than one contract - where one contract at the planned stop risks more than L (a far higher
+        # index level), the plan trades one contract if the rooms allow it (version 8, n11)
+        l = min(max(tr.L, lc), room_floor, room_day, max_rule or 1e18)
+        return (l, False) if l >= lmin else (None, False)
+    room0 = (x - floor) / (1.0 + rho)               # the stop sits at the floor: a loss ends the account
+    if lc > 0:                                      # futures: one contract (a loss is stopped at the floor by the firm)
+        return (lc, True) if lc <= room_day else (None, False)
+    l = min(room0, room_day)
+    if l < room0 - 1e-9: return (l, True) if l >= 1.0 * bs else (None, False)
+    return max(l, 1.0 * bs), True                   # the smallest lot risks about $1: below that a loss still ends it
+
+def _win(tr, l, plan_cap, rule_cap, bs, fresh=False, lc=0.0):
+    """the win: k l, capped by the plan's own targets (phase or cycle target, the day's profitable-day target) and by the
+    rules' caps (concentration, best day, day caps, Maven's ceiling and rolling cap). The take-profit is never placed closer
+    than WMIN_SD hourly sd to the entry (version 8: Blue Guardian's 2-minute minimum holding time, Alpha's duration rule);
+    above a plan cap that only overshoots the target, but a rule cap below it means no trade now (None)."""
+    wf = getattr(tr, "wmin_frac", 0.0); wmin = wf * l
+    w = min(tr.k * l, plan_cap)
+    w = max(w, wmin, 1.0 * bs)
+    if w > rule_cap:
+        w = rule_cap
+        if w < max(wmin, 0.5 * bs) - 1e-9:
+            # a rule cap below the smallest allowed win with nothing made today (fresh): the cap is structural (a small
+            # payout target, Maven's ceiling), so trade smaller - the risk lowered until the cap is a full minimum-distance
+            # win - rather than never trading; with profit already made today, wait for tomorrow instead. The lower limit
+            # is the market's smallest position (one futures contract, lc); version 8's first draft also refused caps
+            # below half the minimum win, which left Maven accounts at a $2,000 payout target waiting for ever
+            if fresh and wf > 0 and rule_cap >= 1.0 * bs and rule_cap / wf >= lc: return w, rule_cap / wf
+            return None, l
+    return w, l
+
 def run_stage(st, tr, rng, firm, clock, eval_phase=True, fund=None):
     """Evaluation phase. Returns (passed, clock)."""
     A, dd, eod, dll = st["target"], st["dd"], st["eod"], st.get("dll")
-    trail_dll = st.get("dll_trailing", False)
+    trail_dll = st.get("dll_trailing", False); mode = _mode(st)
     best = st.get("best"); cap_day = best * A if best else None
     max_rule = firm.get("max_risk_rule")
     bs = firm.get("buffer_scale", 1.0)                 # safety margins below are in dollars of a 100K account
@@ -117,14 +187,14 @@ def run_stage(st, tr, rng, firm, clock, eval_phase=True, fund=None):
     day = int(clock // DAY); day_ref = 0.0; day_peak = 0.0; day_pnl = 0.0
     days_traded = set(); best_day = 0.0; day_profits = {}
     target = A
-    rho = getattr(tr, "rho", 0.0)                      # round-trip cost per dollar of risk (v7: risk sized net of cost)
-    conc = st.get("conc")                              # v7 concentration policy: no trade and no day above conc x target
+    rho = getattr(tr, "rho", 0.0)                      # round-trip cost per dollar of risk (risk sized net of cost)
+    conc = st.get("conc")                              # concentration policy: no trade and no day above conc x target
     if conc:
         cap_day = conc * A if cap_day is None else min(cap_day, conc * A)
-    if st.get("min_days"):                             # v7: the minimal filler trades must not take the balance under A
+    fw = firm.get("flat_weekend_eval", False)
+    if st.get("min_days"):                             # filler trades (stop <= $3 each, at most 5) cannot take it under A
         target = A + 20.0 * bs
-    t_stage0 = clock
-    lmin = max(0.1 * tr.L, getattr(tr, "min_l", 0.0))  # smallest real trade: 10% of L, or one whole futures contract
+    t_stage0 = clock; t_act = clock
     pdn = st.get("profit_days")                        # (days needed, minimum profit for a day to count)
     def _cap_today():
         if not pdn: return None
@@ -144,85 +214,111 @@ def run_stage(st, tr, rng, firm, clock, eval_phase=True, fund=None):
             if best and day_profits:
                 tot = x; bd = max(day_profits.values())
                 if bd > best * tot + 1e-6:
-                    target = bd / best                      # keep going until the best day is diluted
-                    continue
+                    target = bd / best + 1.0 * bs           # keep going until the best day is diluted ($1 past it,
+                    continue                                # so the next pass trades instead of re-checking at once)
             need = st.get("min_days", 0) - len(days_traded)
-            if need > 0: clock += need * DAY * 7.0 / 5.0   # v7: filler days are weekdays (5 in every 7 calendar days)
+            if need > 0:                                    # filler trades on the next real trading days
+                if hasattr(tr, "filler_days"): clock = tr.filler_days(clock, need, days_traded, fw)
+                else: clock += need * DAY * 7.0 / 5.0
             return True, clock + st.get("review", 1) * DAY
         if x <= floor + 1e-6:
             return False, clock
+        if clock - t_act > STALL_DAYS * DAY:
+            STUCK[0] += 1; STUCK_INFO.append(("stage", dict(x=x, floor=floor, A=A, target=target, days=len(days_traded))))
+            return False, clock
         if st.get("max_days") and clock - t_stage0 > st["max_days"] * DAY:
-            return False, clock                        # v7: evaluation expired (Apex: 30 days)
-        room_floor = (x - floor - 100.0 * bs) / (1.0 + rho)
-        if room_floor < lmin:
-            return False, clock                        # v7: too little room above the floor for a real trade: the attempt ends here
+            return False, clock                        # evaluation expired (Apex: 30 days)
+        te0 = _next_entry(tr, clock, fw)
+        if int(te0 // DAY) != day:                     # the next entry opens on a later day: decide it there (n12)
+            clock = te0; continue
+        lmin, lc = _lmin(tr, clock, fw)
         room_day = 1e18
         if dll:
             ref = day_peak if trail_dll else day_ref
-            dll_now = dll * (1.0 + day_ref / firm["size"]) if st.get("dll_rel") else dll   # Fintokei: % of start-of-day equity
-            room_day = (dll_now - (ref - x) - 200.0 * bs) / (1.0 + rho)
-        room_cap = 1e18
-        if cap_day is not None:
-            room_cap = cap_day - day_pnl
-        if pdn and cap_today is not None:              # profitable-days rule: daily profit target, then stop
-            room_cap = min(room_cap, cap_today - day_pnl)
-        l = min(tr.L, room_floor, room_day, max_rule or 1e18)
-        lev = firm.get("lev")                          # v7: margin = (l / s) / leverage <= 60% of the current balance
-        if lev: l = min(l, lev[2] * lev[0] * tr.s * (firm["size"] + x))
-        if l < lmin:
+            room_day = (_dll_at(dll, mode, firm["size"], day_ref) - (ref - x) - 200.0 * bs) / (1.0 + rho)
+        l, terminal = _risk(tr, x, floor, room_day, lmin, lc, bs, rho, max_rule)
+        lev = firm.get("lev")                          # margin = (l / s) / leverage <= 60% of the current balance
+        if l is not None and lev:
+            l = min(l, lev[2] * lev[0] * tr.s * (firm["size"] + x))
+            if not terminal and l < lmin: l = None
+        if l is None:
             clock = (day + 1) * DAY + 0.01; continue       # today's loss room is used up: wait for tomorrow
-        if room_cap <= 0.5 * bs:
+        rule_cap = 1e18
+        if cap_day is not None: rule_cap = cap_day - day_pnl
+        if conc: rule_cap = min(rule_cap, conc * A)
+        if st.get("max_win"): rule_cap = min(rule_cap, st["max_win"])   # per-trade cap on a win (a firm's rule)
+        if rule_cap <= 0.5 * bs:
             clock = (day + 1) * DAY + 0.01; continue
-        if pdn and cap_today is not None:
-            w = min(tr.k * l, room_cap)                    # profitable days still missing: aim at today's target
+        if pdn and cap_today is not None:               # profitable-days rule: today's profit target, then stop for the day
+            if cap_today - day_pnl <= 0.5 * bs:
+                clock = (day + 1) * DAY + 0.01; continue
+            plan_cap = cap_today - day_pnl
         else:
-            w = min(tr.k * l, target - x, room_cap if cap_day is not None else 1e18)
-        if st.get("max_win"): w = min(w, st["max_win"])      # per-trade cap on a win (e.g. a profit-concentration rule)
-        if conc: w = min(w, conc * A)
-        w = max(w, 1.0 * bs)
+            plan_cap = target - x
+        w, l = _win(tr, l, plan_cap, rule_cap, bs, fresh=day_pnl <= 0, lc=lc)
+        if w is None:
+            clock = (day + 1) * DAY + 0.01; continue
         if st.get("min_rr") and w < st["min_rr"] * l:   # never a trade at a lower reward:risk (Maven's gambling definition)
-            l = max(w / st["min_rr"], lmin); w = max(w, st["min_rr"] * l)
+            l = w / st["min_rr"]
+        tr.last_entry = None
         pnl, h = tr.trade(l, w, clock, firm.get("flat_weekend_eval", False))
+        t_act = clock + h
+        de = int((tr.last_entry if tr.last_entry is not None else clock) // DAY)     # the day the trade was opened
         x += pnl; clock += h; day_pnl += pnl
-        days_traded.add(int((clock - h) // DAY))
+        if TRADELOG is not None: TRADELOG.append(("eval", tr.last_entry if tr.last_entry is not None else clock - h, x - pnl, pnl))
+        days_traded.add(de)
         dk = int(clock // DAY); day_profits[dk] = day_profits.get(dk, 0.0) + pnl
-        if dll and ((day_peak if trail_dll else day_ref) - x) > (dll * (1.0 + day_ref / firm["size"]) if st.get("dll_rel") else dll) + 1e-6:
+        if dll and ((day_peak if trail_dll else day_ref) - x) > _dll_at(dll, mode, firm["size"], day_ref) + 1e-6:
             return False, clock                        # daily loss limit breached (only possible through a gap)
         day_peak = max(day_peak, x)
         if x < floor: x = floor
+    STUCK[0] += 1; STUCK_INFO.append(("stage-loop", dict(x=x, A=A)))
     return False, clock
 
 
 def run_funded(fd, tr, rng, firm, clock, X1, X):
     """Funded stage. Returns (cash_received, clock_end, t_first_payout or None, n_payouts)."""
     dd, eod, dll = fd["dd"], fd["eod"], fd.get("dll")
-    trail_dll = fd.get("dll_trailing", False)
+    trail_dll = fd.get("dll_trailing", False); mode = _mode(fd)
     x = 0.0; H = 0.0; floor = -dd; lock = fd.get("lock")
-    t0 = clock; day = int(clock // DAY); day_ref = 0.0; day_peak = 0.0; day_pnl = 0.0
-    paid = 0.0; npay = 0; tfirst = None; next_pay = t0 + fd["first_payout"] * DAY
+    t0 = clock; day = int(clock // DAY); day_ref = 0.0; day_peak = 0.0; day_pnl = 0.0; day_pnl_c = 0.0
+    # day_pnl: the calendar day's P&L (daily caps and best-day rules; a payout does not reset it); day_pnl_c: the part of
+    # the day since the current payout cycle began (profitable and qualifying days of the cycle; reset at each payout).
+    # Version 8's first engine reset the one counter at a payout, so a day's profit before a mid-day payout escaped the
+    # day caps (GFT's $3,000) and the best-day measures (version 8, n13)
+    paid = 0.0; npay = 0; tfirst = None
+    # version 8: the first payout date counts from the first trade on the funded account (FTMO, FundingPips, Fintokei,
+    # GFT, Alpha Capital, Maven say so; version 7 counted from funding for every firm, review finding 11)
+    next_pay = 1e18 if fd.get("clock_first_trade", True) else t0 + fd["first_payout"] * DAY
     qdays = 0; cyc_best = 0.0; cyc_profit_start = 0.0; refunded = False
-    tbest = fd.get("trade_best"); cyc_tbest = 0.0       # Maven: largest winning trade <= 20% of the profit withdrawn
     dbest_c = 0.0; dbest_e = 0.0                       # best day of this payout cycle / of the account (FXIFY: ever)
     tgt_up = 0.0                                       # raised cycle target when a consistency rule blocks a payout
     caps = fd.get("caps"); maxp = fd.get("max_payouts")
     pdn = fd.get("profit_days"); cyc_pdays = 0          # funded profitable-days rule per payout cycle
+    cdays = fd.get("cycle_days"); cyc_days = set()      # trading days per payout cycle (Fintokei: 3; fillers allowed)
+    first_days = fd.get("first_days"); all_days = set() # trading days before the first payout (Alpha: 5; no fillers)
+    ceiling = fd.get("profit_ceiling")                 # Maven: profit above $5,000 brings in the 50% rule; never exceed it
+    rcap = fd.get("roll_profit_cap"); closed = []      # Maven: $10,000 of closed profit per rolling 30 days (by close date)
     bs = firm.get("buffer_scale", 1.0)
     rho = getattr(tr, "rho", 0.0)
     conc = fd.get("conc")
-    roll = fd.get("roll_cap"); roll_log = []            # (net cap, window days): Maven's $10,000 per rolling 30 days
+    fw = fd.get("flat_weekend", False)
     best_eff = fd.get("best")
-    lmin = max(0.1 * tr.L, getattr(tr, "min_l", 0.0))
     if conc: best_eff = conc if best_eff is None else min(best_eff, conc)
+    minpay = fd.get("min_payout", 0.0)
+    t_act = clock                                      # last trade or payout (stall detector)
     def _fcap():
         if not pdn: return None
         need = pdn[0] - cyc_pdays
         if need <= 0: return None
-        return max(1.1 * pdn[1], ((X1 if npay == 0 else X) - x) / need)
+        T = X1 if npay == 0 else X
+        if ceiling: T = min(T, ceiling)
+        return max(1.1 * pdn[1], (T - x) / need)
     fcap = _fcap()
     for _ in range(400000):
         d = int(clock // DAY)
         if d != day:
-            if pdn and day_pnl >= pdn[1]: cyc_pdays += 1
+            if pdn and day_pnl_c >= pdn[1]: cyc_pdays += 1
             if eod:
                 H = max(H, x)
                 lvl = H - dd
@@ -232,55 +328,53 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
                     lvl = min(lvl, lock) if npay == 0 else lock
                 floor = max(floor, lvl) if not fd.get("reset_on_payout") else lvl
             if fd.get("q_days"):
-                if day_pnl >= fd["q_min"]: qdays += 1
+                if day_pnl_c >= fd["q_min"]: qdays += 1
                 cyc_best = max(cyc_best, day_pnl)
             dbest_c = max(dbest_c, day_pnl); dbest_e = max(dbest_e, day_pnl)
-            day = d; day_ref = x; day_peak = x; day_pnl = 0.0
+            day = d; day_ref = x; day_peak = x; day_pnl = 0.0; day_pnl_c = 0.0
             fcap = _fcap()
         if x <= floor + 1e-6:
             return paid, clock, tfirst, npay
-        pdays_ok = (not pdn) or (cyc_pdays + (1 if day_pnl >= pdn[1] else 0) >= pdn[0])
+        if clock - t_act > STALL_DAYS * DAY:
+            STUCK[0] += 1; STUCK_INFO.append(("funded", dict(x=x, floor=floor, npay=npay, cyc_pdays=cyc_pdays, day_pnl=day_pnl,
+                                                              fcap=fcap, next_pay=next_pay - clock, closed=closed[-6:])))
+            return paid, clock, tfirst, npay
+        pdays_ok = (not pdn) or (cyc_pdays + (1 if day_pnl_c >= pdn[1] else 0) >= pdn[0])
+        gate_first = bool(first_days) and npay == 0 and len(all_days) < first_days
         # ---- payout opportunity
         target_now = max(X1 if npay == 0 else X, tgt_up)
+        if ceiling: target_now = min(target_now, ceiling)
         can_pay = False
         if fd.get("q_days"):
             prof = x - cyc_profit_start
             buf = fd.get("buffer", 0.0)
             avail = x - max(buf, 0.0) if buf else x
-            if qdays >= fd["q_days"] and avail >= max(fd.get("min_payout", 0), 1.0):
+            if qdays >= fd["q_days"] and avail >= max(minpay, 1.0):
                 if fd.get("need_profit") and npay > 0 and prof <= 0:
                     pass                                         # Topstep: positive net profit since the last payout
                 elif not fd.get("best") or cyc_best < fd["best"] * max(prof, 1e-9):
                     can_pay = True
         else:
-            if (clock >= next_pay and x > max(fd.get("min_payout", 0), 0) and pdays_ok
-                    and (not fd.get("pay_at_target_only") or x >= target_now - 0.01)):   # (flag: the chain's cycle model)
+            if (clock >= next_pay and x >= max(minpay, 0.01) and pdays_ok and not gate_first
+                    and (not fd.get("pay_at_target_only") or x >= target_now - 0.01
+                         or (ceiling and ceiling - x < 1.0 * bs))):    # (flag: the chain's cycle model; within $1 of
+                                                                       # Maven's ceiling no win fits, so that is the target)
+                if cdays and len(cyc_days) < cdays:             # trading days missing in this cycle: filler trades
+                    if hasattr(tr, "filler_days"): clock = tr.filler_days(clock, cdays - len(cyc_days), cyc_days, fw)
+                    else: clock += (cdays - len(cyc_days)) * DAY * 7.0 / 5.0; cyc_days.update(range(-cdays, 0))
+                    continue
                 need = 0.0                                  # profit the consistency rules need for this request
-                if tbest: need = max(need, cyc_tbest / tbest)
-                if fd.get("best") and not fd.get("no_best_check"):     # best-day rule checked at the request (v7)
+                if fd.get("best") and not fd.get("no_best_check"):     # best-day rule checked at the request
                     need = max(need, max(dbest_e if fd.get("best_ever") else dbest_c, day_pnl) / fd["best"])
-                can_pay = need <= x + 1.0 * bs
+                can_pay = need <= x + 1e-6                 # strict: the rule's limit itself, no tolerance (n13)
                 if not can_pay and x >= target_now - 0.01:   # at the target but a rule fails: trade on to the profit it needs
                     tgt_up = need + 1.0 * bs
         if can_pay and (x >= target_now - 0.01 or not fd["ondemand"] or fd.get("q_days")):
             amt = x if not fd.get("buffer") else x - fd["buffer"]
             if fd.get("pct_bal"): amt = min(amt, fd["pct_bal"] * x)
             if caps: amt = min(amt, caps[min(npay, len(caps) - 1)])
-            if amt > 0 and roll:                                # rolling cap on the trader's share (Maven); the excess
-                win = sorted((tc, c) for (tc, c) in roll_log if tc > clock - roll[1] * DAY)   # would be voided, so the
-                allow = roll[0] - sum(c for _, c in win)                                     # request waits until the
-                if fd["split"] * amt > allow + 0.5 and fd["split"] * amt <= roll[0]:         # window has room for it
-                    for tc, c in win:
-                        allow += c
-                        if fd["split"] * amt <= allow + 0.5:
-                            next_pay = tc + roll[1] * DAY + 0.01; break
-                    continue
             if amt > 0:
                 cash = fd["split"] * amt
-                if roll:
-                    recent = sum(c for (tc, c) in roll_log if tc > clock - roll[1] * DAY)
-                    cash = max(0.0, min(cash, roll[0] - recent))
-                    roll_log.append((clock, cash))
                 if npay == 0 and fd.get("eval_share"):
                     cash += fd["eval_share"] * sum(s["target"] for s in firm["phases"])
                 rsplit = fd.get("refund_split")
@@ -288,67 +382,113 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
                     if npay < rsplit: cash += fd["refund"] / rsplit      # fee returned in equal parts with the first payouts
                 elif not refunded and npay + 1 >= fd.get("refund_after", 1) and fd.get("refund", 0):
                     cash += fd["refund"]; refunded = True
-                paid += cash; npay += 1; x -= amt; day_ref -= amt; day_peak -= amt
-                cyc_pdays = 0; day_pnl = 0.0
+                paid += cash; npay += 1; x -= amt; day_ref -= amt; day_peak -= amt; t_act = clock
+                cyc_pdays = 0; day_pnl_c = 0.0; cyc_days = set()
                 if PAYLOG is not None: PAYLOG.append((clock + fd.get("process", 1) * DAY, cash))
                 if tfirst is None: tfirst = clock + fd.get("process", 1) * DAY
                 if fd.get("reset_on_payout"):
                     H = x; floor = x - dd
                 if fd.get("lock_after_first_payout") and npay == 1:
                     floor = max(floor, lock)
-                cyc_profit_start = x; qdays = 0; cyc_best = 0.0; cyc_tbest = 0.0; dbest_c = 0.0; tgt_up = 0.0; fcap = _fcap()
+                cyc_profit_start = x; qdays = 0; cyc_best = 0.0; dbest_c = 0.0; tgt_up = 0.0; fcap = _fcap()
                 next_pay = clock + max(fd["cycle"], 1) * DAY if not fd["ondemand"] else clock + DAY
                 if maxp and npay >= maxp:
                     return paid, clock, tfirst, npay
                 continue
-        # ---- reached this cycle's target: wait for the payout date
-        if x >= target_now - 0.01 and not fd.get("q_days") and pdays_ok:
+        # ---- reached this cycle's target: wait for the payout date (not while Alpha's first trading days are missing)
+        if x >= target_now - 0.01 and not fd.get("q_days") and pdays_ok and not gate_first and next_pay < 1e17:
             clock = max(clock + 0.01, next_pay); continue
+        te0 = _next_entry(tr, clock, fw)
+        if int(te0 // DAY) != day:                     # the next entry opens on a later day: decide it there (n12)
+            clock = te0; continue
         dp = 0.0 if fd.get("per_trade") else day_pnl      # per_trade: caps apply to each trade, not each day (analytic check)
         # ---- best-day rule on cycle-based accounts: cap each day's profit
         if best_eff and not fd.get("q_days") and dp >= best_eff * max(target_now, 1.0) - 0.5 * bs:
             clock = (day + 1) * DAY + 0.01; continue
         # ---- futures-style: stop for the day once the day qualifies
-        if fd.get("q_days") and day_pnl >= fd["q_min"]:
+        if fd.get("q_days") and day_pnl_c >= fd["q_min"]:
             clock = (day + 1) * DAY + 0.01; continue
-        room_floor = (x - floor - 100.0 * bs) / (1.0 + rho)
-        if room_floor < lmin:
-            return paid, clock, tfirst, npay               # v7: too little room above the floor: the account ends here
+        lmin, lc = _lmin(tr, clock, fw)
         room_day = 1e18
-        dll_now = dll * (1.0 + day_ref / firm["size"]) if (dll and fd.get("dll_rel")) else dll
         if dll:
             ref = day_peak if trail_dll else day_ref
-            room_day = (dll_now - (ref - x) - 200.0 * bs) / (1.0 + rho)
-        l = min(tr.L, room_floor, room_day, firm.get("max_risk_rule") or 1e18)
+            room_day = (_dll_at(dll, mode, firm["size"], day_ref) - (ref - x) - 200.0 * bs) / (1.0 + rho)
+        l, terminal = _risk(tr, x, floor, room_day, lmin, lc, bs, rho, firm.get("max_risk_rule"))
         lev = firm.get("lev")                          # margin cap at the current balance (and FunderPro's 20% of the start)
-        if lev: l = min(l, lev[1] * tr.s * min(lev[2] * (firm["size"] + x), lev[3] * firm["size"]))
-        if l < lmin:
+        if l is not None and lev:
+            l = min(l, lev[1] * tr.s * min(lev[2] * (firm["size"] + x), lev[3] * firm["size"]))
+            if not terminal and l < lmin: l = None
+        if l is None:
             clock = (day + 1) * DAY + 0.01; continue
-        w = tr.k * l
-        if not fd.get("q_days"):
-            w = min(w, max(target_now - x, 1.0 * bs))
-        if best_eff and not fd.get("q_days"):            # best-day / consistency rule: cap today's win
-            w = min(w, max(best_eff * max(target_now, 1.0) - dp, 1.0 * bs))
-        if fd.get("max_win"): w = min(w, fd["max_win"])   # per-trade cap (used by the analytic check)
-        if tbest: w = min(w, max(tbest * target_now, 1.0 * bs))
+        rule_cap = 1e18
+        if best_eff and not fd.get("q_days"):            # best-day / concentration rule: cap today's win
+            rule_cap = best_eff * max(target_now, 1.0) - dp
+            if fd.get("best"): rule_cap -= 1.0 * bs     # a firm best-day rule (FXIFY): $1 per $100K under its limit
+        if fd.get("max_win"): rule_cap = min(rule_cap, fd["max_win"])   # per-trade cap (used by the analytic check)
         dcap = fd.get("day_profit_cap")
         if dcap:
             if dp >= dcap - 1.0:
                 clock = (day + 1) * DAY + 0.01; continue
-            w = min(w, dcap - dp)
+            rule_cap = min(rule_cap, dcap - dp)
+        if ceiling:
+            rule_cap = min(rule_cap, ceiling - x)
+            if pdn and not pdays_ok:                     # keep room under the ceiling for the profitable days still needed:
+                # a win that makes today a profitable day keeps 1.1 x the day's minimum for each day still needed after
+                # today (a win that does not is limited further below)
+                rule_cap = min(rule_cap, ceiling - x - 1.1 * pdn[1] * (pdn[0] - cyc_pdays - 1))
+        if rcap:                                         # every rolling window that will contain this trade stays under
+            run_s = 0.0; top = 0.0                        # the cap: the largest suffix sum of the last 30 days' closed
+            for (tc, p) in reversed(closed):              # trades (a window grows when an old loss drops out of it)
+                if tc <= clock - rcap[1] * DAY: break
+                run_s += p; top = max(top, run_s)
+            rule_cap = min(rule_cap, rcap[0] - top)
+        if rule_cap <= 0.5 * bs:
+            if ceiling and ceiling - x <= 0.5 * bs and next_pay < 1e17 and pdays_ok:   # at Maven's ceiling: wait for the payout
+                clock = max(clock + 0.01, next_pay); continue
+            clock = (day + 1) * DAY + 0.01; continue
+        if fd.get("q_days"): plan_cap = 1e18
+        elif gate_first and x >= target_now - 0.01: plan_cap = 1e18     # Alpha: keep trading, one trade a day
+        else: plan_cap = target_now - x
         if pdn and fcap is not None and not pdays_ok:       # daily profit target until the cycle has its profitable days
-            if fcap - day_pnl <= 0.5 * bs:
+            if fcap - day_pnl_c <= 0.5 * bs:
                 clock = (day + 1) * DAY + 0.01; continue
-            w = min(w, fcap - day_pnl)
+            plan_cap = min(plan_cap, fcap - day_pnl_c)
+            if ceiling and x >= target_now - 0.01: plan_cap = fcap - day_pnl_c     # Maven: target reached, days missing
+        w, l = _win(tr, l, plan_cap, rule_cap, bs, fresh=dp <= 0, lc=lc)
+        if w is None and ceiling and not pdays_ok and getattr(tr, "wmin_frac", 0.0) > 0 and rule_cap >= 1.0 * bs:
+            # at Maven's ceiling with profitable days still missing: a smaller trade whose target is the room left,
+            # its risk lowered so the take-profit keeps the minimum distance (otherwise the account could never move)
+            w = rule_cap; l = min(l, w / tr.wmin_frac)
+        if w is not None and ceiling and pdn and not pdays_ok and day_pnl_c + w < pdn[1] - 1e-9:
+            # a win that would leave today short of a profitable day must keep room under the ceiling for today as
+            # well: it is cut to the room above that reserve (risk lowered to keep the minimum distance), or the plan
+            # waits for tomorrow (version 8, n10: a day that opened with a loss and was then cut by the ceiling used the
+            # room of the last profitable day needed, and the account could never be paid)
+            nq = min(rule_cap, ceiling - x - 1.1 * pdn[1] * (pdn[0] - cyc_pdays))
+            if nq < 1.0 * bs: w = None
+            elif nq < w:
+                w = nq
+                if getattr(tr, "wmin_frac", 0.0) > 0: l = min(l, w / tr.wmin_frac)
+        if w is None:
+            clock = (day + 1) * DAY + 0.01; continue
         if fd.get("min_rr") and w < fd["min_rr"] * l:
-            l = max(w / fd["min_rr"], lmin); w = max(w, fd["min_rr"] * l)
+            l = w / fd["min_rr"]
+        tr.last_entry = None
         pnl, h = tr.trade(l, w, clock, fd.get("flat_weekend", False))
-        x += pnl; clock += h; day_pnl += pnl
-        if pnl > 0: cyc_tbest = max(cyc_tbest, pnl)
-        if dll and ((day_peak if trail_dll else day_ref) - x) > dll_now + 1e-6:
+        t_act = clock + h
+        te = tr.last_entry if tr.last_entry is not None else clock                  # when the trade was opened
+        if next_pay > 1e17 and not fd.get("q_days"): next_pay = te + fd["first_payout"] * DAY
+        dtr = int(te // DAY)
+        x += pnl; clock += h; day_pnl += pnl; day_pnl_c += pnl
+        if TRADELOG is not None: TRADELOG.append(("funded", te, x - pnl, pnl))
+        cyc_days.add(dtr); all_days.add(dtr)
+        if rcap: closed.append((clock, pnl))
+        if dll and ((day_peak if trail_dll else day_ref) - x) > _dll_at(dll, mode, firm["size"], day_ref) + 1e-6:
             return paid, clock, tfirst, npay               # daily loss limit breached: account lost
         day_peak = max(day_peak, x)
         if x < floor: x = floor
+        if gate_first: clock = max(clock, (int(clock // DAY) + 1) * DAY + 0.01)   # Alpha: one trade a day until 5 days
+    STUCK[0] += 1; STUCK_INFO.append(("funded-loop", dict(x=x, npay=npay)))
     return paid, clock, tfirst, npay
 
 
