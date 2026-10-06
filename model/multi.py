@@ -93,10 +93,10 @@ def load_synth(names, rho, years=12, sub=60, seed=11):
         inc = z[:, j] * sig / math.sqrt(sub) - 0.5 * sig * sig / sub
         lp = np.concatenate([[0.0], np.cumsum(inc)])
         # the maximum and the minimum of the Brownian bridge between two sample points, each drawn from its exact
-        # marginal law, independently of each other. The joint law differs only through the chance that one sub-step's
-        # path spans both a stop and a target: at most exp(-W^2 / v) per sub-step for a bracket of width W, i.e.
-        # exp(-60 m^2) for a stop of m hourly sd with one-minute sub-steps (below 5e-10 for m >= 0.6); verify_v8
-        # adds this bound up over every simulated trade
+        # marginal law, independently of each other. Each barrier on its own is therefore crossed with exactly the right
+        # probability; only the joint event that one sub-step's path spans both a stop and a target is misrepresented.
+        # Version 9: pathfirm.bridge_err gives a valid bound on that error per sub-step (version 8 claimed exp(-W^2/v),
+        # which is false when the two sample points lie near opposite barriers: review of version 8, finding 2)
         a, b = lp[:-1], lp[1:]; v = sig * sig / sub
         hi = 0.5 * (a + b + np.sqrt((b - a) ** 2 - 2 * v * np.log(rs.random(len(a)))))
         lo = 0.5 * (a + b - np.sqrt((b - a) ** 2 - 2 * v * np.log(rs.random(len(a)))))
@@ -109,6 +109,8 @@ def load_synth(names, rho, years=12, sub=60, seed=11):
         # the sub-step extremes, in time order inside each hour: used to decide which of a stop and a target that
         # are both touched within one hourly bar was touched first (version 6; before, a fair coin decided)
         data[nm]["sH"] = 100.0 * np.exp(hi); data[nm]["sL"] = 100.0 * np.exp(lo)      # float64: exactly the hourly H/L
+        # the price at the end of each sub-step (version 9: closes after a minimum holding time and timed filler exits)
+        data[nm]["sC"] = 100.0 * np.exp(lp[1:])
         data[nm]["sub"] = sub
         data[nm]["norm"] = True                  # normalised to 100 at the start (futures: see pathfirm.contract_value)
     day = pd.factorize(idx.tz_convert("Europe/Prague").normalize())[0]

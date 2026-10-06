@@ -1,15 +1,14 @@
 """
 Firm-rule engine (acct_mc) driven by actual price paths instead of random draws.
 
-PathTrader.trade(l, w, clock): waits for the next allowed entry hour, opens a random-direction
-bracket (stop = m x hourly sigma, target = stop x (w + cost)/l, so a win nets w) at that bar's open, walks the bars until the
-stop or target is hit (gaps fill at the open; inside a bar the one-minute sub-steps give the order; only if both are
-touched inside one sub-step does a fair coin, l/(l+w), decide), charges spread/commission and overnight financing, and
-returns (pnl, hours until the next entry may be considered; an exit after minute 50 adds an hour: the 10-minute gap).
-With flat_weekend=True (funded accounts that forbid weekend holding) nothing opens after
-Friday 19:00 UTC and an open position is closed at the Friday 20:00 UTC bar's close.
-Price data: synthetic zero-edge random walk with the instrument's real hourly volatility
-(data="synth") or the real hourly series (data="real").
+PathTrader.trade(l, w, clock, flat_weekend, opts): waits for the next allowed entry hour, opens a position at that bar's
+open in the plan's direction and resolves it on the path (resolve below). Version 9: positions are whole lots (CFDs) or
+whole contracts (futures) at each instrument's contract size; the account's own breach level (the floor or today's loss
+limit, whichever is nearer) is a barrier of every trade, so a trade that reaches it ends the account at that moment even if
+the price later recovers (review of version 8, finding 3); on accounts with a minimum holding time the bracket is placed
+only after the first three minutes; filler trades are real minimal positions closed after three minutes; and every
+trade reports its exit time (exposure, dated profits) separately from the time the next entry may be considered.
+Price data: synthetic zero-edge random walks with the instrument's real hourly volatility and one-minute sub-steps.
 """
 import json, math, random, sys
 import numpy as np
@@ -18,7 +17,7 @@ import multi
 
 import collections
 _DATA = collections.OrderedDict()
-MAX_CACHE = 10          # paths kept in memory per process (a 12-year path with one-minute sub-steps takes ~130 MB)
+MAX_CACHE = 8           # paths kept in memory per process (a 12-year path with one-minute sub-steps takes ~150 MB)
 
 def synth_name(data, with_sub=False):
     """synth = seed 11, 12 years; synthN = seed N; synthNyY = Y years; ...sS = S sub-steps per hour (default 60 since
@@ -45,8 +44,9 @@ def _store(key, idx, d):
                       ok=d["ok"].tolist(), entry=d["entry"].tolist(), roll=d["roll"].tolist(),
                       sig=d["sig"], cost=d["cost"], fin=d["fin"],
                       fri_late=((wd == 4) & (hr >= 19)).tolist(), fri_close=((wd == 4) & (hr == 20)).tolist(),
-                      T=len(idx), h0=int(hr[0]), hour=hr.tolist(), norm=bool(d.get("norm", False)))
-    if "sH" in d: _DATA[key].update(sH=d["sH"], sL=d["sL"], sub=d["sub"])
+                      T=len(idx), h0=int(hr[0]), hour=hr.tolist(), wd=wd.tolist(), norm=bool(d.get("norm", False)),
+                      instr=key[0])
+    if "sH" in d: _DATA[key].update(sH=d["sH"], sL=d["sL"], sC=d["sC"], sub=d["sub"])
 
 CORR_NAMES = ["US100", "XAUUSD", "EURUSD", "USDJPY"]
 def _load_corr(data):
@@ -57,7 +57,7 @@ def _load_corr(data):
     idx, D, day = multi.load_synth(CORR_NAMES, int(r) / 100.0, seed=sd, years=yrs, sub=sub)
     for nm in CORR_NAMES: _store((nm, data), idx, D[nm])
     u = D["US100"]; f = multi._finish(idx, "MNQ_fut", u["O"], u["H"], u["L"], u["C"], u["sig"])
-    f.update(sH=u["sH"], sL=u["sL"], sub=u["sub"], norm=True)
+    f.update(sH=u["sH"], sL=u["sL"], sC=u["sC"], sub=u["sub"], norm=True)
     _store(("MNQ_fut", data), idx, f)
 
 def market(instr, data):
@@ -73,104 +73,233 @@ def market(instr, data):
             idx, D, day = multi.load_synth([instr], 0.0, seed=sd, years=yrs, sub=sub)   # "synth5001y2" = 2 years
         else:
             idx, D, day = multi.load_aligned([instr])
-        d = D[instr]
-        wd = idx.weekday.values; hr = idx.hour.values
-        _DATA[key] = dict(O=d["O"].tolist(), H=d["H"].tolist(), L=d["L"].tolist(), C=d["C"].tolist(),
-                          ok=d["ok"].tolist(), entry=d["entry"].tolist(), roll=d["roll"].tolist(),
-                          sig=d["sig"], cost=d["cost"], fin=d["fin"],
-                          fri_late=((wd == 4) & (hr >= 19)).tolist(), fri_close=((wd == 4) & (hr == 20)).tolist(),
-                          T=len(idx), h0=int(hr[0]), hour=hr.tolist(), norm=bool(d.get("norm", False)))
-        if "sH" in d: _DATA[key].update(sH=d["sH"], sL=d["sL"], sub=d["sub"])
+        _store(key, idx, D[instr])
     return _DATA[key]
 
-def first_touch(M, i, d, sl, tp, p_fair, rng):
-    """stop and target both inside hourly bar i: replay the bar's sub-steps in time order (synthetic paths);
-    only if both fall inside the same sub-step, or no sub-steps exist (real data), use the fair chance p_fair"""
-    return _first_touch(M, i, d, sl, tp, p_fair, rng)[0]
+def free_market(instr, data):
+    """the same path with no costs and no financing (theory checks); returns the name to trade it under"""
+    key = (instr, data + "_free")
+    if key not in _DATA:
+        M = dict(market(instr, data)); M["fin"] = 0.0; M["cost"] = 0.0
+        _DATA[key] = M
+    return data + "_free"
 
-def _first_touch(M, i, d, sl, tp, p_fair, rng):
-    """(won, sub-step of the exit or None)"""
-    sH = M.get("sH")
-    if sH is not None:
-        sL = M["sL"]; n = M["sub"]; b = i * n
-        for j in range(n):
-            h = sH[b + j]; lo = sL[b + j]
-            if d > 0: hs = lo <= sl; ht = h >= tp
-            else:     hs = h >= sl; ht = lo <= tp
-            if hs and ht: return rng.random() < p_fair, j
-            if ht: return True, j
-            if hs: return False, j
-    return rng.random() < p_fair, None
-
+# ---------------------------------------------------------------- contracts (version 9)
 REF_NQ = 31070.0        # Nasdaq 100 level on 2 October 2026; synthetic Nasdaq paths start at 100
+# Contract specifications (review of version 8, finding 4). ref: the market's close on 2 October 2026 (synthetic paths
+# start at 100 and are scaled to it); cs: units per lot; usd_quote: the price is quoted in dollars (USDJPY: a lot is
+# worth cs dollars); vmin, step: the smallest position and the volume step. Index CFDs: one lot = one unit of the index
+# ($1 a point; FTMO's MT5 contract size for its index CFDs is 1); gold: 100 ounces a lot; currency pairs: 100,000 units of
+# the base currency a lot; CFD volumes from 0.01 lot in steps of 0.01; micro Nasdaq future: $2 a point, whole contracts.
+LOTS = {
+    "US100": dict(ref=REF_NQ, cs=1.0, usd_quote=True, vmin=0.01, step=0.01),
+    "XAUUSD": dict(ref=4176.80, cs=100.0, usd_quote=True, vmin=0.01, step=0.01),
+    "EURUSD": dict(ref=1.1256, cs=100_000.0, usd_quote=True, vmin=0.01, step=0.01),
+    "USDJPY": dict(ref=157.83, cs=100_000.0, usd_quote=False, vmin=0.01, step=0.01),
+    "MNQ_fut": dict(ref=REF_NQ, cs=2.0, usd_quote=True, vmin=1.0, step=1.0),
+}
+
+def lot_spec(M):
+    return LOTS.get(M.get("instr"), LOTS["US100"])
+
+def unit_value(M, price):
+    """dollars per 1.0 of relative price move for one lot (one contract) at this price"""
+    sp = lot_spec(M)
+    P = sp["ref"] * price / 100.0 if M.get("norm") else price
+    return sp["cs"] * P if sp["usd_quote"] else sp["cs"]
+
 def contract_value(M, price):
-    """dollars per 1.0 of relative price move for one micro Nasdaq contract ($2 per index point) at this price. Version 8
-    converts the normalised synthetic price back to the index level at every entry, 31,070 x price / 100 (version 7
-    used 31,070 throughout, review of version 7, finding 25)"""
+    """dollars per 1.0 of relative price move for one micro Nasdaq contract ($2 per index point) at this price; the
+    normalised synthetic price is converted back to the index level, 31,070 x price / 100"""
     return 2.0 * (REF_NQ * price / 100.0 if M.get("norm") else price)
 
+def min_risk(M, price, s):
+    """the risk of the smallest position (0.01 lot of a CFD, one micro contract) with its stop s (relative) from the entry"""
+    return lot_spec(M)["vmin"] * unit_value(M, price) * s
+
+# ---------------------------------------------------------------- the path generator's error bound (version 9)
+LOG3 = math.log(3.0)
+_BE = {}
+def bridge_err(r):
+    """A valid bound on the chance that one sub-step of an open bracket resolves differently from the exact Brownian law.
+    r = W / sqrt(v): the bracket's log width over the sub-step's standard deviation (less the drift per sub-step).
+    The generator draws each sub-step's maximum and minimum from their exact laws given the sub-step's end points, but
+    independently. Given end points a, b inside the bracket [l, u] (W = u - l), the two laws differ only through the event
+    that both barriers are touched: the generator's chance is P_ind = exp(-2[(a-l)(b-l) + (u-a)(u-b)]/v), the exact chance
+    is at most exp(-2[(a-l)(b-l) + W(u-b)]/v) + exp(-2[(u-a)(u-b) + W(b-l)]/v) <= 2 P_ind (strong Markov property of the
+    bridge at the first touch), so the sub-step's outcome (none, stop, target) differs in total variation by at most
+    3 P_ind; with an end point outside the bracket by at most 2 exp(-2(a-l)(b-l)/v), which is smaller. For an increment
+    delta = b - a the largest P_ind over the start point a is exp(-(W^2 - delta^2)/v) (at a = l + (W - delta)/2). The
+    increment is independent of where the sub-step starts and of whether the trade is still open, so the expected error
+    per watched sub-step is at most G(r) = E[min(1, 3 exp(-(r^2 - Z^2)))], Z standard normal (1 for |Z| > r):
+        G(r) = 6/sqrt(2 pi) exp(-(r^2 + ln 3)/2) J(x) + erfc(x/sqrt(2)),  x = sqrt(r^2 - ln 3),  J(x) = int_0^x e^((t^2-x^2)/2) dt.
+    The expected error of a trade is at most the expected number of watched sub-steps times G (a union bound over sub-steps).
+    Version 8 claimed exp(-W^2/v) per sub-step, which is false when the two end points lie near opposite barriers (review
+    of version 8, finding 2); G(r) is close to exp(-r^2/2), the square root of the old figure."""
+    key = math.floor(r * 100.0) / 100.0          # r rounded down: the bound only grows
+    if key in _BE: return _BE[key]
+    if key * key <= LOG3:
+        val = 1.0
+    else:
+        x = math.sqrt(key * key - LOG3); n = 400
+        t = np.linspace(0.0, x, n + 1); f = np.exp((t * t - x * x) / 2.0)
+        J = (x / n) / 3.0 * (f[0] + f[-1] + 4.0 * f[1:-1:2].sum() + 2.0 * f[2:-1:2].sum())
+        val = min(1.0, 6.0 / math.sqrt(2.0 * math.pi) * math.exp(-(key * key + LOG3) / 2.0) * J + math.erfc(x / math.sqrt(2.0)))
+    _BE[key] = val
+    return val
+
 GAP_MIN = 10            # minutes between a close and the next entry at every firm (Hola Prime, FundingPips trade ideas)
-SHORT_MIN = 2           # trades that may have lasted under 2 minutes (Blue Guardian, Alpha Capital duration rules)
+SHORT_MIN = 2           # a trade that may have lasted under 2 minutes (Blue Guardian, Alpha Capital duration rules)
+HOLD_MIN = 3            # minimum holding time of the plan where a firm has a duration rule, and of every filler trade
 
 class Stats:
     """per-trader record of what the firms' duration rules look at, and of the path generator's error bound"""
     def __init__(self):
         self.n = 0; self.short = 0; self.minutes = 0.0; self.gross_win = 0.0; self.gross_win_short = 0.0
-        self.bridge_eps = 0.0; self.late = 0; self.contracts = 0; self.last_exit = None
+        self.bridge_eps = 0.0; self.sub2 = 0; self.late = 0; self.contracts = 0.0; self.last_exit = None
+        self.breach = 0; self.fillers = 0; self.filler_pnl = 0.0; self.min_lot = 0; self.hold_close = 0
     def as_dict(self):
         return dict(n=self.n, short=self.short, minutes=self.minutes, gross_win=self.gross_win,
-                    gross_win_short=self.gross_win_short, bridge_eps=self.bridge_eps, late=self.late)
+                    gross_win_short=self.gross_win_short, bridge_eps=self.bridge_eps, sub2=self.sub2, late=self.late,
+                    breach=self.breach, fillers=self.fillers, filler_pnl=self.filler_pnl, min_lot=self.min_lot,
+                    hold_close=self.hold_close, contracts=self.contracts)
 
-def resolve(M, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, futures=False, block=None, st=None):
-    """A bracket opened at bar i's open in direction d: stop at s below/above the entry, risk l, a win nets w after the
-    round-trip cost. Exits: a barrier touched inside a bar (time order from the sub-steps), a gap through a barrier at a
-    bar's open, the daily flat time, a blocked (news) hour, the Friday close on weekend-flat accounts.
-    Returns (pnl, hours until the next entry may be considered, contracts). An exit after minute 50 of a bar delays
-    the next entry by one more hour, so at least 10 minutes always pass between a close and the next entry (version 7
-    could re-enter at the next hour's open one minute after a close, review finding 10)."""
-    T = M["T"]; e = M["O"][i]; n_c = 0
-    if futures:                                   # whole micro contracts at this entry's index level, rounded down
-        per = contract_value(M, e) * s
-        n_c = max(1, math.floor(l / per + 1e-9)); f = n_c * per / l; l *= f; w *= f
-    notional = l / s; fee = cost * notional; wg = w + fee
-    sl = e * (1 - d * s); tp = e * (1 + d * s * wg / l)
-    rolls = 0; bars = 0; first = True; last = e; exit_px = None; minute = 0.0; late = False
-    sub = M.get("sub")
+def resolve(M, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, block=None, st=None, opts=None):
+    """A position opened at bar i's open in direction d. Returns (pnl, hours until the next entry may be considered, info),
+    info = dict(exit: hours from the entry to the exit (an upper bound inside its minute), dur: minutes held (a lower
+    bound), breach: the account's breach level was reached, vol: lots or contracts, why: the exit).
+    opts:
+      kind      'trade': a bracket, stop s (relative) from the entry for a risk of l, a win netting w after the round-trip
+                cost; 'filler': the smallest position, closed after HOLD_MIN minutes (a minimal trading-day trade)
+      breach    the loss (dollars, cost included) at which the account breaches: the nearer of its floor and today's loss
+                limit. It is a barrier of every trade: reaching it ends the account then, whatever the price does later
+      terminal  the stop is the breach level itself (the plan's last trade on an account near its floor)
+      keep_w    the win was set by a cap (the target or a rule): rounding the volume down keeps the win (the take-profit is
+                placed for exactly that amount) instead of scaling it with the risk
+      hold      minutes before the bracket is placed (accounts with a minimum holding time): until then only the breach
+                level can close the position; at the end of the hold it is closed at once if the price is already beyond
+                the stop or the take-profit
+    Volume: l / (value of one lot x s), rounded down to the volume step, at least the smallest volume. Exits: a barrier
+    touched inside a one-minute sub-step (in time order; a sub-step that touches both barriers is decided by the
+    martingale chance from the sub-step's start, an error bound_err bounds), a gap through a barrier at a bar's open, the
+    daily flat time, a blocked (news) hour, the Friday close on weekend-flat accounts. An exit after minute 50 of a bar
+    delays the next entry by one more hour, so at least 10 minutes pass between a close and the next entry."""
+    o = opts or {}
+    T = M["T"]; e = M["O"][i]; sp = lot_spec(M); uv = unit_value(M, e)
+    kind = o.get("kind", "trade"); breach = o.get("breach"); sub = M.get("sub")
+    sH = M.get("sH"); sL = M.get("sL"); sC = M.get("sC")
+    hold = int(o.get("hold", 0) or 0) if sub else 0
+    if kind == "filler":
+        vol = sp["vmin"]; hold = HOLD_MIN if sub else 0
+    else:
+        vol = math.floor(l / (uv * s) / sp["step"] + 1e-9) * sp["step"]
+        if vol < sp["vmin"] - 1e-12: vol = sp["vmin"]
+    notional = vol * uv; fee = cost * notional
+    info = dict(exit=0.0, dur=0.0, breach=False, vol=vol, why=None)
+    if breach is not None and breach <= fee + 1e-9:          # the smallest position's cost alone reaches the breach level
+        info.update(breach=True, why="breach")
+        if st is not None: st.n += 1; st.breach += 1; st.fillers += kind == "filler"; st.last_exit = (i, 0.0)
+        return -float(breach), 1, info
+    bd = (breach - fee) / notional if breach is not None else math.inf      # breach level, relative to the entry
+    if kind == "filler":
+        sd = bd; td = math.inf
+    elif o.get("terminal"):
+        sd = bd; td = (w + fee) / notional
+    else:
+        sd = s
+        if not o.get("keep_w"): w = w * (notional * s) / l
+        td = (w + fee) / notional
+    brk_low = bd <= sd + 1e-12                            # the nearer adverse barrier is the breach level
+    lo_d = min(sd, bd)
+    lo_px = e * (1 - d * lo_d) if lo_d < math.inf else (-math.inf if d > 0 else math.inf)
+    sl_px = e * (1 - d * sd) if sd < math.inf else lo_px
+    tp = e * (1 + d * td) if td < math.inf else None
+    rolls = 0; bars = 0; first = True; last = e; exit_px = None; why = None
+    t_ex = 0.0; dur = 0.0; n2 = 0
+
+    def scan(b0, j0, j1):
+        """sub-steps j0..j1-1 of the bar whose first sub-step is b0: (j, target first) at the first touch, or None"""
+        for j in range(j0, j1):
+            lo = sL[b0 + j]; hi = sH[b0 + j]
+            if d > 0: hs = lo <= lo_px; ht = hi >= tp
+            else:     hs = hi >= lo_px; ht = lo <= tp
+            if hs or ht:
+                if hs and ht:
+                    a = sC[b0 + j - 1] if b0 + j > 0 else e
+                    ht = rng.random() < min(max((a - lo_px) / (tp - lo_px), 0.0), 1.0)
+                return j, ht
+        return None
+
     while True:
         if M["ok"][i]:
-            o = M["O"][i]
+            op = M["O"][i]
             if not first:
                 if M["roll"][i]: rolls += 1
-                if d * (o - sl) <= 0 or d * (o - tp) >= 0: exit_px = o; break        # gap through a barrier
-                if flat_daily is not None and M["hour"][i] == flat_daily: exit_px = o; break
-                if block and M["hour"][i] in block: exit_px = o; break
-            if d > 0: hs = M["L"][i] <= sl; ht = M["H"][i] >= tp
-            else:     hs = M["H"][i] >= sl; ht = M["L"][i] <= tp
-            if hs or ht:
-                won, j = _first_touch(M, i, d, sl, tp, l / (l + wg), rng)
-                if not (hs and ht): won = ht
-                exit_px = tp if won else sl
-                if j is None or sub is None: minute = 60.0; late = True          # unknown: assume the worst
-                else: minute = (j + 1) * 60.0 / sub; late = minute > 60 - GAP_MIN
-                break
+                if d * (op - lo_px) <= 0 or (tp is not None and d * (op - tp) >= 0):
+                    exit_px = op; why = "gap"; t_ex = float(bars); break
+                if flat_daily is not None and M["hour"][i] == flat_daily: exit_px = op; why = "flat"; t_ex = float(bars); break
+                if block and M["hour"][i] in block: exit_px = op; why = "block"; t_ex = float(bars); break
+            if first and hold:
+                b0 = i * sub; hit = None
+                if bd < math.inf:                        # the holding time: only the breach level is watched
+                    brk_px = e * (1 - d * bd)
+                    for j in range(hold):
+                        if (sL[b0 + j] <= brk_px) if d > 0 else (sH[b0 + j] >= brk_px): hit = j; break
+                if hit is not None:
+                    exit_px = brk_px; why = "breach"; t_ex = (hit + 1) / sub; dur = hit * 60.0 / sub; break
+                c = sC[b0 + hold - 1]
+                if kind == "filler" or d * (c - sl_px) <= 0 or d * (c - tp) >= 0:
+                    exit_px = c; why = "time" if kind == "filler" else "hold"; t_ex = hold / sub; dur = hold * 60.0 / sub; break
+                r = scan(b0, hold, sub)
+                if r is not None:
+                    j, won = r; n2 += j - hold + 1
+                    exit_px = tp if won else lo_px; why = "target" if won else ("breach" if brk_low else "stop")
+                    t_ex = (j + 1) / sub; dur = j * 60.0 / sub; break
+                n2 += sub - hold
+            else:
+                if d > 0: hs = M["L"][i] <= lo_px; ht = tp is not None and M["H"][i] >= tp
+                else:     hs = M["H"][i] >= lo_px; ht = tp is not None and M["L"][i] <= tp
+                if hs or ht:
+                    if sub:
+                        j, won = scan(i * sub, 0, sub); n2 += j + 1
+                        t_ex = bars + (j + 1) / sub; dur = (bars * sub + j) * 60.0 / sub
+                    else:                                # no sub-steps (real hourly data): a fair chance, the worst minute
+                        won = ht if not (hs and ht) else rng.random() < min(max((e - lo_px) / (tp - lo_px), 0.0), 1.0)
+                        t_ex = bars + 1.0; dur = bars * 60.0
+                    exit_px = tp if won else lo_px; why = "target" if won else ("breach" if brk_low else "stop")
+                    break
+                if sub: n2 += sub
             last = M["C"][i]
-            if flat_weekend and M["fri_close"][i]: exit_px = last; minute = 60.0; late = True; break
+            if flat_weekend and M["fri_close"][i]: exit_px = last; why = "fri"; t_ex = bars + 1.0; dur = t_ex * 60.0; break
         first = False; bars += 1; i += 1
-        if i >= T: exit_px = last; break
-    pnl = notional * d * (exit_px - e) / e - fee - M["fin"] * notional * rolls
+        if i >= T: exit_px = last; why = "end"; t_ex = float(bars); dur = t_ex * 60.0; i = T - 1; break
+    if why == "breach":
+        pnl = -float(breach)
+    else:
+        pnl = notional * d * (exit_px - e) / e - fee - M["fin"] * notional * rolls
+    breached = why == "breach" or (breach is not None and pnl <= -breach + 1e-9)
+    if why in ("gap", "flat", "block", "end"): dur = t_ex * 60.0
+    eb = int(math.floor(t_ex - 1e-9)) if t_ex > 0 else 0            # the bar of the exit, counted from the entry bar
+    minute = (t_ex - eb) * 60.0
+    late = minute > 60 - GAP_MIN + 1e-9 or (sub is None and why in ("target", "stop", "breach"))
+    hours = eb + 1 + (1 if late else 0)
+    if why in ("gap", "flat", "block", "end"): hours = int(round(t_ex)) + 1; late = False; minute = 0.0
+    info.update(exit=t_ex, dur=dur, breach=breached, why=why, td=td / M["sig"], sd=lo_d / M["sig"], notional=notional)
     if st is not None:
-        st.last_exit = (i, minute)                # bar of the exit and the minute inside it (upper bound)
-        dur = bars * 60.0 + minute
-        st.n += 1; st.minutes += dur; st.late += late; st.contracts += n_c
-        short = dur <= SHORT_MIN + 1e-9
+        st.last_exit = (i, minute)
+        st.n += 1; st.minutes += dur; st.late += late; st.contracts += vol
+        st.breach += breached; st.hold_close += why == "hold"
+        st.min_lot += kind != "filler" and vol <= sp["vmin"] + 1e-12
+        if kind == "filler": st.fillers += 1; st.filler_pnl += pnl
+        short = dur < SHORT_MIN - 1e-9
         st.short += short
         if pnl > 0:
             st.gross_win += pnl
             if short: st.gross_win_short += pnl
-        if sub:                                   # path-generator error bound: exp(-W^2 / v) per sub-step spent in the trade
-            W = abs(math.log(tp / sl)); v = M["sig"] ** 2 / sub
-            st.bridge_eps += (bars * sub + max(minute * sub / 60.0, 1.0)) * math.exp(-W * W / v)
-    return pnl, bars + 1 + (1 if late else 0), n_c
+        if sub and n2 and tp is not None:              # the generator's error bound for this trade
+            W = abs(math.log(tp / lo_px)); sv = M["sig"] / math.sqrt(sub)
+            st.sub2 += n2; st.bridge_eps += n2 * bridge_err(W / sv - 0.5 * M["sig"] * sv)
+    return pnl, hours, info
 
 def entry_index(M, i, flat_weekend, flat_daily, block=None):
     """the first bar at or after i where the plan may open a position: market open, inside the instrument's entry hours,
@@ -183,21 +312,22 @@ def entry_index(M, i, flat_weekend, flat_daily, block=None):
         i = (i + 1) % T; waited += 1
     return i, waited
 
-def filler_days(M, idx_of, clock, need, traded, flat_weekend, flat_daily):
-    """advance through the real calendar to `need` more trading days not yet traded, one minimal filler trade on each
-    (opened at the day's first permitted hour, held for at least 2 minutes, stop at most $3 per $100,000 of account).
-    Returns the clock one hour after the last filler's entry. Version 7 added 7/5 calendar days per missing day, an
-    average rather than the calendar (review finding 19)."""
-    t = clock
-    while need > 0:
-        j, waited = entry_index(M, idx_of(t), flat_weekend, flat_daily)
-        te = t + waited; dd = int(te // A.DAY)
-        if dd in traded:
-            t = (dd + 1) * A.DAY + 0.01; continue
-        traded.add(dd); need -= 1; t = te + 1.0
+def next_bar(clock):
+    """the start of the first hourly bar that has not begun before the clock"""
+    return int(math.ceil(clock - 1e-9))
+
+def add_bdays(M, idx_of, clock, n):
+    """clock plus n working days (Monday to Friday, by the UTC calendar of the path), at the same time of day: a review of
+    n working days that starts on a Friday ends after the weekend (version 9; version 8 added n x 24 hours, review of
+    version 8, finding 20)"""
+    t = clock; k = 0
+    while k < n:
+        t += 24.0
+        if M["wd"][idx_of(t)] < 5: k += 1
     return t
 
-WMIN_SD = 0.6           # the take-profit is never closer than 0.6 hourly sd: P(touched within 2 minutes) < 0.1%
+WMIN_SD = 0.6           # the plan never places a take-profit closer than 0.6 hourly sd to the entry (a plan choice; the
+                        # firms' duration rules are met by the minimum holding time, HOLD_MIN, not by this distance)
 
 class PathTrader:
     def __init__(self, instr, data, m, L, k, rng, cost_mult=1.0, dir_rule="random", flat_daily=None):
@@ -207,30 +337,31 @@ class PathTrader:
         self.cost = self.M["cost"] * cost_mult
         self.rho = self.cost / (m * self.M["sig"])      # round-trip cost per dollar of risk (v7 sizing)
         self.s = m * self.M["sig"]                       # stop distance as a fraction of the price (margin check)
-        self.futures = instr == "MNQ_fut"               # whole micro contracts at the entry's index level (version 8)
+        self.futures = instr == "MNQ_fut"
         self.min_l = 0.0
-        # smallest win as a share of the risk: the target sits at least WMIN_SD hourly sd from the entry (version 8)
+        # smallest win as a share of the risk: the take-profit sits at least WMIN_SD hourly sd from the entry
         self.wmin_frac = max(0.0, WMIN_SD / m - self.rho)
         # engine day boundaries (clock = 0 mod 24) fall at 22:00 UTC, the futures/CFD daily reset
         self.base = 24 * rng.randrange(self.M["T"] // 48) + (22 - self.M["h0"]) % 24
-        self.trades = 0; self.st = Stats(); self.last_entry = None
+        self.trades = 0; self.st = Stats(); self.last_entry = None; self.last_exit = None; self.last_info = None
 
     def _idx(self, clock):
         return (self.base + int(clock)) % self.M["T"]
 
     def lmin_at(self, clock, flat_weekend=False):
-        """the risk of one micro contract at the bar where the next trade would open (0 for CFDs)"""
-        if not self.futures: return 0.0
-        i, _ = entry_index(self.M, self._idx(clock), flat_weekend, self.flat_daily)
-        return contract_value(self.M, self.M["O"][i]) * self.s
+        """the risk of the smallest position (0.01 lot, one micro contract) at the bar where the next trade would open"""
+        i, _ = entry_index(self.M, self._idx(next_bar(clock)), flat_weekend, self.flat_daily)
+        return min_risk(self.M, self.M["O"][i], self.s)
 
-    def filler_days(self, clock, need, traded, flat_weekend=False):
-        return filler_days(self.M, self._idx, clock, need, traded, flat_weekend, self.flat_daily)
+    def bdays(self, clock, n):
+        return add_bdays(self.M, self._idx, clock, n)
 
     def next_entry(self, clock, flat_weekend=False):
-        """the time the next trade would open (as trade() computes it)"""
-        _, waited = entry_index(self.M, self._idx(clock), flat_weekend, self.flat_daily)
-        return clock + waited
+        """the time the next trade would open (as trade() computes it): the open of the first permitted bar that has not
+        started before the clock"""
+        c0 = next_bar(clock)
+        _, waited = entry_index(self.M, self._idx(c0), flat_weekend, self.flat_daily)
+        return float(c0 + waited)
 
     def _direction(self, i):
         if self.dir_rule == "random":
@@ -247,14 +378,22 @@ class PathTrader:
         if self.dir_rule == "revert5": up = not up
         return 1 if up else -1
 
-    def trade(self, l, w, clock=None, flat_weekend=False):
-        i, waited = entry_index(self.M, self._idx(clock), flat_weekend, self.flat_daily)
+    def trade(self, l, w, clock=None, flat_weekend=False, opts=None):
+        """opens the plan's next position at the next allowed entry and resolves it (resolve); returns (pnl, hours from the
+        clock until the next entry may be considered). last_entry, last_exit (clock) and last_info describe the trade.
+        A position opens at a bar's open, so never at a bar that started before the clock (version 9: version 8 opened
+        it at the open of the bar containing the clock, up to an hour earlier)"""
+        c0 = next_bar(clock)
+        i, waited = entry_index(self.M, self._idx(c0), flat_weekend, self.flat_daily)
         d = self._direction(i)
-        self.last_entry = clock + waited
-        pnl, hours, _ = resolve(self.M, i, d, l, w, self.s, self.cost, flat_weekend, self.flat_daily, self.rng,
-                                futures=self.futures, st=self.st)
+        o = dict(opts or {})
+        if "keep_w" not in o: o["keep_w"] = l > 0 and w < self.k * l * (1 - 1e-9)
+        pnl, hours, info = resolve(self.M, i, d, l, w, self.s, self.cost, flat_weekend, self.flat_daily, self.rng,
+                                   st=self.st, opts=o)
+        te = float(c0 + waited)                           # the bar's open, when the position is opened
+        self.last_entry = te; self.last_exit = te + info["exit"]; self.last_info = info
         self.trades += 1
-        return pnl, float(waited + hours)
+        return pnl, (te - clock) + float(hours)
 
 def attempt(firm, instr, data, m, L, k, X1, X, rng, cost_mult=1.0, dir_rule="random"):
     tr = PathTrader(instr, data, m, L, k, rng, cost_mult, dir_rule, firm.get("flat_daily"))
