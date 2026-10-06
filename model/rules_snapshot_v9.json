@@ -1,0 +1,237 @@
+{
+ "retrieved": "4 October 2026 (version 8); 5 October 2026 (version 9 additions)",
+ "note": "Sentences as returned by the firms' own pages when read for version 8 (help centres, FAQs, rule pages). Where a page could not be read directly (Cloudflare or script-rendered), the firm's own search snippet is quoted and marked 'snippet'. Rules move often: re-read before every purchase. Version 9 adds the sentences behind the corrections of the review of version 8.",
+ "rules": [
+  {
+   "firm": "FundingPips",
+   "url": "https://help.fundingpips.com/hc/en-us/articles/47835196271249-2-Step-Flex",
+   "kind": "snippet",
+   "quote": "The daily loss limit is calculated as 4% of the higher value between the opening balance or opening equity for that day.",
+   "used_for": "dll_mode rel"
+  },
+  {
+   "firm": "FundingPips",
+   "url": "https://help.fundingpips.com/hc/en-us/articles/47835196271249-2-Step-Flex",
+   "kind": "snippet",
+   "quote": "The minimum reward request is 1% of your Master Account size. ... every 14 calendar days from your first executed trade on the Master Account.",
+   "used_for": "min_payout 1%; payout clock from the first trade"
+  },
+  {
+   "firm": "FundingPips",
+   "url": "https://help.fundingpips.com/hc/en-us/articles/48174287980177-Risk-Per-Trade-Idea",
+   "kind": "snippet",
+   "quote": "For 2 Step Flex accounts with $25K, the limit is 3% of account size, while accounts above $25K have a 2% limit ... enforced on Master Accounts only.",
+   "used_for": "risk per trade at most 1.75% plus cost"
+  },
+  {
+   "firm": "The5ers",
+   "url": "https://the5ers.com/faqs/what-is-the-drawdown-rule-for-high-stakes/",
+   "kind": "page",
+   "quote": "5% daily drawdown that is taken from the closing equity or balance of your previous day (the highest between them) ... with a $100K account showing $110,000 equity at 23:59 server time, the daily max loss becomes $5,500",
+   "used_for": "dll_mode rel"
+  },
+  {
+   "firm": "The5ers",
+   "url": "https://the5ers.com/faqs/how-many-high-stakes-accounts-can-i-have/",
+   "kind": "page",
+   "quote": "Classic: One $2.5K account, One $5K account, One account of either $10K or $25K, One account of either $50K or $100K. New: Three of $2.5K accounts, Three of $5K accounts, Three of $10K accounts, One $25K account, One account of either $50K or $100K. Classic and New program account limits are counted independently ... you may only hold one of these across Classic and New combined [$50K/$100K].",
+   "used_for": "small-account allocation (New only)"
+  },
+  {
+   "firm": "FXIFY",
+   "url": "https://intercom.help/fxify/en/articles/12130186-2-phase-account-types",
+   "kind": "page",
+   "quote": "Refunds: Classic: No Refund; Standard: Yes, alongside with the first Payout request; Pro: No Refund. Daily Drawdown: 4% (Based on previous Day end of day Balance)",
+   "used_for": "refund False; dll_mode rel"
+  },
+  {
+   "firm": "FXIFY",
+   "url": "https://fxify.com/blog/cheapest-path-funded-50k-fxify/",
+   "kind": "page (14 September 2026)",
+   "quote": "We reimburse the purchase fee for One Phase, Two Phase Standard, and Three Phase programs when their payout conditions are met.",
+   "used_for": "refund False on Classic"
+  },
+  {
+   "firm": "FXIFY",
+   "url": "https://intercom.help/fxify/en/articles/14834680-the-2-phase-classic-account",
+   "kind": "page",
+   "quote": "Minimum Payout: Just $50. ... biggest profit day cannot account for more than 25% of your total profits",
+   "used_for": "min_payout 50; best 25%"
+  },
+  {
+   "firm": "GFT",
+   "url": "https://help.goatfundedtrader.com/en/articles/13575169-2-step-standard",
+   "kind": "page",
+   "quote": "At 5:00 PM EST, we check the higher value between the Account Balance or Account Equity. Subtract 5% from that value to set the Daily Drawdown Threshold ... Funded accounts have a $3,000 daily profit limit ... 6% of the initial account size or $10,000 (whichever is lower)",
+   "used_for": "dll_mode rel; day cap $3,000; first two payouts capped"
+  },
+  {
+   "firm": "GFT",
+   "url": "https://help.goatfundedtrader.com/en/articles/9549359-all-about-rewards-and-profit-splits",
+   "kind": "page",
+   "quote": "To access the first on-demand reward, traders must have a minimum of 3% profit on their account. ... Minimum withdrawal amount: $100 for funded account rewards",
+   "used_for": "min_payout $100 (3% belongs to on-demand)"
+  },
+  {
+   "firm": "Hola Prime",
+   "url": "https://holaprime.com/forex/faq/hola-prime-challenges/hola-prime-2-step-prime-challenge/",
+   "kind": "page",
+   "quote": "Daily Loss Limit = Previous Day's Closing Balance - (Previous Day's Closing Balance x 5%) ... Bi-weekly: Requires a minimum of 3 profitable trading days within a 14-day period ... On-Demand: Consistency Score of up to 40% ... If you close a position and then open a new one in the same direction on the same assets within 10 minutes, the system considers this a continuation of the same trade idea.",
+   "used_for": "dll_mode rel; no 40% rule on bi-weekly; 10-minute gap"
+  },
+  {
+   "firm": "Maven",
+   "url": "https://maventrading.com/faqs",
+   "kind": "page",
+   "quote": "Daily Drawdown: 4% (Based on the higher of your equity/balance at 00:00 UTC) ... Your max daily drawdown will be 4% of $1100 ($44). ... You will also need to achieve the 3 minimum profitable days of 0.5% in the funded phase to achieve a withdrawal ... If your total profit exceeds $5,000, your best trading day (day counted between two singular trades, with not 24h between closing trade 1 and opening trade 2) or singular trade ... may not exceed 50% of your profit in the funded stage payout cycle. ... maximum withdrawal of $10,000 per 30-day rolling cycle (per trader) ... The $10,000 is calculated from the date on which you close the profit on the account ... Any profits generated over the $10,000 limit will be voided. ... A consistency score ... You can only withdraw from your instant account when your consistency score is 20% or below.",
+   "used_for": "dll_mode rel; funded profit days; $5,000 ceiling; rolling $10,000 cap by close date; 20% rule is for instant accounts"
+  },
+  {
+   "firm": "Blue Guardian",
+   "url": "https://help.blueguardian.com/en/articles/14062291-2-step-standard-rules",
+   "kind": "page",
+   "quote": "The maximum daily loss is limited to 4% of the initial account balance ... the higher value between the account balance or equity [at 5pm EST] ... Minimum Withdrawals: $100 via crypto and $500 via rise ... The minimum holding time is 2 minutes.",
+   "used_for": "dll_mode fixed; min_payout $100; take-profit and stop at least 0.6 sd"
+  },
+  {
+   "firm": "Fintokei",
+   "url": "https://support.fintokei.com/en/articles/6538884-how-and-how-often-can-i-withdraw-my-performance-rewards-and-what-is-the-minimum-amount",
+   "kind": "page",
+   "quote": "ProTrader ... as long as at least 14 days have passed from your last successfully processed payout or since the first trade placed. ... SwiftTrader ... Minimum profit for payout calculated as 3% or more ... You can withdraw any amount with a minimum of ... 100 USD",
+   "used_for": "min_payout $100; payout clock from the first trade"
+  },
+  {
+   "firm": "Fintokei",
+   "url": "https://support.fintokei.com/en/articles/8428030-what-does-the-rule-minimum-trading-days-mean-3-or-5-days",
+   "kind": "page",
+   "quote": "at least 3 separate trading days ... A trading day counts when: You open at least one trade ... Both during evaluation phases and virtually funded phases when requesting payouts",
+   "used_for": "3 trading days per phase and per payout"
+  },
+  {
+   "firm": "Alpha Capital",
+   "url": "https://help.alphacapitalgroup.uk/en/articles/10570531-bi-weekly-performance-fee",
+   "kind": "page",
+   "quote": "requests are made every 14 days, starting 14 days after your initial trade on your Qualified Analyst account ... a minimum of 5 trading days using the same trading strategy is required ... a trade must be opened and closed on the same day for a trading day to be counted ... The minimum performance fee amount is $100 ($100 gross, $80 net) ... The use of minimal lots to pass trading days on a qualified account is not allowed",
+   "used_for": "first_days 5; min_payout $100; clock from the first trade"
+  },
+  {
+   "firm": "Alpha Capital",
+   "url": "https://help.alphacapitalgroup.uk/en/articles/8447268-what-is-the-2-minute-average-trade-duration-rule",
+   "kind": "page",
+   "quote": "The average duration of all your trades to be greater than 2 minutes. At least 50% of your gross generated profits ... must come from trades that exceed 2 minutes.",
+   "used_for": "duration statistics reported per programme"
+  },
+  {
+   "firm": "Alpha Capital",
+   "url": "https://help.alphacapitalgroup.uk/en/articles/8420429-alpha-pro-8-10",
+   "kind": "snippet",
+   "quote": "Daily loss limit is calculated based on 5% of the starting balance of each trading day.",
+   "used_for": "dll_mode rel"
+  },
+  {
+   "firm": "FunderPro",
+   "url": "https://support.funderpro.com/en/articles/421458-is-there-a-margin-rule-on-funded-accounts",
+   "kind": "page",
+   "quote": "You can use up to 20% of your starting balance as margin per asset class.",
+   "used_for": "funded margin cap"
+  },
+  {
+   "firm": "FunderPro",
+   "url": "https://support.funderpro.com/en/articles/419844-how-does-reward-frequency-and-eligibility-work-for-funderpro-challenges",
+   "kind": "page",
+   "quote": "rewards for the Classic Challenge are bi-weekly (every 14 days) ... You must earn at least $100 in profit on your funded account before requesting a reward.",
+   "used_for": "min_payout $100"
+  },
+  {
+   "firm": "FunderPro",
+   "url": "https://support.funderpro.com/en/articles/412020-what-add-ons-can-i-choose-with-my-challenge",
+   "kind": "page",
+   "quote": "No Minimum Trading Days: Trade at your own pace with no restrictions on the number of days you must trade to complete a phase (Available on Classic Challenges only)",
+   "used_for": "Classic has a minimum-days rule by default; 4 per phase as reported by reviewers"
+  },
+  {
+   "firm": "FTMO",
+   "url": "https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/",
+   "kind": "page",
+   "quote": "You can request a Reward claim in the Account MetriX on the 14th or any following day after the first placed trade",
+   "used_for": "payout clock from the first trade"
+  },
+  {
+   "firm": "FTMO",
+   "url": "https://ftmo.com/faq/how-many-accounts-can-i-have/",
+   "kind": "page",
+   "quote": "the total capital allocation across all accounts is limited to $400,000 per trader or strategy (prior to any scaling)",
+   "used_for": "allocation; terminal rule ends accounts in a breach so the allocation is free"
+  },
+  {
+   "firm": "FundedNext",
+   "url": "https://help.fundednext.com/en/articles/8019811-how-can-i-calculate-the-daily-loss-limit",
+   "kind": "snippet",
+   "quote": "The Daily Loss Limit is calculated as: Initial Balance x Daily Loss Limit Percentage ... your daily loss limit will return to being a percentage of your initial balance",
+   "used_for": "dll_mode fixed"
+  },
+  {
+   "firm": "BrightFunded",
+   "url": "https://help.brightfunded.com/en/articles/12291765-how-does-my-daily-permitted-loss-work",
+   "kind": "snippet",
+   "quote": "The daily loss limit is always calculated as a percentage of your original challenge size",
+   "used_for": "dll_mode fixed"
+  },
+  {
+   "firm": "Blue Guardian",
+   "url": "https://help.blueguardian.com/en/articles/14062291-2-step-standard-rules",
+   "kind": "page",
+   "quote": "The minimum holding time is 2 minutes. If a trade is closed in under 2 minutes, it may be flagged for tick scalping, which is against our trading rules.",
+   "used_for": "hold_min 3 (bracket placed after 3 minutes); short_breach (a trade under 2 minutes ends the account in the model)"
+  },
+  {
+   "firm": "Alpha Capital",
+   "url": "https://help.alphacapitalgroup.uk/en/articles/8447268-what-is-the-2-minute-average-trade-duration-rule",
+   "kind": "page",
+   "quote": "the majority of trades and the average duration of all trades to exceed 2 minutes ... At least 50% of your gross generated profits (profits above the initial account balance) for qualified accounts, or total targeted profits for evaluations, must come from trades that exceed 2 minutes ... [evaluation:] restart from Phase 1 ... [qualified:] all profits made will be removed, and the account will be reset to its initial balance",
+   "used_for": "dur_rule 2.0 checked at every phase pass and payout request, with these consequences"
+  },
+  {
+   "firm": "BrightFunded",
+   "url": "https://help.brightfunded.com/en/articles/9241611-what-are-the-current-rules-for-the-evaluation-process",
+   "kind": "page",
+   "quote": "A day counts as a trading day when at least one trade remains open for a minimum of 1 minute (60 seconds) - regardless of whether the trade closes in profit or loss.",
+   "used_for": "day_min_minutes 1"
+  },
+  {
+   "firm": "Fintokei",
+   "url": "https://support.fintokei.com/en/articles/8428030-what-does-the-rule-minimum-trading-days-mean-3-or-5-days",
+   "kind": "page",
+   "quote": "You open at least one trade, regardless of whether you close it on the same day or leave it open ... The trade is executed and has a real market outcome (i.e. not canceled or immediately closed)",
+   "used_for": "trading-day definition"
+  },
+  {
+   "firm": "Fintokei",
+   "url": "https://support.fintokei.com/en/articles/9464503-what-is-all-in-trading-and-why-is-it-forbidden-to-achieve-profit-target-in-one-trade",
+   "kind": "page",
+   "quote": "some traders managed to achieve the profit target with a single trade idea, after which they opened additional, much smaller trades in the following days (typically very small ones, like 0.01 lots, and for a very short time) just to meet the minimum 3-day trading requirement (so called 'flipping trades'). This is also trading behavior that we don't want to support.",
+   "used_for": "no_fillers at Fintokei"
+  },
+  {
+   "firm": "Fintokei",
+   "url": "https://support.fintokei.com/en/articles/6538884-how-and-how-often-can-i-withdraw-my-performance-rewards-and-what-is-the-minimum-amount",
+   "kind": "page",
+   "quote": "as long as at least 14 days have passed from your last successfully processed payout or since the first trade placed",
+   "used_for": "cycle_from_processed"
+  },
+  {
+   "firm": "Hola Prime",
+   "url": "https://holaprime.com/forex/faq/hola-prime-challenges/hola-prime-2-step-prime-challenge/",
+   "kind": "page",
+   "quote": "Requires a minimum of 3 profitable trading days within a 14-day period ... a day when closed positions generate a net profit of at least 0.5% of the initial account balance",
+   "used_for": "profit_days_window 14"
+  },
+  {
+   "firm": "FTMO",
+   "url": "https://ftmo.com/en/trading-objectives/",
+   "kind": "page",
+   "quote": "A Trading Day is defined as any day ... during which at least one position is opened.",
+   "used_for": "filler trades counted as trading days (no minimum volume stated)"
+  }
+ ]
+}
