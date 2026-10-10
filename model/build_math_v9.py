@@ -38,7 +38,7 @@ def contrib_fig():
     for tr, lab in (("A", "tier A"), ("B", "tier B"), ("D", "tier D")):
         g.append(f'<rect x="{lx}" y="6" width="9" height="9" rx="2" fill="{TIERC[tr]}"/>'); g.append(t(lx + 13, 14, lab, 8, "start", MUT)); lx += 70
     g.append("</svg>")
-    return fig("".join(g), f"Long-run value per month by firm in the recommended plan (number of accounts in brackets): each account's renewal&ndash;reward value on fresh paths. Colour: reliability tier (Chapter {CH_REF}).")
+    return fig("".join(g), f"Long-run value per month by firm in the recommended plan (number of accounts in brackets): each account's long-run rate as a continuing slot (8.3). Colour: reliability tier (Chapter {CH_REF}).")
 
 def bill():
     rows = []; tot = 0.0; nacc = 0; nf = 0

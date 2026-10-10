@@ -223,7 +223,7 @@ def budget_table():
                      usd(np.mean([r["wallet_low"] for r in g])) if b else "&ndash;"])
     lowest = min((r["kw"]["budget"] + r["trough"] for r in rs if r["kw"].get("budget")), default=None)
     return table(["Starting cash", "First year, EV/month", "of unlimited", "Evaluations bought in the year", "Ahead at 12 months", "First-year cash p5", "Lowest cash left (mean)"], rows, cls="small", num_from=1,
-                 cap="The recommended plan with a finite budget. Every purchase is an event at its own time, processed in time order with every trade: it is paid from the cash dated at or before it (the starting cash, less earlier purchases, plus payouts received by then), and otherwise waits a day at a time (version 9; version 8 let a purchase use a payout dated after it, review finding 1). "
+                 cap="The recommended plan with a finite budget. Every purchase is an event at its own time, processed in time order with every trade: it is paid from the cash dated at or before it (the starting cash, less earlier purchases, plus payouts received by then), and otherwise waits a day at a time (version 9; version 8 let a purchase use a payout dated after it: review of version 8, finding 1). "
                      + (f"The cash dated by the ledger never falls below zero in any life (asserted in every run; lowest {usd(lowest, 2)}). " if lowest is not None else "")
                      + "Slots are filled in order of value per fee dollar. 200 lives per row, same seeds in every row.")
 

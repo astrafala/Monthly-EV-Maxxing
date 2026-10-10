@@ -411,7 +411,7 @@ def verify_text():
     inside = sum(abs(x) <= 1 for x in z); insidec = sum(abs(x) <= 1 for x in zc)
     dfull = [v["EV_full"] - v["EV_simpl"] for v in vs]
     return (f"<p><strong>Implementation.</strong> With the chain's rules, the engine's pass rate is within its 95% interval of the chain's in {inside} of {len(vs)} programmes and its funded cash in {insidec} of {len(vs)}; "
-            f"the largest standardised differences are {max(z, key=abs):+.1f} and {max(zc, key=abs):+.1f} intervals. Remaining differences come from Monte Carlo noise and from what the engine still does that the chain does not: it closes positions at the Friday close (a fair outcome between stop and target, which the binary chain does not have), and the chain is solved on a grid. They go both ways, so neither is 'the conservative one'.</p>"
+            f"the largest standardised differences are {max(z, key=abs):+.1f} and {max(zc, key=abs):+.1f} intervals. Remaining differences come from Monte Carlo noise and from what the engine still does that the chain does not: it closes positions at the Friday close (a fair outcome between stop and target, which the binary chain does not have) and rounds every position to whole lots, and the chain is solved on a grid. They go both ways, so neither is 'the conservative one'.</p>"
             f"<p><strong>What the daily rules do.</strong> Switching the daily rules back on changes the value of an attempt by {sgn(min(dfull))} to {sgn(max(dfull))} across programmes. These are the effects the formulas of Part I do not contain; every reported figure comes from the engine with every rule on.</p>")
 
 def fills():

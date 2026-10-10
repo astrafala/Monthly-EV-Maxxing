@@ -286,3 +286,7 @@ P["Alpha Capital Pro 10%"]["plan"] = [x for x in P["Alpha Capital Pro 10%"]["pla
 
 P["Hola Prime 2-Step Prime"]["plan"] = [("bi-weekly payouts; daily profit target until 3 profitable days within the 14 days ending on the request day" if x.startswith("bi-weekly payouts") else x)
                                         for x in P["Hola Prime 2-Step Prime"]["plan"]]
+
+P["Blue Guardian 2-Step"]["plan"] = [("risk at most 1.75%: a stop-out stays below the 2% shield (a position closed at the market at the end of its 3-minute hold "
+                                      "can lose a little more than its stop; reaching 2% would take a move against it of more than five standard deviations of 3 minutes at the plan's stop of at least 1.08 hourly sd)"
+                                      if x.startswith("risk at most 1.75%: a stop-out stays below the 2% shield") else x) for x in P["Blue Guardian 2-Step"]["plan"]]

@@ -298,7 +298,7 @@ def resolve(M, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, block=None, s
             if short: st.gross_win_short += pnl
         if sub and n2 and tp is not None:              # the generator's error bound for this trade
             W = abs(math.log(tp / lo_px)); sv = M["sig"] / math.sqrt(sub)
-            st.sub2 += n2; st.bridge_eps += n2 * bridge_err(W / sv - 0.5 * M["sig"] * sv)
+            st.sub2 += n2; st.bridge_eps += n2 * bridge_err(W / sv - 0.5 * sv)     # r less the drift per sub-step (sigma^2/2 per hour, in sd)
     return pnl, hours, info
 
 def entry_index(M, i, flat_weekend, flat_daily, block=None):
