@@ -1,0 +1,5 @@
+FunderPro Classic USDJPY, first funded cycle on 192 fresh paths: 0.2939 ± 0.0056 against the chain's 0.2976; cost per cycle 1086 against 1057; trades 15.75 against 15.30 (0.351 Friday closes); chain with the engine's cost 0.2967
+with_financing     first cycle 0.2137 ± 0.0121  paid cycles 0.2760 ± 0.0189  cash    6791 ±  464  mean trade -0.0485 ± 0.0184 R  (342,588 trades)
+without_financing  first cycle 0.2274 ± 0.0123  paid cycles 0.2985 ± 0.0191  cash    7310 ±  465  mean trade -0.0282 ± 0.0163 R  (356,034 trades)
+chain              first cycle 0.2349           paid cycles 0.3071           cash    7523         mean trade -0.0234 R
+with minus without (paired by path): first cycle -0.0137 ± 0.0099, cash -519 ± 340, mean trade -0.0220 ± 0.0125 R

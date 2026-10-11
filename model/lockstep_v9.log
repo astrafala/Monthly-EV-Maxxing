@@ -1,0 +1,93 @@
+Traceback (most recent call last):
+  File "/home/user/monthly-ev-maxxing/model/lockstep_portfolio_v9.py", line 232, in <module>
+    R = run(J, "lockstep_v9.json", chunk=len(PORTFOLIOS))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/monthly-ev-maxxing/model/lockstep_portfolio_v9.py", line 211, in run
+    json.dump(dict(R=R, slots={p: PORTFOLIOS[p] for p in PORTFOLIOS}), open(out, "w"))
+  File "/usr/lib/python3.11/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/usr/lib/python3.11/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/usr/lib/python3.11/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.11/json/encoder.py", line 326, in _iterencode_list
+    yield from chunks
+  File "/usr/lib/python3.11/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.11/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.11/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/usr/lib/python3.11/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type int64 is not JSON serializable
+resuming lockstep_v9.json: 8400 of 8400 lives done
+lockstep_v9.json: 0 accounts ended by the stall detector
+== Tier A: lives=1200 EV/month 24078 ± 948  months 2-12 27521  P(ahead 12m) 0.95  trough p50/p05 [-26999.0, -77182.0]
+== Tier A + B: lives=1200 EV/month 40249 ± 1477  months 2-12 45669  P(ahead 12m) 0.97  trough p50/p05 [-39479.0, -101025.0]
+== Recommended: A + B + one account at each tier-D firm: lives=1200 EV/month 60714 ± 2251  months 2-12 68972  P(ahead 12m) 0.97  trough p50/p05 [-54315.0, -150867.0]
+== Recommended, FTMO as 2 x 200K: lives=1200 EV/month 60838 ± 2258  months 2-12 69107  P(ahead 12m) 0.97  trough p50/p05 [-54388.0, -150867.0]
+== All firms at full caps: lives=1200 EV/month 69885 ± 2685  months 2-12 79480  P(ahead 12m) 0.97  trough p50/p05 [-64826.0, -183998.0]
+== All firms at full caps + The5ers small accounts: lives=1200 EV/month 71804 ± 2759  months 2-12 81669  P(ahead 12m) 0.97  trough p50/p05 [-66366.0, -185735.0]
+== Recommended + futures: lives=1200 EV/month 67356 ± 2512  months 2-12 76533  P(ahead 12m) 0.97  trough p50/p05 [-63674.0, -174347.0]
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+           ^^^^^^^^^^^^^^^^
+  File "/home/user/monthly-ev-maxxing/model/lockstep_portfolio_v9.py", line 186, in life
+    open12 = sum(cash for (t, sid, kind, cash, att) in ledger if t > t12 and start.get((sid, att), 1e18) <= t12) if months > 12 else None
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/monthly-ev-maxxing/model/lockstep_portfolio_v9.py", line 186, in <genexpr>
+    open12 = sum(cash for (t, sid, kind, cash, att) in ledger if t > t12 and start.get((sid, att), 1e18) <= t12) if months > 12 else None
+                                                                     ^^^
+NameError: cannot access free variable 't12' where it is not associated with a value in enclosing scope
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/user/monthly-ev-maxxing/model/lockstep_portfolio_v9.py", line 244, in <module>
+    R = run(J, "lockstep_v9_long.json")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/monthly-ev-maxxing/model/lockstep_portfolio_v9.py", line 217, in run
+    R += pool.map(life, J[len(R):len(R) + block], chunksize=chunk)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/multiprocessing/pool.py", line 367, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/multiprocessing/pool.py", line 774, in get
+    raise self._value
+NameError: cannot access free variable 't12' where it is not associated with a value in enclosing scope
+lockstep_v9_long.json: 0 accounts ended by the stall detector
+== 36 months: lives=800 EV/month 69023 ± 1519  months 2-12 71766  P(ahead 12m) 0.97  trough p50/p05 [-54140.0, -139212.0]
+months 13-36: 71981.0 open at 12: 168355.0
+lockstep_v9_pairfirms_lives.json: 0 accounts ended by the stall detector
+pairfirms {'n': 200, 'diff': 1723.9272194382058, 'ci': 2517.1968730459375, 'diff_y1': 3661.4458823713385, 'ci_y1': 3570.3391693175618, 'full': 75534.90125826103, 'sum_alone': 73810.97403882284}
+lockstep_v9_budget.json: 0 accounts ended by the stall detector
+== budget 5000: lives=200 EV/month 13612 ± 4409  months 2-12 14936  P(ahead 12m) 0.21  trough p50/p05 [-4981.0, -4988.0]
+== budget 10000: lives=200 EV/month 17168 ± 5046  months 2-12 19152  P(ahead 12m) 0.26  trough p50/p05 [-9974.0, -9992.0]
+== budget 20000: lives=200 EV/month 31474 ± 6039  months 2-12 35468  P(ahead 12m) 0.48  trough p50/p05 [-19981.0, -19998.0]
+== budget 30000: lives=200 EV/month 36670 ± 6208  months 2-12 41893  P(ahead 12m) 0.56  trough p50/p05 [-29971.0, -29997.0]
+== budget 50000: lives=200 EV/month 48008 ± 6418  months 2-12 55141  P(ahead 12m) 0.73  trough p50/p05 [-49944.0, -49998.0]
+== budget 75000: lives=200 EV/month 55467 ± 6188  months 2-12 63409  P(ahead 12m) 0.88  trough p50/p05 [-57286.0, -74994.0]
+== budget 100000: lives=200 EV/month 58007 ± 6114  months 2-12 66180  P(ahead 12m) 0.92  trough p50/p05 [-57286.0, -99987.0]
+== budget None: lives=200 EV/month 60292 ± 5821  months 2-12 68673  P(ahead 12m) 0.96  trough p50/p05 [-57286.0, -133387.0]
+lockstep_v9_stress.json: 0 accounts ended by the stall detector
+== cost x1.5: lives=200 EV/month 50674 ± 5615  months 2-12 58344  P(ahead 12m) 0.94  trough p50/p05 [-65971.0, -175475.0]
+== cost x2.0: lives=200 EV/month 42808 ± 5328  months 2-12 49917  P(ahead 12m) 0.91  trough p50/p05 [-73329.0, -181615.0]
+lockstep_v9_corr.json: 0 accounts ended by the stall detector
+== correlation 0.3: lives=200 EV/month 61221 ± 5552  months 2-12 69886  P(ahead 12m) 0.95  trough p50/p05 [-54729.0, -128961.0]
+lockstep_v9_news.json: 0 accounts ended by the stall detector
+== news proxy: lives=200 EV/month 55115 ± 5125  months 2-12 63120  P(ahead 12m) 0.98  trough p50/p05 [-60352.0, -144214.0]
+lockstep_v9_behav.json: 0 accounts ended by the stall detector
+== FundedNext 1% risk: lives=200 EV/month 59170 ± 5829  months 2-12 67414  P(ahead 12m) 0.97  trough p50/p05 [-56594.0, -152353.0]
+== FundedNext 7-day pause: lives=200 EV/month 59853 ± 5770  months 2-12 68146  P(ahead 12m) 0.96  trough p50/p05 [-56542.0, -148156.0]
+# Recommended + futures rerun with Apex's corrected setting (the futures choice's stop minimum, n21); its 1,200 lives replaced in lockstep_v9.json:
+== Recommended + futures (rerun with Apex's corrected stop, n21): lives=1200 EV/month 67882 ± 2536  months 2-12 77078  P(ahead 12m) 0.98  trough p50/p05 [-64552.0, -178907.0]
+lockstep_v9.json: 0 accounts ended by the stall detector in the rerun lives

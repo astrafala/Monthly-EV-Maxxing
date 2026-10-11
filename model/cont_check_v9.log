@@ -1,0 +1,27 @@
+# Apex's rows recomputed with the futures choice's stop minimum (n21); every other row as the stage printed it
+FTMO 2-Step                        US100   continuing   2724 ±  319 | random start, momentum   2574 ±  521 | coin flip   2432 ±  278 | continuing - momentum  +222 ± 558 | momentum - coin flip   +74 ± 411
+FundingPips 2-Step Flex (80%)      USDJPY  continuing   1823 ±  451 | random start, momentum   1862 ±  430 | coin flip   1838 ±  146 | continuing - momentum    +3 ± 501 | momentum - coin flip   -12 ± 421
+FundingPips 2-Step Flex (80%)      EURUSD  continuing   1315 ±  293 | random start, momentum   1404 ±  481 | coin flip   1171 ±  214 | continuing - momentum   -56 ± 533 | momentum - coin flip  +203 ± 490
+FundingPips 2-Step Flex (95%)      USDJPY  continuing   1979 ±  430 | random start, momentum   2081 ±  377 | coin flip   2418 ±  197 | continuing - momentum   -80 ± 399 | momentum - coin flip  -353 ± 419
+FundingPips 2-Step Flex (95%)      EURUSD  continuing   1693 ±  445 | random start, momentum   1612 ±  425 | coin flip   1533 ±  178 | continuing - momentum  +130 ± 258 | momentum - coin flip   +41 ± 376
+FundedNext Stellar 2-Step          EURUSD  continuing   1227 ±  415 | random start, momentum   1006 ±  306 | coin flip   1329 ±  137 | continuing - momentum  +238 ± 420 | momentum - coin flip  -335 ± 341
+FundedNext Stellar 2-Step          XAUUSD  continuing   2168 ±  419 | random start, momentum   2418 ±  510 | coin flip   2318 ±  142 | continuing - momentum  -218 ± 466 | momentum - coin flip   +73 ± 492
+The5ers High Stakes                US100   continuing   3038 ±  517 | random start, momentum   2672 ±  401 | coin flip   2669 ±  191 | continuing - momentum  +390 ± 619 | momentum - coin flip   -17 ± 448
+The5ers High Stakes Classic        US100   continuing   2926 ±  575 | random start, momentum   2778 ±  600 | coin flip   2689 ±  203 | continuing - momentum  +200 ± 651 | momentum - coin flip   +45 ± 596
+FXIFY Two Phase Classic (100%, 30  US100   continuing   2609 ±  420 | random start, momentum   2261 ±  484 | coin flip   2176 ±  152 | continuing - momentum  +409 ± 473 | momentum - coin flip   +35 ± 405
+FXIFY Two Phase Classic (100%, 30  USDJPY  continuing   1650 ±  551 | random start, momentum   1610 ±  397 | coin flip   1706 ±  197 | continuing - momentum   +71 ± 501 | momentum - coin flip  -122 ± 407
+FXIFY Two Phase Classic (80%)      US100   continuing   1794 ±  352 | random start, momentum   1657 ±  473 | coin flip   1813 ±  201 | continuing - momentum  +185 ± 455 | momentum - coin flip  -191 ± 389
+FXIFY Two Phase Classic (80%)      USDJPY  continuing   1105 ±  289 | random start, momentum   1180 ±  336 | coin flip   1426 ±  161 | continuing - momentum   -53 ± 377 | momentum - coin flip  -261 ± 328
+Fintokei ProTrader                 US100   continuing   2678 ±  364 | random start, momentum   2522 ±  612 | coin flip   2595 ±  242 | continuing - momentum  +199 ± 530 | momentum - coin flip  -108 ± 662
+Hola Prime 2-Step Prime (bi-weekly XAUUSD  continuing   2450 ±  479 | random start, momentum   2634 ±  687 | coin flip   2285 ±  223 | continuing - momentum  -138 ± 661 | momentum - coin flip  +311 ± 590
+Hola Prime 2-Step Prime (bi-weekly EURUSD  continuing   1169 ±  364 | random start, momentum   1165 ±  360 | coin flip   1352 ±  189 | continuing - momentum   +29 ± 437 | momentum - coin flip  -205 ± 286
+Alpha Capital Pro 10%              US100   continuing   2863 ±  505 | random start, momentum   2711 ±  484 | coin flip   2572 ±  283 | continuing - momentum  +200 ± 547 | momentum - coin flip  +101 ± 377
+GFT 2-Step Standard                US100   continuing   2627 ±  293 | random start, momentum   2570 ±  428 | coin flip   2240 ±  117 | continuing - momentum  +122 ± 482 | momentum - coin flip  +269 ± 368
+GFT 2-Step Standard                USDJPY  continuing   1764 ±  234 | random start, momentum   1540 ±  356 | coin flip   1746 ±  117 | continuing - momentum  +262 ± 277 | momentum - coin flip  -236 ± 386
+FunderPro Classic                  US100   continuing   2176 ±  361 | random start, momentum   2294 ±  362 | coin flip   2482 ±  220 | continuing - momentum   -84 ± 407 | momentum - coin flip  -215 ± 360
+FunderPro Classic                  USDJPY  continuing   1907 ±  444 | random start, momentum   1923 ±  457 | coin flip   2020 ±  143 | continuing - momentum   +21 ± 553 | momentum - coin flip  -130 ± 471
+BrightFunded 2-Step Classic        US100   continuing   2312 ±  432 | random start, momentum   2325 ±  531 | coin flip   2023 ±  114 | continuing - momentum   +49 ± 598 | momentum - coin flip  +243 ± 517
+Blue Guardian 2-Step               US100   continuing   2301 ±  337 | random start, momentum   2112 ±  429 | coin flip   2014 ±  209 | continuing - momentum  +233 ± 436 | momentum - coin flip   +67 ± 355
+Maven 2-Step                       US100   continuing   1461 ±  111 | random start, momentum   1485 ±  220 | coin flip   1405 ±   82 | continuing - momentum   +25 ± 229 | momentum - coin flip   +39 ± 206
+Topstep 50K                        MNQ_fut continuing    878 ±  164 | random start, momentum    893 ±  205 | coin flip    843 ±   98 | continuing - momentum   +23 ± 205 | momentum - coin flip   +17 ± 226
+Apex 50K EOD                       MNQ_fut continuing    293 ±   76 | random start, momentum    316 ±   96 | coin flip    242 ±   39 | continuing - momentum   -10 ±  85 | momentum - coin flip   +63 ± 104

@@ -1,0 +1,386 @@
+{
+ "stalls": {
+  "ok": true,
+  "info": "rows or lives with a stalled account: {'grid': 0, 'refine': 0, 'futures': 0, 'final': 0, 'continuing': 0, 'verify': 0, 'sens': 0, 'lives': 0} (14,600 portfolio lives read)"
+ },
+ "grid_coverage": {
+  "ok": true,
+  "info": "10,857 grid rows, 10,857 distinct, 10,857 settings defined"
+ },
+ "final_coverage": {
+  "ok": true,
+  "info": "24 programme-market pairs searched, 24 validated"
+ },
+ "choice": {
+  "ok": true,
+  "info": "limit violations none; chosen setting differs from the refined best: none (CFD and futures)"
+ },
+ "replay": {
+  "ok": true,
+  "info": "137,687 trades of 26 chosen settings replayed; violations: none"
+ },
+ "replay_worst": {
+  "Alpha Capital Pro 10% | US100": {
+   "day_loss_over_allowance": -200.00399038636806,
+   "day_profit_over_cap": 1.0527401173021644e-10,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": -0.98,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.017909215095739627,
+   "target_distance_short_of_0.6sd": -9.036406254603335e-06,
+   "risk_over_margin_cap": -1269.2802543241442,
+   "gap_short_of_10min": 2.2737367544323206e-12
+  },
+  "Blue Guardian 2-Step | US100": {
+   "day_loss_over_allowance": -200.00169899170896,
+   "day_profit_over_cap": 8.822098607197404e-11,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": -0.04,
+   "balance_below_static_floor": 0.0,
+   "blue_guardian_under_3_minutes": 0.0,
+   "loss_share_of_account": 0.01782737057971518,
+   "target_distance_short_of_0.6sd": -2.882051528541041e-07,
+   "risk_over_margin_cap": -178.65878296741508,
+   "gap_short_of_10min": 2.2737367544323206e-12
+  },
+  "BrightFunded 2-Step Classic | US100": {
+   "day_loss_over_allowance": -200.00052362255792,
+   "day_profit_over_cap": 1.0413714335300028e-10,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": 0.0,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.017909215411361736,
+   "target_distance_short_of_0.6sd": -4.841064845662046e-06,
+   "risk_over_margin_cap": -1270.8926515967942,
+   "gap_short_of_10min": 2.2737367544323206e-12,
+   "brightfunded_days_short": 0,
+   "filler_not_3_minutes": 0.0
+  },
+  "FTMO 2-Step | US100": {
+   "day_loss_over_allowance": -200.00147535122323,
+   "day_profit_over_cap": 9.731593308970332e-11,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": 0.0,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.015350761200499174,
+   "target_distance_short_of_0.6sd": -5.992422019374111e-06,
+   "risk_over_margin_cap": -6025.512279251382,
+   "gap_short_of_10min": 2.2737367544323206e-12,
+   "filler_not_3_minutes": 0.0
+  },
+  "FXIFY Two Phase Classic (100%, 30 days) | US100": {
+   "day_loss_over_allowance": -200.00391986249315,
+   "day_profit_over_cap": 1.0390976967755705e-10,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": 0.0,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.017882452624760757,
+   "target_distance_short_of_0.6sd": -2.8632062898381605e-06,
+   "risk_over_margin_cap": -0.910217115641107,
+   "filler_not_3_minutes": 0.0,
+   "gap_short_of_10min": 2.2737367544323206e-12,
+   "fxify_best_day_over_25pct": -0.9999999998940439
+  },
+  "FXIFY Two Phase Classic (100%, 30 days) | USDJPY": {
+   "day_loss_over_allowance": -200.01105693565023,
+   "day_profit_over_cap": 2.4692781153135e-10,
+   "volume_off_step": 1.1368683772161603e-13,
+   "volume_below_smallest": 0.0,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.018238328014631752,
+   "target_distance_short_of_0.6sd": -0.0002973176374772013,
+   "risk_over_margin_cap": -226.99492819760584,
+   "gap_short_of_10min": 2.2737367544323206e-12,
+   "filler_not_3_minutes": 0.0,
+   "fxify_best_day_over_25pct": -0.9999999998626663
+  },
+  "FXIFY Two Phase Classic (80%) | US100": {
+   "day_loss_over_allowance": -200.00137925970148,
+   "day_profit_over_cap": 9.686118573881686e-11,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": 0.0,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.01782737872328521,
+   "target_distance_short_of_0.6sd": -6.593738412941086e-06,
+   "risk_over_margin_cap": -138.07229524442315,
+   "gap_short_of_10min": 9.094947017729282e-12,
+   "filler_not_3_minutes": 0.0,
+   "fxify_best_day_over_25pct": -0.9999999999167812
+  },
+  "FXIFY Two Phase Classic (80%) | USDJPY": {
+   "day_loss_over_allowance": -200.01205730536276,
+   "day_profit_over_cap": 1.6962076188065112e-10,
+   "volume_off_step": 1.1368683772161603e-13,
+   "volume_below_smallest": 0.0,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.01809188073427932,
+   "target_distance_short_of_0.6sd": -0.00020225351226432764,
+   "risk_over_margin_cap": -719.4108119370071,
+   "gap_short_of_10min": 2.2737367544323206e-12,
+   "filler_not_3_minutes": 0.0,
+   "fxify_best_day_over_25pct": -0.9999999998390194
+  },
+  "Fintokei ProTrader | US100": {
+   "day_loss_over_allowance": -200.0009599726618,
+   "day_profit_over_cap": 1.3096723705530167e-10,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": -1.31,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.015467679421424886,
+   "target_distance_short_of_0.6sd": -1.5911933094470143e-06,
+   "risk_over_margin_cap": -4146.884621110473,
+   "gap_short_of_10min": 2.2737367544323206e-12
+  },
+  "FundedNext Stellar 2-Step | EURUSD": {
+   "day_loss_over_allowance": -200.00010783089874,
+   "day_profit_over_cap": 3.2650859793648124e-10,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": 0.0,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.018772696081436228,
+   "target_distance_short_of_0.6sd": -1.7679720190622028e-05,
+   "risk_over_margin_cap": -2957.0587656419125,
+   "gap_short_of_10min": 2.2737367544323206e-12,
+   "filler_not_3_minutes": 0.0
+  },
+  "FundedNext Stellar 2-Step | XAUUSD": {
+   "day_loss_over_allowance": -200.00601587888286,
+   "day_profit_over_cap": 1.0095391189679503e-10,
+   "volume_off_step": 1.4210854715202004e-14,
+   "volume_below_smallest": 0.0,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.018146476193154775,
+   "target_distance_short_of_0.6sd": -7.700888185058208e-05,
+   "risk_over_margin_cap": -12.229545063376117,
+   "gap_short_of_10min": 2.2737367544323206e-12,
+   "filler_not_3_minutes": 0.0
+  },
+  "FunderPro Classic | US100": {
+   "day_loss_over_allowance": -200.00010550344905,
+   "day_profit_over_cap": 1.0732037480920553e-10,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": 0.0,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.015381262564652907,
+   "target_distance_short_of_0.6sd": -7.9354497048989e-06,
+   "risk_over_margin_cap": -11.544932374679277,
+   "gap_short_of_10min": 2.2737367544323206e-12,
+   "filler_not_3_minutes": 0.0
+  },
+  "FunderPro Classic | USDJPY": {
+   "day_loss_over_allowance": -200.01307305871433,
+   "day_profit_over_cap": 2.5283952709287405e-10,
+   "volume_off_step": 1.1368683772161603e-13,
+   "volume_below_smallest": 0.0,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.01823832801463176,
+   "target_distance_short_of_0.6sd": -0.0002973176374772013,
+   "risk_over_margin_cap": -638.3020046266657,
+   "gap_short_of_10min": 2.2737367544323206e-12,
+   "filler_not_3_minutes": 0.0
+  },
+  "FundingPips 2-Step Flex (80%) | EURUSD": {
+   "day_loss_over_allowance": -200.00333539790972,
+   "day_profit_over_cap": 3.4788172342814505e-10,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": -0.52,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.0187726942281613,
+   "target_distance_short_of_0.6sd": -3.6951977109289658e-06,
+   "risk_over_margin_cap": -2853.694272752473,
+   "gap_short_of_10min": 2.2737367544323206e-12
+  },
+  "FundingPips 2-Step Flex (80%) | USDJPY": {
+   "day_loss_over_allowance": -200.00306441002158,
+   "day_profit_over_cap": 2.532942744437605e-10,
+   "volume_off_step": 1.1368683772161603e-13,
+   "volume_below_smallest": -0.79,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.01823832801463178,
+   "target_distance_short_of_0.6sd": -0.0002973176374772013,
+   "risk_over_margin_cap": -4690.556412976117,
+   "gap_short_of_10min": 9.094947017729282e-12
+  },
+  "FundingPips 2-Step Flex (95%) | EURUSD": {
+   "day_loss_over_allowance": -200.00235343399345,
+   "day_profit_over_cap": 2.632987161632627e-10,
+   "volume_off_step": 1.1368683772161603e-13,
+   "volume_below_smallest": -0.18,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.018518168162269977,
+   "target_distance_short_of_0.6sd": -3.3018586043098708e-06,
+   "risk_over_margin_cap": -4003.6990409045266,
+   "gap_short_of_10min": 9.094947017729282e-12
+  },
+  "FundingPips 2-Step Flex (95%) | USDJPY": {
+   "day_loss_over_allowance": -200.00494927523823,
+   "day_profit_over_cap": 1.9554136088117957e-10,
+   "volume_off_step": 1.1368683772161603e-13,
+   "volume_below_smallest": -0.27999999999999997,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.01809188073427932,
+   "target_distance_short_of_0.6sd": -0.00020225351226432764,
+   "risk_over_margin_cap": -6297.668908284959,
+   "gap_short_of_10min": 9.094947017729282e-12
+  },
+  "GFT 2-Step Standard | US100": {
+   "day_loss_over_allowance": -200.0019023534942,
+   "day_profit_over_cap": 1.000444171950221e-10,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": -0.39,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.017882452624760757,
+   "target_distance_short_of_0.6sd": -2.3326213433372267e-05,
+   "risk_over_margin_cap": -0.9145602804468391,
+   "gap_short_of_10min": 2.2737367544323206e-12,
+   "day_profit_over_firm_day_cap": 8.731149137020111e-11
+  },
+  "GFT 2-Step Standard | USDJPY": {
+   "day_loss_over_allowance": -200.01407992583427,
+   "day_profit_over_cap": 1.5552359400317073e-10,
+   "volume_off_step": 1.1368683772161603e-13,
+   "volume_below_smallest": -0.3,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.015500716230137013,
+   "target_distance_short_of_0.6sd": -0.0004399746339049937,
+   "risk_over_margin_cap": -2607.4516003037775,
+   "gap_short_of_10min": 9.094947017729282e-12,
+   "day_profit_over_firm_day_cap": 1.7644197214394808e-10
+  },
+  "Hola Prime 2-Step Prime (bi-weekly 80%) | EURUSD": {
+   "day_loss_over_allowance": -200.0003718884409,
+   "day_profit_over_cap": 3.3651303965598345e-10,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": -0.58,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.018772694228158457,
+   "target_distance_short_of_0.6sd": -9.351477103902717e-06,
+   "risk_over_margin_cap": -603.7908436151345,
+   "gap_short_of_10min": 2.2737367544323206e-12
+  },
+  "Hola Prime 2-Step Prime (bi-weekly 80%) | XAUUSD": {
+   "day_loss_over_allowance": -200.01049083062662,
+   "day_profit_over_cap": 1.0732037480920553e-10,
+   "volume_off_step": 1.4210854715202004e-14,
+   "volume_below_smallest": -0.03,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.01814647619315409,
+   "target_distance_short_of_0.6sd": -7.154874751114093e-06,
+   "risk_over_margin_cap": -12.214776916362434,
+   "gap_short_of_10min": 2.2737367544323206e-12
+  },
+  "Maven 2-Step | US100": {
+   "day_loss_over_allowance": -200.00143468311217,
+   "day_profit_over_cap": 7.639755494892597e-11,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": -0.049999999999999996,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.017827370579714466,
+   "target_distance_short_of_0.6sd": -1.298384965010821,
+   "risk_over_margin_cap": -2106.3621466998825,
+   "below_min_reward_risk": -0.0006234619174847467,
+   "gap_short_of_10min": 9.094947017729282e-12,
+   "maven_profit_over_ceiling": 8.640199666842818e-11,
+   "maven_30d_over_10000": 4.547473508864641e-11
+  },
+  "The5ers High Stakes | US100": {
+   "day_loss_over_allowance": -200.0015281513115,
+   "day_profit_over_cap": 1.5143086784519255e-10,
+   "volume_off_step": 4.547473508864641e-13,
+   "volume_below_smallest": -1.31,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.01804563082942514,
+   "target_distance_short_of_0.6sd": -1.5911933095580366e-06,
+   "risk_over_margin_cap": -1080.9674113663368,
+   "gap_short_of_10min": 2.2737367544323206e-12
+  },
+  "The5ers High Stakes Classic | US100": {
+   "day_loss_over_allowance": -200.00045720243088,
+   "day_profit_over_cap": 1.3096723705530167e-10,
+   "volume_off_step": 2.2737367544323206e-13,
+   "volume_below_smallest": -0.84,
+   "balance_below_static_floor": 0.0,
+   "loss_share_of_account": 0.015467681839822587,
+   "target_distance_short_of_0.6sd": -3.5192192171518144e-07,
+   "risk_over_margin_cap": -1322.8606022952642,
+   "gap_short_of_10min": 2.2737367544323206e-12
+  },
+  "Apex 50K EOD | MNQ_fut": {
+   "day_loss_over_allowance": -200.00987008248273,
+   "day_profit_over_cap": 3.2514435588382185e-11,
+   "volume_off_step": 0.0,
+   "volume_below_smallest": 0.0,
+   "target_distance_short_of_0.6sd": -1.1102230246251565e-16,
+   "gap_short_of_10min": 9.094947017729282e-12
+  },
+  "Topstep 50K | MNQ_fut": {
+   "day_profit_over_cap": 4.934008757118136e-11,
+   "volume_off_step": 0.0,
+   "volume_below_smallest": 0.0,
+   "target_distance_short_of_0.6sd": 0.0,
+   "gap_short_of_10min": 9.094947017729282e-12
+  }
+ },
+ "chain_identity": {
+  "ok": true,
+  "info": "largest accounting-identity gap over 24 chosen programmes: 1.41e-11"
+ },
+ "chain_engine": {
+  "ok": true,
+  "info": "engine with the chain's rules (no overnight financing) against the chain, standardised differences over 24 programmes: P mean +0.32, largest +1.97; cash mean -0.67, largest -2.90; EV mean -0.49, largest -2.62"
+ },
+ "chain_zero_cost": {
+  "ok": true,
+  "info": "cost-free FTMO, engine against chain: phase 1 0.5008 against 0.4992 (z = +0.31); funded withdrawal 9,870 against 10,000 (z = -0.51)"
+ },
+ "tests": {
+  "ok": true,
+  "info": "27 of 27 rule tests pass"
+ },
+ "continuing": {
+  "ok": true,
+  "info": "45 continuing rows for 45 final rows; missing none; 1,331,079 attempts in the measured years"
+ },
+ "continuing_check": {
+  "ok": true,
+  "info": "26 chosen settings run as random starts on the continuing paths with both direction rules, no stall; continuing minus random start (same paths and rule) inside its 95% interval for 26 of 26"
+ },
+ "pass_rate_intervals": {
+  "ok": true,
+  "info": "every final row has a pass-rate interval at least the attempt-level one (cluster-robust where wider)"
+ },
+ "bridge_bound": {
+  "ok": true,
+  "info": "the generator's error bound, largest per trade over every final row: 9.84e-11"
+ },
+ "maven_stopping_set": {
+  "ok": true,
+  "info": "Maven, engine against chain on one stopping set: paid per cycle 4,900.00 against 4,900.00 (z = -1.75); first cycle 0.5893 against 0.5906 (z = -0.40)"
+ },
+ "recomputed_headline": {
+  "ev": 60714.10877930329,
+  "ci": 2251.150273852653,
+  "lives": 1200
+ },
+ "portfolio": {
+  "ok": true,
+  "info": "recommended plan, first year: 60,714 \u00b1 2,251 a month over 1,200 lives; opposite positions 0; refusals: tiered 41,579, harsh 27,820 (on average at most the baseline: a refusal removes payouts, and the fees it saves are smaller)"
+ },
+ "budget_dated_cash": {
+  "ok": true,
+  "info": "1,400 budget lives: lowest cash dated by the ledger 0.04; lowest wallet balance 0.04"
+ },
+ "doc_placeholders": {
+  "ok": true,
+  "info": "unfilled placeholders none; suspicious text none"
+ },
+ "doc_headline": {
+  "ok": true,
+  "info": "recomputed headline $60,714 found in the document"
+ },
+ "pages": 105,
+ "pdf": {
+  "ok": true,
+  "info": "105 pages"
+ }
+}

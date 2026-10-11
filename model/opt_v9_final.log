@@ -1,0 +1,48 @@
+# Apex's rows recomputed with the futures choice's stop minimum (n21); every other row as the stage printed it
+14 extra candidates inside firm risk ceilings
+45 final configurations
+Alpha Capital Pro 10%                  US100   100K chosen  k=   6 m=1.00 L=1750 X= 20.0K EV/mo=  2620± 177 (iid ±138) P=0.283 days= 18.6
+Alpha Capital Pro 10%                  US100   200K 200K    k=   6 m=1.00 L=3500 X= 40.0K EV/mo=  5289± 353 (iid ±278) P=0.284 days= 18.6
+Apex 50K EOD                           MNQ_fut  50K chosen  k= 1.5 m=1.00 L=600 X=  0.0K EV/mo=   238±  41 (iid ±26) P=0.268 days= 13.0
+Blue Guardian 2-Step                   US100   100K chosen  k=  12 m=1.25 L=1750 X= 15.0K EV/mo=  2071± 157 (iid ±116) P=0.296 days= 19.3
+Blue Guardian 2-Step                   US100   200K 200K    k=  12 m=1.25 L=3500 X= 30.0K EV/mo=  4239± 271 (iid ±232) P=0.296 days= 19.3
+BrightFunded 2-Step Classic            US100   100K chosen  k= 3.5 m=1.00 L=1750 X= 30.0K EV/mo=  2276± 150 (iid ±146) P=0.288 days= 19.5
+BrightFunded 2-Step Classic            US100   200K 200K    k= 3.5 m=1.00 L=3500 X= 60.0K EV/mo=  4532± 345 (iid ±289) P=0.288 days= 19.5
+FTMO 2-Step                            US100   100K chosen  k=   8 m=1.00 L=1500 X= 30.0K EV/mo=  2654± 251 (iid ±147) P=0.291 days= 19.4
+FTMO 2-Step                            US100   200K 200K    k=   8 m=1.00 L=3000 X= 60.0K EV/mo=  5297± 458 (iid ±295) P=0.289 days= 19.4
+FXIFY Two Phase Classic (100%, 30 days US100     5K 5K      k=   3 m=1.07 L=88 X=  0.8K EV/mo=    71±   7 (iid ±5) P=0.287 days= 27.9
+FXIFY Two Phase Classic (100%, 30 days US100    10K 10K     k=   3 m=1.07 L=175 X=  1.5K EV/mo=   178±  16 (iid ±10) P=0.288 days= 27.8
+FXIFY Two Phase Classic (100%, 30 days US100    25K 25K     k=   3 m=1.07 L=438 X=  3.8K EV/mo=   463±  43 (iid ±25) P=0.291 days= 27.9
+FXIFY Two Phase Classic (100%, 30 days US100    50K 50K     k=   3 m=1.07 L=875 X=  7.5K EV/mo=   967±  91 (iid ±49) P=0.295 days= 28.0
+FXIFY Two Phase Classic (100%, 30 days US100   100K chosen  k=   3 m=1.07 L=1750 X= 15.0K EV/mo=  2149± 174 (iid ±99) P=0.290 days= 27.9
+FXIFY Two Phase Classic (100%, 30 days USDJPY  100K chosen  k=   8 m=1.00 L=1750 X= 30.0K EV/mo=  1885± 236 (iid ±137) P=0.252 days= 24.1
+FXIFY Two Phase Classic (80%)          US100   100K chosen  k=   4 m=1.25 L=1750 X= 15.0K EV/mo=  1782± 138 (iid ±88) P=0.305 days= 27.5
+FXIFY Two Phase Classic (80%)          USDJPY  100K chosen  k=   8 m=1.25 L=1750 X= 20.0K EV/mo=  1524± 195 (iid ±96) P=0.270 days= 25.5
+Fintokei ProTrader                     US100   100K chosen  k=  12 m=0.75 L=1500 X= 30.0K EV/mo=  2723± 313 (iid ±165) P=0.289 days= 17.7
+Fintokei ProTrader                     US100   200K 200K    k=  12 m=0.75 L=3000 X= 60.0K EV/mo=  5354± 643 (iid ±339) P=0.291 days= 17.6
+FundedNext Stellar 2-Step              EURUSD  100K chosen  k=   6 m=1.00 L=1750 X= 20.0K EV/mo=  1427± 174 (iid ±111) P=0.240 days= 19.4
+FundedNext Stellar 2-Step              EURUSD  200K 200K    k=   6 m=1.00 L=3500 X= 40.0K EV/mo=  2991± 330 (iid ±220) P=0.244 days= 19.6
+FundedNext Stellar 2-Step              XAUUSD  100K chosen  k=  12 m=1.03 L=1750 X= 20.0K EV/mo=  2317± 226 (iid ±127) P=0.300 days= 20.5
+FundedNext Stellar 2-Step              XAUUSD  200K 200K    k=  12 m=1.03 L=3500 X= 40.0K EV/mo=  4780± 460 (iid ±260) P=0.296 days= 20.4
+FunderPro Classic                      US100   100K chosen  k=   6 m=0.92 L=1500 X= 30.0K EV/mo=  2514± 294 (iid ±150) P=0.279 days= 18.4
+FunderPro Classic                      US100   200K 200K    k=   6 m=0.92 L=3000 X= 60.0K EV/mo=  5215± 471 (iid ±300) P=0.277 days= 18.4
+FunderPro Classic                      USDJPY  100K chosen  k=   8 m=1.00 L=1750 X= 20.0K EV/mo=  2227± 293 (iid ±136) P=0.262 days= 17.7
+FunderPro Classic                      USDJPY  200K 200K    k=   8 m=1.00 L=3500 X= 40.0K EV/mo=  4843± 531 (iid ±274) P=0.263 days= 17.8
+FundingPips 2-Step Flex (80%)          EURUSD  100K chosen  k=   8 m=1.00 L=1750 X= 30.0K EV/mo=  1203± 150 (iid ±94) P=0.213 days= 24.2
+FundingPips 2-Step Flex (80%)          USDJPY  100K chosen  k=  12 m=1.00 L=1750 X= 20.0K EV/mo=  2017± 187 (iid ±108) P=0.253 days= 24.7
+FundingPips 2-Step Flex (95%)          EURUSD  100K chosen  k= 5.0 m=1.25 L=1750 X= 20.0K EV/mo=  1469± 173 (iid ±91) P=0.229 days= 27.8
+FundingPips 2-Step Flex (95%)          USDJPY  100K chosen  k=   6 m=1.25 L=1750 X= 20.0K EV/mo=  2382± 261 (iid ±117) P=0.264 days= 26.9
+GFT 2-Step Standard                    US100   100K chosen  k=   3 m=1.07 L=1750 X= 10.0K EV/mo=  2164± 115 (iid ±87) P=0.285 days= 22.0
+GFT 2-Step Standard                    US100   200K 200K    k=   3 m=1.07 L=3500 X= 20.0K EV/mo=  3787± 137 (iid ±137) P=0.285 days= 24.7
+GFT 2-Step Standard                    USDJPY  100K chosen  k=  12 m=1.25 L=1500 X=  8.0K EV/mo=  1781± 116 (iid ±75) P=0.271 days= 23.7
+GFT 2-Step Standard                    USDJPY  200K 200K    k=  12 m=1.25 L=3000 X= 16.0K EV/mo=  3009± 123 (iid ±123) P=0.268 days= 25.6
+Hola Prime 2-Step Prime (bi-weekly 80% EURUSD  100K chosen  k=   8 m=1.00 L=1750 X= 20.0K EV/mo=  1317± 142 (iid ±115) P=0.237 days= 18.1
+Hola Prime 2-Step Prime (bi-weekly 80% XAUUSD  100K chosen  k= 7.0 m=1.03 L=1750 X= 20.0K EV/mo=  2385± 193 (iid ±135) P=0.295 days= 18.6
+Maven 2-Step                           US100   100K chosen  k=   2 m=1.25 L=1750 X=  4.9K EV/mo=  1317±  73 (iid ±50) P=0.268 days= 25.2
+The5ers High Stakes                    US100   100K chosen  k=  12 m=0.75 L=1750 X= 20.0K EV/mo=  2928± 151 (iid ±151) P=0.274 days= 16.9
+The5ers High Stakes 10K                US100    10K 10K     k=  12 m=0.75 L=175 X=  2.0K EV/mo=   250±  16 (iid ±16) P=0.269 days= 16.7
+The5ers High Stakes 2.5K               US100     2K 2K      k=  12 m=0.75 L=44 X=  0.5K EV/mo=    64±   7 (iid ±4) P=0.271 days= 17.0
+The5ers High Stakes 25K                US100    25K 25K     k=  12 m=0.75 L=438 X=  5.0K EV/mo=   649±  44 (iid ±38) P=0.275 days= 16.9
+The5ers High Stakes 5K                 US100     5K 5K      k=  12 m=0.75 L=88 X=  1.0K EV/mo=   124±  10 (iid ±8) P=0.271 days= 16.9
+The5ers High Stakes Classic            US100   100K chosen  k=  12 m=0.75 L=1500 X= 30.0K EV/mo=  2903± 265 (iid ±162) P=0.301 days= 18.2
+Topstep 50K                            MNQ_fut  50K chosen  k= 1.5 m=1.00 L=950 X=  0.0K EV/mo=   762± 109 (iid ±109) P=0.284 days=  4.5

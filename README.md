@@ -6,13 +6,82 @@ A prop-firm evaluation ("challenge") works like an option. You pay a fee. If you
 
 | File | Contents |
 |---|---|
-| [`docs/The_Prop_Firm_Option_v8_Mathematics.pdf`](docs/The_Prop_Firm_Option_v8_Mathematics.pdf) | **Current version, 94 pages.** Version 7 corrected after a second detailed review (27 findings), with further errors found and fixed. The expected cash per month for one person first, then every formula derived from first principles (Part I), one chapter per programme with every number worked through at its chosen setting (Part II), the allocation, the portfolio simulation, budget, cost and refusal scenarios (Part III), the execution routine and risks (Part IV), and the corrections, point by point (Appendix A). |
-| [`docs/v8_review_response.md`](docs/v8_review_response.md) | The same corrections as Appendix A, as text: each finding of the review of version 7, what was wrong and what version 8 does. |
-| [`docs/v7_review_response.md`](docs/v7_review_response.md) | Version 7's response to the review of version 6 (35 points). |
-| `docs/archive/` | Versions 1–7, superseded. |
-| [`model/rules_snapshot_v8.json`](model/rules_snapshot_v8.json) | The sentences from the firms' own pages behind every rule input, with URLs (read 4 October 2026). |
+| [`docs/The_Prop_Firm_Option_v9_Mathematics.pdf`](docs/The_Prop_Firm_Option_v9_Mathematics.pdf) | **Current version, 105 pages.** Version 8 corrected after a third detailed review (21 findings), with further errors found and fixed. The expected cash per month for one person first, then every formula derived from first principles (Part I), one chapter per programme with every number worked through at its chosen setting (Part II), the allocation, the portfolio simulation, budget, cost and refusal scenarios (Part III), the execution routine and risks (Part IV), and the corrections, point by point (Appendix A). |
+| [`docs/v9_review_response.md`](docs/v9_review_response.md) | The same corrections as Appendix A, as text: each finding of the review of version 8, what was wrong and what version 9 does. |
+| [`docs/v8_review_response.md`](docs/v8_review_response.md), [`docs/v7_review_response.md`](docs/v7_review_response.md) | The responses to the reviews of versions 7 (27 findings) and 6 (35 points). |
+| `docs/archive/` | Versions 1–8, superseded. |
+| [`model/rules_snapshot_v9.json`](model/rules_snapshot_v9.json) | The sentences from the firms' own pages behind every rule input, with URLs (read 4 and 5 October 2026; Blue Guardian, BrightFunded and Fintokei re-read on 11 October, unchanged). |
 
-## Key results (version 8, corrected after the review of version 7, 5 October 2026)
+## Key results (version 9, corrected after the review of version 8, 11 October 2026)
+
+**Expected cash per month for one person, recommended plan, first year: $60,714 ± $2,251** (28 accounts, 1,200 simulated first years, each on its own new price paths; zero predictive skill; every rule the model contains, plus the plan's policies: flat every day by 20:00 UTC, no trade and no day above 40% of a target, at least 10 minutes between trades, no target or stop closer than 0.6 hourly standard deviations, whole lots, the account's floor and daily limit watched during every trade, real filler trades where a firm counts any opened position, and a last trade with its stop at the floor when an account is nearly spent). Months 2–12 average $68,972; months 13–36 of 36-month lives average $71,981 a month, and the accounts open at month 12 go on to pay $168,355 more. With payouts refused 2% / 5% / 15% of the time by tier: $41,579; at 5% / 10% / 30%: $27,820.
+
+| Portfolio | Accounts | EV/month, first year | Months 2–12 | Tiered refusals | Harsh refusals | First-year cash: median (5th–95th) | Cash low: median / 1 in 20 |
+|---|---:|---:|---:|---:|---:|---|---|
+| Tier A only | 15 | 24.1K ± 0.9K | 27.5K | 20.2K | 15.7K | 0.27M (0.00M to 0.65M) | 27.0K / 77.2K |
+| Tiers A and B | 22 | 40.2K ± 1.5K | 45.7K | 30.0K | 22.0K | 0.44M (0.06M to 1.08M) | 39.5K / 101.0K |
+| **Recommended (A + B + one account per tier-D firm)** | 28 | **60.7K ± 2.3K** | 69.0K | 41.6K | 27.8K | 0.67M (0.09M to 1.65M) | 54.3K / 150.9K |
+| Recommended, FTMO as 2 × 200K | 26 | 60.8K ± 2.3K | 69.1K | 42.3K | 29.3K | 0.67M (0.09M to 1.65M) | 54.4K / 150.9K |
+| Full allowance (each firm at the largest allocation modelled) | 35 | 69.9K ± 2.7K | 79.5K | 40.6K | 25.4K | 0.76M (0.09M to 1.89M) | 64.8K / 184.0K |
+| Full allowance + The5ers' small New accounts | 45 | 71.8K ± 2.8K | 81.7K | 41.1K | 24.9K | 0.77M (0.06M to 1.95M) | 66.4K / 185.7K |
+| Recommended + futures layer | 53 | 67.9K ± 2.5K | 77.1K | 42.2K | 27.4K | 0.74M (0.09M to 1.84M) | 64.6K / 178.9K |
+
+The recommended plan, account by account (risk / k / m / X = risk per trade and payout target as shares of the account, reward-to-risk, stop in hourly standard deviations; EV per month is each account's long-run rate as a continuing slot on sixteen new paths):
+
+| Programme | Market | Accounts | Risk / k / m / X | EV/month each | EV/month |
+|---|---|---|---|---:|---:|
+| FTMO 2-Step | Nasdaq | 4 × 100K | 1.5% / 8 / 1 / 30% | 2,724 | 10,897 |
+| FundingPips 2-Step Flex (95%) | USDJPY | 4 × 100K | 1.75% / 6 / 1.25 / 20% | 1,979 | 7,914 |
+| The5ers High Stakes | Nasdaq | 1 × 100K | 1.75% / 12 / 0.75 / 20% | 3,038 | 3,038 |
+| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 100K | 1.75% / 3 / 1.07 / 15% | 2,609 | 2,609 |
+| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 50K | 1.75% / 3 / 1.07 / 15% | 1,194 | 1,194 |
+| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 25K | 1.75% / 3 / 1.07 / 15% | 558 | 558 |
+| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 10K | 1.75% / 3 / 1.07 / 15% | 212 | 212 |
+| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 5K | 1.75% / 3 / 1.07 / 15% | 87 | 87 |
+| FundedNext Stellar 2-Step | EURUSD | 1 × 200K | 1.75% / 6 / 1 / 20% | 2,439 | 2,439 |
+| Fintokei ProTrader | Nasdaq | 5 × 100K | 1.5% / 12 / 0.75 / 30% | 2,678 | 13,391 |
+| Hola Prime 2-Step Prime (bi-weekly 80%) | gold | 2 × 100K | 1.75% / 7 / 1.03 / 20% | 2,450 | 4,900 |
+| Alpha Capital Pro 10% | Nasdaq | 1 × 200K | 1.75% / 6 / 1 / 20% | 5,912 | 5,912 |
+| FunderPro Classic | Nasdaq | 1 × 200K | 1.5% / 6 / 0.92 / 30% | 4,606 | 4,606 |
+| GFT 2-Step Standard | Nasdaq | 1 × 200K | 1.75% / 3 / 1.07 / 10% | 4,123 | 4,123 |
+| BrightFunded 2-Step Classic | Nasdaq | 1 × 200K | 1.75% / 3.5 / 1 / 30% | 4,594 | 4,594 |
+| Blue Guardian 2-Step | Nasdaq | 1 × 200K | 1.75% / 12 / 1.25 / 15% | 4,589 | 4,589 |
+| Maven 2-Step | Nasdaq | 1 × 100K | 1.75% / 2 / 1.25 / 4.9% | 1,461 | 1,461 |
+| **Total** | | **28 accounts** | | | **72,523** |
+
+With a finite starting budget (each purchase paid only from cash already received, in time order):
+
+| Starting cash | EV/month, first year |
+|---|---:|
+| $5,000 | 13,612 |
+| $10,000 | 17,168 |
+| $20,000 | 31,474 |
+| $30,000 | 36,670 |
+| $50,000 | 48,008 |
+| $75,000 | 55,467 |
+| $100,000 | 58,007 |
+| no limit (same 200 seeds) | 60,292 |
+
+Scenarios (full portfolio runs, paired with the baseline):
+
+| Scenario | EV/month, first year | Difference to baseline |
+|---|---:|---:|
+| Baseline (same 200 seeds) | $60,292 ± $5,821 |  |
+| All trading costs × 1.5 | $50,674 ± $5,615 | −$9,619 ± $2,566 |
+| All trading costs × 2 | $42,808 ± $5,328 | −$17,484 ± $2,612 |
+| Markets correlated 0.3 (one joint path) | $61,221 ± $5,552 | +$929 ± $7,500 |
+| News proxy: flat 12:00–14:00 UTC every weekday | $55,115 ± $5,125 | −$5,178 ± $4,434 |
+| FundedNext 1% risk (behavioural remedy) | $59,170 ± $5,829 | −$1,122 ± $452 |
+| FundedNext 7-day pause (behavioural remedy) | $59,853 ± $5,770 | −$439 ± $432 |
+
+What changed from version 8 (a third detailed review raised 21 findings, all agreed; fixing them and checking the corrected engine found five further errors, n17–n21, listed in Appendix A and `docs/v9_review_response.md`). The first-year figure moves from $62,198 to $60,714 a month:
+
+- **Lower.** Every position is whole lots (0.01-lot steps) or whole contracts; the account's floor and today's loss limit are barriers of every trade, so a position that reaches them ends the account even if the price recovers (version 8 clipped the loss afterwards); days completed with filler trades are real 0.01-lot positions with their cost and result, and Fintokei and Alpha Capital get none; Blue Guardian's bracket is placed only after a 3-minute hold (its 2-minute rule); Alpha Capital's 2-minute rule is checked on the account's own trades at every phase pass and payout request; BrightFunded counts a day only with a trade held 60 seconds; Hola Prime's three profitable days must fall within 14 days; Fintokei's next payout counts from the processed payout; reviews and payout processing run in working days.
+- **Neither way by construction.** A valid bound on the path generator's error (version 8's was false); a position opens at the first hourly open after the decision (n17); a capped take-profit keeps its amount at the rounded volume (n18); Maven's last trade near the floor keeps the plan's 1 : 1.5 (n19); the futures choice keeps the plan's minimum stop of 0.6 hourly standard deviations, which version 9's first run broke for Apex (n21); the portfolio dates each exit apart from the next entry; purchases are dated events, so a finite budget never spends a payout before it arrives.
+- **Measured differently.** Part II's long-run rate of each account is measured on continuing slots (one account run back to back for nine years, on sixteen new paths) and checked against the random-start ratio on the same paths with both direction rules (`cont_check_v9.py`); pass-rate intervals and the interval of a sum of programmes are cluster-robust with exact Student quantiles. The chain check of Chapter 11 runs without overnight financing, which neither the chain nor the plan pays; version 8's check charged it and so showed the engine below the chain (n20, witness `fin_check_v9.py`), and it now uses 48 paths.
+- **Checked.** `tests_v9.py` (27 rule tests, the review's witnesses included) and `audit_v9.py` (no stalled account in any stage; every chosen setting, futures included, inside the plan's limits and replayed trade by trade against every rule: 137,687 trades, no violation; the chain's identities and the engine against the chain without financing; the continuing check; the cash dated by every budget life never below zero; the document's numbers) all pass.
+
+## Version 8 results (superseded by version 9; see the corrections above)
 
 **Expected cash per month for one person, recommended plan, first year: $62,198 ± $2,116** (28 accounts, 1,200 simulated first years, each on its own new price paths; zero predictive skill; every rule the model contains, plus the plan's policies: flat every day by 20:00 UTC, no trade and no day above 40% of a target, at least 10 minutes between trades, no target or stop closer than 0.6 hourly standard deviations, and a last trade with its stop at the floor when an account is nearly spent). Months 2–12 average $70,488; months 13–36 of 36-month lives average $73,157 a month, and the accounts open at month 12 go on to pay $168,447 more. With payouts refused 2% / 5% / 15% of the time by tier: $42,403; at 5% / 10% / 30%: $28,593.
 
@@ -74,76 +143,7 @@ Scenarios (full portfolio runs, paired with the baseline):
 | FundedNext 1% risk (behavioural remedy) | $60,002 ± $5,454 | −$1,225 ± $401 |
 | FundedNext 7-day pause (behavioural remedy) | $60,842 ± $5,454 | −$386 ± $414 |
 
-What changed from version 7 (a second detailed review raised 27 findings; 26 agreed in full, one in part; fixing them and testing the corrected engine found 16 further errors, listed in Appendix A and `docs/v8_review_response.md`). The figure moves from $70,128 to $62,198 a month:
-
-- **Lower.** The daily loss limit is a share of the day's starting balance at FundingPips, The5ers, FXIFY, GFT, Hola Prime, Maven and Alpha Capital (the stricter base at FunderPro); FXIFY Classic returns no fee; Maven needs three profitable days for every payout and the plan keeps Maven's funded profit at or below $4,900 (its 50% rule applies above $5,000); Alpha's first payout needs five trading days; FunderPro Classic has minimum trading days; ten minutes between a close and the next entry; no stop or target closer than 0.6 hourly standard deviations; every trade is decided, and counted, on the day it opens, and a payout no longer restarts the day's caps (versions 7 and 8's first engine let some days exceed the 40% cap and GFT's day cap).
-- **Higher.** Hola Prime's 40% rule belongs to on-demand payouts only; Fintokei's and GFT's minimum payouts were overstated; an account near its floor is traded out (a small chance to recover) instead of abandoned.
-- **Neither way by construction.** Independent random streams for every stage and market, one-minute sub-steps, futures valued at the path's price, payouts written to the ledger (and to a finite budget) on the day they are paid.
-- **Checked.** `tests_v8.py` (14 rule tests, including every day's loss and profit against the firm's limits by each trade's entry day) and `audit_v8.py` (no stalled account in any stage, every chosen setting replayed trade by trade against every rule: 136,727 trades, no violation; chain identities; the document's numbers) all pass.
-
-## Version 7 results (superseded by version 8; see the corrections above)
-
-**Expected cash per month for one person, recommended plan, first year: $70,128 ± $2,427** (28 accounts, 1,200 simulated first years, each on its own new price paths; zero predictive skill; every rule the model contains, plus the plan's policies: flat every day by 20:00 UTC, no trade and no day above 40% of a target, accounts closed before they are traded down to the floor). Months 2–12 average $79,208; the long-run rate (months 13–36 of 36-month lives) is $82,062 a month, and the accounts open at month 12 go on to pay $169,478 more. With payouts refused 2% / 5% / 15% of the time by tier: $47,758; at 5% / 10% / 30%: $32,157.
-
-| Portfolio | Accounts | EV/month, first year | Months 2–12 | Tiered refusals | Harsh refusals | First-year cash: median (5th–95th) | Cash low: median / 1 in 20 |
-|---|---:|---:|---:|---:|---:|---|---|
-| Tier A only | 15 | 27.7K ± 1.0K | 31.4K | 23.1K | 18.1K | 0.31M (−0.01M to 0.71M) | 30.1K / 86.2K |
-| Tiers A and B | 22 | 45.8K ± 1.6K | 51.8K | 34.1K | 25.1K | 0.51M (0.05M to 1.19M) | 43.0K / 115.2K |
-| **Recommended (A + B + one account per tier-D firm)** | 28 | **70.1K ± 2.4K** | 79.2K | 47.8K | 32.2K | 0.78M (0.09M to 1.78M) | 56.9K / 156.1K |
-| Recommended, FTMO as 2 × 200K | 26 | 70.1K ± 2.4K | 79.2K | 48.5K | 33.8K | 0.78M (0.09M to 1.78M) | 56.9K / 156.1K |
-| All firms at full allowance | 35 | 81.3K ± 2.9K | 91.9K | 46.9K | 29.4K | 0.90M (0.11M to 2.06M) | 67.7K / 185.0K |
-| Full allowance + The5ers small accounts | 45 | 83.2K ± 2.9K | 94.1K | 47.1K | 28.7K | 0.93M (0.11M to 2.14M) | 69.9K / 188.0K |
-| Recommended + futures layer | 53 | 77.0K ± 2.8K | 87.0K | 47.5K | 30.7K | 0.85M (0.06M to 1.97M) | 69.2K / 197.9K |
-
-The recommended plan, account by account (risk / k / m / X = risk per trade and payout target as shares of the account, reward-to-risk, stop in hourly standard deviations; EV per month is each account's long-run rate on sixteen fresh paths):
-
-| Programme | Market | Accounts | Risk / k / m / X | EV/month each | EV/month |
-|---|---|---|---|---:|---:|
-| FTMO 2-Step | Nasdaq | 4 × 100K | 1.5% / 8 / 0.75 / 20% | 2,930 | 11,722 |
-| FundingPips 2-Step Flex (95%) | USDJPY | 4 × 100K | 1.75% / 8 / 1 / 15% | 2,829 | 11,315 |
-| The5ers High Stakes Classic | Nasdaq | 1 × 100K | 1.75% / 7 / 1 / 30% | 3,592 | 3,592 |
-| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 100K | 1.75% / 6 / 1.07 / 30% | 2,877 | 2,877 |
-| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 50K | 1.75% / 6 / 1.07 / 30% | 1,310 | 1,310 |
-| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 25K | 1.75% / 6 / 1.07 / 30% | 643 | 643 |
-| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 10K | 1.75% / 6 / 1.07 / 30% | 246 | 246 |
-| FXIFY Two Phase Classic (100%, 30 days) | Nasdaq | 1 × 5K | 1.75% / 6 / 1.07 / 30% | 105 | 105 |
-| FundedNext Stellar 2-Step | EURUSD | 1 × 200K | 1.75% / 6 / 1 / 20% | 3,265 | 3,265 |
-| Fintokei ProTrader | Nasdaq | 5 × 100K | 1.75% / 10 / 1 / 30% | 3,209 | 16,043 |
-| Hola Prime 2-Step Prime (bi-weekly 80%) | gold | 2 × 100K | 1.75% / 10 / 1.03 / 20% | 2,813 | 5,627 |
-| Alpha Capital Pro 10% | Nasdaq | 1 × 200K | 1.75% / 6 / 1 / 20% | 6,392 | 6,392 |
-| FunderPro Classic | Nasdaq | 1 × 200K | 1.75% / 8 / 1.07 / 20% | 6,961 | 6,961 |
-| GFT 2-Step Standard | Nasdaq | 1 × 200K | 1.75% / 3 / 1.07 / 10% | 4,035 | 4,035 |
-| BrightFunded 2-Step Classic | Nasdaq | 1 × 200K | 1.75% / 6 / 1 / 20% | 5,526 | 5,526 |
-| Blue Guardian 2-Step | Nasdaq | 1 × 200K | 1.75% / 4 / 1.07 / 15% | 4,648 | 4,648 |
-| Maven 2-Step | Nasdaq | 1 × 100K | 1.75% / 4 / 1.25 / 10% | 1,627 | 1,627 |
-| **Total** | | **28 accounts** | | | **85,934** |
-
-With a finite starting budget (purchases wait until the cash is there):
-
-| Starting cash | EV/month, first year |
-|---|---:|
-| $5,000 | 9,033 |
-| $10,000 | 19,888 |
-| $20,000 | 28,754 |
-| $30,000 | 36,411 |
-| $50,000 | 50,158 |
-| $75,000 | 55,472 |
-| $100,000 | 59,471 |
-| no limit (same 200 seeds) | 65,125 |
-
-Scenarios (full portfolio runs, paired with the baseline):
-
-| Scenario | EV/month, first year | Difference to baseline |
-|---|---:|---:|
-| Baseline (same 200 seeds) | $65,125 ± $5,894 |  |
-| All trading costs × 1.5 | $53,418 ± $5,520 | −$11,707 ± $2,725 |
-| All trading costs × 2 | $43,877 ± $5,284 | −$21,247 ± $3,234 |
-| Markets correlated 0.3 (one joint path) | $72,340 ± $6,483 | +$7,216 ± $9,322 |
-| News proxy: flat 12:00–14:00 UTC every weekday | $61,637 ± $5,492 | −$3,488 ± $4,368 |
-| FundedNext 1% risk (behavioural remedy) | $63,629 ± $5,905 | −$1,496 ± $512 |
-| FundedNext 7-day pause (behavioural remedy) | $64,142 ± $5,900 | −$982 ± $481 |
-
-Versions 5 and 6 are in `docs/archive/` and in the git history.
+Versions 5–7 are in `docs/archive/` and in the git history.
 
 ## What the numbers assume
 
@@ -204,8 +204,33 @@ The main pipeline is in `model/`:
 | `streams_v8.py`, `tests_v8.py`, `audit_v8.py` | `stream_manifest_v8.json`, `tests_v8.json`, `audit_v8.json` | Random-stream manifest; direct rule tests of the engine; the end-of-run audit (stalls, limits, a trade-by-trade rule replay of every chosen setting, chain identities, portfolio and document checks) |
 | `rerun_v8.sh` | `stage_v8_*.done` | The whole pipeline after the grid, resumable stage by stage |
 | `build_math_v8.py`, `doc8_*.py`, `math_v8_*.html`, `progs_v8.py`, `review_v8.py`, `readme_v8.py` | `prop_firm_math_v8.html`, PDF, `docs/v8_review_response.md` | Build the version 8 document, its corrections appendix and this README's results section |
+| `firms_v9.py` | | Version 9 rule sets: Blue Guardian's 3-minute hold, Alpha's duration rule per account, BrightFunded's 60-second day, no fillers at Fintokei and Alpha, Hola Prime's 14-day window, Fintokei's clock from the processed payout (quotes in `rules_snapshot_v9.json`) |
+| `acct_mc.py`, `pathfirm.py`, `lockstep.py`, `multi.py` (version 9) | | Engine corrections: whole lots and contracts, the breach level as a barrier of every trade, real filler trades, holding times, exit times separate from the next entry, working days, Hola's window, a valid bound on the path generator's error, purchases as dated events in the portfolio |
+| `optimize_v9.py` | `opt_v9_grid.jsonl`, `opt_v9_refine.jsonl`, `opt_v9_futures.jsonl`, `opt_v9_final.json` | Version 9 search and the final run on sixteen fresh paths (per-path sums and pass-rate intervals kept) |
+| `continuing_v9.py` | `continuing_v9.json` | Every final setting as a continuing slot on sixteen new paths: Part II's long-run rates |
+| `cont_check_v9.py` | `cont_check_v9.json` | Every chosen setting as random starts on the continuing paths with both direction rules: the continuing measurement and the direction rule separated |
+| `analytic_v9.py` | | The exact chain with the floor as the trade's barrier and Maven's stopping set as in the engine |
+| `verify_v9.py`, `sens_v9.py` | `verify_v9.json`, `verify_v9_ties.json`, `sens_v9.json` | Engine against the chain (48 paths, without overnight financing; Maven's stopping set included); sub-step convergence; cost, risk, concentration, daily-flat, daily-loss-base, direction, filler and holding-time sensitivities |
+| `fin_check_v9.py` | `fin_check_v9.json`, `verify_v9_with_financing.json` | The witnesses of n20: FTMO's funded account on the chain's rules with and without overnight financing, and FunderPro's first funded cycle on USDJPY on 192 fresh paths; the first chain check's output (with financing), kept as the record |
+| `lockstep_portfolio_v9.py` | `lockstep_v9*.json` | Version 9 portfolios; budgets with dated cash |
+| `streams_v9.py`, `tests_v9.py`, `audit_v9.py` | `stream_manifest_v9.json`, `tests_v9.json`, `audit_v9.json` | Random-stream manifest; rule tests of the engine (the review's witnesses included); the end-of-run audit |
+| `rerun_v9.sh` | `stage_v9_*.done` | The whole pipeline, resumable stage by stage |
+| `build_math_v9.py`, `doc9_*.py`, `math_v9_*.html`, `progs_v9.py`, `review_v9.py`, `readme_v9.py` | `prop_firm_math_v9.html`, PDF, `docs/v9_review_response.md` | Build the version 9 document, its corrections appendix and this README's results section |
 
 The other scripts are earlier versions and checks, kept for the record.
+
+## Reproducing version 9
+
+```bash
+cd model
+./rerun_v9.sh                    # every stage: streams, rule tests, grid, refine, futures, final, continuing slots and their check, verification and the financing witness, sensitivities, portfolios
+python3 audit_v9.py              # end-of-run audit of every output
+python3 build_math_v9.py         # writes prop_firm_math_v9.html, the PDF and docs/v9_review_response.md
+python3 audit_v9.py doc          # the audit again, with the built document
+python3 readme_v9.py             # prints the results section of this README
+```
+
+Python 3.11, numpy 2.4 and pandas 3.0 (`environment_v9.json`; no market data or scipy needed); the PDF needs Playwright with Chromium.
 
 ## Reproducing version 8
 
