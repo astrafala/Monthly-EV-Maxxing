@@ -1,0 +1,823 @@
+{
+ "read": "11-12 October 2026 (rows marked otherwise: 4-5 October 2026)",
+ "note": "Version 10 rule inventory: every rule of every programme the plan uses that can change what the plan may do or what it\nis paid, with its source and how the model treats it (python3 rules_inventory_v10.py writes rules_inventory_v10.json).\nVersion 9 listed the rules it modelled; this inventory starts from the firms' rules instead, so that a rule the model leaves\nout has to appear here with a reason (the review of version 9 found rules that no list contained: The5ers' payout cap and\nprofit gate, the payout locks, Topstep's request session, Apex's pending requests).\n\nstatus:  modelled     the engine applies the rule as stated\n         plan         the plan avoids the situation the rule governs (the engine applies the plan's own, stricter rule)\n         cautious     the rule's wording leaves a question; the engine applies the stricter reading, named here\n         assumption   no published figure: the engine uses the value named here\n         not binding  the rule exists but the plan's settings cannot reach it (the reason is given)\nbasis:   page         the firm's own help centre, FAQ or rules page, read directly\n         snippet      the firm's own page as returned by a search engine (the page itself refused automated reading)\n         secondary    a reviewer's or comparison site's description, used only where no firm page could be read\nRead: 11-12 October 2026 unless stated (version 8 and 9 readings, 4-5 October 2026, are marked).",
+ "rules": [
+  {
+   "firm": "FTMO",
+   "area": "targets and limits",
+   "rule": "Phase 1 10%, phase 2 5%; maximum daily loss 5% and maximum loss 10% of the initial balance; 4 trading days per phase (a day on which a position is opened)",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://ftmo.com/en/trading-objectives/",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "FTMO",
+   "area": "news (funded)",
+   "rule": "FTMO Account (Standard): no order opened or closed, stop-loss and take-profit hits included, from 2 minutes before to 2 minutes after selected releases on the targeted instruments (US indices, XAUUSD, USD pairs ...); evaluations free",
+   "model": "flat in every hourly bar overlapping 10 minutes either side of a high-impact release (news_v10), funded stage only",
+   "status": "plan",
+   "source": "https://ftmo.com/en/faq/can-i-trade-news/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FTMO",
+   "area": "weekends (funded)",
+   "rule": "FTMO Account (Standard): positions closed before the weekend close and before breaks over two hours",
+   "model": "flat every day at 20:00 UTC",
+   "status": "plan",
+   "source": "https://ftmo.com/en/faq/can-i-hold-positions-overnight-or-over-the-weekend/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FTMO",
+   "area": "payouts",
+   "rule": "First reward on the 14th day after the first trade or later, then bi-weekly; all positions and pending orders closed; review within 1-2 business days, sent 1-2 business days after the invoice is approved; minimum $20 closed profit (wire); 80% split; fee refunded with the first reward",
+   "model": "request at least 14 days after the first funded trade, flat; pending 2 working days (a breach before then cancels it: the page does not say trading continues safely), cash 2 working days later",
+   "status": "cautious",
+   "source": "https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FTMO",
+   "area": "trading during processing",
+   "rule": "not stated",
+   "model": "allowed; a breach before processing cancels the payout",
+   "status": "cautious",
+   "source": "https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FTMO",
+   "area": "allocation",
+   "rule": "$400,000 per trader or strategy across all accounts (before scaling)",
+   "model": "four 100K accounts",
+   "status": "modelled",
+   "source": "https://ftmo.com/faq/how-many-accounts-can-i-have/",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "FTMO",
+   "area": "risk guidance",
+   "rule": "FTMO recommends 1-1.5% risk per trade and monitors larger risk as possible gambling",
+   "model": "risk per trade at most 1.5% at FTMO (L_MAX)",
+   "status": "plan",
+   "source": "https://ftmo.com/en/blog/how-much-should-you-risk-on-one-trade/",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "FTMO",
+   "area": "scaling",
+   "rule": "+25% every 4 months with 10% profit and 2 processed rewards in 4 months",
+   "model": "not modelled (the model keeps the purchased size, which forgoes any gain from scaling)",
+   "status": "not binding",
+   "source": "https://ftmo.com/en/reward-growth-and-scaling-plan/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FTMO",
+   "area": "inactivity",
+   "rule": "the CFD pages read state none; FTMO's futures rules close an account after 30 days without trading",
+   "model": "the plan never leaves an account 25 days without a trade",
+   "status": "plan",
+   "source": "https://ftmo.com/en/futures/forbidden-trading-practices/",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FundingPips",
+   "area": "targets and limits",
+   "rule": "10% / 8%; daily loss 4% of the higher of the day's opening balance and equity; 12% maximum loss; 80% split with 1 minimum day per phase, or 95% with 3 profitable days (+0.5%) per phase and reward cycle",
+   "model": "as stated (dll relative)",
+   "status": "modelled",
+   "source": "https://help.fundingpips.com/hc/en-us/articles/47835196271249-2-Step-Flex",
+   "basis": "snippet",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "FundingPips",
+   "area": "risk per trade idea",
+   "rule": "Master accounts above $25K: a trade idea may not lose 2%",
+   "model": "risk at most 1.75% plus cost",
+   "status": "not binding",
+   "source": "https://help.fundingpips.com/hc/en-us/articles/48174287980177-Risk-Per-Trade-Idea",
+   "basis": "snippet",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "FundingPips",
+   "area": "payouts",
+   "rule": "every 14 calendar days from the first executed trade; minimum 1% of the account; positions and pending orders closed and at least 15 minutes after the last close before a request; trading disabled while the reward is processed (1-3 working days)",
+   "model": "request 15 minutes after the last close, flat; the account locked 3 working days (the slow end), cash then",
+   "status": "modelled",
+   "source": "https://help.fundingpips.com/hc/en-us/articles/34504564970385-Reward-Methods",
+   "basis": "secondary",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FundingPips",
+   "area": "news (funded)",
+   "rule": "Master accounts: profit of trades opened or closed within 5 minutes of high-impact news deducted (some sources: 10 minutes)",
+   "model": "flat in every bar overlapping 10 minutes either side (funded)",
+   "status": "plan",
+   "source": "https://www.luxalgo.com/prop-firms/funding-pips/",
+   "basis": "secondary",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FundingPips",
+   "area": "allocation",
+   "rule": "$400,000 across evaluation, funded and Prime accounts",
+   "model": "four 100K accounts",
+   "status": "modelled",
+   "source": "https://propvator.com/blog/?p=3491",
+   "basis": "secondary",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FundedNext",
+   "area": "targets and limits",
+   "rule": "8% / 5%; daily loss 5% and maximum loss 10% of the initial balance; 5 trading days per phase",
+   "model": "as stated (dll fixed)",
+   "status": "modelled",
+   "source": "https://help.fundednext.com/en/articles/9430123",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "FundedNext",
+   "area": "payouts",
+   "rule": "first reward 21 days after the funded account opens, then every 14 days; 80%; fee refunded with the first reward; paid within 24 hours of the request (99.99%)",
+   "model": "pending 1 working day; cash then",
+   "status": "modelled",
+   "source": "https://help.fundednext.com/en/articles/8569879-what-is-the-timeframe-for-fundednext-to-process-performance-rewards",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FundedNext",
+   "area": "news (funded)",
+   "rule": "trades opened or closed (take-profit and stop-loss included) within 5 minutes before or after a listed high-impact release count 40% of their profit; holding through is allowed; evaluations free",
+   "model": "flat in every bar overlapping 10 minutes either side (funded)",
+   "status": "plan",
+   "source": "https://help.fundednext.com/en/articles/10701447-is-news-trading-allowed-at-fundednext",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FundedNext",
+   "area": "copying",
+   "rule": "copying trades from other firms' accounts is not allowed",
+   "model": "FundedNext's account trades a market no other account of the plan trades",
+   "status": "plan",
+   "source": "https://help.fundednext.com/en/articles/10701447",
+   "basis": "snippet",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "FundedNext",
+   "area": "allocation",
+   "rule": "$300,000 funded; evaluations unlimited",
+   "model": "one account",
+   "status": "modelled",
+   "source": "https://help.fundednext.com/en/articles/9430123",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "The5ers",
+   "area": "targets and limits",
+   "rule": "10% / 5% (Classic 8% / 5%); daily loss 5% of the previous day's higher of balance and equity; maximum loss 10%; 3 profitable days (+0.5%) per phase",
+   "model": "as stated (dll relative)",
+   "status": "modelled",
+   "source": "https://the5ers.com/faqs/what-is-the-drawdown-rule-for-high-stakes/",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "The5ers",
+   "area": "payout cap",
+   "rule": "$4,000 per payout for the $100K account, $3,000 for $50K (page updated 15 September 2026); basis not stated; smaller sizes not published",
+   "model": "the withdrawal (before the split) with the fee refund counted inside the cap; below $50K 4% of the size (the lowest published ratio); profit above the cap stays in the account",
+   "status": "cautious",
+   "source": "https://the5ers.com/faqs/what-are-the-general-rules-for-the-high-stakes-program/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "The5ers",
+   "area": "profit gate",
+   "rule": "minimum P&L for a payout $500 ($100K), $300 ($50K)",
+   "model": "a request needs that profit; below $50K 0.6% of the size",
+   "status": "modelled",
+   "source": "https://the5ers.com/faqs/payout-policy-and-hub-credit-in-the-high-stakes-program/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "The5ers",
+   "area": "payouts",
+   "rule": "first payout after the funded account has been active 14 days; then every 2 weeks from the last approved withdrawal; minimum $150 after the split; review 24-48 business hours, processing up to 3 business days",
+   "model": "pending 2 working days, cash 3 working days later, next request 14 days after approval",
+   "status": "modelled",
+   "source": "https://the5ers.com/faqs/withdrawals-everything-you-need-to-know/",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "The5ers",
+   "area": "fee refund and hub credit",
+   "rule": "10% of the fee as hub credit after phase 1, 20% after phase 2 (for a new challenge); 70% of the fee paid with external funds refunded with the first payout (credit-paid fee not refunded)",
+   "model": "credit spent on the next purchase; each account's refund 70% of the cash paid for it",
+   "status": "modelled",
+   "source": "https://the5ers.com/faqs/payout-policy-and-hub-credit-in-the-high-stakes-program/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "The5ers",
+   "area": "news",
+   "rule": "no order executed from 2 minutes before to 2 minutes after high-impact news (every programme); profits deducted",
+   "model": "flat in every bar overlapping 10 minutes either side, every stage",
+   "status": "plan",
+   "source": "https://the5ers.com/faqs/what-are-the-general-rules-for-the-high-stakes-program/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "The5ers",
+   "area": "scaling",
+   "rule": "the account scales up on each 10% target with 3 profitable days (table on the programme page); timing, opt-out and interaction with payouts not stated",
+   "model": "the plan keeps the balance under +9.5%, so the 10% milestone is never reached and the account keeps its purchased rules",
+   "status": "plan",
+   "source": "https://the5ers.com/high-stakes/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "The5ers",
+   "area": "accounts",
+   "rule": "New: three each of 2.5K, 5K, 10K, one 25K, one 50K or 100K (shared with Classic)",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://the5ers.com/faqs/how-many-high-stakes-accounts-can-i-have/",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "The5ers",
+   "area": "inactivity",
+   "rule": "30 days (evaluation), 60 days (funded)",
+   "model": "never 25 days without a trade",
+   "status": "plan",
+   "source": "https://the5ers.com/faqs/what-are-the-general-rules-for-the-high-stakes-program/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FXIFY",
+   "area": "targets and limits",
+   "rule": "5% / 10%; daily loss 4% of the previous day's balance; maximum loss 10% static; 4 days per phase",
+   "model": "as stated (dll relative)",
+   "status": "modelled",
+   "source": "https://intercom.help/fxify/en/articles/14834680-the-2-phase-classic-account",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FXIFY",
+   "area": "payouts",
+   "rule": "80% every 14 days or 100% every 30 days; minimum $50; biggest profit day at most 25% of total profit at the withdrawal; no refund on Classic; account read-only until the withdrawal is approved; processed within 3 business days",
+   "model": "best day checked at every request (against the account's best day ever); locked 3 working days",
+   "status": "modelled",
+   "source": "https://fxify.com/faqs/all-faqs/how-do-i-withdraw-my-profits/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FXIFY",
+   "area": "news",
+   "rule": "the Classic article lists news trading as allowed; FXIFY's programme comparison says no opening or closing within 5 minutes of red-folder events",
+   "model": "flat around releases at every stage (the stricter source)",
+   "status": "cautious",
+   "source": "https://fxify.com/blog/top-prop-firms-no-consistency-rule/",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FXIFY",
+   "area": "scaling",
+   "rule": "performance scale-up reviewed every 3 months (10% in 3 months, 2 profitable months)",
+   "model": "not modelled (forgoes any gain)",
+   "status": "not binding",
+   "source": "https://intercom.help/fxify/en/articles/14834680-the-2-phase-classic-account",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FXIFY",
+   "area": "inactivity",
+   "rule": "60 days",
+   "model": "never 25 days without a trade",
+   "status": "plan",
+   "source": "https://intercom.help/fxify/en/articles/14834680-the-2-phase-classic-account",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Fintokei",
+   "area": "targets and limits",
+   "rule": "8% / 6%; daily loss 5% of the day's starting equity; 10% maximum; 3 trading days per phase and per payout",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://support.fintokei.com/en/articles/8428030",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "Fintokei",
+   "area": "minimal trades",
+   "rule": "much smaller trades just to meet the minimum days are objected to",
+   "model": "no filler trades: missing days are ordinary trades, one a day",
+   "status": "plan",
+   "source": "https://support.fintokei.com/en/articles/9464503",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "Fintokei",
+   "area": "payouts",
+   "rule": "14 days from the last processed payout or the first trade; minimum 100 EUR; approved automatically, sent within one business day",
+   "model": "next request 14 days after processing; cash one working day later",
+   "status": "modelled",
+   "source": "https://support.fintokei.com/en/articles/11904545",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Fintokei",
+   "area": "news",
+   "rule": "allowed on every programme",
+   "model": "no news block",
+   "status": "modelled",
+   "source": "https://www.fintokei.com/protrader/",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Fintokei",
+   "area": "open risk",
+   "rule": "open risk per setup at most 3%",
+   "model": "1.5% per trade",
+   "status": "not binding",
+   "source": "https://www.fintokei.com/protrader/",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Hola Prime",
+   "area": "targets and limits",
+   "rule": "8% / 5%; daily loss 5% of the previous day's closing balance; 10%; 3 trading days",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://holaprime.com/forex/faq/hola-prime-challenges/hola-prime-2-step-prime-challenge/",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "Hola Prime",
+   "area": "payouts",
+   "rule": "bi-weekly 80% with 3 profitable days (+0.5%) within 14 days; fee back 25% with each of the first four payouts; paid within one hour of the request (98%)",
+   "model": "pending one hour",
+   "status": "modelled",
+   "source": "https://holaprime.com/forex/faq/hola-prime-challenges/hola-prime-2-step-prime-challenge/",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "Hola Prime",
+   "area": "trade ideas",
+   "rule": "a position opened within 10 minutes of a close on the same market and direction is one trade idea",
+   "model": "10 minutes between every close and the next entry",
+   "status": "plan",
+   "source": "https://holaprime.com/forex/faq/hola-prime-challenges/hola-prime-2-step-prime-challenge/",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "Hola Prime",
+   "area": "news",
+   "rule": "no restriction on 2-Step Prime (restrictions apply to other account types)",
+   "model": "no news block",
+   "status": "modelled",
+   "source": "https://propvator.com/blog/hola-prime-news-trading-rule/",
+   "basis": "secondary",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Hola Prime",
+   "area": "risk per trade",
+   "rule": "funded: stop loss on every trade; risk per trade at most 2%",
+   "model": "1.75% plus cost, every trade bracketed",
+   "status": "not binding",
+   "source": "https://holaprime.com/forex/faq/hola-prime-challenges/hola-prime-2-step-prime-challenge/",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "Alpha Capital",
+   "area": "targets and limits",
+   "rule": "10% / 5%; daily loss 5% of the day's starting balance; 10%; 3 days",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://help.alphacapitalgroup.uk/en/articles/8420429-alpha-pro-8-10",
+   "basis": "snippet",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "Alpha Capital",
+   "area": "payouts",
+   "rule": "bi-weekly: first request 14 days after the first funded trade, 5 trading days; all trades closed before a request; paid within 2 business days; the account locked until the balance is reset",
+   "model": "locked 2 working days",
+   "status": "modelled",
+   "source": "https://help.alphacapitalgroup.uk/en/articles/6933755-how-do-i-get-paid-performance-fees",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Alpha Capital",
+   "area": "lot limit",
+   "rule": "qualified accounts: at most 40 open lots per $100K (80 at $200K), aggregate; first breach: the profit from the excess not paid; second: account deactivated",
+   "model": "every funded position at most the limit (one position per account at a time); index lots counted at 1 unit a lot (the most lots any common contract size gives)",
+   "status": "modelled",
+   "source": "https://help.alphacapitalgroup.uk/en/articles/6934289-what-is-the-lot-size-limit-on-qualified-analyst-accounts",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Alpha Capital",
+   "area": "duration rule",
+   "rule": "average trade over 2 minutes, most trades over 2 minutes, at least half the gross profit from trades over 2 minutes",
+   "model": "checked at every phase pass and request",
+   "status": "modelled",
+   "source": "https://help.alphacapitalgroup.uk/en/articles/8447268",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "Alpha Capital",
+   "area": "news (funded)",
+   "rule": "qualified accounts: no trade opened or closed within 5 minutes of a listed release on the targeted instruments; evaluations free",
+   "model": "flat in every bar overlapping 10 minutes either side (funded)",
+   "status": "plan",
+   "source": "https://help.alphacapitalgroup.uk/en/articles/9293522-can-i-trade-news",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Alpha Capital",
+   "area": "allocation",
+   "rule": "$400,000 per household; $300,000 per strategy (the same asset)",
+   "model": "200K + 100K on the Nasdaq",
+   "status": "modelled",
+   "source": "https://alphacapitalgroup.uk/terms-and-conditions",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "GFT",
+   "area": "targets and limits",
+   "rule": "10% / 5%; 3 profitable days (+0.5%) per phase; daily 5% of the higher of balance and equity at 5 pm New York; 10%",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://help.goatfundedtrader.com/en/articles/13575169-2-step-standard",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "GFT",
+   "area": "payouts",
+   "rule": "80% every 14 days, 4 profitable days per cycle; first two payouts at most min(6%, $10,000); $3,000 profit a day at most; minimum $100; processed within 2 business days",
+   "model": "pending 2 working days; capped amount paid, the rest kept",
+   "status": "modelled",
+   "source": "https://help.goatfundedtrader.com/en/articles/10742261-how-long-does-it-take-to-receive-my-reward",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "GFT",
+   "area": "minimum holding (funded)",
+   "rule": "profit of trades held under 1 minute removed (accounts bought from 6 October 2026; 2 minutes before)",
+   "model": "such a win counts minus its cost",
+   "status": "modelled",
+   "source": "https://help.goatfundedtrader.com/en/articles/12849041-what-is-the-minimum-holding-time-for-trades",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "GFT",
+   "area": "news",
+   "rule": "profit of a trade opened or closed within 5 minutes of a high-impact release capped at 1% of the account (evaluations and funded)",
+   "model": "flat around releases at every stage",
+   "status": "plan",
+   "source": "https://help.goatfundedtrader.com/en/articles/10742084-is-news-trading-allowed",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FunderPro",
+   "area": "targets and limits",
+   "rule": "10% / 5%; daily 5% (base not settled: the stricter of initial and daily balance); 10%; 4 days per phase",
+   "model": "as stated (dll min)",
+   "status": "modelled",
+   "source": "https://support.funderpro.com/en/articles/412020",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "FunderPro",
+   "area": "payouts",
+   "rule": "every 14 days with at least $100 profit; processed within one working day of approval",
+   "model": "pending 1 working day, cash 1 later",
+   "status": "modelled",
+   "source": "https://support.funderpro.com/en/articles/419844",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "FunderPro",
+   "area": "margin",
+   "rule": "funded accounts: at most 20% of the starting balance as margin per asset class",
+   "model": "stop floor in the search",
+   "status": "modelled",
+   "source": "https://support.funderpro.com/en/articles/421458",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "FunderPro",
+   "area": "news (funded)",
+   "rule": "no entry within 2 minutes of a high-impact release without the Swing add-on; challenges free",
+   "model": "flat around releases (funded)",
+   "status": "plan",
+   "source": "https://funderpro.com/terms-conditions/",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "BrightFunded",
+   "area": "targets and limits",
+   "rule": "10% / 5%; daily 5% of the original size; 10%; 5 days per phase (a day counts with a trade open at least 60 seconds)",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://help.brightfunded.com/en/articles/9241611",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "BrightFunded",
+   "area": "payouts",
+   "rule": "first request 30 days after the first funded trade, then every 14; all trades and orders closed; processed within a day",
+   "model": "pending 1 working day",
+   "status": "modelled",
+   "source": "https://help.brightfunded.com/en/articles/11468668-how-can-i-request-my-payout",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "BrightFunded",
+   "area": "news (funded)",
+   "rule": "profit of trades opened or closed (stops and targets included) within 5 minutes of significant news deducted",
+   "model": "flat around releases (funded)",
+   "status": "plan",
+   "source": "https://help.brightfunded.com/en/articles/9241694-can-i-trade-news",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "BrightFunded",
+   "area": "inactivity",
+   "rule": "a trade (held a minute) within 30 days of the last close, or the account is deactivated",
+   "model": "never 25 days without a trade",
+   "status": "plan",
+   "source": "https://help.brightfunded.com/en/articles/11774572-inactivity-rule-policy",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "BrightFunded",
+   "area": "allocation",
+   "rule": "$400,000 funded per trader; evaluations unlimited",
+   "model": "four 100K accounts",
+   "status": "modelled",
+   "source": "https://brightfunded.com/terms-and-conditions",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Blue Guardian",
+   "area": "targets and limits",
+   "rule": "8% / 4%; daily 4% of the initial balance below the higher of balance and equity at 5 pm EST; 8% static; 3 profitable days (+0.5%)",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://help.blueguardian.com/en/articles/14062291-2-step-standard-rules",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Blue Guardian",
+   "area": "minimum holding",
+   "rule": "2 minutes; a trade closed sooner may be flagged",
+   "model": "bracket placed after 3 minutes; a trade under 2 minutes (only a breach can be) ends the account",
+   "status": "plan",
+   "source": "https://help.blueguardian.com/en/articles/14062291-2-step-standard-rules",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Blue Guardian",
+   "area": "Guardian Shield (funded)",
+   "rule": "open trades closed at a 2% floating loss; first time the split falls to 50% for good, second time the account is breached",
+   "model": "modelled during and after the hold (cost counted in the loss, the cautious side)",
+   "status": "modelled",
+   "source": "https://help.blueguardian.com/en/articles/14062291-2-step-standard-rules",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Blue Guardian",
+   "area": "news (funded)",
+   "rule": "no opening or closing 5 minutes before and after red-folder news (FOMC included)",
+   "model": "flat around releases (funded)",
+   "status": "plan",
+   "source": "https://help.blueguardian.com/en/articles/14062291-2-step-standard-rules",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Blue Guardian",
+   "area": "payouts",
+   "rule": "85% every 14 days; minimum $100; processed within 24 business hours; positions closed; fee back after the fourth payout",
+   "model": "pending 1 working day",
+   "status": "modelled",
+   "source": "https://help.blueguardian.com/en/articles/14062291-2-step-standard-rules",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Blue Guardian",
+   "area": "allocation",
+   "rule": "$400,000 across funded accounts",
+   "model": "four 100K accounts",
+   "status": "modelled",
+   "source": "https://blueguardian.com/blogs/complete-scaling-path-for-funded-traders",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Maven",
+   "area": "targets and limits",
+   "rule": "8% / 5%; daily 4% of the higher of equity and balance at 00:00 UTC; 8% static; 3 profitable days (+0.5%) per phase and per withdrawal",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://maventrading.com/faqs",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Maven",
+   "area": "payouts",
+   "rule": "every 10 business days after the first trade; $10,000 per rolling 30 days per trader; above $5,000 of profit the best day or trade at most 50% of profit; refund with the third withdrawal; processing time not stated",
+   "model": "funded profit kept at most $4,900; closed profit in any 30 days at most $10,000; pending 3 working days (assumed)",
+   "status": "cautious",
+   "source": "https://maventrading.com/faqs",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Maven",
+   "area": "gambling",
+   "rule": "large bets at a reward:risk of 1:1.25 or lower",
+   "model": "every position's take-profit at least 1.5 times as far as its stop, checked on the position actually placed",
+   "status": "plan",
+   "source": "https://maventrading.com/faqs",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Maven",
+   "area": "news",
+   "rule": "no opening or closing 2 minutes either side of a red-folder release, take-profits included; evaluations and funded",
+   "model": "flat around releases at every stage",
+   "status": "plan",
+   "source": "https://maventrading.com/faqs",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Maven",
+   "area": "risk interview",
+   "rule": "above $5,000 of payouts a risk interview; risking more than the amount stated in its email breaches",
+   "model": "not modelled: the plan's risk (1.75%) must be checked against the email's figure",
+   "status": "assumption",
+   "source": "https://maventrading.com/faqs",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Topstep",
+   "area": "payouts",
+   "rule": "Standard path: 5 winning days of $150+ net (days lock at 4 pm CT); positive net profit since the last payout; at most 50% of the balance up to $2,000 per request; minimum $125; 90%; the request's session does not count toward the next five; requests Sunday 5 pm to Friday 5 pm CT; deducted at once, trading may continue, a deducted payout is protected from a later breach",
+   "model": "as stated; requests one minute after the 4 pm CT lock; $125 read after the split",
+   "status": "modelled",
+   "source": "https://help.topstep.com/en/articles/8284233-topstep-payout-policy",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Topstep",
+   "area": "news",
+   "rule": "new positions in equity index futures restricted ahead of CPI releases",
+   "model": "flat around US CPI releases",
+   "status": "plan",
+   "source": "https://help.topstep.com/en/articles/13613539-risk-adjustments-high-risk-high-volatility",
+   "basis": "snippet",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Topstep",
+   "area": "consistency path",
+   "rule": "alternative path: 3 trading days, largest day at most 40% of net profit, $3,000 cap at 50K",
+   "model": "not used (the Standard path is modelled)",
+   "status": "not binding",
+   "source": "https://help.topstep.com/en/articles/8284233-topstep-payout-policy",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Apex",
+   "area": "evaluation",
+   "rule": "30 days of access, expiring at 6 pm ET on day 30",
+   "model": "the target must be reached before that time",
+   "status": "modelled",
+   "source": "https://apextraderfunding.com/help-center/billing/evaluation-plan-fees-and-access-explained/",
+   "basis": "secondary",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Apex",
+   "area": "payouts",
+   "rule": "minimum balance $52,600 to request (safety net $52,100 + $500); 5 qualifying days ($250, conflicting reports of $200); every profitable day under 50% of net profit since the last approved payout; caps per request; at most 6 payouts; a pending request denied if the balance falls below the threshold",
+   "model": "the plan pauses trading while a request is pending (2 working days), so no denial can occur; today's profit counted in the 50% rule",
+   "status": "plan",
+   "source": "https://apextraderfunding.com/help-center/eod-trailing-drawdown-accounts/eod-payouts/",
+   "basis": "secondary",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "Apex",
+   "area": "news",
+   "rule": "directional news trading allowed",
+   "model": "no news block",
+   "status": "modelled",
+   "source": "https://apextraderfunding.com/help-center/",
+   "basis": "secondary",
+   "read": "11 Oct 2026"
+  },
+  {
+   "firm": "every firm",
+   "area": "conflicting positions",
+   "rule": "no hedging across accounts or firms",
+   "model": "one direction per market group across all accounts (shared-direction rule)",
+   "status": "plan",
+   "source": "the firms' prohibited-practice pages",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  },
+  {
+   "firm": "every firm",
+   "area": "identity",
+   "rule": "accounts only in the trader's own name",
+   "model": "one person's accounts",
+   "status": "plan",
+   "source": "the firms' terms",
+   "basis": "page",
+   "read": "4 Oct 2026"
+  }
+ ],
+ "counts": {
+  "modelled": 43,
+  "plan": 26,
+  "cautious": 5,
+  "assumption": 1,
+  "not binding": 6
+ }
+}

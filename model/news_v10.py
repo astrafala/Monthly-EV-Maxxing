@@ -8,8 +8,9 @@ Maven (2 minutes either side, evaluations and funded accounts, take-profits incl
 FundingPips, FundedNext and Alpha Capital funded accounts (5 minutes either side; FundedNext counts 40% of such a
 trade's profit), GFT (5 minutes either side, profit of such a trade capped at 1% of the account), FXIFY (5 minutes either
 side), FunderPro funded accounts (no entry within 2 minutes) and Topstep (no new position ahead of US CPI releases on equity
-index futures). Version 9's plan text said the plan is flat around news, but the engine traded through every release;
-only a bounding proxy (flat 12:00-14:00 UTC every weekday) was simulated (version 10, n22).
+index futures). Version 9 said the plan closes positions before restricted releases but had no news calendar: its headline
+was, as its section 6.5 stated, a model without news restrictions, and a stylised scenario (flat 12:00-14:00 UTC every
+weekday) was the only news run (version 10, n22: the restrictions are now simulated in every stage).
 
 The plan's rule, simulated here: on an account whose firm restricts news at its current stage, no position is open during
 any hourly bar that overlaps the window from 10 minutes before to 10 minutes after a high-impact release that moves the

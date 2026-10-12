@@ -1,0 +1,217 @@
+{
+ "key_format": "(path number, number of markets + 1, market group..., years x 1000, sub-steps per hour, rho x 1e6)",
+ "groups": {
+  "US100": 1,
+  "MNQ_fut": 1,
+  "US100free": 1,
+  "XAUUSD": 2,
+  "USDJPY": 3,
+  "EURUSD": 4,
+  "GBPUSD": 5,
+  "US500": 6,
+  "BTC": 7,
+  "ETH": 8
+ },
+ "stages": {
+  "grid (search)": {
+   "streams": 16,
+   "first": [
+    1101,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ],
+   "last": [
+    1104,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ]
+  },
+  "refine (search)": {
+   "streams": 16,
+   "first": [
+    1111,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ],
+   "last": [
+    1114,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ]
+  },
+  "final (validation)": {
+   "streams": 64,
+   "first": [
+    1121,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ],
+   "last": [
+    1136,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ]
+  },
+  "continuing slots (validation)": {
+   "streams": 64,
+   "first": [
+    1151,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ],
+   "last": [
+    1166,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ]
+  },
+  "sensitivities": {
+   "streams": 32,
+   "first": [
+    1201,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ],
+   "last": [
+    1476,
+    2,
+    1,
+    4000,
+    60,
+    0
+   ]
+  },
+  "verification": {
+   "streams": 306,
+   "first": [
+    1401,
+    2,
+    1,
+    4000,
+    60,
+    0
+   ],
+   "last": [
+    1456,
+    2,
+    1,
+    4000,
+    60,
+    0
+   ]
+  },
+  "rule tests": {
+   "streams": 22,
+   "first": [
+    901,
+    2,
+    1,
+    4000,
+    60,
+    0
+   ],
+   "last": [
+    1501,
+    2,
+    1,
+    2000,
+    60,
+    0
+   ]
+  },
+  "portfolios, 12-month lives": {
+   "streams": 5000,
+   "first": [
+    500000,
+    2,
+    1,
+    2000,
+    60,
+    0
+   ],
+   "last": [
+    500199,
+    5,
+    1,
+    2,
+    4,
+    3,
+    2000,
+    60,
+    300000
+   ]
+  },
+  "portfolios, 36-month lives": {
+   "streams": 3200,
+   "first": [
+    700000,
+    2,
+    1,
+    5000,
+    60,
+    0
+   ],
+   "last": [
+    700799,
+    2,
+    1,
+    5000,
+    60,
+    0
+   ]
+  },
+  "version 9 (all stages)": {
+   "streams": 8651,
+   "first": [
+    101,
+    2,
+    1,
+    12000,
+    60,
+    0
+   ],
+   "last": [
+    300799,
+    2,
+    1,
+    5000,
+    60,
+    0
+   ]
+  }
+ },
+ "clashes": [],
+ "shared_on_purpose": [
+  "Nasdaq CFD and micro Nasdaq future: one market group (one index path)",
+  "budget, cost, refusal and behaviour scenarios: lives 500,000-500,399 of the main stage (paired)",
+  "linearity check: lives 700,000-700,199 of the 36-month stage (paired)",
+  "rule tests: version 9's finite-budget witness lives 100,016, 100,031, 100,125 and 100,200 (checks, no estimate)"
+ ]
+}

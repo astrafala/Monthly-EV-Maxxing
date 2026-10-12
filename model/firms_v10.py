@@ -11,7 +11,8 @@ treats it). Changes from version 9:
                        until it is processed; Topstep deducts it at once and protects it; the plan pauses an Apex account
                        while its request is pending (a request is denied if the balance falls below the threshold)
   news                 the plan is flat around high-impact releases wherever a firm restricts news at that stage
-                       (news_v10); version 9 said so but did not simulate it (n22)
+                       (news_v10); version 9 stated the policy but had no news calendar, so its headline was a model
+                       without news restrictions, as its section 6.5 said (n22)
   The5ers              payout cap per request ($4,000 at 100K, $3,000 at 50K; smaller sizes unpublished: 4% of the size
                        assumed, the lowest published ratio), counted with the fee refund inside it (the cautious
                        reading; the cap's basis is unpublished); a request needs $500 of profit at 100K ($300 at 50K,
