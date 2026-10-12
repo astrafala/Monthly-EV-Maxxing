@@ -31,6 +31,10 @@ treats it). Changes from version 9:
                        18, 19)
   Apex                 the evaluation expires at 6 p.m. New York time on its 30th day (review of version 9, finding 13);
                        the best day of the cycle, today's included, must stay under 50% of the cycle's profit (finding 21)
+  minimum payouts      every published minimum is applied to the trader's share after the split (min_net), the stricter
+                       reading where a page does not say whether it counts before or after the split; FTMO's $20, in
+                       the rules read on 11 October 2026, was missing from version 9 (found by comparing every row of
+                       rules_inventory_v10.json with these parameters)
 """
 import copy
 import firms_v9 as F9
@@ -68,6 +72,7 @@ NEWS_EVAL = {"The5ers", "FXIFY", "GFT", "Maven"}
 
 THE5ERS_CAP = {100_000: 4_000.0, 50_000: 3_000.0}
 THE5ERS_MIN_PROFIT = {100_000: 500.0, 50_000: 300.0}
+MIN_PAYOUT = {"FTMO": 20.0}          # minimums missing from version 9's rule sets (the others are set in firms_v8)
 
 def _v10(F, size=None):
     for name, f in F.items():
@@ -79,6 +84,11 @@ def _v10(F, size=None):
             ph["news"] = "cpi" if firm == "Topstep" else ("all" if firm in NEWS_EVAL else None)
         if f.get("no_fillers"):
             f["no_target_buffer"] = True          # missing days are ordinary trades: no buffer above the target
+        # a published minimum payout counts on the trader's share after the split (the stricter reading); a request
+        # still needs the minimum as profit before the split (min_payout)
+        mp = max(float(fd.get("min_payout") or 0.0), MIN_PAYOUT.get(firm, 0.0))
+        fd["min_payout"] = mp
+        if mp > 0: fd["min_net"] = max(float(fd.get("min_net") or 0.0), mp)
         sz = f.get("size", size or 100_000)
         if firm == "The5ers":
             fd["caps"] = [THE5ERS_CAP.get(sz, 0.04 * sz)] * 100

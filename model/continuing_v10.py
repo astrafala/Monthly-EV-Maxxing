@@ -129,7 +129,7 @@ if __name__ == "__main__":
             with Pool(4) as p:
                 R = p.map(job, J, chunksize=1)
             res[str(mult)] = summarise(Cc, R, FIN, 4)
-        base = {(r["prog"], r["instr"], r["size"]): r for r in json.load(open("continuing_v10.json"))["rows"]}
+        base = {(r["prog"], r["instr"], r["size"]): r for r in json.load(open("continuing_v10.json"))["rows"] if r.get("tag") == "chosen"}
         for mult, rows in res.items():
             for o in rows:
                 b = base[(o["prog"], o["instr"], o["size"])]

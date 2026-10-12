@@ -189,7 +189,14 @@ def programme(prog, instr, m, k, X1, X, L=1500, size=100_000, F=None, cost_mult=
     # success has a balance of at least the cap and the withdrawal is the cap exactly; with a target below the cap,
     # min(E[balance], cap) is an upper bound of E[min(balance, cap)]. The chain resets every cycle to zero: the part of a
     # balance above the cap that the firm leaves in the account is not carried to the next cycle (the engine carries it)
-    def capi(i): return caps[min(i, len(caps) - 1)] if caps else None
+    ref0 = fd.get("refund", 0) or 0
+    def capi(i):
+        """the cap on the withdrawal of cycle i; The5ers counts the fee refund inside the cap (the engine's cautious reading,
+        cap_includes_refund), so the cycle that carries the refund may withdraw that much less"""
+        if not caps: return None
+        c = caps[min(i, len(caps) - 1)]
+        if fd.get("cap_includes_refund") and ref0 and not fd.get("refund_split") and i == fd.get("refund_after", 1) - 1: c -= ref0
+        return c
     wdr = [min(xs_, capi(i)) if capi(i) is not None else xs_ for i, xs_ in enumerate(succ)]
     pay = [split * w_ for w_ in wdr]
     cash = sum(x * q for x, q in zip(pay, pr))

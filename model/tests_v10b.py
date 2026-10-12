@@ -28,6 +28,8 @@ witnesses feed exact outcomes to the unchanged rule functions.
   news          (n22) no position open in any bar that overlaps a restricted news window, on restricted stages
   gft_void      a GFT funded win held under a minute counts minus its cost
   cancel        a payout is cancelled exactly when the account breaches before it is processed
+  min_payout    every payout's share for the trader (the cash less the fee refund paid with it) at least the firm's
+                published minimum, FTMO's $20 included (found by comparing the inventory with the rule sets)
 """
 import json, math, random, collections, datetime as _dt, zoneinfo
 import numpy as np
@@ -444,4 +446,33 @@ def run(check, cfg, spy_attempts, Spy, ctl_market, Planned):
             if cancelled != should: bad += 1
     check("cancel", bad == 0, f"{sum(len(r['pays']) for r in R)} payout rows of 600 funded FTMO accounts at a tight setting: "
           f"{ncan} cancelled, each by a breach between its request and its processing ({bad} mismatches)")
+
+    # ---------------------------------------------------------------- minimum payouts, on the trader's share
+    MINS = {"FTMO": 20.0, "FundingPips": 1_000.0, "FXIFY": 50.0, "Fintokei": 100.0, "Alpha Capital": 100.0, "GFT": 100.0,
+            "FunderPro": 100.0, "Blue Guardian": 100.0, "The5ers": 150.0}
+    def refund_with(fd, j):
+        """the fee refund paid with the j-th request (0-based): with the refund_after-th payout, or in equal parts with
+        the first refund_split payouts (Hola Prime)"""
+        if not fd.get("refund"): return 0.0
+        if fd.get("refund_split"): return fd["refund"] / fd["refund_split"] if j < fd["refund_split"] else 0.0
+        return fd["refund"] if j == fd.get("refund_after", 1) - 1 else 0.0
+    low = {}; nreq = 0; small = 0; w0 = A.RULE_HITS.get("min_net_wait", 0)
+    for prog, firm, instr in (("FTMO 2-Step", "FTMO", "US100"), ("FundingPips 2-Step Flex (80%)", "FundingPips", "USDJPY"),
+                              ("FXIFY Two Phase Classic (80%)", "FXIFY", "US100"), ("Fintokei ProTrader", "Fintokei", "US100"),
+                              ("Alpha Capital Pro 10%", "Alpha Capital", "US100"), ("GFT 2-Step Standard", "GFT", "US100"),
+                              ("FunderPro Classic", "FunderPro", "US100"), ("Blue Guardian 2-Step", "Blue Guardian", "US100"),
+                              ("The5ers High Stakes", "The5ers", "US100")):
+        c = cfg(prog, firm, instr, 1.0, 2, 0.10)              # a target of 10%: most requests come at a payout date, below it
+        R = funded_replay(c, 150, "synth906y4", 51, Spy)
+        for r in R:
+            fd = r["F"]["funded"]
+            for j, p in enumerate([p for p in r["pays"] if p[3] == "payout"]):
+                net = p[1] - refund_with(fd, j); nreq += 1
+                low[firm] = min(low.get(firm, 1e18), net)
+                if net < 2 * MINS[firm]: small += 1
+    worst = {f: round(v - MINS[f], 2) for f, v in low.items()}
+    check("min_payout", nreq > 500 and all(v >= -1e-6 for v in worst.values()) and A.RULE_HITS.get("min_net_wait", 0) > w0,
+          f"{nreq} requests at nine firms (150 funded accounts each, payout target 10%, synth906y4): smallest trader's share "
+          f"less the firm's minimum {worst}; {small} requests under twice the minimum; "
+          f"{A.RULE_HITS.get('min_net_wait', 0) - w0} requests deferred because the share was under the minimum")
     return {}

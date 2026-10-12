@@ -221,7 +221,8 @@ def candidates(grid, top=14):
             add(dict({k: b[k] for k in keys}, k=k2))
         if b["k"] == max(K_GRID): add(dict({k: b[k] for k in keys}, k=16))
         if b["k"] == min(K_GRID): add(dict({k: b[k] for k in keys}, k=1.2))
-        if b["X"] >= max(xs) * b["size"] - 1 and max(xs) < CAP_X and firm != "Maven":   # Maven's grid ends at its $4,900 ceiling
+        # Maven's grid ends at its $4,900 ceiling and The5ers' at the +9.5% balance ceiling (version 10): no target above them
+        if b["X"] >= max(xs) * b["size"] - 1 and max(xs) < CAP_X and firm not in ("Maven", "The5ers"):
             x2 = min(max(xs) + 0.05, CAP_X); add(dict({k: b[k] for k in keys}, X=x2 * b["size"], X1=x1_of(firm, x2, b["size"])))
     return out
 

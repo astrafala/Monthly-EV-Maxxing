@@ -103,6 +103,14 @@ class Spy(PF.PathTrader):
                              terminal=bool((opts or {}).get("terminal")), i=i, news=news, **self.last_info))
         return pnl, h
 
+def _refund_part(fd, j):
+    """the fee refund paid with the j-th payout request of an account (0-based), as acct_mc.run_funded pays it"""
+    ref = fd.get("refund", 0) or 0
+    if not ref: return 0.0
+    rs = fd.get("refund_split")
+    if rs: return ref / rs if j < rs else 0.0
+    return ref if j == fd.get("refund_after", 1) - 1 else 0.0
+
 def pay_checks(F, fd, sl, pays, tl, t0, worst, tr):
     """the payout states of one funded account (version 10)"""
     firm = firm_of(F.get("_prog", "")) if F.get("_prog") else None
@@ -112,8 +120,10 @@ def pay_checks(F, fd, sl, pays, tl, t0, worst, tr):
         if prev: worst["request_within_15min"] = max(worst["request_within_15min"], 15.0 - (p[2] - max(prev)) * 60.0)
         if fd.get("lock_processing") or fd.get("pause_pending"):
             worst["trade_while_locked"] = max(worst["trade_while_locked"], float(sum(p[2] - 1e-9 <= t["t_in"] < p[4] - 1e-9 for t in sl)))
-        if fd.get("min_net"):
-            worst["payout_below_minimum"] = max(worst["payout_below_minimum"], fd["min_net"] - p[1] - 1e-9 if fd.get("split", 1) else 0.0)
+        if fd.get("min_net"):             # the trader's share of the withdrawal: the cash less any refund paid with it
+            j = req.index(p)
+            net = p[1] - _refund_part(fd, j) - (fd.get("eval_share", 0.0) * sum(s["target"] for s in F["phases"]) if j == 0 else 0.0)
+            worst["payout_below_minimum"] = max(worst["payout_below_minimum"], fd["min_net"] - net - 1e-9)
     if fd.get("caps") and fd.get("cap_includes_refund"):           # The5ers: the withdrawal with the refund inside the cap
         for j, p in enumerate(req):
             ref = fd["refund"] if j == 0 else 0.0

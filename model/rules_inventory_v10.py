@@ -38,8 +38,12 @@ r("FTMO", "payouts", "First reward on the 14th day after the first trade or late
   "working days later", "cautious", U + "faq/how-do-i-withdraw-my-profits/")
 r("FTMO", "trading during processing", "not stated", "allowed; a breach before processing cancels the payout", "cautious",
   U + "faq/how-do-i-withdraw-my-profits/")
-r("FTMO", "allocation", "$400,000 per trader or strategy across all accounts (before scaling)", "four 100K accounts", "modelled",
-  "https://ftmo.com/faq/how-many-accounts-can-i-have/", read="4 Oct 2026")
+r("FTMO", "allocation", "no limit on the number of Challenge and Verification accounts; once verified, at most $400,000 of "
+  "simulated funds (before scaling) per trader or strategy at any time in active FTMO Rewards Accounts traded the same way",
+  "four 100K slots, each holding one account (evaluation or funded) at a time: the cap is never exceeded, and the plan does "
+  "not run further Challenges in parallel (FTMO prohibits 'account rolling', 'overexposure' and 'one-sided bets' without "
+  "defining them; whether a passed Challenge may wait for a free place is not published)", "cautious",
+  "https://ftmo.oanda.com/faq/how-many-accounts-can-i-have/", read="12 Oct 2026 (version 9 read 'evaluations included': wrong)")
 r("FTMO", "risk guidance", "FTMO recommends 1-1.5% risk per trade and monitors larger risk as possible gambling",
   "risk per trade at most 1.5% at FTMO (L_MAX)", "plan", "https://ftmo.com/en/blog/how-much-should-you-risk-on-one-trade/", read="4 Oct 2026")
 r("FTMO", "scaling", "+25% every 4 months with 10% profit and 2 processed rewards in 4 months", "not modelled (the model "
@@ -126,7 +130,8 @@ r("Fintokei", "targets and limits", "8% / 6%; daily loss 5% of the day's startin
   "and per payout", "as stated", "modelled", U + "8428030", read="4 Oct 2026")
 r("Fintokei", "minimal trades", "much smaller trades just to meet the minimum days are objected to", "no filler trades: missing "
   "days are ordinary trades, one a day", "plan", U + "9464503", read="4 Oct 2026")
-r("Fintokei", "payouts", "14 days from the last processed payout or the first trade; minimum 100 EUR; approved automatically, sent "
+r("Fintokei", "payouts", "14 days from the last processed payout or the first trade; minimum 100 in the account's currency (USD 100; EUR 100, "
+  "JPY 20,000, CZK 2,000; 120 on 400K ProTrader); all trades closed; approved automatically, sent "
   "within one business day", "next request 14 days after processing; cash one working day later", "modelled", U + "11904545", basis="snippet")
 r("Fintokei", "news", "allowed on every programme", "no news block", "modelled", "https://www.fintokei.com/protrader/", basis="snippet")
 r("Fintokei", "open risk", "open risk per setup at most 3%", "1.5% per trade", "not binding", "https://www.fintokei.com/protrader/", basis="snippet")
@@ -174,6 +179,10 @@ r("GFT", "minimum holding (funded)", "profit of trades held under 1 minute remov
   "before)", "such a win counts minus its cost", "modelled", U + "12849041-what-is-the-minimum-holding-time-for-trades", basis="snippet")
 r("GFT", "news", "profit of a trade opened or closed within 5 minutes of a high-impact release capped at 1% of the account "
   "(evaluations and funded)", "flat around releases at every stage", "plan", U + "10742084-is-news-trading-allowed", basis="snippet")
+r("GFT", "Goat Guard (funded)", "a combined floating loss of 2% closes the open trades; the first time the split falls to 50%, the "
+  "second time the account is breached", "not reached: one position at a time whose stop loss plus cost is at most $1,750 plus "
+  "cost per $100K, and the room above the floor caps it when the balance is low (at most 1.97% of the current balance); the "
+  "plan holds no position through a gap", "not binding", U + "10742107-what-is-goat-guard", read="4 Oct 2026 (version 9 reading)")
 
 # ---------------------------------------------------------------- FunderPro Classic
 U = "https://support.funderpro.com/en/articles/"
@@ -221,8 +230,11 @@ r("Maven", "targets and limits", "8% / 5%; daily 4% of the higher of equity and 
   "days (+0.5%) per phase and per withdrawal", "as stated", "modelled", U)
 r("Maven", "payouts", "every 10 business days after the first trade; $10,000 per rolling 30 days per trader; above $5,000 of "
   "profit the best day or trade at most 50% of profit; refund with the third withdrawal; processing time not stated",
-  "funded profit kept at most $4,900; closed profit in any 30 days at most $10,000; pending 3 working days (assumed)",
-  "cautious", U)
+  "funded profit kept at most $4,900 in every payout cycle ('total profit' read as the cycle's profit: the FAQ's sentence ends "
+  "'in the funded stage payout cycle'; if it meant the account's lifetime profit, from the second cycle a cycle's profit would "
+  "be cut to twice its best day, which the model does not apply); closed profit in any 30 days at most $10,000; requests every "
+  "14 calendar days (10 business days; public holidays not modelled); pending 3 working days (assumed)", "cautious", U,
+  read="12 Oct 2026")
 r("Maven", "gambling", "large bets at a reward:risk of 1:1.25 or lower", "every position's take-profit at least 1.5 times as far "
   "as its stop, checked on the position actually placed", "plan", U)
 r("Maven", "news", "no opening or closing 2 minutes either side of a red-folder release, take-profits included; evaluations and "
@@ -253,10 +265,82 @@ r("Apex", "payouts", "minimum balance $52,600 to request (safety net $52,100 + $
   U + "eod-trailing-drawdown-accounts/eod-payouts/", basis="secondary")
 r("Apex", "news", "directional news trading allowed", "no news block", "modelled", U, basis="secondary")
 
+# ---------------------------------------------------------------- rules stated in version 9's programme chapters that no list
+# contained (version 10 self-audit), and each firm's behavioural rules (applied at the firm's discretion: Chapter 31.2)
+V9b = "4 Oct 2026 (version 9 reading)"
+PLANB = "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled"
+r("FTMO", "prohibited practices", "overleveraging, overexposure, one-sided bets and account rolling (none defined on the page); simulated trades for manipulative purposes, including opposite positions across connected accounts or accounts with other providers; gap trading; exploiting platform errors", PLANB, "plan",
+  "https://ftmo.oanda.com/forbidden-trading-practices/", read="12 Oct 2026")
+r("FundingPips", "profit concentration", "evaluations bought from 27 June 2026, $25K and up: if one trade idea makes more than 60% of a phase target, the funded account needs 4 profitable days (+0.5%) before every reward request, permanently",
+  "not reached: no trade and no day above 40% of a target", "not binding", "https://help.fundingpips.com/hc/en-us/articles/48174287980177-Risk-Per-Trade-Idea", read=V9b)
+r("FundedNext", "monitored as gambling", "one-sided betting (remedy: a 1% risk limit), account rolling, breaching several accounts in a short span, losses exceeding gains (remedies: 40% consistency on on-demand rewards or a lower split)",
+  PLANB + "; the remedies are measured as scenarios (Chapter 28.7)", "plan", "https://help.fundednext.com/", read=V9b)
+r("The5ers", "prohibited practices", "one-trade target attainment (permanent ban)", "no single trade can reach a target (40% cap)", "plan", "https://the5ers.com/high-stakes/", read=V9b)
+r("FXIFY", "prohibited practices", "gambling and all-or-nothing ('YOLO') trading", PLANB, "plan", "https://intercom.help/fxify/en/", read=V9b)
+r("Fintokei", "prohibited practices", "reaching a phase target in one or a few identical trades ('all-in'); if trading is flagged unsustainable, leverage 1:10 and daily profit and loss capped at 1%", PLANB, "plan",
+  "https://support.fintokei.com/en/articles/9464503-what-is-all-in-trading-and-why-is-it-forbidden-to-achieve-profit-target-in-one-trade", read=V9b)
+r("Hola Prime", "prohibited practices", "one-sided betting, grid trading, excessive margin use, hedging across accounts, profitability materially dependent on concentrated outcomes", PLANB, "plan",
+  "https://holaprime.com/forex/faq/", read=V9b)
+r("Alpha Capital", "risk per trade", "never risk or lose 2% or more on one trade or group of trades closed together", "risk at most 1.75% plus cost; one position at a time", "not binding",
+  "https://help.alphacapitalgroup.uk/", read=V9b)
+r("Alpha Capital", "prohibited practices", "gambling; 'all or nothing' trading; minimal lots to complete trading days on qualified accounts", PLANB + "; no filler trades at Alpha Capital", "plan", "https://help.alphacapitalgroup.uk/", read=V9b)
+r("Blue Guardian", "prohibited practices", "margin use above 80% counts as gambling", "margin at most 60% of the balance", "not binding", "https://help.blueguardian.com/", read=V9b)
+r("Topstep", "targets and limits", "$3,000 target; $2,000 maximum loss trailing the end-of-day balance and locking at the starting balance; after the first payout the maximum loss level is the starting balance; positions closed by the daily close",
+  "as stated; flat at 20:00 UTC", "modelled", "https://help.topstep.com/", read=V9b)
+r("Topstep", "consistency (Combine)", "best day at most 55% of the profit target (version 9 reading)", "not reached: no day above 40% of the target (the engine also caps a day at 50% of the target, stricter than the published 55%)", "not binding", "https://help.topstep.com/", read=V9b)
+r("Apex", "targets and limits", "$3,000 target; $2,000 maximum loss trailing the end-of-day balance; $1,000 daily loss limit; flat by 4:59 pm ET every session",
+  "as stated; flat at 20:00 UTC", "modelled", "https://apextraderfunding.com/help-center/", basis="secondary", read=V9b)
+
+# ---------------------------------------------------------------- per-person limits and copying rules (version 10: added to the
+# inventory; version 9 stated them in its programme chapters and Chapter 27 but no list contained them). Readings of
+# 4-5 October 2026 (version 9), not re-read for version 10 unless marked; source: the firm's help centre.
+V9 = "4 Oct 2026 (version 9 reading)"
+r("FTMO", "copying", "the same strategy on your own accounts within the $400,000 cap; accounts under other registrations "
+  "prohibited", "every FTMO account trades the shared Nasdaq direction", "plan", "https://ftmo.oanda.com/faq/how-many-accounts-can-i-have/",
+  read="12 Oct 2026")
+r("FundingPips", "copying", "only between your own FundingPips accounts; no copier services", "own entries on each account",
+  "plan", "https://help.fundingpips.com/", read=V9)
+r("The5ers", "copying", "allowed across your own accounts", "the shared Nasdaq direction", "plan", "https://the5ers.com/faqs/", read=V9)
+r("FXIFY", "allocation", "one active account of each size, challenge and funded alike (5K to 400K, $805,000 in all; rule of 25 "
+  "November 2024); Classic up to 100K", "at full allowance one Classic account of each size from 5K to 100K", "modelled",
+  "https://intercom.help/fxify/en/", read=V9)
+r("FXIFY", "copying", "between your own FXIFY accounts; from external accounts only with approval; third-party copying prohibited",
+  "the shared Nasdaq direction across your own accounts", "plan", "https://intercom.help/fxify/en/", read=V9)
+r("Fintokei", "allocation", "EUR 500,000 of accounts in total", "five 100K (USD 500,000, about EUR 444,000 at 1.1256)", "modelled",
+  "https://support.fintokei.com/", read=V9)
+r("Fintokei", "copying", "your own trades across your own accounts; other people's signals prohibited", "the shared Nasdaq direction",
+  "plan", "https://support.fintokei.com/", read=V9)
+r("Hola Prime", "allocation", "$500,000", "two 100K", "modelled", "https://holaprime.com/forex/faq/", read=V9)
+r("Hola Prime", "copying", "only between your own Hola Prime accounts (funded: one master and one copier); copying from other prop "
+  "firms' accounts prohibited", "two accounts on a market no other account of the plan trades", "plan",
+  "https://holaprime.com/forex/faq/", read=V9)
+r("Alpha Capital", "copying", "from your own external accounts with proof of ownership", "the shared Nasdaq direction", "plan",
+  "https://help.alphacapitalgroup.uk/", read=V9)
+r("GFT", "allocation", "$400,000 funded", "one account", "modelled", "https://help.goatfundedtrader.com/", read=V9)
+r("GFT", "copying", "no duplicated trades or trade ideas between GFT accounts", "one GFT account (a second would need a market of "
+  "its own: not modelled)", "plan", "https://help.goatfundedtrader.com/", read=V9)
+r("FunderPro", "allocation", "$200,000", "one account (200K where it is worth more)", "modelled", "https://support.funderpro.com/", read=V9)
+r("FunderPro", "copying", "no replicating trades across FunderPro accounts; no copying from accounts you do not own", "one account",
+  "plan", "https://support.funderpro.com/", read=V9)
+r("FunderPro", "risk per trade", "at most 2%", "1.75% plus cost", "not binding", "https://support.funderpro.com/", read=V9)
+r("BrightFunded", "copying", "allowed between your own accounts", "the shared Nasdaq direction", "plan",
+  "https://help.brightfunded.com/", read=V9)
+r("Blue Guardian", "copying", "your own accounts only", "the shared Nasdaq direction", "plan", "https://help.blueguardian.com/", read=V9)
+r("Maven", "allocation", "$200,000 per person", "one 100K", "modelled", "https://maventrading.com/faqs", read=V9)
+r("Topstep", "allocation", "5 Express Funded Accounts at once", "five 50K (the optional futures layer)", "modelled",
+  "https://help.topstep.com/", read=V9)
+r("Apex", "allocation", "20 funded accounts", "twenty 50K (the optional futures layer)", "modelled",
+  "https://apextraderfunding.com/help-center/", basis="secondary", read=V9)
+
 # ---------------------------------------------------------------- every firm
 r("every firm", "conflicting positions", "no hedging across accounts or firms", "one direction per market group across all "
   "accounts (shared-direction rule)", "plan", "the firms' prohibited-practice pages", read="4 Oct 2026")
 r("every firm", "identity", "accounts only in the trader's own name", "one person's accounts", "plan", "the firms' terms", read="4 Oct 2026")
+r("every firm with minimum trading days", "minimal trades", "FTMO, FXIFY, FundedNext, FunderPro, BrightFunded (a trade open 60 "
+  "seconds), Topstep and Apex count a day on which a position is opened and state no minimum volume", "a missing day after the "
+  "target is completed with one minimal position (0.01 lot or one micro contract) held 3 minutes; that the firms accept it is an "
+  "assumption (Fintokei and Alpha Capital object to such trades and get none); the plan is also measured without fillers",
+  "assumption", "the firms' trading-day definitions (programme rows above)", read="4 Oct 2026 (version 9 reading)")
 
 if __name__ == "__main__":
     out = dict(read="11-12 October 2026 (rows marked otherwise: 4-5 October 2026)", note=__doc__.strip(), rules=R,
