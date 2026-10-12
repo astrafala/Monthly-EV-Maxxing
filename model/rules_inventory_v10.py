@@ -132,8 +132,11 @@ r("FXIFY", "inactivity", "60 days", "never 25 days without a trade", "plan", U +
 
 # ---------------------------------------------------------------- Fintokei ProTrader
 U = "https://support.fintokei.com/en/articles/"
-r("Fintokei", "targets and limits", "8% / 6%; daily loss 5% of the day's starting equity; 10% maximum; 3 trading days per phase "
-  "and per payout", "as stated", "modelled", U + "8428030", read="4 Oct 2026")
+r("Fintokei", "targets and limits", "8% / 6%; daily loss 5% of the day's starting equity; 10% maximum (version 9 reading); 3 "
+  "separate trading days (a trade opened on the day, with a real market outcome) before passing a phase and before requesting a "
+  "payout, accounts bought from 15 July 2026", "as stated; the 3 days required again in every payout cycle (the page does not "
+  "say whether they count once or per cycle: the stricter reading)", "cautious",
+  U + "8428030-what-does-the-rule-minimum-trading-days-mean-3-or-5-days", read="12 Oct 2026")
 r("Fintokei", "minimal trades", "much smaller trades just to meet the minimum days are objected to", "no filler trades: missing "
   "days are ordinary trades, one a day", "plan", U + "9464503", read="4 Oct 2026")
 r("Fintokei", "payouts", "14 days from the last processed payout or the first trade; minimum 100 in the account's currency (USD 100; EUR 100, "

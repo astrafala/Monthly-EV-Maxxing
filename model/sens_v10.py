@@ -18,7 +18,7 @@ same random numbers across the columns of a table (paired):
           rules cost; not a permitted plan)
   fastpay version 10: payouts processed at the fast end of each firm's stated range (one working day where a range is
           given) instead of its slow end: what the processing assumption costs
-  nolock  version 10: Alpha Capital, FundingPips, FXIFY with trading allowed while a payout is processed (what the locks
+  nolock  version 10: Alpha Capital, FundingPips, FXIFY, Blue Guardian with trading allowed while a payout is processed (what the locks
           cost; not a permitted plan)
   t5net   version 10: The5ers' payout cap read as a cap on the trader's share with the refund outside it (the other
           reading of the unpublished basis; the plan uses the cautious one)

@@ -335,12 +335,12 @@
   {
    "firm": "Fintokei",
    "area": "targets and limits",
-   "rule": "8% / 6%; daily loss 5% of the day's starting equity; 10% maximum; 3 trading days per phase and per payout",
-   "model": "as stated",
-   "status": "modelled",
-   "source": "https://support.fintokei.com/en/articles/8428030",
+   "rule": "8% / 6%; daily loss 5% of the day's starting equity; 10% maximum (version 9 reading); 3 separate trading days (a trade opened on the day, with a real market outcome) before passing a phase and before requesting a payout, accounts bought from 15 July 2026",
+   "model": "as stated; the 3 days required again in every payout cycle (the page does not say whether they count once or per cycle: the stricter reading)",
+   "status": "cautious",
+   "source": "https://support.fintokei.com/en/articles/8428030-what-does-the-rule-minimum-trading-days-mean-3-or-5-days",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Fintokei",
@@ -1344,9 +1344,9 @@
   }
  ],
  "counts": {
-  "modelled": 62,
+  "modelled": 61,
   "plan": 44,
-  "cautious": 13,
+  "cautious": 14,
   "assumption": 3,
   "not binding": 12
  }
