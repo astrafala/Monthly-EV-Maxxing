@@ -222,7 +222,12 @@ def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stag
             assert data.startswith(("synth", "corr")), "gold, euro and yen slots are simulated on synthetic paths only"
             mk[instr] = Market(instr, data, news)
             assert mk[instr].M["T"] == mk["US100"].M["T"]
-    GROUP = {"US100": "NQ", "MNQ_fut": "NQ", "XAUUSD": "XAU", "USDJPY": "JPY", "EURUSD": "EUR"}
+    GROUP = {"US100": "NQ", "MNQ_fut": "NQ", "XAUUSD": "XAU", "USDJPY": "JPY", "EURUSD": "EUR"}     # the price path of each market
+    # the shared direction (version 10): one direction per market, and EURUSD and USDJPY together, so that no two accounts
+    # ever hold opposite dollar positions in currency pairs. The engine's EURUSD price is the euro in dollars and its USDJPY
+    # price the yen in dollars (X = 1/USDJPY), so the same engine direction is the same dollar exposure on both: a long
+    # EURUSD goes with a short USDJPY (both short the dollar)
+    DGROUP = {"US100": "NQ", "MNQ_fut": "NQ", "XAUUSD": "XAU", "USDJPY": "USD", "EURUSD": "USD"}
     T = mk["US100"].M["T"]
     # one calendar for everybody: clock 0 = 22:00 UTC on a random day early in the path
     h0 = mk["US100"].M["h0"]
@@ -279,8 +284,8 @@ def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stag
         e_abs = key
         inf = info[sid]; M = mk[inf["instr"]]
         open_pos = [p for p in open_pos if p[1] > e_abs]                 # positions still open at this entry
-        grp = GROUP[inf["instr"]]
-        dirs = set(p[2] for p in open_pos if p[0] <= e_abs and p[3] == grp)
+        grp = GROUP[inf["instr"]]; dg = DGROUP[inf["instr"]]
+        dirs = set(p[2] for p in open_pos if p[0] <= e_abs and p[3] == dg)
         if len(dirs) > 1: conflicts += 1
         if dirs and share: d = next(iter(dirs)); n_copy += 1
         else: d = M.rule_direction(e_abs % T, inf["rng"], rule)      # (share=False: diagnostic only, not the plan)
@@ -289,8 +294,8 @@ def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stag
         pnl, bars, ex = M.resolve(e_abs % T, d, l, w, inf["s"], inf["cost"], fw, inf["flat_daily"], inf["rng"], st=stats, opts=o,
                                   nb=tr_.nb)
         if ex["why"] != "unaffordable":                                # (no position is opened then)
-            open_pos.append((e_abs, e_abs + ex["exit"], d, grp)); n_trades += 1
-            trade_log.append((e_abs - base, sid, d, e_abs - base + ex["exit"], bool(dirs) and share, grp))
+            open_pos.append((e_abs, e_abs + ex["exit"], d, dg)); n_trades += 1
+            trade_log.append((e_abs - base, sid, d, e_abs - base + ex["exit"], bool(dirs) and share, dg))
             if bound and M.M.get("sub"):                                # the barriers the trade watches, by sub-step
                 sb = M.M["sub"]; j0 = (e_abs % T) * sb; j1 = j0 + int(round(ex["exit"] * sb))
                 up = math.log(ex["tp"]) if (d > 0 and ex.get("tp")) else (math.log(ex["lo_px"]) if d < 0 and ex["lo_px"] < math.inf else math.inf)

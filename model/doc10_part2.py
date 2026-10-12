@@ -95,16 +95,16 @@ for f in FIRMS:
 INV_FIRM = {"FTMO": "FTMO", "FundingPips": "FundingPips", "The5ers": "The5ers", "FXIFY": "FXIFY", "FundedNext": "FundedNext", "Fintokei": "Fintokei",
             "Hola Prime": "Hola Prime", "Alpha Capital": "Alpha Capital", "FunderPro": "FunderPro", "GFT": "GFT", "BrightFunded": "BrightFunded",
             "Blue Guardian": "Blue Guardian", "Maven": "Maven", "Topstep": "Topstep", "Apex": "Apex"}
-SHEET_KEEP = ("Fee", "Leverage")
+SHEET_KEEP = ("Leverage",)          # fees, refunds and splits are inventory rows (version 10)
 
 def rules_table(sh, firm):
-    """the firm's rules from the inventory (rules_inventory_v10.json), with the fee and leverage rows of the programme sheet;
-    each row with the date its page was read"""
+    """the firm's rules from the inventory (rules_inventory_v10.json), with the leverage row of the programme sheet; each row
+    with the date its page was read"""
     rows = [[a, b, "4 Oct 2026 (version 9 reading)"] for a, b in sh["rules"] if a in SHEET_KEEP]
     for r in inv_rows(INV_FIRM.get(firm, firm)):
         rows.append([r["area"][0].upper() + r["area"][1:], r["rule"] + (f" <span style='color:var(--muted)'>(model: {r['model']})</span>" if r["status"] in ("cautious", "assumption", "not binding") else ""), r["read"]])
     return table(["Rule", "As published", "Read"], rows, num_from=9, w0="22%",
-                 cap="Rules as published, from the inventory of Appendix B, which gives each rule's page, the basis of the reading (the firm's page read directly, its text as a search engine returned it, or a reviewer's description where no page could be read) and how the model treats it; the fee and leverage rows are version 9's readings.")
+                 cap="Rules as published, from the inventory of Appendix B, which gives each rule's page, the basis of the reading (the firm's page read directly, its text as a search engine returned it, or a reviewer's description where no page could be read) and how the model treats it; the leverage row is version 9's reading.")
 
 def _dll_txt(st, F):
     md = st.get("dll_mode") or ("rel" if st.get("dll_rel") else "fixed"); pc = pct(st["dll"] / F["size"], 0)
@@ -131,21 +131,26 @@ def model_table(F, prog):
         rows.append([f"Phase {j + 1}" if len(F["phases"]) > 1 else "Evaluation", "; ".join(bits)])
     fd = F["funded"]
     bits = [f"maximum loss {usd(fd['dd'])}, " + ("trailing the best end-of-day balance" if fd["eod"] else "static"),
-            _dll_txt(fd, F) if fd.get("dll") else "no daily loss limit", f"split {pct(fd['split'], 0)}"]
+            _dll_txt(fd, F) if fd.get("dll") else "no daily loss limit",
+            (f"split {pct(fd['split'] / (1 - fd['fee_pct']), 0)}, less a {pct(fd['fee_pct'], 0)} processing fee on every reward ({pct(fd['split'], 1)} of the profit withdrawn to the trader)"
+             if fd.get("fee_pct") else f"split {pct(fd['split'], 0)}")]
     if fd.get("refund"):
         if fd.get("refund_split"): bits.append(f"fee returned in {fd['refund_split']} equal parts with the first {fd['refund_split']} payouts")
+        elif F.get("refund_frac") is not None and F["refund_frac"] < 1:
+            bits.append(f"{pct(F['refund_frac'], 0)} of the cash paid for the account returned with payout number {fd.get('refund_after', 1)} ({usd(fd['refund'], 2)} when no hub credit paid part of the fee)")
         else: bits.append(f"{usd(fd['refund'], 2)} of the fee returned with payout number {fd.get('refund_after', 1)}")
     else: bits.append("no fee refund")
     if fd.get("q_days"): bits.append(f"a payout needs {fd['q_days']} qualifying days of at least {usd(fd['q_min'])}")
     elif fd.get("ondemand"): bits.append("payouts on demand")
     else: bits.append(f"first payout {fd['first_payout']} days after the first funded trade, then every {fd['cycle']} days")
-    if fd.get("min_payout"): bits.append(f"minimum payout {usd(fd['min_payout'])}")
+    if fd.get("best_vs_worst"): bits.append("a request needs the best trade to have made more than the worst trade lost, since the last payout and over the account (the firm's rule for accounts bought from 9 October 2026)")
+    if fd.get("min_net") or fd.get("min_payout"):
+        bits.append(f"minimum payout {usd(fd.get('min_net') or fd['min_payout'])} on the trader's share after the split (the stricter reading where the firm does not say)")
     if fd.get("caps"):
         cps = [c for c in fd["caps"] if c < 1e9]
         if len(set(cps)) == 1 and len(cps) > 6: bits.append(f"every payout at most {usd(cps[0])}" + (" with the fee refund counted inside it" if fd.get("cap_includes_refund") else "") + ", the rest kept in the account")
         else: bits.append("payout caps " + ", ".join(usd(c) for c in cps[:6]) + (" for the first payouts" if len(cps) < 6 else "") + ", the rest kept in the account")
     if fd.get("min_profit"): bits.append(f"a request needs {usd(fd['min_profit'])} of profit")
-    if fd.get("min_net"): bits.append(f"at least {usd(fd['min_net'])} after the split")
     if fd.get("pct_bal"): bits.append(f"a payout at most {pct(fd['pct_bal'], 0)} of the balance")
     if fd.get("best"): bits.append((f"best day below {pct(fd['best'], 0)} of a payout's profit (strictly)" if fd.get("q_days") else f"best day at most {pct(fd['best'], 0)} of a payout's profit") + (", measured against the account's best day ever" if fd.get("best_ever") else ""))
     if fd.get("first_days"): bits.append(f"first payout only after {fd['first_days']} trading days (no fillers; the plan trades at most once a day until then)")

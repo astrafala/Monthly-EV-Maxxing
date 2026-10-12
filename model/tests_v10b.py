@@ -30,6 +30,10 @@ witnesses feed exact outcomes to the unchanged rule functions.
   cancel        a payout is cancelled exactly when the account breaches before it is processed
   min_payout    every payout's share for the trader (the cash less the fee refund paid with it) at least the firm's
                 published minimum, FTMO's $20 included (found by comparing the inventory with the rule sets)
+  usd_direction no two positions in EURUSD and USDJPY open at the same time with opposite dollar exposure (the shared
+                direction covers the two currency pairs together; version 9 gave each pair its own direction)
+  gft_rules     GFT's rewards page (9 October 2026): every request's best trade larger than its worst loss, over the cycle
+                and over the account; every payout 97% of the 80% split (the 3% processing fee) and no fee refund
 """
 import json, math, random, collections, datetime as _dt, zoneinfo
 import numpy as np
@@ -475,4 +479,43 @@ def run(check, cfg, spy_attempts, Spy, ctl_market, Planned):
           f"{nreq} requests at nine firms (150 funded accounts each, payout target 10%, synth906y4): smallest trader's share "
           f"less the firm's minimum {worst}; {small} requests under twice the minimum; "
           f"{A.RULE_HITS.get('min_net_wait', 0) - w0} requests deferred because the share was under the minimum")
+
+    # ---------------------------------------------------------------- one dollar direction across EURUSD and USDJPY
+    def sl_(prog, instr, n, m, k, x, lf=0.015):
+        firm = F10.firm_of(prog)
+        return [dict(firm=prog, kind="cfd", size=100_000, L=lf * 100_000, k=k, X1=O.x1_of(firm, x, 100_000), X=x * 100_000, m=m,
+                     instr=instr, lev=O.lev_tuple(firm, instr)) for _ in range(n)]
+    SLx = (sl_("FundingPips 2-Step Flex (95%)", "USDJPY", 2, 1.0, 4, 0.05) + sl_("FundedNext Stellar 2-Step", "EURUSD", 1, 1.0, 4, 0.05)
+           + sl_("Hola Prime 2-Step Prime (bi-weekly 80%)", "EURUSD", 1, 1.0, 4, 0.05) + sl_("FTMO 2-Step", "US100", 1, 0.75, 4, 0.05))
+    LS.RULES = F10
+    opp = 0; both = 0; conf = 0; ntr = 0
+    for seed in (100016, 100031):
+        led, st = LS.run_life(SLx, data=f"synth{seed}y2", months=12, seed=seed, rule="trend5")
+        conf += st["conflicts"]; tl = st["trade_log"]; ntr += len(tl)
+        fx = [(te, tx, d, SLx[sid]["instr"]) for (te, sid, d, tx, cp, g) in tl if SLx[sid]["instr"] in ("EURUSD", "USDJPY")]
+        for a in fx:
+            for b in fx:
+                if a[3] == "USDJPY" and b[3] == "EURUSD" and a[0] < b[1] and b[0] < a[1]:
+                    both += 1; opp += a[2] != b[2]
+    check("usd_direction", opp == 0 and both > 0 and conf == 0,
+          f"2 lives, {ntr} trades: {both} pairs of overlapping USDJPY and EURUSD positions, {opp} with opposite dollar exposure "
+          f"(the engine's prices are the euro and the yen in dollars: the same engine direction is the same dollar exposure); "
+          f"{conf} opposite positions")
+
+    # ---------------------------------------------------------------- GFT: best trade against worst loss; processing fee
+    c = cfg("GFT 2-Step Standard", "GFT", "US100", 1.0, 1.5, 0.06)
+    R = funded_replay(c, 150, "synth907y4", 61, Spy)
+    nreq = 0; badbw = 0; worst_share = 0.0
+    for r in R:
+        fd = r["F"]["funded"]; prev = -1e18; xs = r["tlog"]
+        for p in [p for p in r["pays"] if p[3] == "payout"]:
+            cyc = [t["pnl"] for t in r["log"] if prev - 1e-9 <= t["t_out"] <= p[2] + 1e-9]
+            life = [t["pnl"] for t in r["log"] if t["t_out"] <= p[2] + 1e-9]
+            okc = max(cyc + [0.0]) > max([-v for v in cyc] + [0.0]); oke = max(life + [0.0]) > max([-v for v in life] + [0.0])
+            nreq += 1; badbw += not (okc and oke); prev = p[2]
+            worst_share = max(worst_share, abs(fd["split"] - 0.8 * 0.97))
+    check("gft_rules", nreq > 100 and badbw == 0 and worst_share < 1e-12 and R[0]["F"]["funded"]["refund"] == 0,
+          f"{nreq} GFT requests (150 funded accounts, synth907y4): {badbw} with the best trade not larger than the worst loss "
+          f"(over the cycle and over the account); trader's share {R[0]['F']['funded']['split']:.3f} of the profit (80% less the 3% "
+          f"processing fee); fee refund {R[0]['F']['funded']['refund']:.0f}")
     return {}

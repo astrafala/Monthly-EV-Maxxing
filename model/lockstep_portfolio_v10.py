@@ -68,16 +68,20 @@ def pick(progs, allowed):
         if best is None or v > best[2]: best = (p, i, v)
     return best
 
-FP = pick(["FundingPips 2-Step Flex (80%)", "FundingPips 2-Step Flex (95%)"], ["USDJPY", "EURUSD"])
-T5 = pick(["The5ers High Stakes", "The5ers High Stakes Classic"], ["US100"])
-FX = pick(["FXIFY Two Phase Classic (100%, 30 days)", "FXIFY Two Phase Classic (80%)"], ["US100"])
-GF = pick(["GFT 2-Step Standard"], ["US100", "USDJPY"])
-FPR = pick(["FunderPro Classic"], ["US100", "USDJPY"])
 # FundedNext and Hola Prime may not trade copies of other firms' accounts: each gets a market no other account trades
 _fn = {i: row("FundedNext Stellar 2-Step", i)["EV_month"] for i in ("EURUSD", "XAUUSD")}
 _hp = {i: row("Hola Prime 2-Step Prime (bi-weekly 80%)", i)["EV_month"] for i in ("EURUSD", "XAUUSD")}
 FN_I, HP_I = max((("EURUSD", "XAUUSD"), ("XAUUSD", "EURUSD")), key=lambda a: _fn[a[0]] + 2 * _hp[a[1]])
 FN_SIZE = 200_000 if row("FundedNext Stellar 2-Step", FN_I, 200_000)["EV_month"] > row("FundedNext Stellar 2-Step", FN_I)["EV_month"] else 100_000
+# every other firm chooses among the markets FundedNext and Hola Prime do not trade (version 10: version 9 let FundingPips
+# choose EURUSD, which would have put another firm's accounts on FundedNext's or Hola Prime's market; its results did not)
+_OWN = {FN_I, HP_I}
+def _free(ms): return [m for m in ms if m not in _OWN]
+FP = pick(["FundingPips 2-Step Flex (80%)", "FundingPips 2-Step Flex (95%)"], _free(["USDJPY", "EURUSD"]))
+T5 = pick(["The5ers High Stakes", "The5ers High Stakes Classic"], _free(["US100"]))
+FX = pick(["FXIFY Two Phase Classic (100%, 30 days)", "FXIFY Two Phase Classic (80%)"], _free(["US100"]))
+GF = pick(["GFT 2-Step Standard"], _free(["US100", "USDJPY"]))
+FPR = pick(["FunderPro Classic"], _free(["US100", "USDJPY"]))
 
 def pos(prog, instr, size=100_000):
     return row(prog, instr, size)["EV_month"] > 0
@@ -133,6 +137,12 @@ def FUTURES():
     return out
 
 REC = "Recommended: A + B + one account at each tier-D firm"
+def _check_own_markets(slots):
+    """FundedNext's and Hola Prime's accounts trade markets that no account of another firm trades"""
+    for f in ("FundedNext", "Hola Prime"):
+        mine = {s_["instr"] for s_ in slots if firm_of(s_["firm"]) == f}
+        others = {s_["instr"] for s_ in slots if firm_of(s_["firm"]) != f}
+        assert not (mine & others), (f, mine & others)
 PORTFOLIOS = {
     "Tier A": TIER_A(),
     "Tier A + B": TIER_A() + TIER_B(),
@@ -142,6 +152,7 @@ PORTFOLIOS = {
     "All firms at full caps + The5ers small accounts": TIER_A() + TIER_B() + TIER_D_FULL() + THE5ERS_SMALL(),
     "Recommended + futures": TIER_A() + TIER_B() + TIER_D_SINGLE() + FUTURES(),
 }
+for _sl in PORTFOLIOS.values(): _check_own_markets(_sl)
 
 # ---------------------------------------------------------------- one life
 SCEN = {"tiered": {"A": 0.02, "B": 0.05, "D": 0.15}, "harsh": {"A": 0.05, "B": 0.10, "D": 0.30}}

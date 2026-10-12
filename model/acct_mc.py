@@ -189,7 +189,7 @@ def _win(tr, l, plan_cap, rule_cap, bs, fresh=False, lc=0.0, lv=None):
     return w, l
 
 RULE_HITS = {"alpha_phase": 0, "alpha_funded": 0, "short_breach": 0,       # rule consequences applied (counts)
-             "payout_cancelled": 0, "shield_first": 0, "shield_second": 0, "abandoned": 0, "rr_wait": 0,
+             "payout_cancelled": 0, "shield_first": 0, "shield_second": 0, "abandoned": 0, "rr_wait": 0, "bw_wait": 0,
              "rr_raised": 0, "rr_lowered": 0, "lots_capped": 0, "min_net_wait": 0, "cap_held": 0, "excluded_day": 0,
              "expired": 0, "voided": 0, "keepalive": 0}
 
@@ -448,6 +448,9 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
     next_pay = 1e18 if fd.get("clock_first_trade", True) else t0 + fd["first_payout"] * DAY
     qdays = 0; cyc_best = 0.0; cyc_profit_start = 0.0; refunded = False
     dbest_c = 0.0; dbest_e = 0.0                       # best day of this payout cycle / of the account (FXIFY: ever)
+    bw = fd.get("best_vs_worst")                       # GFT (accounts bought from 9 October 2026): the best trade must have
+    tb_c = tw_c = tb_e = tw_e = 0.0                    # made more than the worst trade lost: best win and worst loss of the
+                                                       # cycle and of the account (both readings must hold at a request)
     tgt_up = 0.0                                       # raised cycle target when a consistency rule blocks a payout
     caps = fd.get("caps"); maxp = fd.get("max_payouts")
     pdn = fd.get("profit_days"); pdates = []            # funded profitable days of this payout cycle (engine days)
@@ -556,6 +559,9 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
                     can_pay = need <= x + 1e-6                 # strict: the rule's limit itself, no tolerance (n13)
                     if not can_pay and x >= target_now - 0.01:   # at the target but a rule fails: trade on to the profit
                         tgt_up = need + 1.0 * bs
+                    if can_pay and bw and not (tb_c > tw_c + 1e-9 and tb_e > tw_e + 1e-9):
+                        can_pay = False; RULE_HITS["bw_wait"] += 1    # trade on until a win is larger than the worst loss
+                        if x >= target_now - 0.01: tgt_up = max(tgt_up, x + max(tw_c, tw_e) + 1.0 * bs)
         if can_pay and durm and not _dur_ok(durm, durs):
             # Alpha Capital: the duration rule fails at a request: the profits are removed and the account restarts at
             # its initial balance (the firm's stated consequence on a qualified account)
@@ -604,6 +610,7 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
                 if fd.get("lock_after_first_payout") and npay == 1:
                     floor = max(floor, lock)
                 cyc_profit_start = x; qdays = 0; cyc_best = 0.0; dbest_c = 0.0; tgt_up = 0.0; fcap = _fcap()
+                tb_c = tw_c = 0.0
                 # the next request: cycle days after this one, or (Fintokei, The5ers) after the payout is processed
                 t_next = t_proc if fd.get("cycle_from_processed") else t_req
                 next_pay = t_next + max(fd["cycle"], 1) * DAY if not fd["ondemand"] else t_req + DAY
@@ -722,6 +729,8 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
         if next_pay > 1e17 and not fd.get("q_days"): next_pay = te + fd["first_payout"] * DAY
         dtr = int(te // DAY)
         x += pnl; clock += h; day_pnl += pnl; day_pnl_c += pnl
+        if bw:
+            tb_c = max(tb_c, pnl); tb_e = max(tb_e, pnl); tw_c = max(tw_c, -pnl); tw_e = max(tw_e, -pnl)
         if TRADELOG is not None: TRADELOG.append(("funded", te, x - pnl, pnl, tx, opts.get("kind", "trade"), dur))
         cyc_days.add(dtr); all_days.add(dtr); durs.append((dur, pnl))
         if info.get("voided"): RULE_HITS["voided"] += 1

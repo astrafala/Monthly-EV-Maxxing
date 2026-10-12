@@ -35,7 +35,8 @@ r("FTMO", "payouts", "First reward on the 14th day after the first trade or late
   "orders closed; review within 1-2 business days, sent 1-2 business days after the invoice is approved; minimum $20 closed "
   "profit (wire); 80% split; fee refunded with the first reward", "request at least 14 days after the first funded trade, "
   "flat; pending 2 working days (a breach before then cancels it: the page does not say trading continues safely), cash 2 "
-  "working days later", "cautious", U + "faq/how-do-i-withdraw-my-profits/")
+  "working days later; the $20 minimum applied to the trader's share (version 10: version 9 had no minimum)", "cautious",
+  U + "faq/how-do-i-withdraw-my-profits/")
 r("FTMO", "trading during processing", "not stated", "allowed; a breach before processing cancels the payout", "cautious",
   U + "faq/how-do-i-withdraw-my-profits/")
 r("FTMO", "allocation", "no limit on the number of Challenge and Verification accounts; once verified, at most $400,000 of "
@@ -154,7 +155,8 @@ U = "https://help.alphacapitalgroup.uk/en/articles/"
 r("Alpha Capital", "targets and limits", "10% / 5%; daily loss 5% of the day's starting balance; 10%; 3 days", "as stated",
   "modelled", U + "8420429-alpha-pro-8-10", basis="snippet", read="4 Oct 2026")
 r("Alpha Capital", "payouts", "bi-weekly: first request 14 days after the first funded trade, 5 trading days; all trades closed "
-  "before a request; paid within 2 business days; the account locked until the balance is reset", "locked 2 working days",
+  "before a request; paid within 2 business days; the account locked until the balance is reset; at least $100 of profit "
+  "(version 8 reading; not stated on the page read on 11 October)", "locked 2 working days; $100 applied to the trader's share",
   "modelled", U + "6933755-how-do-i-get-paid-performance-fees")
 r("Alpha Capital", "lot limit", "qualified accounts: at most 40 open lots per $100K (80 at $200K), aggregate; first breach: "
   "the profit from the excess not paid; second: account deactivated", "every funded position at most the limit (one position "
@@ -172,9 +174,16 @@ r("Alpha Capital", "allocation", "$400,000 per household; $300,000 per strategy 
 U = "https://help.goatfundedtrader.com/en/articles/"
 r("GFT", "targets and limits", "10% / 5%; 3 profitable days (+0.5%) per phase; daily 5% of the higher of balance and equity at "
   "5 pm New York; 10%", "as stated", "modelled", U + "13575169-2-step-standard", read="4 Oct 2026")
-r("GFT", "payouts", "80% every 14 days, 4 profitable days per cycle; first two payouts at most min(6%, $10,000); $3,000 profit a "
-  "day at most; minimum $100; processed within 2 business days", "pending 2 working days; capped amount paid, the rest kept",
-  "modelled", U + "10742261-how-long-does-it-take-to-receive-my-reward", basis="snippet")
+r("GFT", "payouts", "80% every 14 days, 4 profitable days (+0.5% of the initial balance) per cycle; first two payouts at most "
+  "min(6%, $10,000) of the initial balance; $3,000 profit a day at most (the excess deducted); minimum withdrawal $100; "
+  "processed within 2 business days; no open trades or pending orders; 'All rewards are subject to a 3% processing fee', "
+  "calculated on the reward after the split", "pending 2 working days; capped amount paid, the rest kept; the trader receives "
+  "97% of the 80% (77.6% of the profit withdrawn); the $100 applied to that amount (version 10: version 9 had no processing "
+  "fee)", "modelled", "https://help.goatfundedtrader.com/rewards.html", read="12 Oct 2026")
+r("GFT", "best and worst trade", "accounts bought from 9 October 2026: 'your most profitable trade must have made more profit "
+  "than your worst trade lost' for a reward", "a request needs the best win to exceed the worst loss both since the last "
+  "payout and over the account's life (it holds under either reading); otherwise the account trades on", "cautious",
+  "https://help.goatfundedtrader.com/rewards.html", read="12 Oct 2026")
 r("GFT", "minimum holding (funded)", "profit of trades held under 1 minute removed (accounts bought from 6 October 2026; 2 minutes "
   "before)", "such a win counts minus its cost", "modelled", U + "12849041-what-is-the-minimum-holding-time-for-trades", basis="snippet")
 r("GFT", "news", "profit of a trade opened or closed within 5 minutes of a high-impact release capped at 1% of the account "
@@ -259,8 +268,9 @@ U = "https://apextraderfunding.com/help-center/"
 r("Apex", "evaluation", "30 days of access, expiring at 6 pm ET on day 30", "the target must be reached before that time",
   "modelled", U + "billing/evaluation-plan-fees-and-access-explained/", basis="secondary")
 r("Apex", "payouts", "minimum balance $52,600 to request (safety net $52,100 + $500); 5 qualifying days ($250, conflicting reports "
-  "of $200); every profitable day under 50% of net profit since the last approved payout; caps per request; at most 6 payouts; "
-  "a pending request denied if the balance falls below the threshold", "the plan pauses trading while a request is pending (2 "
+  "of $200); every profitable day under 50% of net profit since the last approved payout; at most $1,500, $1,500, $2,000, "
+  "$2,500, $2,500 and $3,000 for the first six requests; at most 6 payouts; 100% split; a pending request denied if the "
+  "balance falls below the threshold", "the plan pauses trading while a request is pending (2 "
   "working days), so no denial can occur; today's profit counted in the 50% rule", "plan",
   U + "eod-trailing-drawdown-accounts/eod-payouts/", basis="secondary")
 r("Apex", "news", "directional news trading allowed", "no news block", "modelled", U, basis="secondary")
@@ -288,7 +298,7 @@ r("Blue Guardian", "prohibited practices", "margin use above 80% counts as gambl
 r("Topstep", "targets and limits", "$3,000 target; $2,000 maximum loss trailing the end-of-day balance and locking at the starting balance; after the first payout the maximum loss level is the starting balance; positions closed by the daily close",
   "as stated; flat at 20:00 UTC", "modelled", "https://help.topstep.com/", read=V9b)
 r("Topstep", "consistency (Combine)", "best day at most 55% of the profit target (version 9 reading)", "not reached: no day above 40% of the target (the engine also caps a day at 50% of the target, stricter than the published 55%)", "not binding", "https://help.topstep.com/", read=V9b)
-r("Apex", "targets and limits", "$3,000 target; $2,000 maximum loss trailing the end-of-day balance; $1,000 daily loss limit; flat by 4:59 pm ET every session",
+r("Apex", "targets and limits", "$3,000 target; $2,000 maximum loss trailing the end-of-day balance, which stops trailing at the starting balance plus $100 once funded; $1,000 daily loss limit; flat by 4:59 pm ET every session",
   "as stated; flat at 20:00 UTC", "modelled", "https://apextraderfunding.com/help-center/", basis="secondary", read=V9b)
 
 # ---------------------------------------------------------------- per-person limits and copying rules (version 10: added to the
@@ -331,6 +341,51 @@ r("Topstep", "allocation", "5 Express Funded Accounts at once", "five 50K (the o
   "https://help.topstep.com/", read=V9)
 r("Apex", "allocation", "20 funded accounts", "twenty 50K (the optional futures layer)", "modelled",
   "https://apextraderfunding.com/help-center/", basis="secondary", read=V9)
+
+# ---------------------------------------------------------------- fees, refunds and splits (version 10: added to the inventory; version
+# 9 printed them from its programme sheets, read 4-5 October 2026, and they are not re-read here unless marked)
+FS = "fee, refund and split"
+r("FTMO", FS, "EUR 540 for 100K ($607.82 at 1.1256), EUR 1,080 for 200K ($1,215.65); fee refunded with the first reward; 80% split "
+  "(90% after scaling)", "as stated (scaling not modelled)", "modelled", "https://ftmo.oanda.com/", read=V9)
+r("FundingPips", FS, "$499 for 100K (the largest Flex size); no registration-fee refund on Flex; 80% or 95%, chosen at purchase",
+  "as stated", "modelled", "https://help.fundingpips.com/", read=V9)
+r("The5ers", FS, "New (10% / 5%) $491 for 100K, Classic (8% / 5%) $545; smaller New sizes $19 to $278; 80% split, rising with "
+  "scaling", "as stated; the plan never reaches the first scaling milestone, so the split stays 80%", "modelled",
+  "https://the5ers.com/high-stakes/", read=V9)
+r("FXIFY", FS, "$549 for 100K (the largest Classic size); no refund on Classic; 80% every 14 days or 100% every 30 days, chosen "
+  "at purchase", "as stated", "modelled", "https://fxify.com/", read=V9)
+r("FundedNext", FS, "$549.99 for 100K, $1,049.99 for 200K (from August 2026); refunded with the first reward; 80%", "as stated",
+  "modelled", "https://help.fundednext.com/", read=V9)
+r("Fintokei", FS, "$549 for 100K, $1,249 for 200K, $2,599 for 400K; returned with the first payout as a sign-up bonus; 80%",
+  "as stated", "modelled", "https://support.fintokei.com/", read=V9)
+r("Hola Prime", FS, "$409 to $599 for 100K, by payout option; returned 25% with each of the first four payouts; bi-weekly 80%",
+  "$599, the upper end", "cautious", "https://holaprime.com/", read=V9)
+r("Alpha Capital", FS, "$497 for 100K, $997 for 200K; refund policy reported inconsistently; 80%", "no refund (the cautious "
+  "reading)", "cautious", "https://alphacapitalgroup.uk/", read=V9)
+r("FunderPro", FS, "$539 for 100K at list price (often 20% off), $989 for 200K; refunded with the first reward; 80%",
+  "the list price; refund with the first payout", "modelled", "https://funderpro.com/", read=V9)
+r("GFT", FS, "$524 for 100K, $974 for 200K (version 9 reading); the fee is called 'refundable' on GFT's how-it-works page, but "
+  "neither its 2-Step Standard page (updated 5 October 2026) nor its rewards page (9 October 2026) says when, and third-party "
+  "descriptions conflict (the first, third or fourth payout, or after passing); 80% split", "no fee refund (the cautious "
+  "reading; version 9 refunded the fee with the first payout)", "cautious", "https://help.goatfundedtrader.com/2-step-standard.html",
+  read="12 Oct 2026")
+r("BrightFunded", FS, "EUR 497 for 100K ($559.42 at 1.1256), EUR 997 for 200K ($1,122.22); refund only with a paid add-on; 80%",
+  "no refund (the add-on is not bought)", "modelled", "https://help.brightfunded.com/", read=V9)
+r("Blue Guardian", FS, "$579 for 100K at list price (often half price with a code), $1,162 for 200K; refunded after the fourth "
+  "payout; 85%", "the list price; refund with the fourth payout", "modelled", "https://help.blueguardian.com/", read=V9)
+r("Maven", FS, "$440 for 100K (the largest 2-Step size); refunded with the third payout; 80%", "as stated", "modelled",
+  "https://maventrading.com/faqs", read=V9)
+r("Topstep", FS, "$49 a month (Standard path); a reset after a breach $49; $149 activation per Express Funded Account; 90%",
+  "as stated", "modelled", "https://help.topstep.com/", read=V9)
+r("Apex", FS, "$550 at list price; public codes of 80-90% off for most of 2026 (about $55); $99 activation when passed; 100% split",
+  "$55 and $99 (a discount code assumed; at the list price the futures layer is worth less)", "assumption",
+  "https://apextraderfunding.com/", basis="secondary", read=V9)
+r("every firm", "minimum payouts", "FTMO $20 (bank transfer); FundingPips 1% of the account; FXIFY $50; Fintokei 100 in the "
+  "account's currency; GFT $100; FunderPro $100 of profit; Blue Guardian $100; Alpha Capital $100 of profit (version 8 reading; "
+  "not stated on the page read on 11 October); The5ers $150 after the split; Topstep $125; Apex $500; FundedNext, Hola Prime, "
+  "BrightFunded and Maven state none on the pages read", "each applied to the trader's share after the split, the stricter "
+  "reading where a page does not say (and stricter than a minimum stated as profit), and as profit before the split; none "
+  "where none is stated (version 10: version 9 had no FTMO minimum)", "cautious", "the firms' payout pages (rows above)")
 
 # ---------------------------------------------------------------- every firm
 r("every firm", "conflicting positions", "no hedging across accounts or firms", "one direction per market group across all "

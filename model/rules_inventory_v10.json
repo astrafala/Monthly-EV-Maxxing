@@ -36,7 +36,7 @@
    "firm": "FTMO",
    "area": "payouts",
    "rule": "First reward on the 14th day after the first trade or later, then bi-weekly; all positions and pending orders closed; review within 1-2 business days, sent 1-2 business days after the invoice is approved; minimum $20 closed profit (wire); 80% split; fee refunded with the first reward",
-   "model": "request at least 14 days after the first funded trade, flat; pending 2 working days (a breach before then cancels it: the page does not say trading continues safely), cash 2 working days later",
+   "model": "request at least 14 days after the first funded trade, flat; pending 2 working days (a breach before then cancels it: the page does not say trading continues safely), cash 2 working days later; the $20 minimum applied to the trader's share (version 10: version 9 had no minimum)",
    "status": "cautious",
    "source": "https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/",
    "basis": "page",
@@ -445,8 +445,8 @@
   {
    "firm": "Alpha Capital",
    "area": "payouts",
-   "rule": "bi-weekly: first request 14 days after the first funded trade, 5 trading days; all trades closed before a request; paid within 2 business days; the account locked until the balance is reset",
-   "model": "locked 2 working days",
+   "rule": "bi-weekly: first request 14 days after the first funded trade, 5 trading days; all trades closed before a request; paid within 2 business days; the account locked until the balance is reset; at least $100 of profit (version 8 reading; not stated on the page read on 11 October)",
+   "model": "locked 2 working days; $100 applied to the trader's share",
    "status": "modelled",
    "source": "https://help.alphacapitalgroup.uk/en/articles/6933755-how-do-i-get-paid-performance-fees",
    "basis": "page",
@@ -505,12 +505,22 @@
   {
    "firm": "GFT",
    "area": "payouts",
-   "rule": "80% every 14 days, 4 profitable days per cycle; first two payouts at most min(6%, $10,000); $3,000 profit a day at most; minimum $100; processed within 2 business days",
-   "model": "pending 2 working days; capped amount paid, the rest kept",
+   "rule": "80% every 14 days, 4 profitable days (+0.5% of the initial balance) per cycle; first two payouts at most min(6%, $10,000) of the initial balance; $3,000 profit a day at most (the excess deducted); minimum withdrawal $100; processed within 2 business days; no open trades or pending orders; 'All rewards are subject to a 3% processing fee', calculated on the reward after the split",
+   "model": "pending 2 working days; capped amount paid, the rest kept; the trader receives 97% of the 80% (77.6% of the profit withdrawn); the $100 applied to that amount (version 10: version 9 had no processing fee)",
    "status": "modelled",
-   "source": "https://help.goatfundedtrader.com/en/articles/10742261-how-long-does-it-take-to-receive-my-reward",
-   "basis": "snippet",
-   "read": "11 Oct 2026"
+   "source": "https://help.goatfundedtrader.com/rewards.html",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "GFT",
+   "area": "best and worst trade",
+   "rule": "accounts bought from 9 October 2026: 'your most profitable trade must have made more profit than your worst trade lost' for a reward",
+   "model": "a request needs the best win to exceed the worst loss both since the last payout and over the account's life (it holds under either reading); otherwise the account trades on",
+   "status": "cautious",
+   "source": "https://help.goatfundedtrader.com/rewards.html",
+   "basis": "page",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "GFT",
@@ -785,7 +795,7 @@
   {
    "firm": "Apex",
    "area": "payouts",
-   "rule": "minimum balance $52,600 to request (safety net $52,100 + $500); 5 qualifying days ($250, conflicting reports of $200); every profitable day under 50% of net profit since the last approved payout; caps per request; at most 6 payouts; a pending request denied if the balance falls below the threshold",
+   "rule": "minimum balance $52,600 to request (safety net $52,100 + $500); 5 qualifying days ($250, conflicting reports of $200); every profitable day under 50% of net profit since the last approved payout; at most $1,500, $1,500, $2,000, $2,500, $2,500 and $3,000 for the first six requests; at most 6 payouts; 100% split; a pending request denied if the balance falls below the threshold",
    "model": "the plan pauses trading while a request is pending (2 working days), so no denial can occur; today's profit counted in the 50% rule",
    "status": "plan",
    "source": "https://apextraderfunding.com/help-center/eod-trailing-drawdown-accounts/eod-payouts/",
@@ -925,7 +935,7 @@
   {
    "firm": "Apex",
    "area": "targets and limits",
-   "rule": "$3,000 target; $2,000 maximum loss trailing the end-of-day balance; $1,000 daily loss limit; flat by 4:59 pm ET every session",
+   "rule": "$3,000 target; $2,000 maximum loss trailing the end-of-day balance, which stops trailing at the starting balance plus $100 once funded; $1,000 daily loss limit; flat by 4:59 pm ET every session",
    "model": "as stated; flat at 20:00 UTC",
    "status": "modelled",
    "source": "https://apextraderfunding.com/help-center/",
@@ -1133,6 +1143,166 @@
    "read": "4 Oct 2026 (version 9 reading)"
   },
   {
+   "firm": "FTMO",
+   "area": "fee, refund and split",
+   "rule": "EUR 540 for 100K ($607.82 at 1.1256), EUR 1,080 for 200K ($1,215.65); fee refunded with the first reward; 80% split (90% after scaling)",
+   "model": "as stated (scaling not modelled)",
+   "status": "modelled",
+   "source": "https://ftmo.oanda.com/",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "FundingPips",
+   "area": "fee, refund and split",
+   "rule": "$499 for 100K (the largest Flex size); no registration-fee refund on Flex; 80% or 95%, chosen at purchase",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://help.fundingpips.com/",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "The5ers",
+   "area": "fee, refund and split",
+   "rule": "New (10% / 5%) $491 for 100K, Classic (8% / 5%) $545; smaller New sizes $19 to $278; 80% split, rising with scaling",
+   "model": "as stated; the plan never reaches the first scaling milestone, so the split stays 80%",
+   "status": "modelled",
+   "source": "https://the5ers.com/high-stakes/",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "FXIFY",
+   "area": "fee, refund and split",
+   "rule": "$549 for 100K (the largest Classic size); no refund on Classic; 80% every 14 days or 100% every 30 days, chosen at purchase",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://fxify.com/",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "FundedNext",
+   "area": "fee, refund and split",
+   "rule": "$549.99 for 100K, $1,049.99 for 200K (from August 2026); refunded with the first reward; 80%",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://help.fundednext.com/",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "Fintokei",
+   "area": "fee, refund and split",
+   "rule": "$549 for 100K, $1,249 for 200K, $2,599 for 400K; returned with the first payout as a sign-up bonus; 80%",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://support.fintokei.com/",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "Hola Prime",
+   "area": "fee, refund and split",
+   "rule": "$409 to $599 for 100K, by payout option; returned 25% with each of the first four payouts; bi-weekly 80%",
+   "model": "$599, the upper end",
+   "status": "cautious",
+   "source": "https://holaprime.com/",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "Alpha Capital",
+   "area": "fee, refund and split",
+   "rule": "$497 for 100K, $997 for 200K; refund policy reported inconsistently; 80%",
+   "model": "no refund (the cautious reading)",
+   "status": "cautious",
+   "source": "https://alphacapitalgroup.uk/",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "FunderPro",
+   "area": "fee, refund and split",
+   "rule": "$539 for 100K at list price (often 20% off), $989 for 200K; refunded with the first reward; 80%",
+   "model": "the list price; refund with the first payout",
+   "status": "modelled",
+   "source": "https://funderpro.com/",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "GFT",
+   "area": "fee, refund and split",
+   "rule": "$524 for 100K, $974 for 200K (version 9 reading); the fee is called 'refundable' on GFT's how-it-works page, but neither its 2-Step Standard page (updated 5 October 2026) nor its rewards page (9 October 2026) says when, and third-party descriptions conflict (the first, third or fourth payout, or after passing); 80% split",
+   "model": "no fee refund (the cautious reading; version 9 refunded the fee with the first payout)",
+   "status": "cautious",
+   "source": "https://help.goatfundedtrader.com/2-step-standard.html",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "BrightFunded",
+   "area": "fee, refund and split",
+   "rule": "EUR 497 for 100K ($559.42 at 1.1256), EUR 997 for 200K ($1,122.22); refund only with a paid add-on; 80%",
+   "model": "no refund (the add-on is not bought)",
+   "status": "modelled",
+   "source": "https://help.brightfunded.com/",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "Blue Guardian",
+   "area": "fee, refund and split",
+   "rule": "$579 for 100K at list price (often half price with a code), $1,162 for 200K; refunded after the fourth payout; 85%",
+   "model": "the list price; refund with the fourth payout",
+   "status": "modelled",
+   "source": "https://help.blueguardian.com/",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "Maven",
+   "area": "fee, refund and split",
+   "rule": "$440 for 100K (the largest 2-Step size); refunded with the third payout; 80%",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://maventrading.com/faqs",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "Topstep",
+   "area": "fee, refund and split",
+   "rule": "$49 a month (Standard path); a reset after a breach $49; $149 activation per Express Funded Account; 90%",
+   "model": "as stated",
+   "status": "modelled",
+   "source": "https://help.topstep.com/",
+   "basis": "page",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "Apex",
+   "area": "fee, refund and split",
+   "rule": "$550 at list price; public codes of 80-90% off for most of 2026 (about $55); $99 activation when passed; 100% split",
+   "model": "$55 and $99 (a discount code assumed; at the list price the futures layer is worth less)",
+   "status": "assumption",
+   "source": "https://apextraderfunding.com/",
+   "basis": "secondary",
+   "read": "4 Oct 2026 (version 9 reading)"
+  },
+  {
+   "firm": "every firm",
+   "area": "minimum payouts",
+   "rule": "FTMO $20 (bank transfer); FundingPips 1% of the account; FXIFY $50; Fintokei 100 in the account's currency; GFT $100; FunderPro $100 of profit; Blue Guardian $100; Alpha Capital $100 of profit (version 8 reading; not stated on the page read on 11 October); The5ers $150 after the split; Topstep $125; Apex $500; FundedNext, Hola Prime, BrightFunded and Maven state none on the pages read",
+   "model": "each applied to the trader's share after the split, the stricter reading where a page does not say (and stricter than a minimum stated as profit), and as profit before the split; none where none is stated (version 10: version 9 had no FTMO minimum)",
+   "status": "cautious",
+   "source": "the firms' payout pages (rows above)",
+   "basis": "page",
+   "read": "11 Oct 2026"
+  },
+  {
    "firm": "every firm",
    "area": "conflicting positions",
    "rule": "no hedging across accounts or firms",
@@ -1164,10 +1334,10 @@
   }
  ],
  "counts": {
-  "modelled": 52,
+  "modelled": 63,
   "plan": 44,
-  "cautious": 6,
-  "assumption": 2,
+  "cautious": 11,
+  "assumption": 3,
   "not binding": 12
  }
 }

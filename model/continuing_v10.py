@@ -100,6 +100,7 @@ def summarise(C, R, FIN, n_slots):
         f = [r for r in FIN if all(r.get(k) == c.get(k) for k in KEYS if k in c)][0]
         out.append(dict(c, rate=float(per_path.mean()), CI=ci_(per_path), per_path=per_path.tolist(),
                         rate_y2_5=float(early.mean()), CI_y2_5=ci_(early), rate_y6_9=float(late.mean()), CI_y6_9=ci_(late),
+                        per_path_y2_5=early.tolist(), per_path_y6_9=late.tolist(),
                         late_minus_early=float(d.mean()), late_minus_early_CI=ci_(d),
                         attempts=int(sum(r[4] for r in rows)), payouts=int(sum(r[5] for r in rows)),
                         stuck=int(sum(r[6] for r in rows)), random_start=f["EV_month"], random_start_CI=f["CI"],

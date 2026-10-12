@@ -31,6 +31,9 @@ treats it). Changes from version 9:
                        18, 19)
   Apex                 the evaluation expires at 6 p.m. New York time on its 30th day (review of version 9, finding 13);
                        the best day of the cycle, today's included, must stay under 50% of the cycle's profit (finding 21)
+  GFT                  (12 October 2026) a 3% processing fee on every reward, after the split; the best trade must have
+                       made more than the worst trade lost (accounts bought from 9 October 2026); no fee refund (the pages
+                       read state none; third-party descriptions conflict)
   minimum payouts      every published minimum is applied to the trader's share after the split (min_net), the stricter
                        reading where a page does not say whether it counts before or after the split; FTMO's $20, in
                        the rules read on 11 October 2026, was missing from version 9 (found by comparing every row of
@@ -102,6 +105,13 @@ def _v10(F, size=None):
             fd["max_lots"] = 40.0 * sz / 100_000
         if firm == "GFT":
             fd["void_min"] = 1.0
+            # GFT's rewards page (updated 9 October 2026): "All rewards are subject to a 3% processing fee", calculated on
+            # the reward after the split: the trader keeps 97% of the 80%; accounts bought from 9 October 2026: "your most
+            # profitable trade must have made more profit than your worst trade lost"; no fee refund is stated on the
+            # pages read on 12 October 2026 (third-party descriptions conflict): none modelled, the cautious reading
+            fd["split"] = round(fd["split"] * 0.97, 10); fd["fee_pct"] = 0.03
+            fd["best_vs_worst"] = True
+            fd["refund"] = 0.0
         if firm == "Topstep":
             fd["min_net"] = 125.0
             fd["session_tz"] = "America/Chicago"      # request after the session's 4 p.m. lock; its session excluded

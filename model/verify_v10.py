@@ -71,7 +71,7 @@ def simplified(F):
     for st in F["phases"]:
         st["news"] = None; st.pop("max_days", None); st.pop("expiry_local", None)
     fd["news"] = None; fd["protected"] = True; fd["req_wait"] = 0.0; fd["lock_processing"] = False; fd["pause_pending"] = False
-    for kk in ("shield", "max_lots", "void_min", "min_profit", "min_net", "cap_includes_refund", "session_tz"): fd.pop(kk, None)
+    for kk in ("shield", "max_lots", "void_min", "min_profit", "min_net", "cap_includes_refund", "session_tz", "best_vs_worst"): fd.pop(kk, None)
     fd["keepalive_days"] = 0
     fd["no_best_check"] = True       # the chain caps each trade, not each day, and has no request-time best-day test
     return F

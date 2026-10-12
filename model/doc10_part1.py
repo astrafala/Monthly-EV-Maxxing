@@ -523,6 +523,8 @@ def v10_fills():
     def st(rows, k): return sum(r["st"].get(k, 0.0) for r in rows)
     gft = [r for r in ch if r["prog"].startswith("GFT")]
     out["GFT_VOID"] = (f"{st(gft, 'voided'):,.0f} of the {st(gft, 'n'):,.0f} trades of GFT's final run" if gft else "&ndash;")
+    out["GFT_BW"] = (f"in GFT's final run the check made a request wait {st(gft, 'rule_bw_wait'):,.0f} times, over about "
+                     f"{sum(r['npay'] * r['P'] * r['n'] for r in gft):,.0f} requests" if gft else "&ndash;")
     att = sum(r["n"] for r in ch)
     out["ABANDONED"] = f"{st(ch, 'rule_abandoned'):,.0f} of the {att:,} attempts of every chosen setting's final run"
     reqs = sum(r["npay"] * r["P"] * r["n"] for r in ch) + st(ch, "rule_payout_cancelled")
