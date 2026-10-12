@@ -36,7 +36,7 @@ def job(a):
     rng = random.Random(RULES[rule] + i); s0 = PF.A.STUCK[0]
     R = [PF.attempt(F, c["instr"], CV.PATHS[i], c["m"], c["L"], c["k"], c["X1"], c["X"], rng, dir_rule=rule) for _ in range(N)]
     cbar = float(np.mean([r.get("credit", 0.0) for r in R]))
-    v = [r["v"] - (F.get("refund_frac", 1.0) * cbar * (r["npay"] >= 1) if F.get("credit_frac") and F["funded"].get("refund") else 0.0)
+    v = [r["v"] - ((1.0 - F["funded"].get("fee_pct", 0.0)) * F.get("refund_frac", 1.0) * cbar * (r["npay"] >= 1) if F.get("credit_frac") and F["funded"].get("refund") else 0.0)
          for r in R]                                          # The5ers: the refund the credit costs (optimize_v10)
     return float(sum(v)), float(sum(r["days"] for r in R)), int(PF.A.STUCK[0] - s0)
 

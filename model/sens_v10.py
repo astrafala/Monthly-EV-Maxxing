@@ -71,7 +71,8 @@ def run(a):
     if F.get("credit_frac") and F["funded"].get("refund"):      # The5ers: the refund the credit costs (optimize_v10.run)
         for i in range(len(PATHS)):
             blk = R[i * n:(i + 1) * n]; cbar = float(np.mean([r.get("credit", 0.0) for r in blk]))
-            v[i * n:(i + 1) * n] -= F.get("refund_frac", 1.0) * cbar * np.array([r["npay"] >= 1 for r in blk], dtype=float)
+            v[i * n:(i + 1) * n] -= ((1.0 - F["funded"].get("fee_pct", 0.0)) * F.get("refund_frac", 1.0) * cbar
+                                     * np.array([r["npay"] >= 1 for r in blk], dtype=float))
     ratio = v.sum() / d.sum()
     Vc = np.array([v[i * n:(i + 1) * n].sum() for i in range(len(PATHS))]); Dc = np.array([d[i * n:(i + 1) * n].sum() for i in range(len(PATHS))])
     ci_cl = O.tq(len(PATHS) - 1) * math.sqrt(len(PATHS) / (len(PATHS) - 1) * np.sum((Vc - ratio * Dc) ** 2)) / d.sum() * 30.44

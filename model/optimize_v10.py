@@ -18,8 +18,9 @@ The5ers (version 10): the value of an attempt counts the hub credit it earns at 
 evaluation) and subtracts the refund that credit costs: a fee paid with credit is not refunded, so in a slot that always
 spends its credit, an account's refund is 70% of (fee - credit used). In a random-start attempt the credit used is that of
 the previous attempt, independent of this one, so the expected value per attempt is
-    E[paid] - fee + E[credit] - 0.7 E[credit] P(first payout)
-and the ratio estimator subtracts 0.7 x (mean credit) x (first payout) from every attempt.
+    E[paid] - fee + E[credit] - (1 - 0.035) 0.7 E[credit] P(first payout)
+(the refund is paid less The5ers' 3.5% commission on every cash withdrawal), and the ratio estimator subtracts
+(1 - 0.035) x 0.7 x (mean credit) x (first payout) from every attempt.
 
 Stages (each on paths no earlier stage of this version, and no stage of version 9, used):
   grid    every setting, 2,000 attempts (4 paths x 500)              paths 1101-1104
@@ -129,9 +130,11 @@ def run(c, data, seed, n, cost_mult=1.0):
     v = [r["v"] for r in R]
     if F.get("credit_frac") and F["funded"].get("refund"):
         # The5ers: the credit an attempt earns pays part of the next fee, whose refund is then smaller by refund_frac x the
-        # credit used: subtract refund_frac x (mean credit per attempt) from every attempt that reached its first payout
+        # credit used, and the refund is paid less the firm's commission: subtract (1 - fee_pct) x refund_frac x (mean
+        # credit per attempt) from every attempt that reached its first payout
         cbar = float(np.mean([r.get("credit", 0.0) for r in R]))
-        v = [vi - F.get("refund_frac", 1.0) * cbar * (r["npay"] >= 1) for vi, r in zip(v, R)]
+        gf = 1.0 - F["funded"].get("fee_pct", 0.0)
+        v = [vi - gf * F.get("refund_frac", 1.0) * cbar * (r["npay"] >= 1) for vi, r in zip(v, R)]
     return dict(v=v, d=[r["days"] for r in R], funded=sum(r["passed"] == npass for r in R),
                 passed1=sum(r["passed"] >= 1 for r in R),
                 paid=sum(r["paid"] for r in R if r["passed"] == npass), t1=[r["t1"] for r in R if r["t1"] is not None],

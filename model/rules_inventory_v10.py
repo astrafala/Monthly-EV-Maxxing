@@ -395,8 +395,8 @@ r("Apex", FS, "$550 at list price; public codes of 80-90% off for most of 2026 (
   "https://apextraderfunding.com/", basis="secondary", read=V9)
 r("every firm", "minimum payouts", "FTMO $20 (bank transfer); FundingPips 1% of the account; FXIFY $50; Fintokei 100 in the "
   "account's currency; GFT $100; FunderPro $100 of profit; Blue Guardian $100; Alpha Capital $100 of profit (version 8 reading; "
-  "not stated on the page read on 11 October); The5ers $150 after the split; Topstep $125; Apex $500; FundedNext, Hola Prime, "
-  "BrightFunded and Maven state none on the pages read", "each applied to the trader's share after the split, the stricter "
+  "not stated on the page read on 11 October); The5ers $150 after the split; Topstep $125; Apex $500; FundedNext $20 ('a reward "
+  "under $20 cannot be requested', 29 September 2026); Hola Prime, BrightFunded and Maven state none on the pages read", "each applied to the trader's share after the split, the stricter "
   "reading where a page does not say (and stricter than a minimum stated as profit), and as profit before the split; none "
   "where none is stated (version 10: version 9 had no FTMO minimum)", "cautious", "the firms' payout pages (rows above)")
 
