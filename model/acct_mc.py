@@ -195,7 +195,7 @@ def _win(tr, l, plan_cap, rule_cap, bs, fresh=False, lc=0.0, lv=None):
     return w, l
 
 RULE_HITS = {"alpha_phase": 0, "alpha_funded": 0, "short_breach": 0,       # rule consequences applied (counts)
-             "payout_cancelled": 0, "shield_first": 0, "shield_second": 0, "abandoned": 0, "rr_wait": 0, "bw_wait": 0,
+             "payout_cancelled": 0, "shield_first": 0, "shield_second": 0, "abandoned": 0, "left_at_floor": 0, "rr_wait": 0, "bw_wait": 0,
              "rr_raised": 0, "rr_lowered": 0, "lots_capped": 0, "min_net_wait": 0, "cap_held": 0, "excluded_day": 0,
              "expired": 0, "voided": 0, "keepalive": 0}
 
@@ -376,6 +376,8 @@ def run_stage(st, tr, rng, firm, clock, eval_phase=True, fund=None):
             l = w = 0.0; opts = dict(kind="filler", breach=brk)
         else:
             l, terminal = _risk(tr, x, floor, room_day, lmin, lm, bs, rho, max_rule)
+            if terminal and firm.get("no_terminal"):   # GFT, Alpha Capital: no trade that can end the account in one go
+                RULE_HITS["left_at_floor"] += 1; return False, clock     # left as it is; the slot buys its next attempt
             lev = firm.get("lev")                      # margin = (l / s) / leverage <= 60% of the current balance
             if l is not None and lev:
                 l = min(l, lev[2] * lev[0] * tr.s * (firm["size"] + x))
@@ -661,6 +663,8 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
             if fd.get("q_days") and day_pnl_c >= fd["q_min"]:
                 clock = (day + 1) * DAY + 0.01; continue
             l, terminal = _risk(tr, x, floor, room_day, lmin, lm, bs, rho, firm.get("max_risk_rule"))
+            if terminal and firm.get("no_terminal"):   # GFT, Alpha Capital: the account is left as it is (no trade that
+                RULE_HITS["left_at_floor"] += 1; return _end(None)       # can end it in one go)
             lev = firm.get("lev")                      # margin cap at the current balance (and FunderPro's 20% of the start)
             if l is not None and lev:
                 l = min(l, lev[1] * tr.s * min(lev[2] * (firm["size"] + x), lev[3] * firm["size"]))

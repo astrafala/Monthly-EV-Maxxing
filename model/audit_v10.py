@@ -16,7 +16,8 @@ wider than its column: review of version 9, finding 14).
               rules, the day's loss inside the firm's allowance, the day's profit inside the caps, FXIFY's best day,
               GFT's day cap, Maven's ceiling and 30-day window (by close date), the 10-minute gap from the exit time, the
               take-profit distance, the margin cap at every entry, Maven's 1:1.5, whole volume steps, no balance below a
-              static floor, filler trades of 3 minutes, Blue Guardian's 3-minute hold, BrightFunded's counted days
+              static floor, filler trades of 3 minutes, Blue Guardian's 3-minute hold, BrightFunded's counted days, no
+              filler at Fintokei, Alpha Capital, FunderPro or Hola Prime, no last trade to the floor at GFT or Alpha Capital
   continuing  every final row has a continuing-slot row, with no stall
   continuing_check  every chosen setting run as random starts on the continuing paths with both direction rules, no stall
   budget      the cash dated by the ledger of every finite-budget life never below zero
@@ -190,6 +191,10 @@ def replay(r, n=int(os.environ.get("AUDIT_N", 150)), data="synth901y4", seed=17)
                 worst["volume_below_smallest"] = max(worst["volume_below_smallest"], sp["vmin"] - vol)
                 if not st.get("eod"):                                         # static floor: never below it
                     worst["balance_below_static_floor"] = max(worst["balance_below_static_floor"], -(xb + pnl) - st["dd"])
+                if F.get("no_fillers"):                    # Fintokei, Alpha Capital, FunderPro, Hola Prime: no minimal trades
+                    worst["filler_where_objected"] = max(worst["filler_where_objected"], 1.0 if t["kind"] == "filler" else 0.0)
+                if F.get("no_terminal"):                   # GFT, Alpha Capital: no trade placed to end at the floor
+                    worst["terminal_where_all_or_nothing"] = max(worst["terminal_where_all_or_nothing"], 1.0 if t["terminal"] else 0.0)
                 if t["kind"] == "filler":
                     if not t["breach"]: worst["filler_not_3_minutes"] = max(worst["filler_not_3_minutes"], abs(t["dur"] - 3.0))
                     continue
@@ -244,7 +249,8 @@ LIM = {"loss_share_of_account": 0.02 - 1e-9, "day_loss_over_allowance": 0.0, "da
        "balance_below_static_floor": 1e-6, "filler_not_3_minutes": 1e-9, "blue_guardian_under_3_minutes": 1e-9,
        "brightfunded_days_short": 0, "lots_over_limit": 1e-9, "short_win_counted": 1e-9, "open_in_news_window": 0.0,
        "request_within_15min": 1e-6, "trade_while_locked": 0.0, "payout_below_minimum": 1e-6, "the5ers_over_cap": 1e-6,
-       "profit_below_gate": 1e-6, "cancellation_mismatch": 0.0, "days_without_trade": 29.0}
+       "profit_below_gate": 1e-6, "cancellation_mismatch": 0.0, "days_without_trade": 29.0, "filler_where_objected": 0.0,
+       "terminal_where_all_or_nothing": 0.0}
 viol = []; tot_tr = 0; W = {}
 futs = {(r["prog"], r["instr"]): r for r in FIN if r["tag"] == "chosen" and r.get("kind") == "fut"}
 for (p, i), r in sorted(chosen.items()) + sorted(futs.items()):

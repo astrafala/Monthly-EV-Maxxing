@@ -35,6 +35,8 @@ witnesses feed exact outcomes to the unchanged rule functions.
                 direction covers the two currency pairs together; version 9 gave each pair its own direction)
   gft_rules     GFT's rewards page (9 October 2026): every request's best trade larger than its worst loss, over the cycle
                 and over the account; every payout 97% of the 80% split (the 3% processing fee) and no fee refund
+  no_terminal_no_filler  (12 October 2026) no last trade to the floor at GFT and Alpha Capital, no filler at Fintokei,
+                Alpha Capital, FunderPro and Hola Prime; FTMO, which has both, as the control
   payout_fees   the pages read on 12 October 2026: each payout's cash is the firm's fee applied to the split share plus
                 the refund due with that request (GFT 3%; Hola Prime 2.5%, at least $5, the fee refunded with the 4th
                 payout; Maven $20 a payout, the fee refunded with the 3rd); no refund at Fintokei, GFT or Alpha Capital
@@ -495,6 +497,7 @@ def run(check, cfg, spy_attempts, Spy, ctl_market, Planned):
           f"{A.RULE_HITS.get('min_net_wait', 0) - w0} requests deferred because the share was under the minimum; smallest profit "
           f"before the split less the firm's profit minimum {({f: round(v, 2) for f, v in low_prof.items()})}")
     payout_fees(check, cfg, Spy)
+    no_terminal_no_filler(check, cfg, Spy, spy_attempts)
 
     # ---------------------------------------------------------------- one dollar direction across EURUSD and USDJPY
     def sl_(prog, instr, n, m, k, x, lf=0.015):
@@ -570,3 +573,27 @@ def payout_fees(check, cfg, Spy):
           f"{nchk} payouts at five firms (250 funded accounts each, synth908y4) whose cash equals the fee applied to the split "
           f"share plus the refund due with that request ({bad} mismatches {dict(mism)}); refunds paid with the 4th payout at "
           f"Hola Prime {nref['Hola Prime']}, with the 3rd at Maven {nref['Maven']}")
+
+def no_terminal_no_filler(check, cfg, Spy, spy_attempts):
+    """the readings of 12 October 2026: GFT ('All-Or-Nothing Trading, where you can lose the account in one trade') and Alpha
+    Capital ('all or nothing' strategies) get no last trade to the floor, the account being left as it is; Fintokei and
+    Alpha Capital (minimal trades), FunderPro (abrupt lot-size changes) and Hola Prime (unexplained deviations in position
+    size) get no filler trades. FTMO, which has both, is the control that shows the counts can be non-zero."""
+    out = {}
+    for prog, firm, instr in (("GFT 2-Step Standard", "GFT", "US100"), ("Alpha Capital Pro 10%", "Alpha Capital", "US100"),
+                              ("FunderPro Classic", "FunderPro", "US100"), ("Hola Prime 2-Step Prime (bi-weekly 80%)", "Hola Prime", "EURUSD"),
+                              ("Fintokei ProTrader", "Fintokei", "US100"), ("FTMO 2-Step", "FTMO", "US100")):
+        c = cfg(prog, firm, instr, 1.0, 2, 0.06)
+        h0 = A.RULE_HITS["left_at_floor"]
+        recs = spy_attempts(c, 300, data="synth909y4", seed=13)
+        R = funded_replay(c, 200, "synth909y4", 17, Spy)
+        logs = [t for r in recs for t in r["log"]] + [t for r in R for t in r["log"]]
+        out[firm] = dict(terminal=sum(1 for t in logs if (t.get("opts") or {}).get("terminal")),
+                         fillers=sum(1 for t in logs if t.get("kind") == "filler"), left=A.RULE_HITS["left_at_floor"] - h0,
+                         trades=len(logs))
+    ok = (all(out[f]["terminal"] == 0 and out[f]["left"] > 0 for f in ("GFT", "Alpha Capital"))
+          and all(out[f]["fillers"] == 0 for f in ("Fintokei", "Alpha Capital", "FunderPro", "Hola Prime"))
+          and out["FTMO"]["terminal"] > 0 and out["FTMO"]["fillers"] > 0 and out["FTMO"]["left"] == 0)
+    check("no_terminal_no_filler", ok, "300 attempts and 200 funded accounts per firm (synth909y4): " +
+          "; ".join(f"{f}: {v['trades']} trades, {v['terminal']} last trades to the floor, {v['left']} accounts left near it, "
+                    f"{v['fillers']} fillers" for f, v in out.items()))

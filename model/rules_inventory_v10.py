@@ -21,6 +21,9 @@ R = []
 def r(firm, area, rule, model, status, source, basis="page", read="11 Oct 2026"):
     R.append(dict(firm=firm, area=area, rule=rule, model=model, status=status, source=source, basis=basis, read=read))
 
+# the plan's own policies against the firms' undefined or judgement-based prohibitions (gambling, overexposure and the like)
+PLANB = "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled"
+
 # ---------------------------------------------------------------- FTMO 2-Step (FTMO Account, Standard)
 U = "https://ftmo.com/en/"
 r("FTMO", "targets and limits", "Phase 1 10%, phase 2 5%; maximum daily loss 5% and maximum loss 10% of the initial balance; "
@@ -286,6 +289,13 @@ r("Maven", "consistency above $5,000", "'If your total profit exceeds $5,000, yo
   "trades, one 'day' under that definition, usually would; the model does not apply that)", "plan", U, read="12 Oct 2026")
 r("Maven", "gambling", "large bets at a reward:risk of 1:1.25 or lower", "every position's take-profit at least 1.5 times as far "
   "as its stop, checked on the position actually placed", "plan", U)
+r("Maven", "prohibited practices", "copying another individual's trades (both breached); grid and gap trading; reverse or group hedging "
+  "(an account betting against another, at Maven or another firm); trading only hedges; EAs on every platform; 'all in' (no stop, "
+  "or risk above the drawdown limit: 4% on the 2-Step), funded stage included; excessive scalping (50% or more of trades held "
+  "under a minute); 'account mirroring' (listed among the standard rules); trades of vastly smaller lots do not count as trades",
+  PLANB + "; trades entered by hand, no EA; one Maven account, never opposite another account; a stop on every position at 1.75% "
+  "of the account; no Maven trade in the engine closes within a minute (the shortest last 2-3 minutes at the tightest stop: "
+  "200 funded accounts, 10,403 trades)", "plan", U, read="12 Oct 2026")
 r("Maven", "news", "no opening or closing 2 minutes either side of a red-folder release, take-profits included; evaluations and "
   "funded", "flat around releases at every stage", "plan", U)
 r("Maven", "risk interview", "above $5,000 of payouts a risk interview; risking more than the amount stated in its email breaches",
@@ -318,7 +328,6 @@ r("Apex", "news", "directional news trading allowed", "no news block", "modelled
 # ---------------------------------------------------------------- rules stated in version 9's programme chapters that no list
 # contained (version 10 self-audit), and each firm's behavioural rules (applied at the firm's discretion: Chapter 31.2)
 V9b = "4 Oct 2026 (version 9 reading)"
-PLANB = "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled"
 r("FTMO", "prohibited practices", "overleveraging, overexposure, one-sided bets and account rolling (none defined on the page); simulated trades for manipulative purposes, including opposite positions across connected accounts or accounts with other providers; gap trading; exploiting platform errors", PLANB, "plan",
   "https://ftmo.oanda.com/forbidden-trading-practices/", read="12 Oct 2026")
 r("FundingPips", "profit concentration", "evaluations bought from 27 June 2026, $25K and up: if one trade idea makes more than 60% of a phase target, the funded account needs 4 profitable days (+0.5%) before every reward request, permanently",

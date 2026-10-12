@@ -24,18 +24,18 @@ FIRMS = ["FTMO", "FundingPips", "The5ers", "FXIFY", "FundedNext", "Fintokei", "H
          "BrightFunded", "Blue Guardian", "Maven", "Topstep", "Apex"]
 CAPS = {
     "FTMO": ("no limit on Challenge and Verification accounts; $400,000 per trader or strategy in active FTMO Rewards Accounts (the plan keeps four slots of one account each: Appendix B)", "your own accounts, within the cap"),
-    "FundingPips": ("$400,000 across evaluation, funded and Prime accounts", "your own FundingPips accounts; no copier services"),
-    "The5ers": ("one 50K or 100K account across Classic and New together; New also 3 &times; 2.5K, 3 &times; 5K, 3 &times; 10K and 1 &times; 25K (Classic's own small slots not used: fees not readable)", "your own accounts"),
-    "FXIFY": ("one active account of each size, challenge and funded alike", "between your own FXIFY accounts"),
+    "FundingPips": ("$400,000 across evaluation, funded and Prime accounts", "between your own FundingPips accounts; no copier services (the plan enters each account itself)"),
+    "The5ers": ("one 50K or 100K account across Classic and New together; New also 3 &times; 2.5K, 3 &times; 5K, 3 &times; 10K and 1 &times; 25K (Classic's own small slots not used: fees not readable)", "copy trading 'with other traders or accounts' prohibited; your own accounts allowed by the FAQ's descriptions (confirmed in writing before trading: Part IV)"),
+    "FXIFY": ("one active account of each size, challenge and funded alike", "allowed with FXIFY's prior approval (asked before trading: Part IV); third-party copying prohibited"),
     "FundedNext": ("$300,000 funded; evaluations unlimited", "between your own challenge accounts, never into a funded account"),
-    "Fintokei": ("&euro;500,000 of accounts", "your own trades across your own accounts"),
-    "Hola Prime": ("$500,000", "only between your own Hola Prime accounts (funded: one master and one copier); never from other firms"),
+    "Fintokei": ("400,000 EUR/USD of funded ProTrader accounts (evaluations not counted)", "your own trades, from other firms and brokers too"),
+    "Hola Prime": ("two 100K funded accounts (or four 50K, or one 200K)", "only between your own Hola Prime accounts (funded: one master and one copier); never from other firms"),
     "Alpha Capital": ("$400,000 per household, $300,000 per strategy", "from your own external accounts with proof"),
-    "FunderPro": ("$200,000", "no replicating trades across FunderPro accounts"),
-    "GFT": ("$400,000 funded", "no duplicated trades or trade ideas between GFT accounts"),
+    "FunderPro": ("$200,000", "between your own accounts"),
+    "GFT": ("$400,000 funded", "between your own accounts, evaluation and funded"),
     "BrightFunded": ("$400,000 funded; evaluations unlimited", "allowed between your own accounts"),
-    "Blue Guardian": ("$400,000 across funded accounts", "your own accounts only"),
-    "Maven": ("$200,000; withdrawals at most $10,000 per rolling 30 days per trader (the model caps profit closed in any 30 days, the stricter reading)", "&ndash;"),
+    "Blue Guardian": ("$400,000 across funded accounts", "between your own accounts, at Blue Guardian and elsewhere"),
+    "Maven": ("$200,000 of funded accounts; at most $10,000 per 30-day cycle per trader, all accounts together, counted on the date the profit is closed, the excess voided (one account held: the model keeps every 30-day window under it)", "no copying of another person's trades, no account mirroring, no EAs (one account, entered by hand)"),
     "Topstep": ("5 Express Funded Accounts at once", "your own accounts"),
     "Apex": ("20 funded accounts", "your own accounts"),
 }
@@ -111,12 +111,16 @@ def _fpct(x):
     return f"{100 * x:.1f}".rstrip("0").rstrip(".") + "%"
 
 def _split_txt(fd):
-    """the split, and a firm's fee on every withdrawal (GFT 3%, The5ers 3.5%, FundedNext up to 3.5%, Blue Guardian 3%):
-    the trader keeps alpha = split x (1 - fee) of the profit withdrawn"""
+    """the split, and a firm's fee on every withdrawal (GFT 3%, The5ers 3.5%, FundedNext up to 3.5%, Blue Guardian 3%, Hola
+    Prime 2.5% with at least $5; Maven $20 a payout by Rise): the trader keeps alpha = split x (1 - fee) of the profit
+    withdrawn, less any fixed amount"""
     if fd.get("fee_pct"):
         a = fd["split"] * (1 - fd["fee_pct"])
-        return (f"{pct(fd['split'], 0)}, less a {_fpct(fd['fee_pct'])} fee on every withdrawal" + (", the refund included" if fd.get("refund") else "")
+        return (f"{pct(fd['split'], 0)}, less a {_fpct(fd['fee_pct'])} fee on every withdrawal" + (f" (at least {usd(fd['fee_min'])})" if fd.get("fee_min") else "")
+                + (", the refund included" if fd.get("refund") else "")
                 + f" (the trader keeps \\(\\alpha = {a:.4f}\\)".replace("0\\)", "\\)") + " of the profit withdrawn)")
+    if fd.get("fee_min"):
+        return (f"{pct(fd['split'], 0)}, less {usd(fd['fee_min'])} from every payout" + (", the one with the refund included" if fd.get("refund") else ""))
     return pct(fd["split"], 0)
 
 def _dll_txt(st, F):
@@ -156,8 +160,11 @@ def model_table(F, prog):
     elif fd.get("ondemand"): bits.append("payouts on demand")
     else: bits.append(f"first payout {fd['first_payout']} days after the first funded trade, then every {fd['cycle']} days")
     if fd.get("best_vs_worst"): bits.append("a request needs the best trade to have made more than the worst trade lost, since the last payout and over the account (the firm's rule for accounts bought from 9 October 2026)")
-    if fd.get("min_net") or fd.get("min_payout"):
-        bits.append(f"minimum payout {usd(fd.get('min_net') or fd['min_payout'])} on the trader's share after the split" + (" and the fee" if fd.get("fee_pct") else "") + " (the stricter reading where the firm does not say)")
+    fee_any = fd.get("fee_pct") or fd.get("fee_min")
+    if fd.get("min_net") and fd.get("min_payout") and fd["min_payout"] > fd["min_net"] + 1e-9:
+        bits.append(f"a request needs {usd(fd['min_payout'])} of profit before the split and {usd(fd['min_net'])} of share after it" + (" and the fee" if fee_any else "") + " (the firm's statement)")
+    elif fd.get("min_net") or fd.get("min_payout"):
+        bits.append(f"minimum payout {usd(fd.get('min_net') or fd['min_payout'])} on the trader's share after the split" + (" and the fee" if fee_any else "") + " (at least as strict as any reading of the firm's wording)")
     if fd.get("caps"):
         cps = [c for c in fd["caps"] if c < 1e9]
         if len(set(cps)) == 1 and len(cps) > 6: bits.append(f"every payout at most {usd(cps[0])}" + (" with the fee refund counted inside it" if fd.get("cap_includes_refund") else "") + ", the rest kept in the account")
@@ -172,7 +179,7 @@ def model_table(F, prog):
     if fd.get("profit_ceiling"):
         if prog.startswith("Maven"): bits.append(f"plan: funded profit never above {usd(fd['profit_ceiling'])}, a margin under the $5,000 above which the firm's 50% rule applies")
         else: bits.append(f"plan: the balance kept under +{pct(fd['profit_ceiling'] / F['size'], 1)}, below the +10% at which the account scales")
-    if fd.get("roll_profit_cap"): bits.append(f"plan: closed profit in any {fd['roll_profit_cap'][1]} days never above {usd(fd['roll_profit_cap'][0])} (the stricter reading of the firm's {usd(fd['roll_profit_cap'][0])} per rolling {fd['roll_profit_cap'][1]} days per trader)")
+    if fd.get("roll_profit_cap"): bits.append(f"plan: closed profit in any {fd['roll_profit_cap'][1]} days never above {usd(fd['roll_profit_cap'][0])} (the firm voids profit above {usd(fd['roll_profit_cap'][0])} per {fd['roll_profit_cap'][1]}-day cycle per trader, counted on the date the profit is closed; every window kept under it meets the rule however the cycles are anchored)")
     if fd.get("min_rr"): bits.append(f"every trade at least 1:{fd['min_rr']:g}")
     if fd.get("day_profit_cap"): bits.append(f"profit above {usd(fd['day_profit_cap'])} a day not counted")
     if fd.get("profit_days"): bits.append(f"{fd['profit_days'][0]} profitable days of {usd(fd['profit_days'][1])}+ per cycle")
@@ -189,8 +196,10 @@ def model_table(F, prog):
     if fd.get("req_wait"): pp.append(f"a request at least {60 * fd['req_wait']:.0f} minutes after the last close, flat")
     if fd.get("session_tz"): pp.append("made one minute after the 4 p.m. Chicago lock of a qualifying session")
     if fd.get("protected"): pp.append("deducted at once and protected from a later breach")
-    elif fd.get("review_h"): pp.append(f"pending {fd['review_h']:g} hour" + ("s" if fd["review_h"] != 1 else ""))
-    elif fd.get("review_bd"): pp.append(f"pending {fd['review_bd']} working day" + ("s" if fd["review_bd"] != 1 else "") + (" (assumed)" if prog.startswith("Maven") else ""))
+    elif fd.get("review_bd") or fd.get("review_h"):
+        parts = ([f"{fd['review_bd']} working day" + ("s" if fd["review_bd"] != 1 else "")] if fd.get("review_bd") else []) + \
+                ([f"{fd['review_h']:g} hour" + ("s" if fd["review_h"] != 1 else "")] if fd.get("review_h") else [])
+        pp.append("pending " + " and ".join(parts) + (" (assumed)" if prog.startswith("Maven") else ""))
     else: pp.append("processed at once")
     if fd.get("lock_processing"): pp.append("the account locked until processed")
     elif fd.get("pause_pending"): pp.append("the plan pauses the account until processed")
@@ -341,7 +350,8 @@ def funded_section(sp, ch, F, e):
     for j in range(0, 5):
         if j >= len(pr): break
         pj = (1 - pr[0]) if j == 0 else pr[j - 1] - pr[j]
-        nom = a * sum(cyc[:j]) + (R if (R and j >= fd.get("refund_after", 1) and not fd.get("refund_split")) else (R * min(j, fd.get("refund_split", 0)) / fd["refund_split"] if fd.get("refund_split") else 0))
+        nom = (sum(AN.A_.payout_net(fd, fd["split"] * c_) for c_ in cyc[:j])     # each payout less the firm's fee (Maven: $20)
+               + (R if (R and j >= fd.get("refund_after", 1) and not fd.get("refund_split")) else (R * min(j, fd.get("refund_split", 0)) / fd["refund_split"] if fd.get("refund_split") else 0)))
         rows.append([str(j), f"{pj:.4f}", usd(e["cash_given"][j]), usd(nom)])
     lines.insert(2, (f"A paid cycle withdraws the smaller of its balance at success and the cap: the mean balance at success is \\(\\${e['m1']:,.2f}\\) in the first cycle" if caps else
                      f"A paid cycle pays its balance at success: on average \\(m_1 = \\${e['m1']:,.2f}\\) in the first cycle") + (f" and \\(\\${e['m']:,.2f}\\) later" if e.get("m") else "") + " (7.2), not exactly the target.")

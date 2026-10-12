@@ -794,6 +794,16 @@
   },
   {
    "firm": "Maven",
+   "area": "prohibited practices",
+   "rule": "copying another individual's trades (both breached); grid and gap trading; reverse or group hedging (an account betting against another, at Maven or another firm); trading only hedges; EAs on every platform; 'all in' (no stop, or risk above the drawdown limit: 4% on the 2-Step), funded stage included; excessive scalping (50% or more of trades held under a minute); 'account mirroring' (listed among the standard rules); trades of vastly smaller lots do not count as trades",
+   "model": "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled; trades entered by hand, no EA; one Maven account, never opposite another account; a stop on every position at 1.75% of the account; no Maven trade in the engine closes within a minute (the shortest last 2-3 minutes at the tightest stop: 200 funded accounts, 10,403 trades)",
+   "status": "plan",
+   "source": "https://maventrading.com/faqs",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "Maven",
    "area": "news",
    "rule": "no opening or closing 2 minutes either side of a red-folder release, take-profits included; evaluations and funded",
    "model": "flat around releases at every stage",
@@ -1405,7 +1415,7 @@
  ],
  "counts": {
   "modelled": 61,
-  "plan": 47,
+  "plan": 48,
   "cautious": 17,
   "assumption": 3,
   "not binding": 12

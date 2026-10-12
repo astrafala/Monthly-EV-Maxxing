@@ -56,6 +56,7 @@ def simplified(F):
     F = copy.deepcopy(F)
     F.pop("flat_daily", None); F["flat_weekend_eval"] = True      # flat at weekends: no weekend gaps (the chain has none)
     for kk in ("hold_min", "short_breach", "dur_rule", "day_min_minutes"): F.pop(kk, None)   # duration rules: not in the chain
+    F.pop("no_terminal", None)       # GFT, Alpha Capital: the plan leaves an account near its floor; the chain's end at it
     for st in F["phases"]:
         st["dll"] = None; st["min_days"] = 0; st.pop("profit_days", None); st["review"] = 0
         if st.get("conc"): st["max_win"] = min(st.get("max_win") or 1e18, st["conc"] * st["target"]); st["conc"] = None

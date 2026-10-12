@@ -110,6 +110,12 @@ def _v10(F, size=None):
             # positions of several lots is such a change: no fillers at either (as at Fintokei and Alpha Capital), the
             # cautious reading (version 9 used fillers at both)
             f["no_fillers"] = True
+        if firm in ("GFT", "Alpha Capital"):
+            # (12 October 2026) GFT's prohibited practices (6 October 2026): "All-Or-Nothing Trading, where you can lose the
+            # account in one trade"; Alpha Capital's: "'all or nothing' strategies" (a significant change in lot size against
+            # the account's average). The plan's last trade near the floor (5.4) is placed so that it either recovers or ends
+            # the account: at these two firms it is not placed, and the account is left as it is (version 9 placed it)
+            f["no_terminal"] = True
         if f.get("no_fillers"):
             f["no_target_buffer"] = True          # missing days are ordinary trades: no buffer above the target
         # a published minimum payout counts on the trader's share after the split (the stricter reading); a request
