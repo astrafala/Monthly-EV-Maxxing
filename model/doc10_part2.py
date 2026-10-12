@@ -172,7 +172,7 @@ def model_table(F, prog):
     if fd.get("profit_ceiling"):
         if prog.startswith("Maven"): bits.append(f"plan: funded profit never above {usd(fd['profit_ceiling'])}, a margin under the $5,000 above which the firm's 50% rule applies")
         else: bits.append(f"plan: the balance kept under +{pct(fd['profit_ceiling'] / F['size'], 1)}, below the +10% at which the account scales")
-    if fd.get("roll_profit_cap"): bits.append(f"plan: closed profit in any {fd['roll_profit_cap'][1]} days never above {usd(fd['roll_profit_cap'][0])} (the excess would be voided)")
+    if fd.get("roll_profit_cap"): bits.append(f"plan: closed profit in any {fd['roll_profit_cap'][1]} days never above {usd(fd['roll_profit_cap'][0])} (the stricter reading of the firm's {usd(fd['roll_profit_cap'][0])} per rolling {fd['roll_profit_cap'][1]} days per trader)")
     if fd.get("min_rr"): bits.append(f"every trade at least 1:{fd['min_rr']:g}")
     if fd.get("day_profit_cap"): bits.append(f"profit above {usd(fd['day_profit_cap'])} a day not counted")
     if fd.get("profit_days"): bits.append(f"{fd['profit_days'][0]} profitable days of {usd(fd['profit_days'][1])}+ per cycle")
@@ -201,7 +201,7 @@ def model_table(F, prog):
     if F.get("flat_daily"): rows.append(["Trading hours", f"positions opened at the hourly opens from 01:00 UTC (07:00 on EURUSD) to {F['flat_daily'] - 2}:00 UTC, flat at {F['flat_daily']}:00 UTC every day; flat at weekends; at least 10 minutes between a close and the next entry; no stop or target closer than 0.6 hourly sd"])
     rows.append(["Positions", ("whole micro contracts, rounded down, never fewer than one" if fut else "whole volume steps of 0.01 lot, rounded down; the smallest position traded only where the rooms allow it") + "; the account's breach level (floor or today's limit, the nearer) is a barrier of every trade; reviews and payout processing in working days"])
     dur = []
-    if F.get("hold_min"): dur.append(f"the bracket is placed {F['hold_min']} minutes after the entry (minimum holding time 2 minutes); a trade that could close sooner ends the account")
+    if F.get("hold_min"): dur.append(f"the bracket is placed {F['hold_min']} minutes after the entry (minimum holding time 2 minutes); until then only the breach level" + (" and the Guardian Shield" if F["funded"].get("shield") else "") + " can close the position, and a trade closed in under 2 minutes ends the account in the engine (the cautious reading of 'may be flagged for tick scalping')")
     if F.get("dur_rule"): dur.append(f"the {F['dur_rule']:g}-minute rule checked on the account's own trades at every phase pass and payout request (average, majority, half of gross profit); failure: phase restarted or profits removed")
     if F.get("day_min_minutes"): dur.append(f"a trading day counts only with a trade held at least {60 * F['day_min_minutes']:.0f} seconds")
     if dur: rows.append(["Duration rules", "; ".join(dur)])
@@ -441,10 +441,10 @@ def fut_chapter(num, sp):
     full = ALLOC[sp["firm"]]["full"]
     nfull = full[0][3] if full else 0
     out = [f'<section class="chapter"><span class="eyebrow">Chapter {num} &middot; tier {tier(prog)} &middot; optional futures layer</span><h1>{sh["title"]}</h1>',
-           f"<p>Micro Nasdaq futures in whole contracts, shared direction with the Nasdaq CFD accounts. Futures firms set no percentage risk rule, so the risk per trade is searched as well; the choice keeps the plan's stop of at least 0.6 hourly standard deviations (the grid also tries 0.5, which the first version 9 run chose for Apex: n21).</p>",
+           f"<p>Micro Nasdaq futures in whole contracts, shared direction with the Nasdaq CFD accounts. Futures firms set no percentage risk rule, so the risk per trade is searched as well; the choice keeps the plan's stop of at least 0.6 hourly standard deviations (the grid also tries 0.5, which the first version 9 run chose for Apex: version 9's corrections, n21).</p>",
            f"<h2>{num}.1 The rules</h2>", rules_table(sh, sp["firm"]), f"<h2>{num}.2 What the engine simulates</h2>", model_table(F, prog),
            f"<h2>{num}.3 The search</h2>", table(["k", "m", "Risk", "Refined EV/month", "Pass rate", "Days"], rows, cls="small", num_from=0,
-                                                 cap=f"The best of the ten grid settings re-run for 16,000 attempts on paths 1111&ndash;1114 (the grid: 4,000 attempts each), best first; {len(fr)} shown. The choice keeps the plan's minimum stop of 0.6 hourly sd."),
+                                                 cap=f"The ten best grid settings (4,000 attempts each on paths 1101&ndash;1104) re-run for 16,000 attempts on paths 1111&ndash;1114, best first; the first {len(fr)} shown. The choice keeps the plan's minimum stop of 0.6 hourly sd."),
            f"<h2>{num}.4 The chosen setting</h2>",
            _calc([f"Plan: \\(k = {ch['k']:g}\\), \\(m = {ch['m']:g}\\), risk \\(\\${ch['L']:,.0f}\\): at the reference level of 31,070 the stop is {T['stop_pts']:.1f} points and one MNQ contract loses \\(\\${2 * T['stop_pts']:,.0f}\\) at the stop, so {contracts} contracts (rounded down), a risk of \\(\\${contracts * 2 * T['stop_pts']:,.0f}\\); the engine recomputes this at every entry from the path's price (10.1).",
                   f"Fresh paths: {pm(ch['EV_month'], ch['CI'])} a month per account as a random-start ratio (pass rate {pct(ch['P'])} &plusmn; {pct(p_ci(ch))}, {ch['days']:.1f} days per attempt)" + (f"; continuing-slot rate, years 2&ndash;9 (price level and calendar carried from attempt to attempt): <strong>{pm(cont(ch)['rate'], cont(ch)['CI'])}</strong>." if cont(ch) else "."),

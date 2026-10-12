@@ -144,4 +144,6 @@ PRIOR = ("Version 9 answered a 21-point review of version 8 (a finite-budget sim
          "terminal trades that did not enforce the floor, CFDs without lots, filler days without trades, duration rules, Fintokei's fillers and payout clock, "
          "Hola Prime's 14-day window, positions kept open too long in the portfolio) and found five further errors. Version 8 answered a 27-point review of version 7, "
          "version 7 a 35-point review of version 6 (no bold play, the daily flat, cost-aware sizing, margin at every entry, the exact chain and cluster intervals). "
-         "The full responses are docs/v9_review_response.md, docs/v8_review_response.md and docs/v7_review_response.md.")
+         "The full responses are docs/v9_review_response.md, docs/v8_review_response.md and docs/v7_review_response.md. "
+         "Errors we found ourselves are numbered across versions: n1&ndash;n16 are in version 8's response, n17&ndash;n21 in version 9's, "
+         "and n22 onward in Appendix A2.")
