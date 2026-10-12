@@ -1,6 +1,6 @@
 {
- "read": "11-12 October 2026 (rows marked otherwise: 4-5 October 2026)",
- "note": "Version 10 rule inventory: every rule of every programme the plan uses that can change what the plan may do or what it\nis paid, with its source and how the model treats it (python3 rules_inventory_v10.py writes rules_inventory_v10.json).\nVersion 9 listed the rules it modelled; this inventory starts from the firms' rules instead, so that a rule the model leaves\nout has to appear here with a reason (the review of version 9 found rules that no list contained: The5ers' payout cap and\nprofit gate, the payout locks, Topstep's request session, Apex's pending requests).\n\nstatus:  modelled     the engine applies the rule as stated\n         plan         the plan avoids the situation the rule governs (the engine applies the plan's own, stricter rule)\n         cautious     the rule's wording leaves a question; the engine applies the stricter reading, named here\n         assumption   no published figure: the engine uses the value named here\n         not binding  the rule exists but the plan's settings cannot reach it (the reason is given)\nbasis:   page         the firm's own help centre, FAQ or rules page, read directly\n         snippet      the firm's own page as returned by a search engine (the page itself refused automated reading)\n         secondary    a reviewer's or comparison site's description, used only where no firm page could be read\nRead: 11-12 October 2026 unless stated (version 8 and 9 readings, 4-5 October 2026, are marked).",
+ "read": "11-12 October 2026",
+ "note": "Version 10 rule inventory: every rule of every programme the plan uses that can change what the plan may do or what it\nis paid, with its source and how the model treats it (python3 rules_inventory_v10.py writes rules_inventory_v10.json).\nVersion 9 listed the rules it modelled; this inventory starts from the firms' rules instead, so that a rule the model leaves\nout has to appear here with a reason (the review of version 9 found rules that no list contained: The5ers' payout cap and\nprofit gate, the payout locks, Topstep's request session, Apex's pending requests).\n\nstatus:  modelled     the engine applies the rule as stated\n         plan         the plan avoids the situation the rule governs (the engine applies the plan's own, stricter rule)\n         cautious     the rule's wording leaves a question; the engine applies the stricter reading, named here\n         assumption   no published figure: the engine uses the value named here\n         not binding  the rule exists but the plan's settings cannot reach it (the reason is given)\nbasis:   page         the firm's own help centre, FAQ or rules page, read directly\n         snippet      the firm's own page as returned by a search engine (the page itself refused automated reading)\n         secondary    a reviewer's or comparison site's description, used only where no firm page could be read\nRead: 11-12 October 2026 (every row; the first version 10 inventory had carried over version 9's readings of 4 October 2026).",
  "rules": [
   {
    "firm": "FTMO",
@@ -10,7 +10,7 @@
    "status": "modelled",
    "source": "https://ftmo.com/en/trading-objectives/",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FTMO",
@@ -65,12 +65,12 @@
   {
    "firm": "FTMO",
    "area": "risk guidance",
-   "rule": "FTMO recommends 1-1.5% risk per trade and monitors larger risk as possible gambling",
+   "rule": "FTMO generally recommends not risking more than 1% per trade idea, and at most 1-1.5% of the initial balance on one position, so as not to fall into its high-risk monitoring",
    "model": "risk per trade at most 1.5% at FTMO (L_MAX)",
    "status": "plan",
    "source": "https://ftmo.com/en/blog/how-much-should-you-risk-on-one-trade/",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FTMO",
@@ -100,17 +100,17 @@
    "status": "modelled",
    "source": "https://help.fundingpips.com/hc/en-us/articles/47835196271249-2-Step-Flex",
    "basis": "snippet",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FundingPips",
    "area": "risk per trade idea",
-   "rule": "Master accounts above $25K: a trade idea may not lose 2%",
-   "model": "risk at most 1.75% plus cost",
+   "rule": "Master accounts: the loss of one trade idea (positions on one instrument in one direction; a new one within 10 minutes of a losing close counts with it) at most 2% or 3% of the account by model; not in evaluations",
+   "model": "risk at most 1.75% plus cost; more than 10 minutes between a close and the next entry",
    "status": "not binding",
    "source": "https://help.fundingpips.com/hc/en-us/articles/48174287980177-Risk-Per-Trade-Idea",
    "basis": "snippet",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FundingPips",
@@ -148,9 +148,9 @@
    "rule": "8% / 5%; daily loss 5% and maximum loss 10% of the initial balance; 5 trading days per phase",
    "model": "as stated (dll fixed)",
    "status": "modelled",
-   "source": "https://help.fundednext.com/en/articles/9430123",
+   "source": "https://help.fundednext.com/en/articles/17255124-stellar-2-step-challenge",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FundedNext",
@@ -175,22 +175,22 @@
   {
    "firm": "FundedNext",
    "area": "copying",
-   "rule": "copying trades from other firms' accounts is not allowed",
+   "rule": "copying only between your own challenge accounts; copying between a FundedNext Account and any other FundedNext account prohibited; other people's trades and cloud copiers prohibited; copying from your own accounts at other firms not addressed",
    "model": "FundedNext's account trades a market no other account of the plan trades",
-   "status": "plan",
-   "source": "https://help.fundednext.com/en/articles/10701447",
+   "status": "cautious",
+   "source": "https://help.fundednext.com/en/articles/8019805-what-is-the-copy-trading-rule-at-fundednext",
    "basis": "snippet",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FundedNext",
    "area": "allocation",
-   "rule": "$300,000 funded; evaluations unlimited",
+   "rule": "$300,000 across Stellar funded accounts ($50,000 in some countries); challenge accounts unlimited",
    "model": "one account",
    "status": "modelled",
-   "source": "https://help.fundednext.com/en/articles/9430123",
+   "source": "https://help.fundednext.com/en/articles/8027523-how-many-accounts-can-i-have-with-fundednext",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "The5ers",
@@ -200,7 +200,7 @@
    "status": "modelled",
    "source": "https://the5ers.com/faqs/what-is-the-drawdown-rule-for-high-stakes/",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "The5ers",
@@ -270,7 +270,7 @@
    "status": "modelled",
    "source": "https://the5ers.com/faqs/how-many-high-stakes-accounts-can-i-have/",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "The5ers",
@@ -335,8 +335,8 @@
   {
    "firm": "Fintokei",
    "area": "targets and limits",
-   "rule": "8% / 6%; daily loss 5% of the day's starting equity; 10% maximum (version 9 reading); 3 separate trading days (a trade opened on the day, with a real market outcome) before passing a phase and before requesting a payout, accounts bought from 15 July 2026",
-   "model": "as stated; the 3 days required again in every payout cycle (the page does not say whether they count once or per cycle: the stricter reading)",
+   "rule": "8% / 6%; daily loss 5% of the day's starting equity; 10% maximum; 3 separate trading days (a trade opened on the day, with a real market outcome) before passing a phase and before requesting a payout, accounts bought from 15 July 2026 (the support article and the ProTrader page; the plan table on fintokei.com reads 'Min 3 profitable days' for ProTrader 10K-400K)",
+   "model": "as stated; the 3 days required again in every payout cycle (the stricter reading); in the evaluations either reading is met, because under the plan's 40% policy every phase has at least three days with a net profit",
    "status": "cautious",
    "source": "https://support.fintokei.com/en/articles/8428030-what-does-the-rule-minimum-trading-days-mean-3-or-5-days",
    "basis": "page",
@@ -348,9 +348,9 @@
    "rule": "much smaller trades just to meet the minimum days are objected to",
    "model": "no filler trades: missing days are ordinary trades, one a day",
    "status": "plan",
-   "source": "https://support.fintokei.com/en/articles/9464503",
+   "source": "https://support.fintokei.com/en/articles/9464503-what-is-all-in-trading-and-why-is-it-forbidden-to-achieve-profit-target-in-one-trade",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Fintokei",
@@ -385,22 +385,22 @@
   {
    "firm": "Hola Prime",
    "area": "targets and limits",
-   "rule": "8% / 5%; daily loss 5% of the previous day's closing balance; 10%; 3 trading days",
+   "rule": "8% / 5%; daily loss 5% of the previous day's closing balance (reset 17:00 New York); 10% static; 3 trading days per phase (4% and 8% at 200K)",
    "model": "as stated",
    "status": "modelled",
    "source": "https://holaprime.com/forex/faq/hola-prime-challenges/hola-prime-2-step-prime-challenge/",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Hola Prime",
    "area": "payouts",
-   "rule": "bi-weekly 80% with 3 profitable days (+0.5%) within 14 days; fee back 25% with each of the first four payouts; paid within one hour of the request (98%)",
-   "model": "pending one hour",
+   "rule": "bi-weekly 80% with 3 profitable days (closed profit of at least 0.5% of the initial balance) within 14 days; an account review of up to 24 business hours, then paid within one hour; minimum $50 by bank wire or crypto ($500 by Rise); 'A 2.5% payout processing fee applies to all payment methods, subject to a minimum fee of $25 for Rise and Bank Wire and $5 for Crypto'; the challenge fee refunded in full 'with your 4th successful payout' on the same account",
+   "model": "pending one working day and one hour, trading on; 2.5% of every payout, at least $5; $50 after the split and the fee; the fee with the 4th payout (version 9: no fee, a quarter of the refund with each of the first four payouts, paid within the hour)",
    "status": "modelled",
    "source": "https://holaprime.com/forex/faq/hola-prime-challenges/hola-prime-2-step-prime-challenge/",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Hola Prime",
@@ -408,9 +408,9 @@
    "rule": "a position opened within 10 minutes of a close on the same market and direction is one trade idea",
    "model": "10 minutes between every close and the next entry",
    "status": "plan",
-   "source": "https://holaprime.com/forex/faq/hola-prime-challenges/hola-prime-2-step-prime-challenge/",
+   "source": "https://holaprime.com/forex/forex-trading-rules/",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Hola Prime",
@@ -425,12 +425,12 @@
   {
    "firm": "Hola Prime",
    "area": "risk per trade",
-   "rule": "funded: stop loss on every trade; risk per trade at most 2%",
+   "rule": "Sim. Funded: a stop-loss on every trade; the risk of a trade idea at most 2% of the initial balance (positions overlapping in time, or a same-direction re-entry within 10 minutes, are one idea)",
    "model": "1.75% plus cost, every trade bracketed",
    "status": "not binding",
    "source": "https://holaprime.com/forex/faq/hola-prime-challenges/hola-prime-2-step-prime-challenge/",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Alpha Capital",
@@ -439,18 +439,18 @@
    "model": "as stated",
    "status": "modelled",
    "source": "https://help.alphacapitalgroup.uk/en/articles/8420429-alpha-pro-8-10",
-   "basis": "snippet",
-   "read": "4 Oct 2026"
+   "basis": "page",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Alpha Capital",
    "area": "payouts",
-   "rule": "bi-weekly: first request 14 days after the first funded trade, 5 trading days; all trades closed before a request; paid within 2 business days; the account locked until the balance is reset; at least $100 of profit (version 8 reading; not stated on the page read on 11 October); a 'performance fee bonus' added on the 4th successful withdrawal (amount not stated); no payout fee stated",
-   "model": "locked 2 working days; $100 applied to the trader's share; the bonus not modelled (the cautious side)",
+   "rule": "bi-weekly: first request 14 days after the first funded trade, 5 trading days; all trades closed before a request; paid within 2 business days; the account locked until the balance is reset; 'The minimum performance fee amount is $100 ($100 gross, $80 net)' (bi-weekly article, 7 July 2026); a discretionary bonus of 0.25% of the initial size on the fourth request; no payout fee stated",
+   "model": "locked 2 working days; $100 of profit before the split, $80 of share after it (version 9: $100 after the split); the discretionary bonus not modelled",
    "status": "modelled",
-   "source": "https://help.alphacapitalgroup.uk/en/articles/6933755-how-do-i-get-paid-performance-fees",
+   "source": "https://help.alphacapitalgroup.uk/en/articles/10570531-bi-weekly-performance-fee",
    "basis": "page",
-   "read": "11 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Alpha Capital",
@@ -470,7 +470,7 @@
    "status": "modelled",
    "source": "https://help.alphacapitalgroup.uk/en/articles/8447268",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Alpha Capital",
@@ -500,7 +500,7 @@
    "status": "modelled",
    "source": "https://help.goatfundedtrader.com/en/articles/13575169-2-step-standard",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "GFT",
@@ -545,32 +545,32 @@
   {
    "firm": "GFT",
    "area": "Goat Guard (funded)",
-   "rule": "a combined floating loss of 2% closes the open trades; the first time the split falls to 50%, the second time the account is breached",
+   "rule": "a combined floating loss of 2% of the initial size: the first time the split falls to 50% and the positions stay open, the second time the account is breached",
    "model": "not reached: one position at a time whose stop loss plus cost is at most $1,750 plus cost per $100K, and the room above the floor caps it when the balance is low (at most 1.97% of the current balance); the plan holds no position through a gap",
    "status": "not binding",
    "source": "https://help.goatfundedtrader.com/en/articles/10742107-what-is-goat-guard",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FunderPro",
    "area": "targets and limits",
-   "rule": "10% / 5%; daily 5% (base not settled: the stricter of initial and daily balance); 10%; 4 days per phase",
+   "rule": "10% / 5%; daily 5%, computed on the balance at 5 pm New York (base not settled: the stricter of the initial and the day's balance); 10% static; 4 trading days per phase",
    "model": "as stated (dll min)",
    "status": "modelled",
-   "source": "https://support.funderpro.com/en/articles/412020",
+   "source": "https://funderpro.com/",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FunderPro",
    "area": "payouts",
-   "rule": "every 14 days with at least $100 profit; processed within one working day of approval",
-   "model": "pending 1 working day, cash 1 later",
+   "rule": "every 14 days (Classic) with at least $100 of profit on the funded account; the fee credited within 7 days of the first reward",
+   "model": "every 14 days; $100 of profit before the split, $80 of share after it; the fee with the first payout",
    "status": "modelled",
    "source": "https://support.funderpro.com/en/articles/419844",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FunderPro",
@@ -580,7 +580,7 @@
    "status": "modelled",
    "source": "https://support.funderpro.com/en/articles/421458",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FunderPro",
@@ -591,6 +591,46 @@
    "source": "https://funderpro.com/terms-conditions/",
    "basis": "snippet",
    "read": "11 Oct 2026"
+  },
+  {
+   "firm": "FunderPro",
+   "area": "lot sizes",
+   "rule": "'Abrupt or unjustified changes in lot sizes may be deemed reckless behavior or gambling', for example 'trading one (1) lot followed by ten (10) lots without a clear strategic basis'; lot sizes 'reasonably aligned' with the strategy and the balance (Trading Consistency and Lot Size Policy, 4 June 2026)",
+   "model": "every position sized by one stated rule (the risk share over the stop); no filler trades at FunderPro (version 10: version 9 completed missing days with 0.01-lot fillers, the kind of jump the policy names); the firm's judgement is not modelled",
+   "status": "plan",
+   "source": "https://support.funderpro.com/en/articles/696134-trading-consistency-and-lot-size-policy",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "FunderPro",
+   "area": "consistency",
+   "rule": "Classic phase 1, phase 2 and funded stages: 'No Consistency Rule' (One-Phase 40%, Pro 45%)",
+   "model": "none applied",
+   "status": "modelled",
+   "source": "https://support.funderpro.com/en/articles/377852-what-is-the-consistency-rule-and-how-does-it-affect-my-challenge",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "FunderPro",
+   "area": "inactivity",
+   "rule": "no trade placed or closed for 30 consecutive days: the account is failed (challenge and funded)",
+   "model": "never 25 days without a trade",
+   "status": "plan",
+   "source": "https://support.funderpro.com/en/articles/377851-how-does-the-inactivity-rule-affect-my-challenge",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "FunderPro",
+   "area": "market closures",
+   "rule": "without the Swing add-on, every position closed at least 2 hours before a market closure of 2 hours or more (weekends, holidays, halts); not for daily pauses",
+   "model": "flat every day at 20:00 UTC and over weekends; holidays are not on the model's calendar: Part IV closes positions 2 hours before a holiday closure",
+   "status": "plan",
+   "source": "https://support.funderpro.com/en/articles/531445-position-closure-requirements-before-extended-market-closures",
+   "basis": "page",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "BrightFunded",
@@ -636,7 +676,7 @@
    "firm": "BrightFunded",
    "area": "allocation",
    "rule": "$400,000 funded per trader; evaluations unlimited",
-   "model": "four 100K accounts",
+   "model": "the recommended plan holds one; at the full allowance four 100K or two 200K, whichever is worth more in all",
    "status": "modelled",
    "source": "https://brightfunded.com/terms-and-conditions",
    "basis": "snippet",
@@ -696,7 +736,7 @@
    "firm": "Blue Guardian",
    "area": "allocation",
    "rule": "$400,000 across funded accounts",
-   "model": "four 100K accounts",
+   "model": "the recommended plan holds one; at the full allowance four 100K or two 200K, whichever is worth more in all",
    "status": "modelled",
    "source": "https://blueguardian.com/blogs/complete-scaling-path-for-funded-traders",
    "basis": "page",
@@ -715,9 +755,29 @@
   {
    "firm": "Maven",
    "area": "payouts",
-   "rule": "every 10 business days after the first trade; $10,000 per rolling 30 days per trader; above $5,000 of profit the best day or trade at most 50% of profit; refund with the third withdrawal; processing time not stated",
-   "model": "funded profit kept at most $4,900 in every payout cycle ('total profit' read as the cycle's profit: the FAQ's sentence ends 'in the funded stage payout cycle'; if it meant the account's lifetime profit, from the second cycle a cycle's profit would be cut to twice its best day, which the model does not apply); closed profit in any 30 days at most $10,000; requests every 14 calendar days (10 business days; public holidays not modelled); pending 3 working days (assumed)",
+   "rule": "a withdrawal every 10 business days after the first trade; the fee refunded in full 'on the third withdrawal'; by direct bank transfer only from South Africa, Nigeria, Kenya and Ghana, elsewhere 'through Rise or other options' (the others not named), 'Payments via Rise incur a $20 withdrawal fee'; the account reset to its starting balance after each payout; processing time of a funded payout not stated",
+   "model": "requests every 14 calendar days (10 business days; public holidays not modelled); the fee with the third payout; $20 from every payout, the refund's included (version 10: version 9 had none); pending 3 working days (assumed)",
    "status": "cautious",
+   "source": "https://maventrading.com/faqs",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "Maven",
+   "area": "withdrawal cap",
+   "rule": "'a maximum withdrawal of $10,000 per 30-day rolling cycle (per trader)', a trader's accounts treated as one; 'calculated from the date on which you close the profit'; 'Any profits generated over the $10,000 limit will be voided'; the cycle 'calculated from your first available withdrawal date'",
+   "model": "closed profit in every 30-day window at most $10,000: no win is placed that could take a window above it, which meets the rule whether the $10,000 counts the profit or the amount paid and however the cycles are anchored; one Maven account in every portfolio, so the trader's cap is the account's",
+   "status": "cautious",
+   "source": "https://maventrading.com/faqs",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "Maven",
+   "area": "consistency above $5,000",
+   "rule": "'If your total profit exceeds $5,000, your best trading day (day counted between two singular trades, with not 24h between closing trade 1 and opening trade 2) or singular trade ... may not exceed 50% of your profit in the funded stage payout cycle'; above it the profit is 'contracted to the 50% mark'",
+   "model": "funded profit never above $4,900, so the rule never applies. 'Total profit' is read as the profit since the account was last reset, which it is after every payout (the less strict of two readings: if it meant the profit of all cycles together, the rule would apply from the second cycle and would cut a cycle's profit whenever one 'day' held more than half of it, as a week of daily trades, one 'day' under that definition, usually would; the model does not apply that)",
+   "status": "plan",
    "source": "https://maventrading.com/faqs",
    "basis": "page",
    "read": "12 Oct 2026"
@@ -829,8 +889,8 @@
    "model": "not reached: no trade and no day above 40% of a target",
    "status": "not binding",
    "source": "https://help.fundingpips.com/hc/en-us/articles/48174287980177-Risk-Per-Trade-Idea",
-   "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "basis": "snippet",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FundedNext",
@@ -838,69 +898,69 @@
    "rule": "one-sided betting (remedy: a 1% risk limit), account rolling, breaching several accounts in a short span, losses exceeding gains (remedies: 40% consistency on on-demand rewards or a lower split)",
    "model": "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled; the remedies are measured as scenarios (Chapter 28.7)",
    "status": "plan",
-   "source": "https://help.fundednext.com/",
+   "source": "https://help.fundednext.com/en/articles/8020351-what-are-the-restricted-prohibited-trading-strategies",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "The5ers",
    "area": "prohibited practices",
-   "rule": "one-trade target attainment (permanent ban)",
-   "model": "no single trade can reach a target (40% cap)",
+   "rule": "bulk trading (several trades open at once, 'clearly showing a trader is not behind the strategy'); 'Trade coordination or copy trading with other traders or accounts'; one-sided bets ('consistently takes positions in one single direction'); tick scalping; hedge and reverse arbitrage; coordinated trading across firms for manipulative purposes (opposite positions); profit spread artificially across days; 'position sizes or a number of positions that are substantially larger or smaller than your typical trading activity, whether compared across your own accounts or between your evaluation and funded account stages'; overleveraging, concentrated speculative exposure and gambling-like positions; no order executed 2 minutes either side of high-impact news",
+   "model": "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled; one position per account at a time; the direction follows the trend rule, so it changes with the market; the same risk share and stop rule in both stages; flat around releases. The optional portfolio with The5ers' small accounts holds positions far smaller in dollars than the 100K account's (the same share of each account): whether The5ers compares sizes in proportion to the account is not stated, so that portfolio is not recommended",
    "status": "plan",
-   "source": "https://the5ers.com/high-stakes/",
+   "source": "https://the5ers.com/faqs/prohibited-trading-practices/",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FXIFY",
    "area": "prohibited practices",
-   "rule": "gambling and all-or-nothing ('YOLO') trading",
-   "model": "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled",
+   "rule": "high-frequency trading; reverse and group hedging (offsetting positions across accounts); account management and accounts under other names; latency arbitrage; order-book spamming; herd trading and collusion (coordinated trading among users; one provider's EA); exploiting errors; high-leverage news trading; statistical arbitrage ('high-risk trades based on statistical models, aiming for significant wins to offset losses from multiple accounts'); the terms (section 5.4) add one-sided bets, overleveraging, overexposure and account rolling",
+   "model": "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled; flat around high-impact releases; every account in the same direction at a moderate risk, so no account's loss is offset by another account's opposite bet",
    "status": "plan",
-   "source": "https://intercom.help/fxify/en/",
+   "source": "https://fxify.com/faqs/all-faqs/what-strategies-can-i-use/",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Fintokei",
    "area": "prohibited practices",
-   "rule": "reaching a phase target in one or a few identical trades ('all-in'); if trading is flagged unsustainable, leverage 1:10 and daily profit and loss capped at 1%",
+   "rule": "reaching a phase target with one trade idea (a trade, or same-symbol same-direction trades overlapping in time) ('all-in'); much smaller trades just to meet the minimum days; if trading is flagged unsustainable, leverage 1:10 and daily profit and loss capped at 1%",
    "model": "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled",
    "status": "plan",
    "source": "https://support.fintokei.com/en/articles/9464503-what-is-all-in-trading-and-why-is-it-forbidden-to-achieve-profit-target-in-one-trade",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Hola Prime",
    "area": "prohibited practices",
-   "rule": "one-sided betting, grid trading, excessive margin use, hedging across accounts, profitability materially dependent on concentrated outcomes",
+   "rule": "gambling or speculative trading (excessive or concentrated risk, unexplained deviations in position size), one-sided betting (repeated positions in one direction without analysis), grid trading, excessive margin, account rolling, hedging across accounts, copying beyond the permitted master and copier",
    "model": "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled",
    "status": "plan",
-   "source": "https://holaprime.com/forex/faq/",
+   "source": "https://holaprime.com/trading-rules-list/trading-rules-prohibited-trading-practices",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Alpha Capital",
    "area": "risk per trade",
-   "rule": "never risk or lose 2% or more on one trade or group of trades closed together",
-   "model": "risk at most 1.75% plus cost; one position at a time",
+   "rule": "qualified accounts bought from 21 July 2026: the open loss on one asset at most 2% at 100K and 200K (3% up to 25K), losing positions on the asset combined, and a same-direction re-entry within 10 minutes combined with the trade before it (the Max Risk Rule)",
+   "model": "risk at most 1.75% plus cost; one position at a time; more than 10 minutes between trades",
    "status": "not binding",
-   "source": "https://help.alphacapitalgroup.uk/",
+   "source": "https://help.alphacapitalgroup.uk/en/articles/15888623-what-is-the-max-risk-rule-and-how-does-it-work",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Alpha Capital",
    "area": "prohibited practices",
-   "rule": "gambling; 'all or nothing' trading; minimal lots to complete trading days on qualified accounts",
+   "rule": "'all or nothing' strategies (a significant change in lot size against the account's average, unusual trade durations, trades opened just before and closed just after the news window); minimal lots to complete trading days on qualified accounts; position spamming",
    "model": "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled; no filler trades at Alpha Capital",
    "status": "plan",
-   "source": "https://help.alphacapitalgroup.uk/",
+   "source": "https://help.alphacapitalgroup.uk/en/articles/7060909-what-is-alpha-capital-group-s-policy-against-gambling-in-trading",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Blue Guardian",
@@ -909,38 +969,38 @@
    "model": "margin at most 60% of the balance",
    "status": "not binding",
    "source": "https://help.blueguardian.com/",
-   "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "basis": "snippet",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Topstep",
    "area": "targets and limits",
-   "rule": "$3,000 target; $2,000 maximum loss trailing the end-of-day balance and locking at the starting balance; after the first payout the maximum loss level is the starting balance; positions closed by the daily close",
+   "rule": "$3,000 target at 50K; Maximum Loss Limit $2,000, trailing the end-of-day balance (monitored in real time, unrealized P&L included) and locking at the starting balance; the Express Funded Account starts at $0 with the limit at -$2,000, locking at $0; after the first payout the limit is $0",
    "model": "as stated; flat at 20:00 UTC",
    "status": "modelled",
-   "source": "https://help.topstep.com/",
+   "source": "https://help.topstep.com/en/articles/8284204",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Topstep",
    "area": "consistency (Combine)",
-   "rule": "best day at most 55% of the profit target (version 9 reading)",
+   "rule": "the best day at most 55% of the total profit, a hard limit; above it the target becomes the best day divided by 0.55 ('Best Day Recommendation' under $1,650 at 50K)",
    "model": "not reached: no day above 40% of the target (the engine also caps a day at 50% of the target, stricter than the published 55%)",
    "status": "not binding",
-   "source": "https://help.topstep.com/",
+   "source": "https://help.topstep.com/en/articles/8284208",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Apex",
    "area": "targets and limits",
-   "rule": "$3,000 target; $2,000 maximum loss trailing the end-of-day balance, which stops trailing at the starting balance plus $100 once funded; $1,000 daily loss limit; flat by 4:59 pm ET every session",
+   "rule": "EOD 50K: $3,000 target, $2,000 maximum drawdown trailing the end-of-day balance, $1,000 daily loss limit (reviews of August 2026: Apex's site refuses automated reading); the trail's stop at the starting balance plus $100 once funded and the flat time of 4:59 pm ET are version 9's readings, not found again",
    "model": "as stated; flat at 20:00 UTC",
    "status": "modelled",
    "source": "https://apextraderfunding.com/help-center/",
    "basis": "secondary",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FTMO",
@@ -955,22 +1015,22 @@
   {
    "firm": "FundingPips",
    "area": "copying",
-   "rule": "only between your own FundingPips accounts; no copier services",
-   "model": "own entries on each account",
+   "rule": "copying between your own FundingPips accounts allowed; copier services and other people's trades prohibited; to an external account only with the FundingPips account as the master (descriptions of the help centre, which refuses automated reading)",
+   "model": "the plan's own entries on each account (no copier)",
    "status": "plan",
    "source": "https://help.fundingpips.com/",
-   "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "basis": "secondary",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "The5ers",
    "area": "copying",
-   "rule": "allowed across your own accounts",
-   "model": "the shared Nasdaq direction",
+   "rule": "the prohibited-practices page (12 October 2026) prohibits 'Trade coordination or copy trading with other traders or accounts' (its example: a group of traders sharing signals) and third-party EAs whose trades others hold; descriptions of The5ers' FAQ (secondary: its help centre refuses automated reading) allow copying between your own High Stakes accounts and from your own external accounts",
+   "model": "the plan's own entries on each account, in the shared Nasdaq direction (no copier), read as your own trading, which the FAQ's descriptions allow; confirmed with The5ers in writing before trading (Part IV)",
    "status": "plan",
-   "source": "https://the5ers.com/faqs/",
+   "source": "https://the5ers.com/faqs/prohibited-trading-practices/",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FXIFY",
@@ -978,59 +1038,59 @@
    "rule": "one active account of each size, challenge and funded alike (5K to 400K, $805,000 in all; rule of 25 November 2024); Classic up to 100K",
    "model": "at full allowance one Classic account of each size from 5K to 100K",
    "status": "modelled",
-   "source": "https://intercom.help/fxify/en/",
-   "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "source": "https://fxify.com/faqs/all-faqs/what-the-max-allocation/",
+   "basis": "snippet",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FXIFY",
    "area": "copying",
-   "rule": "between your own FXIFY accounts; from external accounts only with approval; third-party copying prohibited",
+   "rule": "copy trading allowed with prior approval; third-party copying prohibited",
    "model": "the shared Nasdaq direction across your own accounts",
    "status": "plan",
-   "source": "https://intercom.help/fxify/en/",
+   "source": "https://intercom.help/fxify/en/articles/14834680-the-2-phase-classic-account",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Fintokei",
    "area": "allocation",
-   "rule": "EUR 500,000 of accounts in total",
-   "model": "five 100K (USD 500,000, about EUR 444,000 at 1.1256)",
+   "rule": "400,000 EUR/USD of virtually funded ProTrader and ProTrader Swing accounts together (evaluations not counted)",
+   "model": "four 100K (USD 400,000; version 9 read EUR 500,000 and held five)",
    "status": "modelled",
-   "source": "https://support.fintokei.com/",
+   "source": "https://support.fintokei.com/en/articles/6538886-how-many-accounts-and-open-positions-can-i-have",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Fintokei",
    "area": "copying",
-   "rule": "your own trades across your own accounts; other people's signals prohibited",
+   "rule": "copying your own trades from other prop firms or brokers allowed; other people's trades, signals, third-party EAs and reversed copies prohibited",
    "model": "the shared Nasdaq direction",
    "status": "plan",
-   "source": "https://support.fintokei.com/",
+   "source": "https://support.fintokei.com/en/articles/10419735-copy-trading-and-eas-what-is-allowed-and-what-prohibited",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Hola Prime",
    "area": "allocation",
-   "rule": "$500,000",
+   "rule": "up to two $100K (or four $50K, or one $200K) Sim. Funded and Direct accounts; $800,000 forex and futures combined",
    "model": "two 100K",
    "status": "modelled",
-   "source": "https://holaprime.com/forex/faq/",
+   "source": "https://holaprime.com/forex/forex-trading-rules/",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Hola Prime",
    "area": "copying",
-   "rule": "only between your own Hola Prime accounts (funded: one master and one copier); copying from other prop firms' accounts prohibited",
+   "rule": "only between your own Hola Prime accounts (funded: one master and one copier); copying from accounts at other prop firms prohibited (accounts bought from 15 September 2026)",
    "model": "two accounts on a market no other account of the plan trades",
    "status": "plan",
-   "source": "https://holaprime.com/forex/faq/",
+   "source": "https://holaprime.com/trading-rules-list/trading-rules-prohibited-trading-practices",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Alpha Capital",
@@ -1038,239 +1098,239 @@
    "rule": "from your own external accounts with proof of ownership",
    "model": "the shared Nasdaq direction",
    "status": "plan",
-   "source": "https://help.alphacapitalgroup.uk/",
+   "source": "https://help.alphacapitalgroup.uk/en/articles/8786973-is-copy-trading-allowed",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "GFT",
    "area": "allocation",
    "rule": "$400,000 funded",
-   "model": "one account",
+   "model": "the recommended plan holds one; at the full allowance four 100K or two 200K, whichever is worth more in all (copying between a trader's own GFT accounts is allowed: the copying row)",
    "status": "modelled",
-   "source": "https://help.goatfundedtrader.com/",
+   "source": "https://help.goatfundedtrader.com/en/articles/10742191-what-is-the-maximum-simulated-capital-you-can-have-with-goatfundedtrader",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "GFT",
    "area": "copying",
-   "rule": "no duplicated trades or trade ideas between GFT accounts",
-   "model": "one GFT account (a second would need a market of its own: not modelled)",
+   "rule": "copying trades between your own accounts allowed, evaluation and funded alike; other traders', signal providers' and third-party services' trades prohibited",
+   "model": "the shared direction on every GFT account (version 9 read duplicated trades between GFT accounts as forbidden and held one account at the full allowance)",
    "status": "plan",
-   "source": "https://help.goatfundedtrader.com/",
+   "source": "https://help.goatfundedtrader.com/en/articles/10742118-what-are-prohibited-trading-practices",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FunderPro",
    "area": "allocation",
    "rule": "$200,000",
-   "model": "one account (200K where it is worth more)",
+   "model": "one account; at the full allowance two 100K or one 200K, whichever is worth more in all",
    "status": "modelled",
-   "source": "https://support.funderpro.com/",
+   "source": "https://support.funderpro.com/en/articles/377857-what-is-the-maximum-trading-capital-i-can-access-with-funderpro",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FunderPro",
    "area": "copying",
-   "rule": "no replicating trades across FunderPro accounts; no copying from accounts you do not own",
-   "model": "one account",
+   "rule": "copying allowed between your own accounts; between different people prohibited",
+   "model": "the shared direction on every FunderPro account (version 9 read 'no replicating trades across FunderPro accounts')",
    "status": "plan",
-   "source": "https://support.funderpro.com/",
+   "source": "https://support.funderpro.com/en/articles/378022-is-copy-trading-allowed",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FunderPro",
    "area": "risk per trade",
-   "rule": "at most 2%",
-   "model": "1.75% plus cost",
+   "rule": "a 2% risk rule is published for the Instant program ('[Instant] Risk Management Rules (2% Rule & Gambling Policy)'); the Classic pages read state no per-trade limit (secondary descriptions differ)",
+   "model": "1.75% plus cost, within 2% either way",
    "status": "not binding",
-   "source": "https://support.funderpro.com/",
+   "source": "https://support.funderpro.com/en/collections/879028-funded-accounts",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "BrightFunded",
    "area": "copying",
-   "rule": "allowed between your own accounts",
+   "rule": "allowed between your own accounts, at BrightFunded and at other firms or brokers; opposite positions across accounts prohibited",
    "model": "the shared Nasdaq direction",
    "status": "plan",
-   "source": "https://help.brightfunded.com/",
-   "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "source": "https://help.brightfunded.com/en/articles/9241709-is-copy-trading-allowed",
+   "basis": "snippet",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Blue Guardian",
    "area": "copying",
-   "rule": "your own accounts only",
+   "rule": "allowed between your own accounts (evaluation, funded and external)",
    "model": "the shared Nasdaq direction",
    "status": "plan",
    "source": "https://help.blueguardian.com/",
-   "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "basis": "snippet",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Maven",
    "area": "allocation",
-   "rule": "$200,000 per person",
-   "model": "one 100K",
+   "rule": "up to $200,000 of starting capital on funded accounts",
+   "model": "one 100K (the largest 2-Step size) in every portfolio: a second account would share the trader's $10,000 per 30 days (the withdrawal cap row), which the engine does not model across accounts",
    "status": "modelled",
    "source": "https://maventrading.com/faqs",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Topstep",
    "area": "allocation",
-   "rule": "5 Express Funded Accounts at once",
+   "rule": "up to 5 active Express Funded Accounts (sizes may be mixed); a Combine passed at the limit waits until one closes",
    "model": "five 50K (the optional futures layer)",
    "status": "modelled",
-   "source": "https://help.topstep.com/",
+   "source": "https://help.topstep.com/en/articles/8284215",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Apex",
    "area": "allocation",
-   "rule": "20 funded accounts",
+   "rule": "up to 20 Performance Accounts per trader (reviews of August 2026, consistent; Apex's site refuses automated reading)",
    "model": "twenty 50K (the optional futures layer)",
    "status": "modelled",
    "source": "https://apextraderfunding.com/help-center/",
    "basis": "secondary",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FTMO",
    "area": "fee, refund and split",
-   "rule": "EUR 540 for 100K ($607.82 at 1.1256), EUR 1,080 for 200K ($1,215.65); fee refunded with the first reward; 80% split (90% after scaling)",
+   "rule": "EUR 540 for 100K ($607.82 at 1.1256), EUR 1,080 for 200K ($1,215.65) at list price (a promotion of October 2026 sells the 100K at EUR 439; the price list does not render as text, the prices are version 9's reading and secondary listings); the 2-Step fee refunded with the first reward; 80% split (90% with the Scaling Plan or the Premium Programme)",
    "model": "as stated (scaling not modelled)",
    "status": "modelled",
-   "source": "https://ftmo.oanda.com/",
+   "source": "https://ftmo.com/en/faq/is-the-entry-fee-refunded/",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FundingPips",
    "area": "fee, refund and split",
-   "rule": "$499 for 100K (the largest Flex size); no registration-fee refund on Flex; 80% or 95%, chosen at purchase",
-   "model": "as stated",
+   "rule": "$555 for 100K at list price (the largest Flex size; version 9 recorded $499, a discounted price); no registration-fee refund on Flex; 80% or 95%, chosen at purchase",
+   "model": "$555",
    "status": "modelled",
-   "source": "https://help.fundingpips.com/",
-   "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "source": "https://fundingpips.com/2-step-flex",
+   "basis": "snippet",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "The5ers",
    "area": "fee, refund and split",
-   "rule": "New (10% / 5%) $491 for 100K, Classic (8% / 5%) $545; smaller New sizes $19 to $278; 80% split, rising with scaling",
+   "rule": "New (10% / 5%) $491 for 100K, Classic (8% / 5%) $545 (comparison listings of October 2026; the firm's price slider does not render as text); smaller New sizes $19 to $278; 80% split, rising with scaling",
    "model": "as stated; the plan never reaches the first scaling milestone, so the split stays 80%",
    "status": "modelled",
    "source": "https://the5ers.com/high-stakes/",
-   "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "basis": "secondary",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FXIFY",
    "area": "fee, refund and split",
-   "rule": "$549 for 100K (the largest Classic size); no refund on Classic; 80% every 14 days or 100% every 30 days, chosen at purchase",
-   "model": "as stated",
+   "rule": "Classic $549 for 100K, $379 for 50K, $199 for 25K, $119 for 15K, $89 for 10K, $59 for 5K; no refund on Classic; 80% every 14 days or 100% every 30 days, chosen at purchase",
+   "model": "as stated (version 9 left out the 15K size)",
    "status": "modelled",
    "source": "https://fxify.com/",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FundedNext",
    "area": "fee, refund and split",
-   "rule": "$549.99 for 100K, $1,049.99 for 200K (from August 2026); refunded with the first reward; 80%",
-   "model": "as stated",
-   "status": "modelled",
-   "source": "https://help.fundednext.com/",
+   "rule": "$549.99 for 100K, $1,099.99 for 200K (the product page; its help centre shows $999.99 for 200K); refunded with the first reward; 80%; 15% of both phases' profit targets paid once the Scale-Up criteria are met",
+   "model": "$549.99 and $1,099.99, the higher 200K figure (version 9: $1,049.99); the 15% reward left out (the plan does not scale)",
+   "status": "cautious",
+   "source": "https://fundednext.com/cfds/stellar-2-step",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Fintokei",
    "area": "fee, refund and split",
-   "rule": "$549 for 100K, $1,249 for 200K, $2,599 for 400K; returned with the first payout as a sign-up bonus; 80%",
-   "model": "as stated",
-   "status": "modelled",
-   "source": "https://support.fintokei.com/",
+   "rule": "$549 for 100K, $1,249 for 200K, $2,599 for 400K (ProTrader page); 80%; the English pages state no fee return; the Japanese plan pages return the fee 'via the Scaling Dojo', which the English FAQ says was retired on 21 January 2026 (a secondary review describes a return after 20 trading days and two payout requests)",
+   "model": "no fee return, the cautious reading (version 9: the fee with the first payout)",
+   "status": "cautious",
+   "source": "https://www.fintokei.com/protrader/",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Hola Prime",
    "area": "fee, refund and split",
-   "rule": "$409 to $599 for 100K, by payout option; returned 25% with each of the first four payouts; bi-weekly 80%",
-   "model": "$599, the upper end",
+   "rule": "$599 for the 100K 2-Step Prime (MyFXBook's listing; other listings $569; the firm's checkout does not render as text), monthly 95% at +20%; the fee refunded in full with the 4th successful payout; bi-weekly 80%",
+   "model": "$599, the higher listing; the fee with the 4th payout",
    "status": "cautious",
    "source": "https://holaprime.com/",
-   "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "basis": "secondary",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Alpha Capital",
    "area": "fee, refund and split",
-   "rule": "$497 for 100K, $997 for 200K; refund policy reported inconsistently; 80%",
-   "model": "no refund (the cautious reading)",
-   "status": "cautious",
-   "source": "https://alphacapitalgroup.uk/",
+   "rule": "$497 for 100K, $997 for 200K (secondary listings); 'All our evaluation plans are non-refundable' (help centre, 6 July 2026); 80% (90% with an add-on)",
+   "model": "no refund",
+   "status": "modelled",
+   "source": "https://help.alphacapitalgroup.uk/en/articles/8420592-is-it-possible-to-receive-a-refund-for-the-evaluation-fees-once-i-have-completed-my-evaluation",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FunderPro",
    "area": "fee, refund and split",
-   "rule": "$539 for 100K at list price (often 20% off), $989 for 200K; refunded with the first reward; 80%",
+   "rule": "$539 for 100K (funderpro.com: 'will be processed with 1st reward'), $989 for 200K (version 9 reading); 80%",
    "model": "the list price; refund with the first payout",
    "status": "modelled",
    "source": "https://funderpro.com/",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "GFT",
    "area": "fee, refund and split",
-   "rule": "$524 for 100K, $974 for 200K (version 9 reading); the fee is called 'refundable' on GFT's how-it-works page, but neither its 2-Step Standard page (updated 5 October 2026) nor its rewards page (9 October 2026) says when, and third-party descriptions conflict (the first, third or fourth payout, or after passing); 80% split",
+   "rule": "$628 for 100K, $1,198 for 200K at list price (GFT's pricing table, raised on 3 August 2026; version 9 recorded $524 and $974); the fee is called 'refundable' on GFT's how-it-works page, but neither its 2-Step Standard page (updated 5 October 2026) nor its rewards page (9 October 2026) says when, and third-party descriptions conflict (the first, third or fourth payout, or after passing); 80% split",
    "model": "no fee refund (the cautious reading; version 9 refunded the fee with the first payout)",
    "status": "cautious",
-   "source": "https://help.goatfundedtrader.com/2-step-standard.html",
+   "source": "https://www.goatfundedtrader.com/model",
    "basis": "page",
    "read": "12 Oct 2026"
   },
   {
    "firm": "BrightFunded",
    "area": "fee, refund and split",
-   "rule": "EUR 497 for 100K ($559.42 at 1.1256), EUR 997 for 200K ($1,122.22); refund only with a paid add-on; 80%",
-   "model": "no refund (the add-on is not bought)",
+   "rule": "EUR 497 for 100K ($559.42 at 1.1256), EUR 997 for 200K ($1,122.22) (2-Step Classic page); refund only with a paid add-on; up to 90%; a 15% evaluation profit reward added to the next funded account after 10% growth",
+   "model": "no refund (the add-on is not bought); the evaluation profit reward left out",
    "status": "modelled",
-   "source": "https://help.brightfunded.com/",
+   "source": "https://brightfunded.com/2-step-classic",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Blue Guardian",
    "area": "fee, refund and split",
-   "rule": "$579 for 100K at list price (often half price with a code), $1,162 for 200K; refunded after the fourth payout; 85%",
-   "model": "the list price; refund with the fourth payout",
+   "rule": "$463 for 100K, $930 for 200K at list price (the 2 Step Standard product list on blueguardian.com; a code takes 35% off); refunded after the fourth payout; 85% (90% with an add-on)",
+   "model": "$463 and $930 (version 9: $579 and $1,162)",
    "status": "modelled",
-   "source": "https://help.blueguardian.com/",
+   "source": "https://blueguardian.com/",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Maven",
    "area": "fee, refund and split",
-   "rule": "$440 for 100K (the largest 2-Step size); refunded with the third payout; 80%",
+   "rule": "$440 for 100K (the largest 2-Step size; $396 with a coupon); refunded with the third withdrawal; 80%",
    "model": "as stated",
    "status": "modelled",
-   "source": "https://maventrading.com/faqs",
+   "source": "https://maventrading.com/",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Topstep",
@@ -1279,34 +1339,34 @@
    "model": "as stated",
    "status": "modelled",
    "source": "https://help.topstep.com/",
-   "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "basis": "secondary",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Apex",
    "area": "fee, refund and split",
-   "rule": "$550 at list price; public codes of 80-90% off for most of 2026 (about $55); $99 activation when passed; 100% split",
+   "rule": "$490 at list price (a guide of August 2026; the firm's checkout does not render as text); public codes of 80-90% off for most of 2026 (about $55); $99 activation when passed (EOD); 100% split",
    "model": "$55 and $99 (a discount code assumed; at the list price the futures layer is worth less)",
    "status": "assumption",
    "source": "https://apextraderfunding.com/",
    "basis": "secondary",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "every firm",
    "area": "minimum payouts",
-   "rule": "FTMO $20 (bank transfer); FundingPips 1% of the account; FXIFY $50; Fintokei 100 in the account's currency; GFT $100; FunderPro $100 of profit; Blue Guardian $100; Alpha Capital $100 of profit (version 8 reading; not stated on the page read on 11 October); The5ers $150 after the split; Topstep $125; Apex $500; FundedNext $20 ('a reward under $20 cannot be requested', 29 September 2026); Hola Prime, BrightFunded and Maven state none on the pages read",
-   "model": "each applied to the trader's share after the split, the stricter reading where a page does not say (and stricter than a minimum stated as profit), and as profit before the split; none where none is stated (version 10: version 9 had no FTMO minimum)",
+   "rule": "FTMO $20 (bank transfer); FundedNext $20 ('a reward under $20 cannot be requested'); FundingPips 1% of the account; FXIFY $50; Hola Prime $50 (bank wire or crypto); Fintokei 100 in the account's currency; GFT $100; Blue Guardian $100; Alpha Capital and FunderPro $100 of profit (Alpha: '$100 gross, $80 net'); The5ers $150 after the split; Topstep $125; Apex $500; BrightFunded and Maven state none on the pages read",
+   "model": "each applied to the trader's share after the split and any payout fee, the stricter reading where a page does not say which; where a page states the minimum as profit (Alpha Capital, FunderPro), as that profit ($80 of share); none where none is stated (version 10: version 9 had no minimum at FTMO, FundedNext or Hola Prime, and applied Alpha's and FunderPro's after the split)",
    "status": "cautious",
    "source": "the firms' payout pages (rows above)",
    "basis": "page",
-   "read": "11 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "every firm",
    "area": "payout fees",
-   "rule": "firm fees on every payout: GFT 3% after the split (rewards page, 9 October 2026), The5ers 3.5% per cash withdrawal (24 August 2026), FundedNext up to 3.5% on every request (29 September 2026), Blue Guardian 3% (31 August 2026); stated as none: FXIFY (its blog), BrightFunded ('no additional fees'; banks or networks may take $5-$50), FTMO (bank and network costs only), Fintokei (the firm covers withdrawal fees, except 2.5% plus EUR 10-20 on crypto), Hola Prime (bank wire and crypto; $25 by Rise); not stated on the pages read: FundingPips (crypto rewards carry service, exchange and network charges; Rise and bank from $500), Alpha Capital, FunderPro, Maven ($20 by Rise; bank transfer where available), Topstep ($30 by ACH or wire; Wise and Aeropay free), Apex (a third-party claim of 15% on the first payout and 4% after, not found on its pages)",
-   "model": "the four firm fees are modelled on every withdrawal, the refund included, with minimums checked after them; where a firm offers a method without a charge the plan uses it, and method costs (banks, networks, currency conversion) are not modelled",
+   "rule": "firm fees on every payout: GFT 3% after the split (rewards page, 9 October 2026), The5ers 3.5% per cash withdrawal (24 August 2026), FundedNext up to 3.5% on every request (29 September 2026), Blue Guardian 3% (31 August 2026), Hola Prime 2.5% on every method, at least $5 by crypto and $25 by Rise or bank wire (its rules pages, 12 October 2026; its payout FAQ still says bank wire and crypto are free); stated as none: FXIFY (its blog), BrightFunded ('no additional fees'; banks or networks may take $5-$50), FTMO (bank and network costs only), Fintokei (the firm covers withdrawal fees, except 2.5% plus EUR 10-20 on crypto); not stated on the pages read: FundingPips (crypto rewards carry service, exchange and network charges; Rise and bank from $500), Alpha Capital, FunderPro, Maven ($20 by Rise; direct bank transfer only in four countries; 'other options', which reviews describe as crypto at network fees only), Topstep ($30 by ACH or wire; Wise and Aeropay free), Apex (a third-party claim of 15% on the first payout and 4% after, not found on its pages)",
+   "model": "the five firm fees are modelled on every withdrawal, the refund included (Hola Prime's at least $5), with minimums checked after them; where a firm offers a method without a charge the plan uses it, and method costs (banks, networks, currency conversion) are not modelled",
    "status": "cautious",
    "source": "the firms' payout pages (rows above)",
    "basis": "page",
@@ -1318,9 +1378,9 @@
    "rule": "no hedging across accounts or firms",
    "model": "one direction per market group across all accounts (shared-direction rule)",
    "status": "plan",
-   "source": "the firms' prohibited-practice pages",
+   "source": "the firms' prohibited-practice pages read on 12 October 2026 (rows above)",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "every firm",
@@ -1328,25 +1388,25 @@
    "rule": "accounts only in the trader's own name",
    "model": "one person's accounts",
    "status": "plan",
-   "source": "the firms' terms",
+   "source": "the firms' prohibited-practice and copying pages read on 12 October 2026 (rows above)",
    "basis": "page",
-   "read": "4 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "every firm with minimum trading days",
    "area": "minimal trades",
-   "rule": "FTMO, FXIFY, FundedNext, FunderPro, BrightFunded (a trade open 60 seconds), Topstep and Apex count a day on which a position is opened and state no minimum volume",
-   "model": "a missing day after the target is completed with one minimal position (0.01 lot or one micro contract) held 3 minutes; that the firms accept it is an assumption (Fintokei and Alpha Capital object to such trades and get none); the plan is also measured without fillers",
+   "rule": "FTMO, FXIFY, FundedNext, BrightFunded (a trade open 60 seconds), Topstep and Apex count a day on which a position is opened and state no minimum volume; Fintokei and Alpha Capital object to minimal trades that complete days, and FunderPro (abrupt lot-size changes) and Hola Prime (unexplained deviations in position size) to the size jump such a trade makes",
+   "model": "at the first six, a missing day after the target is completed with one minimal position (0.01 lot or one micro contract) held 3 minutes; that those firms accept it is an assumption; Fintokei, Alpha Capital, FunderPro and Hola Prime get no fillers (missing days are ordinary trades, one a day; version 9 gave FunderPro and Hola Prime fillers, and this row did not list Hola Prime); the plan is also measured without fillers",
    "status": "assumption",
-   "source": "the firms' trading-day definitions (programme rows above)",
+   "source": "the firms' trading-day definitions and prohibited-practice pages (programme rows above)",
    "basis": "page",
-   "read": "4 Oct 2026 (version 9 reading)"
+   "read": "12 Oct 2026"
   }
  ],
  "counts": {
   "modelled": 61,
-  "plan": 44,
-  "cautious": 14,
+  "plan": 47,
+  "cautious": 17,
   "assumption": 3,
   "not binding": 12
  }

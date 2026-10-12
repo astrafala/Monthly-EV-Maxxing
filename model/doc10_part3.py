@@ -138,8 +138,13 @@ def size_text():
         d = paired(REC, "Recommended, FTMO as 2 x 200K")
         out += (f"<p><strong>FTMO, 4 &times; 100K or 2 &times; 200K.</strong> The same fee per dollar and the same rules. The paired difference of the whole portfolio's first year on the same {d[2]:,} paths is "
                 f"{sgn(d[0])} &plusmn; {usd(d[1])} a month ({iv_words(d[0], d[1])}). In the model the four 100K accounts start together and take the same trades, and they stay in step until their outcomes first differ; "
-                "four 100K accounts and two 200K accounts (both $400,000) therefore bring in nearly the same cash, and neither is smoother. Two accounts make half as many payout requests, which matters only if refusals are a per-request risk (Chapter [[CH_REF]]). The plan uses four 100K accounts for the headline.</p>")
+                f"four 100K accounts and two 200K accounts (both $400,000) therefore bring in nearly the same cash; the standard deviation of a first year's cash per month is {usd(_sd12(REC))} with four 100K accounts and {usd(_sd12('Recommended, FTMO as 2 x 200K'))} with two 200K accounts (the whole portfolio, the rest unchanged). "
+                "Two accounts make half as many payout requests, which matters only if refusals are a per-request risk (Chapter [[CH_REF]]). The plan uses four 100K accounts for the headline.</p>")
     return out
+
+def _sd12(p):
+    """the sample standard deviation over lives of a first year's cash per month"""
+    return float(np.std([np.mean(r["monthly"][:12]) for r in lives(p)], ddof=1))
 
 # ------------------------------------------------------------------ portfolios
 def portf_table():
@@ -370,7 +375,7 @@ def refusal_text():
     txt = f"<p>The recommended plan's accounts make about {sum(d['req'] for d in pf.values()):.1f} payout requests a month. "
     if kept.get("tiered") is not None and kept.get("harsh") is not None:
         txt += f"In the tiered scenario it keeps {pct(kept['tiered'], 0)} of its first-year value on the same paths, in the harsh one {pct(kept['harsh'], 0)}. "
-    txt += "Requests under the 40% policy are smaller and more frequent than under bolder settings, so each firm sees more of them; the scenarios price that.</p>"
+    txt += "Every request carries its firm's refusal chance, so a firm the plan asks for payouts more often is more exposed; the request rates in the table are what the scenarios price.</p>"
     return tb + txt
 
 def ref_example():
@@ -515,7 +520,7 @@ def part4(ch_run, ch_risk):
 <section class="chapter"><span class="eyebrow">Chapter {ch_risk}</span><h1>What could make the numbers wrong</h1>
 <h2>{ch_risk}.1 Higher trading costs</h2>
 {table(["Programme", "Market", "EV/month: cost &times; 1", "&times; 1.5", "&times; 2", "Days per attempt &times; 1", "&times; 2"], cost_rows(), cls="small", num_from=2,
-       cap="One 100K account at the plan's setting with a coin-flip direction, paths 1201&ndash;1204, 3,000 attempts on each (12,000 per cell), the same seeds in each row: random-start ratios (9.1), which rank and compare but are not the continuing-slot rates of Chapter [[CH_ALLOC]]. Higher costs lower the value of an attempt and also shorten attempts (more fail, sooner), which is why a value per month can fall less than proportionally.")}
+       cap="One 100K account at the plan's setting with a coin-flip direction, paths 1201&ndash;1204, 3,000 attempts on each (12,000 per cell), the same seeds in each row: random-start ratios (8.3), which rank and compare but are not the continuing-slot rates of Chapter [[CH_ALLOC]]. Higher costs lower the value of an attempt and also shorten attempts (more fail, sooner), which is why a value per month can fall less than proportionally.")}
 <p>For the whole recommended portfolio, full portfolio runs (not ratios) give {usd(c15) if c15 is not None else '&ndash;'} a month at 1.5 times the costs and {usd(c20) if c20 is not None else '&ndash;'} at twice, against {usd(base200) if base200 is not None else '&ndash;'} for the same 200 lives at the assumed costs (Section [[CH_LOCK]].7; the {len(lives(REC)):,}-life headline is {usd(rec['ev'])}, a larger sample of the same quantity). <strong>Measure your real costs in the first week</strong> and redo the settings if they differ from 3.1 by more than a quarter.</p>
 <h2>{ch_risk}.2 Behavioural rules the model cannot state</h2>
 <p>These rules are applied at the firm's discretion. The figures in this document assume the plan's trading is not judged to break them; if it is, the affected payouts are lost, which is not the same as the random refusals of Chapter [[CH_REF]]:</p>
@@ -531,7 +536,7 @@ def part4(ch_run, ch_risk):
 <h2>{ch_risk}.4 Spreads, gaps and news</h2>
 <p>The engine's cost is an average. Spreads widen at the daily break (outside the plan's hours), at the open and around news. Since version 10 the plan's news blocks are simulated at every account and stage where the firm restricts news (6.5), on a calendar built from each agency's usual release pattern (no official calendar exists for the simulated years); wider spreads just outside the blocked bars, and stops filled beyond their level where the plan trades through a release (where the firm allows it), remain outside the model, and the cost stress of {ch_risk}.1 is the only allowance for them.</p>
 <h2>{ch_risk}.5 Rules change</h2>
-<p>Every rule the model uses is in the inventory of Appendix [[APP_INV]], with the page it was read from and the date: 11&ndash;12 October 2026 for most rows; rows from the readings of 4&ndash;5 October 2026 (version 9) are marked. Leverage, consistency rules, payout schedules, prices and per-person limits change often. Recheck before buying, and rerun the programme's optimisation (optimize_v10.py) when a rule that enters the model changes.</p>
+<p>Every rule the model uses is in the inventory of Appendix [[APP_INV]], with the page it was read from and the date it was read: {inv_read_sentence()}. Leverage, consistency rules, payout schedules, prices and per-person limits change often. Recheck before buying, and rerun the programme's optimisation (optimize_v10.py) when a rule that enters the model changes.</p>
 <h2>{ch_risk}.6 The model itself</h2>
 <ul>
 <li><strong>Zero skill, zero drift.</strong> If entries are systematically late or fills worse, the edge is negative; the cost stress is the guide. A real trend in a market (the Nasdaq's long-run rise) is left out of the model (3.2); the plan's direction rule is symmetric, but over a given year a trend can favour or hurt it.</li>

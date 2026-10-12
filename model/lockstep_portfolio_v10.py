@@ -96,7 +96,19 @@ def one_big(prog, instr):
     if b and b["EV_month"] > s["EV_month"]: return S(prog, instr, size=200_000)
     return S(prog, instr)
 
-FXIFY_SIZES = (50_000, 25_000, 10_000, 5_000)
+def fill_cap(prog, instr, cap):
+    """a firm's allowance filled with 100K accounts or with 200K accounts, whichever is worth more in all (the firms
+    concerned allow a trader's own accounts to trade alike: rules_inventory_v10.json)"""
+    s = row(prog, instr)
+    try:
+        b = row(prog, instr, 200_000)
+    except AssertionError:
+        b = None
+    n100, n200 = int(cap // 100_000), int(cap // 200_000)
+    if b and n200 and n200 * b["EV_month"] > n100 * s["EV_month"]: return S(prog, instr, n=n200, size=200_000)
+    return S(prog, instr, n=n100)
+
+FXIFY_SIZES = (50_000, 25_000, 15_000, 10_000, 5_000)     # every Classic size below 100K (fxify.com, 12 October 2026)
 def FXIFY_ALL():
     out = S(FX[0], FX[1])
     if FX[0] == "FXIFY Two Phase Classic (100%, 30 days)" and FX[1] == "US100":
@@ -117,7 +129,7 @@ def TIER_A(ftmo200=False):
     return ((S("FTMO 2-Step", "US100", n=2, size=200_000) if ftmo200 else S("FTMO 2-Step", "US100", n=4)) + S(FP[0], FP[1], n=4) +
             S(T5[0], "US100") + FXIFY_ALL() + S("FundedNext Stellar 2-Step", FN_I, size=FN_SIZE))
 def TIER_B():
-    return S("Fintokei ProTrader", "US100", n=5) + S("Hola Prime 2-Step Prime (bi-weekly 80%)", HP_I, n=2)
+    return S("Fintokei ProTrader", "US100", n=4) + S("Hola Prime 2-Step Prime (bi-weekly 80%)", HP_I, n=2)   # Fintokei: 400,000 EUR/USD of funded ProTrader (12 Oct 2026)
 TIER_D = [("FunderPro Classic", FPR[1]), ("Alpha Capital Pro 10%", "US100"), ("GFT 2-Step Standard", GF[1]),
           ("BrightFunded 2-Step Classic", "US100"), ("Blue Guardian 2-Step", "US100"), ("Maven 2-Step", "US100")]
 def TIER_D_SINGLE():
@@ -126,9 +138,11 @@ def TIER_D_FULL():
     out = []
     for p, i in TIER_D:
         if not pos(p, i): continue
-        if p == "Alpha Capital Pro 10%": out += one_big(p, i) + S(p, i)
-        elif p in ("BrightFunded 2-Step Classic", "Blue Guardian 2-Step"): out += S(p, i, n=4)
-        else: out += one_big(p, i)
+        if p == "Alpha Capital Pro 10%": out += one_big(p, i) + S(p, i)          # $300,000 per strategy
+        elif p in ("BrightFunded 2-Step Classic", "Blue Guardian 2-Step", "GFT 2-Step Standard"): out += fill_cap(p, i, 400_000)
+        elif p == "FunderPro Classic": out += fill_cap(p, i, 200_000)
+        else: out += one_big(p, i)     # Maven: one account (its $10,000 per 30 days is per trader, accounts together:
+                                       # a second account would share it, which the engine does not model across accounts)
     return out
 def FUTURES():
     out = []

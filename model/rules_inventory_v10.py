@@ -13,7 +13,7 @@ status:  modelled     the engine applies the rule as stated
 basis:   page         the firm's own help centre, FAQ or rules page, read directly
          snippet      the firm's own page as returned by a search engine (the page itself refused automated reading)
          secondary    a reviewer's or comparison site's description, used only where no firm page could be read
-Read: 11-12 October 2026 unless stated (version 8 and 9 readings, 4-5 October 2026, are marked).
+Read: 11-12 October 2026 (every row; the first version 10 inventory had carried over version 9's readings of 4 October 2026).
 """
 import json
 
@@ -163,10 +163,11 @@ U = "https://help.alphacapitalgroup.uk/en/articles/"
 r("Alpha Capital", "targets and limits", "10% / 5%; daily loss 5% of the day's starting balance; 10%; 3 days", "as stated",
   "modelled", U + "8420429-alpha-pro-8-10", basis="snippet", read="4 Oct 2026")
 r("Alpha Capital", "payouts", "bi-weekly: first request 14 days after the first funded trade, 5 trading days; all trades closed "
-  "before a request; paid within 2 business days; the account locked until the balance is reset; at least $100 of profit "
-  "(version 8 reading; not stated on the page read on 11 October); a 'performance fee bonus' added on the 4th successful "
-  "withdrawal (amount not stated); no payout fee stated", "locked 2 working days; $100 applied to the trader's share; the bonus "
-  "not modelled (the cautious side)", "modelled", U + "6933755-how-do-i-get-paid-performance-fees")
+  "before a request; paid within 2 business days; the account locked until the balance is reset; 'The minimum performance fee "
+  "amount is $100 ($100 gross, $80 net)' (bi-weekly article, 7 July 2026); a discretionary bonus of 0.25% of the initial size "
+  "on the fourth request; no payout fee stated", "locked 2 working days; $100 of profit before the split, $80 of share after it "
+  "(version 9: $100 after the split); the discretionary bonus not modelled", "modelled", U + "10570531-bi-weekly-performance-fee",
+  read="12 Oct 2026")
 r("Alpha Capital", "lot limit", "qualified accounts: at most 40 open lots per $100K (80 at $200K), aggregate; first breach: "
   "the profit from the excess not paid; second: account deactivated", "every funded position at most the limit (one position "
   "per account at a time); index lots counted at 1 unit a lot (the most lots any common contract size gives)", "modelled",
@@ -212,6 +213,20 @@ r("FunderPro", "margin", "funded accounts: at most 20% of the starting balance a
   "modelled", U + "421458", read="4 Oct 2026")
 r("FunderPro", "news (funded)", "no entry within 2 minutes of a high-impact release without the Swing add-on; challenges free",
   "flat around releases (funded)", "plan", "https://funderpro.com/terms-conditions/", basis="snippet")
+r("FunderPro", "lot sizes", "'Abrupt or unjustified changes in lot sizes may be deemed reckless behavior or gambling', for example "
+  "'trading one (1) lot followed by ten (10) lots without a clear strategic basis'; lot sizes 'reasonably aligned' with the "
+  "strategy and the balance (Trading Consistency and Lot Size Policy, 4 June 2026)", "every position sized by one stated rule "
+  "(the risk share over the stop); no filler trades at FunderPro (version 10: version 9 completed missing days with 0.01-lot "
+  "fillers, the kind of jump the policy names); the firm's judgement is not modelled", "plan",
+  U + "696134-trading-consistency-and-lot-size-policy", read="12 Oct 2026")
+r("FunderPro", "consistency", "Classic phase 1, phase 2 and funded stages: 'No Consistency Rule' (One-Phase 40%, Pro 45%)",
+  "none applied", "modelled", U + "377852-what-is-the-consistency-rule-and-how-does-it-affect-my-challenge", read="12 Oct 2026")
+r("FunderPro", "inactivity", "no trade placed or closed for 30 consecutive days: the account is failed (challenge and funded)",
+  "never 25 days without a trade", "plan", U + "377851-how-does-the-inactivity-rule-affect-my-challenge", read="12 Oct 2026")
+r("FunderPro", "market closures", "without the Swing add-on, every position closed at least 2 hours before a market closure of 2 "
+  "hours or more (weekends, holidays, halts); not for daily pauses", "flat every day at 20:00 UTC and over weekends; holidays "
+  "are not on the model's calendar: Part IV closes positions 2 hours before a holiday closure", "plan",
+  U + "531445-position-closure-requirements-before-extended-market-closures", read="12 Oct 2026")
 
 # ---------------------------------------------------------------- BrightFunded 2-Step Classic
 U = "https://help.brightfunded.com/en/articles/"
@@ -223,7 +238,7 @@ r("BrightFunded", "news (funded)", "profit of trades opened or closed (stops and
   "news deducted", "flat around releases (funded)", "plan", U + "9241694-can-i-trade-news", basis="snippet")
 r("BrightFunded", "inactivity", "a trade (held a minute) within 30 days of the last close, or the account is deactivated",
   "never 25 days without a trade", "plan", U + "11774572-inactivity-rule-policy", basis="snippet")
-r("BrightFunded", "allocation", "$400,000 funded per trader; evaluations unlimited", "four 100K accounts", "modelled",
+r("BrightFunded", "allocation", "$400,000 funded per trader; evaluations unlimited", "the recommended plan holds one; at the full allowance four 100K or two 200K, whichever is worth more in all", "modelled",
   "https://brightfunded.com/terms-and-conditions", basis="snippet")
 
 # ---------------------------------------------------------------- Blue Guardian 2-Step Standard
@@ -243,20 +258,32 @@ r("Blue Guardian", "payouts", "85% (90% with an add-on); after the first payout,
   "fourth payout (version 9 reading; the payouts page does not mention it)", "locked until processed (1 working day); every "
   "payout, the refund included, less 3% (version 10: version 9 had neither the lock nor the fee); $100 after the split and the "
   "fee", "modelled", "https://help.blueguardian.com/en/articles/9660857-how-do-payouts-work", read="12 Oct 2026")
-r("Blue Guardian", "allocation", "$400,000 across funded accounts", "four 100K accounts", "modelled",
+r("Blue Guardian", "allocation", "$400,000 across funded accounts", "the recommended plan holds one; at the full allowance four 100K or two 200K, whichever is worth more in all", "modelled",
   "https://blueguardian.com/blogs/complete-scaling-path-for-funded-traders", basis="page")
 
 # ---------------------------------------------------------------- Maven 2-Step
 U = "https://maventrading.com/faqs"
 r("Maven", "targets and limits", "8% / 5%; daily 4% of the higher of equity and balance at 00:00 UTC; 8% static; 3 profitable "
   "days (+0.5%) per phase and per withdrawal", "as stated", "modelled", U)
-r("Maven", "payouts", "every 10 business days after the first trade; $10,000 per rolling 30 days per trader; above $5,000 of "
-  "profit the best day or trade at most 50% of profit; refund with the third withdrawal; processing time not stated",
-  "funded profit kept at most $4,900 in every payout cycle ('total profit' read as the cycle's profit: the FAQ's sentence ends "
-  "'in the funded stage payout cycle'; if it meant the account's lifetime profit, from the second cycle a cycle's profit would "
-  "be cut to twice its best day, which the model does not apply); closed profit in any 30 days at most $10,000; requests every "
-  "14 calendar days (10 business days; public holidays not modelled); pending 3 working days (assumed)", "cautious", U,
-  read="12 Oct 2026")
+r("Maven", "payouts", "a withdrawal every 10 business days after the first trade; the fee refunded in full 'on the third "
+  "withdrawal'; by direct bank transfer only from South Africa, Nigeria, Kenya and Ghana, elsewhere 'through Rise or other "
+  "options' (the others not named), 'Payments via Rise incur a $20 withdrawal fee'; the account reset to its starting balance "
+  "after each payout; processing time of a funded payout not stated", "requests every 14 calendar days (10 business days; "
+  "public holidays not modelled); the fee with the third payout; $20 from every payout, the refund's included (version 10: "
+  "version 9 had none); pending 3 working days (assumed)", "cautious", U, read="12 Oct 2026")
+r("Maven", "withdrawal cap", "'a maximum withdrawal of $10,000 per 30-day rolling cycle (per trader)', a trader's accounts "
+  "treated as one; 'calculated from the date on which you close the profit'; 'Any profits generated over the $10,000 limit "
+  "will be voided'; the cycle 'calculated from your first available withdrawal date'", "closed profit in every 30-day window "
+  "at most $10,000: no win is placed that could take a window above it, which meets the rule whether the $10,000 counts the "
+  "profit or the amount paid and however the cycles are anchored; one Maven account in every portfolio, so the trader's cap "
+  "is the account's", "cautious", U, read="12 Oct 2026")
+r("Maven", "consistency above $5,000", "'If your total profit exceeds $5,000, your best trading day (day counted between two "
+  "singular trades, with not 24h between closing trade 1 and opening trade 2) or singular trade ... may not exceed 50% of your "
+  "profit in the funded stage payout cycle'; above it the profit is 'contracted to the 50% mark'", "funded profit never above "
+  "$4,900, so the rule never applies. 'Total profit' is read as the profit since the account was last reset, which it is "
+  "after every payout (the less strict of two readings: if it meant the profit of all cycles together, the rule would apply "
+  "from the second cycle and would cut a cycle's profit whenever one 'day' held more than half of it, as a week of daily "
+  "trades, one 'day' under that definition, usually would; the model does not apply that)", "plan", U, read="12 Oct 2026")
 r("Maven", "gambling", "large bets at a reward:risk of 1:1.25 or lower", "every position's take-profit at least 1.5 times as far "
   "as its stop, checked on the position actually placed", "plan", U)
 r("Maven", "news", "no opening or closing 2 minutes either side of a red-folder release, take-profits included; evaluations and "
@@ -393,36 +420,239 @@ r("Topstep", FS, "$49 a month (Standard path); a reset after a breach $49; $149 
 r("Apex", FS, "$550 at list price; public codes of 80-90% off for most of 2026 (about $55); $99 activation when passed; 100% split",
   "$55 and $99 (a discount code assumed; at the list price the futures layer is worth less)", "assumption",
   "https://apextraderfunding.com/", basis="secondary", read=V9)
-r("every firm", "minimum payouts", "FTMO $20 (bank transfer); FundingPips 1% of the account; FXIFY $50; Fintokei 100 in the "
-  "account's currency; GFT $100; FunderPro $100 of profit; Blue Guardian $100; Alpha Capital $100 of profit (version 8 reading; "
-  "not stated on the page read on 11 October); The5ers $150 after the split; Topstep $125; Apex $500; FundedNext $20 ('a reward "
-  "under $20 cannot be requested', 29 September 2026); Hola Prime, BrightFunded and Maven state none on the pages read", "each applied to the trader's share after the split, the stricter "
-  "reading where a page does not say (and stricter than a minimum stated as profit), and as profit before the split; none "
-  "where none is stated (version 10: version 9 had no FTMO minimum)", "cautious", "the firms' payout pages (rows above)")
+r("every firm", "minimum payouts", "FTMO $20 (bank transfer); FundedNext $20 ('a reward under $20 cannot be requested'); "
+  "FundingPips 1% of the account; FXIFY $50; Hola Prime $50 (bank wire or crypto); Fintokei 100 in the account's currency; GFT "
+  "$100; Blue Guardian $100; Alpha Capital and FunderPro $100 of profit (Alpha: '$100 gross, $80 net'); The5ers $150 after the "
+  "split; Topstep $125; Apex $500; BrightFunded and Maven state none on the pages read", "each applied to the trader's share "
+  "after the split and any payout fee, the stricter reading where a page does not say which; where a page states the minimum as "
+  "profit (Alpha Capital, FunderPro), as that profit ($80 of share); none where none is stated (version 10: version 9 had no "
+  "minimum at FTMO, FundedNext or Hola Prime, and applied Alpha's and FunderPro's after the split)", "cautious",
+  "the firms' payout pages (rows above)", read="12 Oct 2026")
 
 r("every firm", "payout fees", "firm fees on every payout: GFT 3% after the split (rewards page, 9 October 2026), The5ers 3.5% per "
   "cash withdrawal (24 August 2026), FundedNext up to 3.5% on every request (29 September 2026), Blue Guardian 3% (31 August "
-  "2026); stated as none: FXIFY (its blog), BrightFunded ('no additional fees'; banks or networks may take $5-$50), FTMO (bank "
-  "and network costs only), Fintokei (the firm covers withdrawal fees, except 2.5% plus EUR 10-20 on crypto), Hola Prime (bank "
-  "wire and crypto; $25 by Rise); not stated on the pages read: FundingPips (crypto rewards carry service, exchange and network "
-  "charges; Rise and bank from $500), Alpha Capital, FunderPro, Maven ($20 by Rise; bank transfer where available), Topstep "
-  "($30 by ACH or wire; Wise and Aeropay free), Apex (a third-party claim of 15% on the first payout and 4% after, not found "
-  "on its pages)", "the four firm fees are modelled on every withdrawal, the refund included, with minimums checked after "
-  "them; where a firm offers a method without a charge the plan uses it, and method costs (banks, networks, currency "
-  "conversion) are not modelled", "cautious", "the firms' payout pages (rows above)", read="12 Oct 2026")
+  "2026), Hola Prime 2.5% on every method, at least $5 by crypto and $25 by Rise or bank wire (its rules pages, 12 October 2026; "
+  "its payout FAQ still says bank wire and crypto are free); stated as none: FXIFY (its blog), BrightFunded ('no additional "
+  "fees'; banks or networks may take $5-$50), FTMO (bank and network costs only), Fintokei (the firm covers withdrawal fees, "
+  "except 2.5% plus EUR 10-20 on crypto); not stated on the pages read: FundingPips (crypto rewards carry service, exchange and "
+  "network charges; Rise and bank from $500), Alpha Capital, FunderPro, Maven ($20 by Rise; direct bank transfer only in four "
+  "countries; 'other options', which reviews describe as crypto at network fees only), Topstep ($30 by ACH or wire; Wise and "
+  "Aeropay free), Apex (a third-party claim of 15% on the first payout and 4% after, not found on its pages)", "the five firm "
+  "fees are modelled on every withdrawal, the refund included (Hola Prime's at least $5), with minimums checked after them; where "
+  "a firm offers a method without a charge the plan uses it, and method costs (banks, networks, currency conversion) are not "
+  "modelled", "cautious", "the firms' payout pages (rows above)", read="12 Oct 2026")
 
 # ---------------------------------------------------------------- every firm
 r("every firm", "conflicting positions", "no hedging across accounts or firms", "one direction per market group across all "
   "accounts (shared-direction rule)", "plan", "the firms' prohibited-practice pages", read="4 Oct 2026")
 r("every firm", "identity", "accounts only in the trader's own name", "one person's accounts", "plan", "the firms' terms", read="4 Oct 2026")
-r("every firm with minimum trading days", "minimal trades", "FTMO, FXIFY, FundedNext, FunderPro, BrightFunded (a trade open 60 "
-  "seconds), Topstep and Apex count a day on which a position is opened and state no minimum volume", "a missing day after the "
-  "target is completed with one minimal position (0.01 lot or one micro contract) held 3 minutes; that the firms accept it is an "
-  "assumption (Fintokei and Alpha Capital object to such trades and get none); the plan is also measured without fillers",
-  "assumption", "the firms' trading-day definitions (programme rows above)", read="4 Oct 2026 (version 9 reading)")
+r("every firm with minimum trading days", "minimal trades", "FTMO, FXIFY, FundedNext, BrightFunded (a trade open 60 seconds), "
+  "Topstep and Apex count a day on which a position is opened and state no minimum volume; Fintokei and Alpha Capital object to "
+  "minimal trades that complete days, and FunderPro (abrupt lot-size changes) and Hola Prime (unexplained deviations in position "
+  "size) to the size jump such a trade makes", "at the first six, a missing day after the target is completed with one minimal "
+  "position (0.01 lot or one micro contract) held 3 minutes; that those firms accept it is an assumption; Fintokei, Alpha "
+  "Capital, FunderPro and Hola Prime get no fillers (missing days are ordinary trades, one a day; version 9 gave FunderPro and "
+  "Hola Prime fillers, and this row did not list Hola Prime); the plan is also measured without fillers", "assumption",
+  "the firms' trading-day definitions and prohibited-practice pages (programme rows above)", read="12 Oct 2026")
+
+# ---------------------------------------------------------------- re-read on 12 October 2026
+# The rows above dated 4 October 2026 are version 9's readings, which the first version 10 inventory had carried over.
+# They were read again on 12 October 2026 (pages that refuse automated reading were fetched as a browser would, or read
+# from a search engine's copy: basis 'snippet'; where neither was possible, from reviews and listings: basis 'secondary');
+# each update below replaces the fields it names. Every row now carries an October 11 or 12 date.
+D12 = "12 Oct 2026"
+REREAD = {
+ ("FTMO", "targets and limits"): dict(read=D12),
+ ("FTMO", "risk guidance"): dict(rule="FTMO generally recommends not risking more than 1% per trade idea, and at most 1-1.5% of the initial "
+    "balance on one position, so as not to fall into its high-risk monitoring", read=D12),
+ ("FTMO", FS): dict(rule="EUR 540 for 100K ($607.82 at 1.1256), EUR 1,080 for 200K ($1,215.65) at list price (a promotion of October 2026 "
+    "sells the 100K at EUR 439; the price list does not render as text, the prices are version 9's reading and secondary listings); "
+    "the 2-Step fee refunded with the first reward; 80% split (90% with the Scaling Plan or the Premium Programme)", read=D12,
+    source="https://ftmo.com/en/faq/is-the-entry-fee-refunded/"),
+ ("FundingPips", "targets and limits"): dict(read=D12, basis="snippet"),
+ ("FundingPips", "risk per trade idea"): dict(rule="Master accounts: the loss of one trade idea (positions on one instrument in one direction; a "
+    "new one within 10 minutes of a losing close counts with it) at most 2% or 3% of the account by model; not in evaluations",
+    model="risk at most 1.75% plus cost; more than 10 minutes between a close and the next entry", read=D12, basis="snippet"),
+ ("FundingPips", "profit concentration"): dict(read=D12, basis="snippet"),
+ ("FundingPips", FS): dict(rule="$555 for 100K at list price (the largest Flex size; version 9 recorded $499, a discounted price); no "
+    "registration-fee refund on Flex; 80% or 95%, chosen at purchase", model="$555", read=D12, basis="snippet",
+    source="https://fundingpips.com/2-step-flex"),
+ ("FundedNext", "targets and limits"): dict(read=D12, source="https://help.fundednext.com/en/articles/17255124-stellar-2-step-challenge"),
+ ("FundedNext", "copying"): dict(rule="copying only between your own challenge accounts; copying between a FundedNext Account and any other "
+    "FundedNext account prohibited; other people's trades and cloud copiers prohibited; copying from your own accounts at other firms "
+    "not addressed", model="FundedNext's account trades a market no other account of the plan trades", status="cautious", read=D12,
+    source="https://help.fundednext.com/en/articles/8019805-what-is-the-copy-trading-rule-at-fundednext"),
+ ("FundedNext", "allocation"): dict(rule="$300,000 across Stellar funded accounts ($50,000 in some countries); challenge accounts unlimited",
+    read=D12, source="https://help.fundednext.com/en/articles/8027523-how-many-accounts-can-i-have-with-fundednext"),
+ ("FundedNext", FS): dict(rule="$549.99 for 100K, $1,099.99 for 200K (the product page; its help centre shows $999.99 for 200K); refunded "
+    "with the first reward; 80%; 15% of both phases' profit targets paid once the Scale-Up criteria are met", model="$549.99 and "
+    "$1,099.99, the higher 200K figure (version 9: $1,049.99); the 15% reward left out (the plan does not scale)", status="cautious",
+    read=D12, source="https://fundednext.com/cfds/stellar-2-step"),
+ ("The5ers", "targets and limits"): dict(read=D12),
+ ("The5ers", "accounts"): dict(read=D12),
+ ("The5ers", FS): dict(read=D12, basis="secondary", rule="New (10% / 5%) $491 for 100K, Classic (8% / 5%) $545 (comparison listings of "
+    "October 2026; the firm's price slider does not render as text); smaller New sizes $19 to $278; 80% split, rising with scaling"),
+ ("FXIFY", "allocation"): dict(read=D12, basis="snippet", source="https://fxify.com/faqs/all-faqs/what-the-max-allocation/"),
+ ("FXIFY", "copying"): dict(rule="copy trading allowed with prior approval; third-party copying prohibited", read=D12,
+    source="https://intercom.help/fxify/en/articles/14834680-the-2-phase-classic-account"),
+ ("FXIFY", FS): dict(rule="Classic $549 for 100K, $379 for 50K, $199 for 25K, $119 for 15K, $89 for 10K, $59 for 5K; no refund on Classic; "
+    "80% every 14 days or 100% every 30 days, chosen at purchase", model="as stated (version 9 left out the 15K size)", read=D12,
+    source="https://fxify.com/"),
+ ("Fintokei", "targets and limits"): dict(rule="8% / 6%; daily loss 5% of the day's starting equity; 10% maximum; 3 separate trading days (a "
+    "trade opened on the day, with a real market outcome) before passing a phase and before requesting a payout, accounts bought from 15 "
+    "July 2026 (the support article and the ProTrader page; the plan table on fintokei.com reads 'Min 3 profitable days' for ProTrader "
+    "10K-400K)", model="as stated; the 3 days required again in every payout cycle (the stricter reading); in the evaluations either "
+    "reading is met, because under the plan's 40% policy every phase has at least three days with a net profit"),
+ ("Fintokei", "minimal trades"): dict(read=D12, source="https://support.fintokei.com/en/articles/9464503-what-is-all-in-trading-and-why-is-it-forbidden-to-achieve-profit-target-in-one-trade"),
+ ("Fintokei", "prohibited practices"): dict(rule="reaching a phase target with one trade idea (a trade, or same-symbol same-direction trades "
+    "overlapping in time) ('all-in'); much smaller trades just to meet the minimum days; if trading is flagged unsustainable, leverage 1:10 "
+    "and daily profit and loss capped at 1%", read=D12),
+ ("Fintokei", "allocation"): dict(rule="400,000 EUR/USD of virtually funded ProTrader and ProTrader Swing accounts together (evaluations not "
+    "counted)", model="four 100K (USD 400,000; version 9 read EUR 500,000 and held five)", read=D12,
+    source="https://support.fintokei.com/en/articles/6538886-how-many-accounts-and-open-positions-can-i-have"),
+ ("Fintokei", "copying"): dict(rule="copying your own trades from other prop firms or brokers allowed; other people's trades, signals, "
+    "third-party EAs and reversed copies prohibited", read=D12,
+    source="https://support.fintokei.com/en/articles/10419735-copy-trading-and-eas-what-is-allowed-and-what-prohibited"),
+ ("Fintokei", FS): dict(rule="$549 for 100K, $1,249 for 200K, $2,599 for 400K (ProTrader page); 80%; the English pages state no fee "
+    "return; the Japanese plan pages return the fee 'via the Scaling Dojo', which the English FAQ says was retired on 21 January 2026 "
+    "(a secondary review describes a return after 20 trading days and two payout requests)", model="no fee return, the cautious "
+    "reading (version 9: the fee with the first payout)", status="cautious", read=D12, source="https://www.fintokei.com/protrader/"),
+ ("Hola Prime", "targets and limits"): dict(rule="8% / 5%; daily loss 5% of the previous day's closing balance (reset 17:00 New York); 10% "
+    "static; 3 trading days per phase (4% and 8% at 200K)", read=D12),
+ ("Hola Prime", "payouts"): dict(rule="bi-weekly 80% with 3 profitable days (closed profit of at least 0.5% of the initial balance) within "
+    "14 days; an account review of up to 24 business hours, then paid within one hour; minimum $50 by bank wire or crypto ($500 by Rise); "
+    "'A 2.5% payout processing fee applies to all payment methods, subject to a minimum fee of $25 for Rise and Bank Wire and $5 for "
+    "Crypto'; the challenge fee refunded in full 'with your 4th successful payout' on the same account", model="pending one working "
+    "day and one hour, trading on; 2.5% of every payout, at least $5; $50 after the split and the fee; the fee with the 4th payout "
+    "(version 9: no fee, a quarter of the refund with each of the first four payouts, paid within the hour)", read=D12),
+ ("Hola Prime", "trade ideas"): dict(read=D12, source="https://holaprime.com/forex/forex-trading-rules/"),
+ ("Hola Prime", "risk per trade"): dict(rule="Sim. Funded: a stop-loss on every trade; the risk of a trade idea at most 2% of the initial "
+    "balance (positions overlapping in time, or a same-direction re-entry within 10 minutes, are one idea)", read=D12),
+ ("Hola Prime", "prohibited practices"): dict(rule="gambling or speculative trading (excessive or concentrated risk, unexplained deviations "
+    "in position size), one-sided betting (repeated positions in one direction without analysis), grid trading, excessive margin, "
+    "account rolling, hedging across accounts, copying beyond the permitted master and copier", read=D12,
+    source="https://holaprime.com/trading-rules-list/trading-rules-prohibited-trading-practices"),
+ ("Hola Prime", "allocation"): dict(rule="up to two $100K (or four $50K, or one $200K) Sim. Funded and Direct accounts; $800,000 forex and "
+    "futures combined", read=D12, source="https://holaprime.com/forex/forex-trading-rules/"),
+ ("Hola Prime", "copying"): dict(rule="only between your own Hola Prime accounts (funded: one master and one copier); copying from accounts "
+    "at other prop firms prohibited (accounts bought from 15 September 2026)", read=D12,
+    source="https://holaprime.com/trading-rules-list/trading-rules-prohibited-trading-practices"),
+ ("Hola Prime", FS): dict(rule="$599 for the 100K 2-Step Prime (MyFXBook's listing; other listings $569; the firm's checkout does not render "
+    "as text), monthly 95% at +20%; the fee refunded in full with the 4th successful payout; bi-weekly 80%", model="$599, the higher "
+    "listing; the fee with the 4th payout", status="cautious", read=D12, basis="secondary"),
+ ("Alpha Capital", "targets and limits"): dict(read=D12, basis="page"),
+ ("Alpha Capital", "duration rule"): dict(read=D12),
+ ("Alpha Capital", "risk per trade"): dict(rule="qualified accounts bought from 21 July 2026: the open loss on one asset at most 2% at 100K "
+    "and 200K (3% up to 25K), losing positions on the asset combined, and a same-direction re-entry within 10 minutes combined with the "
+    "trade before it (the Max Risk Rule)", model="risk at most 1.75% plus cost; one position at a time; more than 10 minutes between "
+    "trades", read=D12, source="https://help.alphacapitalgroup.uk/en/articles/15888623-what-is-the-max-risk-rule-and-how-does-it-work"),
+ ("Alpha Capital", "prohibited practices"): dict(rule="'all or nothing' strategies (a significant change in lot size against the account's "
+    "average, unusual trade durations, trades opened just before and closed just after the news window); minimal lots to complete "
+    "trading days on qualified accounts; position spamming", read=D12,
+    source="https://help.alphacapitalgroup.uk/en/articles/7060909-what-is-alpha-capital-group-s-policy-against-gambling-in-trading"),
+ ("Alpha Capital", "copying"): dict(read=D12, source="https://help.alphacapitalgroup.uk/en/articles/8786973-is-copy-trading-allowed"),
+ ("Alpha Capital", FS): dict(rule="$497 for 100K, $997 for 200K (secondary listings); 'All our evaluation plans are non-refundable' (help "
+    "centre, 6 July 2026); 80% (90% with an add-on)", model="no refund", status="modelled", read=D12,
+    source="https://help.alphacapitalgroup.uk/en/articles/8420592-is-it-possible-to-receive-a-refund-for-the-evaluation-fees-once-i-have-completed-my-evaluation"),
+ ("GFT", "targets and limits"): dict(read=D12),
+ ("GFT", "Goat Guard (funded)"): dict(rule="a combined floating loss of 2% of the initial size: the first time the split falls to 50% and "
+    "the positions stay open, the second time the account is breached", read=D12),
+ ("GFT", "allocation"): dict(model="the recommended plan holds one; at the full allowance four 100K or two 200K, whichever is worth more in all (copying between a trader's own GFT accounts is allowed: the copying row)", read=D12, source="https://help.goatfundedtrader.com/en/articles/10742191-what-is-the-maximum-simulated-capital-you-can-have-with-goatfundedtrader"),
+ ("GFT", "copying"): dict(rule="copying trades between your own accounts allowed, evaluation and funded alike; other traders', signal "
+    "providers' and third-party services' trades prohibited", model="the shared direction on every GFT account (version 9 read duplicated "
+    "trades between GFT accounts as forbidden and held one account at the full allowance)", status="plan", read=D12,
+    source="https://help.goatfundedtrader.com/en/articles/10742118-what-are-prohibited-trading-practices"),
+ ("GFT", FS): dict(rule="$628 for 100K, $1,198 for 200K at list price (GFT's pricing table, raised on 3 August 2026; version 9 recorded "
+    "$524 and $974); the fee is called 'refundable' on GFT's how-it-works page, but neither its 2-Step Standard page (updated 5 October "
+    "2026) nor its rewards page (9 October 2026) says when, and third-party descriptions conflict (the first, third or fourth payout, "
+    "or after passing); 80% split", read=D12, source="https://www.goatfundedtrader.com/model"),
+ ("FunderPro", "targets and limits"): dict(rule="10% / 5%; daily 5%, computed on the balance at 5 pm New York (base not settled: the "
+    "stricter of the initial and the day's balance); 10% static; 4 trading days per phase", read=D12, source="https://funderpro.com/"),
+ ("FunderPro", "payouts"): dict(rule="every 14 days (Classic) with at least $100 of profit on the funded account; the fee credited within 7 "
+    "days of the first reward", model="every 14 days; $100 of profit before the split, $80 of share after it; the fee with the first "
+    "payout", read=D12),
+ ("FunderPro", "margin"): dict(read=D12),
+ ("FunderPro", "allocation"): dict(model="one account; at the full allowance two 100K or one 200K, whichever is worth more in all", read=D12, source="https://support.funderpro.com/en/articles/377857-what-is-the-maximum-trading-capital-i-can-access-with-funderpro"),
+ ("FunderPro", "copying"): dict(rule="copying allowed between your own accounts; between different people prohibited", model="the shared "
+    "direction on every FunderPro account (version 9 read 'no replicating trades across FunderPro accounts')", read=D12,
+    source="https://support.funderpro.com/en/articles/378022-is-copy-trading-allowed"),
+ ("FunderPro", FS): dict(rule="$539 for 100K (funderpro.com: 'will be processed with 1st reward'), $989 for 200K (version 9 reading); "
+    "80%", read=D12),
+ ("BrightFunded", "copying"): dict(rule="allowed between your own accounts, at BrightFunded and at other firms or brokers; opposite "
+    "positions across accounts prohibited", read=D12, basis="snippet",
+    source="https://help.brightfunded.com/en/articles/9241709-is-copy-trading-allowed"),
+ ("BrightFunded", FS): dict(rule="EUR 497 for 100K ($559.42 at 1.1256), EUR 997 for 200K ($1,122.22) (2-Step Classic page); refund only with "
+    "a paid add-on; up to 90%; a 15% evaluation profit reward added to the next funded account after 10% growth", model="no refund "
+    "(the add-on is not bought); the evaluation profit reward left out", read=D12, source="https://brightfunded.com/2-step-classic"),
+ ("Blue Guardian", "prohibited practices"): dict(read=D12, basis="snippet"),
+ ("Blue Guardian", "copying"): dict(rule="allowed between your own accounts (evaluation, funded and external)", read=D12, basis="snippet"),
+ ("Blue Guardian", FS): dict(rule="$463 for 100K, $930 for 200K at list price (the 2 Step Standard product list on blueguardian.com; a code "
+    "takes 35% off); refunded after the fourth payout; 85% (90% with an add-on)", model="$463 and $930 (version 9: $579 and $1,162)",
+    read=D12, source="https://blueguardian.com/"),
+ ("Maven", "allocation"): dict(rule="up to $200,000 of starting capital on funded accounts", model="one 100K (the largest 2-Step size) in "
+    "every portfolio: a second account would share the trader's $10,000 per 30 days (the withdrawal cap row), which the engine does "
+    "not model across accounts", read=D12),
+ ("Maven", FS): dict(rule="$440 for 100K (the largest 2-Step size; $396 with a coupon); refunded with the third withdrawal; 80%", read=D12,
+    source="https://maventrading.com/"),
+ ("Topstep", FS): dict(read=D12, basis="secondary"),
+ ("FundedNext", "monitored as gambling"): dict(read=D12, source="https://help.fundednext.com/en/articles/8020351-what-are-the-restricted-prohibited-trading-strategies"),
+ ("every firm", "conflicting positions"): dict(read=D12, source="the firms' prohibited-practice pages read on 12 October 2026 (rows above)"),
+ ("every firm", "identity"): dict(read=D12, source="the firms' prohibited-practice and copying pages read on 12 October 2026 (rows above)"),
+ ("Apex", FS): dict(rule="$490 at list price (a guide of August 2026; the firm's checkout does not render as text); public codes of 80-90% "
+    "off for most of 2026 (about $55); $99 activation when passed (EOD); 100% split", read=D12, basis="secondary"),
+ ("The5ers", "prohibited practices"): dict(rule="bulk trading (several trades open at once, 'clearly showing a trader is not behind the "
+    "strategy'); 'Trade coordination or copy trading with other traders or accounts'; one-sided bets ('consistently takes positions in "
+    "one single direction'); tick scalping; hedge and reverse arbitrage; coordinated trading across firms for manipulative purposes "
+    "(opposite positions); profit spread artificially across days; 'position sizes or a number of positions that are substantially "
+    "larger or smaller than your typical trading activity, whether compared across your own accounts or between your evaluation and "
+    "funded account stages'; overleveraging, concentrated speculative exposure and gambling-like positions; no order executed 2 "
+    "minutes either side of high-impact news", model=PLANB + "; one position per account at a time; the direction follows the "
+    "trend rule, so it changes with the market; the same risk share and stop rule in both stages; flat around releases. The optional "
+    "portfolio with The5ers' small accounts holds positions far smaller in dollars than the 100K account's (the same share of each "
+    "account): whether The5ers compares sizes in proportion to the account is not stated, so that portfolio is not recommended",
+    read=D12, source="https://the5ers.com/faqs/prohibited-trading-practices/"),
+ ("The5ers", "copying"): dict(rule="the prohibited-practices page (12 October 2026) prohibits 'Trade coordination or copy trading with other "
+    "traders or accounts' (its example: a group of traders sharing signals) and third-party EAs whose trades others hold; "
+    "descriptions of The5ers' FAQ (secondary: its help centre refuses automated reading) allow copying between your own High Stakes "
+    "accounts and from your own external accounts", model="the plan's own entries on each account, in the shared Nasdaq direction "
+    "(no copier), read as your own trading, which the FAQ's descriptions allow; confirmed with The5ers in writing before trading "
+    "(Part IV)", read=D12, source="https://the5ers.com/faqs/prohibited-trading-practices/"),
+ ("FXIFY", "prohibited practices"): dict(rule="high-frequency trading; reverse and group hedging (offsetting positions across accounts); "
+    "account management and accounts under other names; latency arbitrage; order-book spamming; herd trading and collusion "
+    "(coordinated trading among users; one provider's EA); exploiting errors; high-leverage news trading; statistical arbitrage "
+    "('high-risk trades based on statistical models, aiming for significant wins to offset losses from multiple accounts'); the terms "
+    "(section 5.4) add one-sided bets, overleveraging, overexposure and account rolling", model=PLANB + "; flat around high-impact "
+    "releases; every account in the same direction at a moderate risk, so no account's loss is offset by another account's opposite "
+    "bet", read=D12, source="https://fxify.com/faqs/all-faqs/what-strategies-can-i-use/"),
+ ("FundingPips", "copying"): dict(rule="copying between your own FundingPips accounts allowed; copier services and other people's trades "
+    "prohibited; to an external account only with the FundingPips account as the master (descriptions of the help centre, which "
+    "refuses automated reading)", model="the plan's own entries on each account (no copier)", read=D12, basis="secondary",
+    source="https://help.fundingpips.com/"),
+ ("Topstep", "targets and limits"): dict(rule="$3,000 target at 50K; Maximum Loss Limit $2,000, trailing the end-of-day balance (monitored in "
+    "real time, unrealized P&L included) and locking at the starting balance; the Express Funded Account starts at $0 with the limit "
+    "at -$2,000, locking at $0; after the first payout the limit is $0", read=D12,
+    source="https://help.topstep.com/en/articles/8284204"),
+ ("Topstep", "consistency (Combine)"): dict(rule="the best day at most 55% of the total profit, a hard limit; above it the target becomes the "
+    "best day divided by 0.55 ('Best Day Recommendation' under $1,650 at 50K)", read=D12,
+    source="https://help.topstep.com/en/articles/8284208"),
+ ("Topstep", "allocation"): dict(rule="up to 5 active Express Funded Accounts (sizes may be mixed); a Combine passed at the limit waits until "
+    "one closes", read=D12, source="https://help.topstep.com/en/articles/8284215"),
+ ("Apex", "targets and limits"): dict(rule="EOD 50K: $3,000 target, $2,000 maximum drawdown trailing the end-of-day balance, $1,000 daily loss "
+    "limit (reviews of August 2026: Apex's site refuses automated reading); the trail's stop at the starting balance plus $100 once "
+    "funded and the flat time of 4:59 pm ET are version 9's readings, not found again", read=D12, basis="secondary"),
+ ("Apex", "allocation"): dict(rule="up to 20 Performance Accounts per trader (reviews of August 2026, consistent; Apex's site refuses automated "
+    "reading)", read=D12, basis="secondary"),
+ ("FunderPro", "risk per trade"): dict(rule="a 2% risk rule is published for the Instant program ('[Instant] Risk Management Rules (2% Rule & "
+    "Gambling Policy)'); the Classic pages read state no per-trade limit (secondary descriptions differ)", model="1.75% plus cost, "
+    "within 2% either way", read=D12, source="https://support.funderpro.com/en/collections/879028-funded-accounts"),
+}
+for x in R:
+    key = (x["firm"], x["area"])
+    if key in REREAD: x.update(REREAD.pop(key))
+assert not REREAD, sorted(REREAD)              # every update names a row that exists
 
 if __name__ == "__main__":
-    out = dict(read="11-12 October 2026 (rows marked otherwise: 4-5 October 2026)", note=__doc__.strip(), rules=R,
+    out = dict(read="11-12 October 2026", note=__doc__.strip(), rules=R,
                counts={s: sum(x["status"] == s for x in R) for s in ("modelled", "plan", "cautious", "assumption", "not binding")})
     json.dump(out, open("rules_inventory_v10.json", "w"), indent=1)
     print(len(R), "rules;", out["counts"])

@@ -26,7 +26,7 @@ flat time, weekends, lot rounding and filler trades are not in the chain; they a
 """
 import json, math
 import numpy as np
-import firms_v10 as F7, calibrate as CB
+import firms_v10 as F7, calibrate as CB, acct_mc as A_
 
 SIG = json.load(open("sigma_v32.json"))
 WMIN_SD = 0.6
@@ -199,7 +199,8 @@ def programme(prog, instr, m, k, X1, X, L=1500, size=100_000, F=None, cost_mult=
         return c
     wdr = [min(xs_, capi(i)) if capi(i) is not None else xs_ for i, xs_ in enumerate(succ)]
     g_fee = 1.0 - fd.get("fee_pct", 0.0)               # a firm's fee on every withdrawal, the refund included (GFT, The5ers)
-    pay = [g_fee * split * w_ for w_ in wdr]
+    pay = [A_.payout_net(fd, split * w_) for w_ in wdr]  # (Hola Prime: 2.5%, at least $5; the minimum never binds at the
+                                                         # chain's mean amounts, which are hundreds of dollars or more)
     cash = sum(x * q for x, q in zip(pay, pr))
     ref = g_fee * (fd.get("refund", 0) or 0)
     if fd.get("refund_split"): cash += ref / fd["refund_split"] * sum(pr[:fd["refund_split"]])

@@ -78,7 +78,7 @@ def changed_text(s):
     lower = [a for a, b in pairs if a["EV_month"] < b["EV_month"] and beyond(a, b)]
     higher = [a for a, b in pairs if a["EV_month"] > b["EV_month"] and beyond(a, b)]
     head = (f"<p>A detailed review of version 9 raised {len(RV.R)} findings (Appendix A), every one reproduced on version 9's code before it was fixed; our own claim-by-claim reading of version 9, and the version 10 work itself, found {len(RV.NEW)} further errors (Appendix A2, which also says why the review found its errors first). "
-            "Every rule was read again on the firms' pages and listed with its source and its treatment in the inventory of Appendix [[APP_INV]]. "
+            f"Every rule the model uses is listed with its source, the date it was read and its treatment in the inventory of Appendix [[APP_INV]]: {inv_read_sentence()}. "
             + (f"The first-year figure moves from version 9's {usd(v9)} a month to {usd(s['ev'])}; the difference is a new measurement under the corrected model, not version 9's figure minus a list of corrections. " if v9 else ""))
     body = ("<strong>The model is stricter where the review found it lenient:</strong> a payout request is pending until the firm processes it, a breach before then cancels it, and Alpha Capital, FundingPips, FXIFY and Blue Guardian lock the account meanwhile; every request waits 15 minutes after the last close; "
             "every published minimum payout is applied to the trader's share, and the fees GFT, The5ers, FundedNext and Blue Guardian take from every payout are deducted; The5ers' payout cap and profit gate apply, and its refund covers only the cash paid; Topstep's request session and $125 minimum, and Apex's pending requests, expiry and consistency, follow the firms' rules; "
@@ -144,7 +144,7 @@ def answer():
 <h2>How it was found</h2>
 <ol>
 <li>Part I derives every formula and states the model it is exact for; the exact chain of 5.5 implements the plan's rule near the floor. tests_v10.py runs {ntests} direct tests of the engine's rule mechanisms, one for each correction of version 10 and the review's own witnesses included ({nok} pass; Chapter 11), and audit_v10.py replays every chosen setting trade by trade against the rules it lists.</li>
-<li>Every rule was read on the firms' pages on 11&ndash;12 October 2026 (older readings marked) and listed with its source and its treatment in the model ({len(INV.get('rules', [])):,} rows, Appendix [[APP_INV]]), and the list was compared with the engine's rule parameters row by row.</li>
+<li>Every rule was listed with its source, the date it was read and its treatment in the model (Appendix [[APP_INV]]: {inv_read_sentence()}), and the list was compared with the engine's rule parameters row by row.</li>
 <li>Every programme's settings (risk, \\(k\\), stop, payout target, market) were searched over {len(GRID):,} grid settings and {len(REF):,} refined ones, then re-measured on sixteen fresh paths each, and run as continuing slots on sixteen more.</li>
 <li>The engine was checked against the chain on the chain's own rules (Chapter 11), and the rules' own effect measured with them on.</li>
 <li>The accounts were run together, one person at a time, each simulated life on its own new paths: {len(P3.R):,} first years, {len(L)} three-year lives, and the budget, stress and refusal scenarios.</li>
@@ -220,6 +220,9 @@ def review_subs(f1):
     for k in ("ABANDONED", "ALPHA_LOTS", "BG_OVER", "NEWS_STATS", "INV_N", "APP_INV", "MAVEN_RR"):
         out[k] = f1.get(k, "")
     out["F9_RESULT"] = f1.get("JOINT_RESULT", "")
+    n_new, n_all = inv_read_counts()
+    out["INV_READ"] = (f"all {n_all} rows read on 11&ndash;12 October 2026" if n_new == n_all else
+                       f"{n_new} of its {n_all} rows read on 11&ndash;12 October 2026, the other {n_all - n_new} on 4 October 2026 for version 9")
     # 11: horizon and price level
     items = P3._slot_items(P3.REC); txt = ""
     if items and all("per_path_y2_5" in c for c, n in items):

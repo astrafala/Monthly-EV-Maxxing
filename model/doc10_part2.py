@@ -369,7 +369,7 @@ def size_section(sp):
     prog, instr = sp["prog"], sp["instr"]
     rows = []
     def per100(v, size): return r0(v) * 100_000 / size
-    for size in (100_000, 200_000, 50_000, 25_000, 10_000, 5_000):
+    for size in (100_000, 200_000, 50_000, 25_000, 15_000, 10_000, 5_000):
         r = acct_row(prog, instr, size)
         if not r: continue
         F = rules_of(r)

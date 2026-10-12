@@ -42,6 +42,17 @@ treats it). Changes from version 9:
                        reading where a page does not say whether it counts before or after the split; FTMO's $20, in
                        the rules read on 11 October 2026, was missing from version 9 (found by comparing every row of
                        rules_inventory_v10.json with these parameters)
+  re-read, 12 October  the rows version 10 had carried over from version 9's readings of 4 October were read again:
+                       FundingPips' 2-Step Flex 100K costs $555 (version 9: $499, a discounted price); FundedNext's 200K
+                       costs $1,099.99 (version 9: $1,049.99); Fintokei's English pages state no fee return (its Japanese
+                       plan pages return the fee 'via the Scaling Dojo', which its English FAQ says was retired): none
+                       modelled (version 9: the fee with the first payout); Hola Prime's 2-Step Prime page: a 2.5% payout
+                       processing fee on every method (at least $5 by crypto), the whole fee refunded with the 4th payout
+                       (version 9: a quarter with each of the first four), a minimum payout of $50, and an account review
+                       of up to 24 business hours before a request is processed; Blue Guardian's list prices are $463 and
+                       $930 (version 9: $579 and $1,162); GFT's $628 and $1,198 (raised on 3 August 2026; version 9: $524
+                       and $974); Alpha Capital's and FunderPro's $100 minimums are profit before the split ($80 of share
+                       after it); Maven pays outside four countries through Rise, at $20 a payout (version 9: no charge)
 """
 import copy
 import firms_v9 as F9
@@ -61,7 +72,8 @@ PROC = {
     "The5ers":       dict(review_bd=2, transfer_bd=3, cycle_from_processed=True),  # review 24-48 business hours, then up to 3
     "FXIFY":         dict(review_bd=3, transfer_bd=0, lock_processing=True),   # within 3 business days; read-only until approved
     "Fintokei":      dict(review_bd=0, transfer_bd=1),            # approved automatically; sent within 1 business day
-    "Hola Prime":    dict(review_bd=0, review_h=1.0, transfer_bd=0),   # paid within one hour of the request
+    "Hola Prime":    dict(review_bd=1, review_h=1.0, transfer_bd=0),   # an account review of up to 24 business hours,
+                                                                  # then paid within one hour (2-Step Prime page)
     "Alpha Capital": dict(review_bd=2, transfer_bd=0, lock_processing=True),   # paid within 2 business days, account locked
     "GFT":           dict(review_bd=2, transfer_bd=0),            # processed within 2 business days
     "FunderPro":     dict(review_bd=1, transfer_bd=1),            # approval, then within 1 working day
@@ -80,7 +92,8 @@ NEWS_EVAL = {"The5ers", "FXIFY", "GFT", "Maven"}
 
 THE5ERS_CAP = {100_000: 4_000.0, 50_000: 3_000.0}
 THE5ERS_MIN_PROFIT = {100_000: 500.0, 50_000: 300.0}
-MIN_PAYOUT = {"FTMO": 20.0}          # minimums missing from version 9's rule sets (the others are set in firms_v8)
+MIN_PAYOUT = {"FTMO": 20.0, "Hola Prime": 50.0}   # minimums missing from version 9's rule sets (the others are set in
+                                                 # firms_v8); Hola Prime: $50 by bank wire or crypto (12 October 2026)
 
 def _v10(F, size=None):
     for name, f in F.items():
@@ -90,6 +103,13 @@ def _v10(F, size=None):
         fd["news"] = "cpi" if firm == "Topstep" else ("all" if firm in NEWS_FUNDED else None)
         for ph in f["phases"]:
             ph["news"] = "cpi" if firm == "Topstep" else ("all" if firm in NEWS_EVAL else None)
+        if firm in ("FunderPro", "Hola Prime"):
+            # (12 October 2026) FunderPro's 'Trading Consistency and Lot Size Policy' (4 June 2026): 'Abrupt or unjustified
+            # changes in lot sizes may be deemed reckless behavior or gambling ... trading one (1) lot followed by ten (10)
+            # lots'; Hola Prime's prohibited practices: 'unexplained deviations in position size'. A 0.01-lot filler among
+            # positions of several lots is such a change: no fillers at either (as at Fintokei and Alpha Capital), the
+            # cautious reading (version 9 used fillers at both)
+            f["no_fillers"] = True
         if f.get("no_fillers"):
             f["no_target_buffer"] = True          # missing days are ordinary trades: no buffer above the target
         # a published minimum payout counts on the trader's share after the split (the stricter reading); a request
@@ -113,12 +133,36 @@ def _v10(F, size=None):
             # a reward under $20 cannot be requested
             fd["fee_pct"] = 0.035
             fd["min_payout"] = max(float(fd.get("min_payout") or 0.0), 20.0); fd["min_net"] = max(float(fd.get("min_net") or 0.0), 20.0)
+            if sz == 200_000: f["fee"] = 1_099.99      # the product page, 12 October 2026 (version 9: $1,049.99)
+        if firm == "FundingPips":
+            f["fee"] = {100_000: 555.0}.get(sz, 555.0 * sz / 100_000)   # 2-Step Flex 100K list price, 12 October 2026
+                                                                       # (version 9: $499, a discounted price)
+        if firm == "Fintokei":
+            # no fee return stated on the English ProTrader, plan and Loyalty Program pages (12 October 2026); the Japanese
+            # plan pages return the fee 'via the Scaling Dojo', which the English FAQ says was retired on 21 January 2026:
+            # none modelled, the cautious reading (version 9: the fee with the first payout)
+            fd["refund"] = 0.0
+        if firm == "Hola Prime":
+            # the 2-Step Prime page (12 October 2026): "A 2.5% payout processing fee applies to all payment methods,
+            # subject to a minimum fee of $25 for Rise and Bank Wire and $5 for Crypto"; the fee "will be processed with
+            # your 4th successful payout" (version 9: a quarter with each of the first four)
+            fd["fee_pct"] = 0.025; fd["fee_min"] = 5.0
+            fd.pop("refund_split", None); fd["refund_after"] = 4
         if firm == "Blue Guardian":
+            # the 2 Step Standard product list on blueguardian.com (12 October 2026): originalPrice $463 at 100K, $930 at
+            # 200K (version 9: $579 and $1,162); the refund follows the fee actually paid
+            f["fee"] = {100_000: 463.0, 200_000: 930.0}.get(sz, 463.0 * sz / 100_000)
             fd["shield"] = 0.02 * sz; fd["shield_split"] = 0.50
             fd["fee_pct"] = 0.03       # "All payouts are subject to a 3% processing fee" (payouts page, 31 August 2026)
         if firm == "Alpha Capital":
             fd["max_lots"] = 40.0 * sz / 100_000
+            # the bi-weekly performance fee article (7 July 2026): "The minimum performance fee amount is $100 ($100 gross,
+            # $80 net)": $100 of profit before the split, $80 of share after it (version 9: $100 after the split)
+            fd["min_payout"] = 100.0; fd["min_net"] = 80.0
         if firm == "GFT":
+            # list prices in GFT's own pricing table (goatfundedtrader.com/model, 12 October 2026; "2 STEP price increase
+            # 2026-08-03: 25K and up raised"): 2-Step Standard $628 at 100K, $1,198 at 200K (version 9: $524 and $974)
+            f["fee"] = {100_000: 628.0, 200_000: 1_198.0}.get(sz, 628.0 * sz / 100_000)
             fd["void_min"] = 1.0
             # GFT's rewards page (updated 9 October 2026): "All rewards are subject to a 3% processing fee", calculated on
             # the reward after the split: the trader keeps 97% of the 80%; accounts bought from 9 October 2026: "your most
@@ -127,6 +171,15 @@ def _v10(F, size=None):
             fd["fee_pct"] = 0.03
             fd["best_vs_worst"] = True
             fd["refund"] = 0.0
+        if firm == "FunderPro":
+            # the reward article (15 April 2026): "You must earn at least $100 in profit on your funded account before
+            # requesting a reward": $100 of profit before the split, $80 of share after it (version 9: $100 after the split)
+            fd["min_payout"] = 100.0; fd["min_net"] = 80.0
+        if firm == "Maven":
+            # Maven's FAQ (12 October 2026): payouts by direct bank transfer only from South Africa, Nigeria, Kenya and Ghana;
+            # elsewhere "through Rise or other options" (the other options not named), and "Payments via Rise incur a $20
+            # withdrawal fee": $20 from every payout, the refund's included, the cautious reading (version 9: none)
+            fd["fee_min"] = 20.0
         if firm == "Topstep":
             fd["min_net"] = 125.0
             fd["session_tz"] = "America/Chicago"      # request after the session's 4 p.m. lock; its session excluded

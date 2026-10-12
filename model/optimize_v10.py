@@ -295,7 +295,7 @@ if __name__ == "__main__" and sys.argv[1] == "futures":
 
 # ---------------------------------------------------------------- final: chosen settings on 16 fresh paths, plus sizes
 FEE_SIZES = {      # list prices of the other sizes a person may hold (firms_v7 has the 100K and 200K prices)
-    "FXIFY Two Phase Classic (100%, 30 days)": {50_000: 379, 25_000: 199, 10_000: 89, 5_000: 59},
+    "FXIFY Two Phase Classic (100%, 30 days)": {50_000: 379, 25_000: 199, 15_000: 119, 10_000: 89, 5_000: 59},   # fxify.com, 12 Oct 2026
 }
 THE5ERS_SMALL = {25_000: "The5ers High Stakes 25K", 10_000: "The5ers High Stakes 10K", 5_000: "The5ers High Stakes 5K",
                  2_500: "The5ers High Stakes 2.5K"}

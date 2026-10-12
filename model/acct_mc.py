@@ -148,6 +148,12 @@ def _lmin(tr, clock, fw):
     lm = tr.lmin_at(clock, fw) if hasattr(tr, "lmin_at") else getattr(tr, "min_l", 0.0)
     return max(0.1 * tr.L, lm), lm
 
+def payout_net(fd, gross):
+    """the cash of a payout of `gross` dollars (the trader's share, plus any refund paid with it) after the firm's fee on
+    every withdrawal: fee_pct of it, but at least fee_min (version 10)"""
+    if gross <= 0: return gross
+    return gross - max(fd.get("fee_pct", 0.0) * gross, fd.get("fee_min", 0.0) if fd.get("fee_pct") or fd.get("fee_min") else 0.0)
+
 def _risk(tr, x, floor, room_day, lmin, lm, bs, rho, max_rule):
     """(risk, terminal) for the next trade, or (None, False) to wait for tomorrow.
     Normal: l = min(L, room above floor less a buffer, today's room) net of cost (never below the smallest position).
@@ -581,13 +587,15 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
                 if fd.get("cap_includes_refund"): cap = cap - rnow   # The5ers: the refund counted inside the cap (cautious)
                 if amt > cap + 1e-9: RULE_HITS["cap_held"] += 1     # the rest stays in the account
                 amt = min(amt, cap)
-            g_fee = 1.0 - fd.get("fee_pct", 0.0)               # a firm's fee on every withdrawal (GFT 3%, The5ers 3.5%)
-            if amt > 0 and g_fee * split * amt < fd.get("min_net", 0.0) - 1e-9:
+            # a firm's fee on every withdrawal (GFT 3%, The5ers 3.5%, FundedNext 3.5%, Blue Guardian 3%, Hola Prime 2.5% with
+            # at least $5): fee_pct of the payout, the refund included, and at least fee_min
+            if amt > 0 and payout_net(fd, split * amt) < fd.get("min_net", 0.0) - 1e-9:
                 RULE_HITS["min_net_wait"] += 1; amt = 0.0       # under the firm's minimum payout: not requested yet
             if amt > 0:
-                cash = g_fee * (split * amt + rnow)
+                gross = split * amt + rnow
                 if npay == 0 and fd.get("eval_share"):
-                    cash += g_fee * fd["eval_share"] * sum(s["target"] for s in firm["phases"])
+                    gross += fd["eval_share"] * sum(s["target"] for s in firm["phases"])
+                cash = payout_net(fd, gross)
                 if rnow and not rsplit: refunded = True
                 t_req = max(clock, last_exit + fd.get("req_wait", 0.25))   # at least 15 minutes after the last close
                 sday = None

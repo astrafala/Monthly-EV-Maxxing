@@ -279,3 +279,21 @@ def per_month_fee(T, fee):
 def inv_rows(firm):
     """the inventory rows of a firm (rules_inventory_v10.json), in the inventory's order"""
     return [r for r in INV.get("rules", []) if r["firm"] == firm]
+
+
+def inv_read_counts():
+    """(rows read for version 10 on 11-12 October 2026, all rows) of the rule inventory"""
+    rules = INV.get("rules", [])
+    return sum(1 for r in rules if r["read"].startswith(("11 Oct", "12 Oct"))), len(rules)
+
+def inv_read_sentence():
+    """how much of the inventory was read again for version 10, from the inventory's own dates and bases"""
+    n, N = inv_read_counts()
+    rules = INV.get("rules", [])
+    nb = {b: sum(1 for r in rules if r.get("basis") == b) for b in ("page", "snippet", "secondary")}
+    how = (f"{nb['page']} on the firms' own pages, {nb['snippet']} from a search engine's copy of a firm's page that refuses "
+           f"automated reading, and {nb['secondary']}, where neither could be read, from reviews and listings; each row's basis says which")
+    if n == N:
+        return f"every one of its {N} rows was read on 11&ndash;12 October 2026 ({how})"
+    return (f"{n} of its {N} rows were read on 11&ndash;12 October 2026 ({how}), and the other {N - n} keep version 9's reading of "
+            f"4 October 2026, as their dates show")

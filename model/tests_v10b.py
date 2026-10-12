@@ -29,11 +29,15 @@ witnesses feed exact outcomes to the unchanged rule functions.
   gft_void      a GFT funded win held under a minute counts minus its cost
   cancel        a payout is cancelled exactly when the account breaches before it is processed
   min_payout    every payout's share for the trader (the cash less the fee refund paid with it) at least the firm's
-                published minimum, FTMO's $20 included (found by comparing the inventory with the rule sets)
+                published minimum, FTMO's $20 included (found by comparing the inventory with the rule sets), at eleven
+                firms; Alpha Capital's and FunderPro's $100 of profit before the split at every request ($80 of share)
   usd_direction no two positions in EURUSD and USDJPY open at the same time with opposite dollar exposure (the shared
                 direction covers the two currency pairs together; version 9 gave each pair its own direction)
   gft_rules     GFT's rewards page (9 October 2026): every request's best trade larger than its worst loss, over the cycle
                 and over the account; every payout 97% of the 80% split (the 3% processing fee) and no fee refund
+  payout_fees   the pages read on 12 October 2026: each payout's cash is the firm's fee applied to the split share plus
+                the refund due with that request (GFT 3%; Hola Prime 2.5%, at least $5, the fee refunded with the 4th
+                payout; Maven $20 a payout, the fee refunded with the 3rd); no refund at Fintokei, GFT or Alpha Capital
 """
 import json, math, random, collections, datetime as _dt, zoneinfo
 import numpy as np
@@ -453,8 +457,9 @@ def run(check, cfg, spy_attempts, Spy, ctl_market, Planned):
           f"{ncan} cancelled, each by a breach between its request and its processing ({bad} mismatches)")
 
     # ---------------------------------------------------------------- minimum payouts, on the trader's share
-    MINS = {"FTMO": 20.0, "FundingPips": 1_000.0, "FXIFY": 50.0, "Fintokei": 100.0, "Alpha Capital": 100.0, "GFT": 100.0,
-            "FunderPro": 100.0, "Blue Guardian": 100.0, "The5ers": 150.0}
+    MINS = {"FTMO": 20.0, "FundingPips": 1_000.0, "FXIFY": 50.0, "Fintokei": 100.0, "Alpha Capital": 80.0, "GFT": 100.0,
+            "FunderPro": 80.0, "Blue Guardian": 100.0, "The5ers": 150.0, "Hola Prime": 50.0, "FundedNext": 20.0}
+    # Alpha Capital and FunderPro: $100 of profit before the split, $80 of share after it (12 October 2026)
     def refund_with(fd, j):
         """the fee refund paid with the j-th request (0-based): with the refund_after-th payout, or in equal parts with
         the first refund_split payouts (Hola Prime)"""
@@ -462,25 +467,34 @@ def run(check, cfg, spy_attempts, Spy, ctl_market, Planned):
         g = 1.0 - fd.get("fee_pct", 0.0)               # the refund is paid net of a withdrawal fee too
         if fd.get("refund_split"): return g * fd["refund"] / fd["refund_split"] if j < fd["refund_split"] else 0.0
         return g * fd["refund"] if j == fd.get("refund_after", 1) - 1 else 0.0
-    low = {}; nreq = 0; small = 0; w0 = A.RULE_HITS.get("min_net_wait", 0)
+    low = {}; low_prof = {}; nreq = 0; small = 0; w0 = A.RULE_HITS.get("min_net_wait", 0)
     for prog, firm, instr in (("FTMO 2-Step", "FTMO", "US100"), ("FundingPips 2-Step Flex (80%)", "FundingPips", "USDJPY"),
                               ("FXIFY Two Phase Classic (80%)", "FXIFY", "US100"), ("Fintokei ProTrader", "Fintokei", "US100"),
                               ("Alpha Capital Pro 10%", "Alpha Capital", "US100"), ("GFT 2-Step Standard", "GFT", "US100"),
                               ("FunderPro Classic", "FunderPro", "US100"), ("Blue Guardian 2-Step", "Blue Guardian", "US100"),
-                              ("The5ers High Stakes", "The5ers", "US100")):
+                              ("The5ers High Stakes", "The5ers", "US100"),
+                              ("Hola Prime 2-Step Prime (bi-weekly 80%)", "Hola Prime", "EURUSD"),
+                              ("FundedNext Stellar 2-Step", "FundedNext", "EURUSD")):
         c = cfg(prog, firm, instr, 1.0, 2, 0.10)              # a target of 10%: most requests come at a payout date, below it
         R = funded_replay(c, 150, "synth906y4", 51, Spy)
         for r in R:
             fd = r["F"]["funded"]
             for j, p in enumerate([p for p in r["pays"] if p[3] == "payout"]):
                 net = p[1] - refund_with(fd, j); nreq += 1
+                if fd.get("min_payout"):                     # the profit gate before the split (Alpha Capital, FunderPro: $100)
+                    xb = [t for t in r["tlog"] if t[4] <= p[2] + 1e-9]
+                    prof = (xb[-1][2] + xb[-1][3]) if xb else 0.0
+                    low_prof[firm] = min(low_prof.get(firm, 1e18), prof - fd["min_payout"])
                 low[firm] = min(low.get(firm, 1e18), net)
                 if net < 2 * MINS[firm]: small += 1
     worst = {f: round(v - MINS[f], 2) for f, v in low.items()}
-    check("min_payout", nreq > 500 and all(v >= -1e-6 for v in worst.values()) and A.RULE_HITS.get("min_net_wait", 0) > w0,
-          f"{nreq} requests at nine firms (150 funded accounts each, payout target 10%, synth906y4): smallest trader's share "
+    check("min_payout", nreq > 500 and all(v >= -1e-6 for v in worst.values()) and all(v >= -1e-6 for v in low_prof.values())
+          and A.RULE_HITS.get("min_net_wait", 0) > w0,
+          f"{nreq} requests at {len(low)} firms (150 funded accounts each, payout target 10%, synth906y4): smallest trader's share "
           f"less the firm's minimum {worst}; {small} requests under twice the minimum; "
-          f"{A.RULE_HITS.get('min_net_wait', 0) - w0} requests deferred because the share was under the minimum")
+          f"{A.RULE_HITS.get('min_net_wait', 0) - w0} requests deferred because the share was under the minimum; smallest profit "
+          f"before the split less the firm's profit minimum {({f: round(v, 2) for f, v in low_prof.items()})}")
+    payout_fees(check, cfg, Spy)
 
     # ---------------------------------------------------------------- one dollar direction across EURUSD and USDJPY
     def sl_(prog, instr, n, m, k, x, lf=0.015):
@@ -521,3 +535,38 @@ def run(check, cfg, spy_attempts, Spy, ctl_market, Planned):
           f"(over the cycle and over the account); trader's share {R[0]['F']['funded']['split'] * (1 - R[0]['F']['funded']['fee_pct']):.3f} "
           f"of the profit (80% less the 3% processing fee); fee refund {R[0]['F']['funded']['refund']:.0f}")
     return {}
+
+def payout_fees(check, cfg, Spy):
+    """the firms' payout fees and refund timing as read on 12 October 2026: GFT 3% of every reward; Hola Prime 2.5% of every
+    payout, at least $5, and the whole fee refunded with the 4th payout; Maven $20 from every payout (Rise) and the fee
+    refunded with the 3rd; no refund at Fintokei, GFT or Alpha Capital. Each payout's cash is checked against the amount
+    the balance fell by at the request (from the trade log), the split, the refund due with that request and the fee."""
+    fdx = {p: F10.rules_for(p)["funded"] for p in ("GFT 2-Step Standard", "Hola Prime 2-Step Prime (bi-weekly 80%)", "Maven 2-Step",
+                                                    "FTMO 2-Step", "Fintokei ProTrader", "Alpha Capital Pro 10%")}
+    unit = [A.payout_net(fdx["GFT 2-Step Standard"], 1000.0), A.payout_net(fdx["Hola Prime 2-Step Prime (bi-weekly 80%)"], 100.0),
+            A.payout_net(fdx["Hola Prime 2-Step Prime (bi-weekly 80%)"], 1000.0), A.payout_net(fdx["Maven 2-Step"], 1000.0),
+            A.payout_net(fdx["FTMO 2-Step"], 1000.0)]
+    ok_unit = all(abs(a - b) < 1e-9 for a, b in zip(unit, (970.0, 95.0, 975.0, 980.0, 1000.0)))
+    norefund = all(not fdx[p].get("refund") for p in ("GFT 2-Step Standard", "Fintokei ProTrader", "Alpha Capital Pro 10%"))
+    bad = 0; nchk = 0; nref = collections.Counter(); mism = collections.Counter()
+    for prog, firm, instr, r_at in (("Hola Prime 2-Step Prime (bi-weekly 80%)", "Hola Prime", "EURUSD", 4),
+                                    ("Maven 2-Step", "Maven", "US100", 3), ("Fintokei ProTrader", "Fintokei", "US100", None),
+                                    ("GFT 2-Step Standard", "GFT", "US100", None), ("Alpha Capital Pro 10%", "Alpha Capital", "US100", None)):
+        c = cfg(prog, firm, instr, 1.0, 2, 0.03 if firm == "Maven" else 0.04)
+        R = funded_replay(c, 250, "synth908y4", 71, Spy)
+        for r in R:
+            fd = r["F"]["funded"]; tl = r["tlog"]
+            for j, p in enumerate([p for p in r["pays"] if p[3] == "payout"]):
+                before = [t for t in tl if t[4] <= p[2] + 1e-9]; after = [t for t in tl if t[1] >= p[2] - 1e-9]
+                if not before or not after: continue          # the balance after the request is not observed
+                amt = before[-1][2] + before[-1][3] - after[0][2]
+                ref = (fd.get("refund") or 0.0) if (r_at is not None and j == r_at - 1) else 0.0
+                gross = fd["split"] * amt + ref + (fd.get("eval_share", 0.0) * sum(s["target"] for s in r["F"]["phases"]) if j == 0 else 0.0)
+                nchk += 1; nref[firm] += ref > 0
+                if abs(p[1] - A.payout_net(fd, gross)) > 1e-6: bad += 1; mism[firm] += 1
+    check("payout_fees", ok_unit and norefund and bad == 0 and nchk > 500 and nref["Hola Prime"] >= 5 and nref["Maven"] >= 5,
+          f"payout_net: GFT $1,000 -> {unit[0]:.2f}; Hola Prime $100 -> {unit[1]:.2f} (the $5 minimum), $1,000 -> {unit[2]:.2f}; "
+          f"Maven $1,000 -> {unit[3]:.2f} ($20); FTMO $1,000 -> {unit[4]:.2f}; no refund at GFT, Fintokei, Alpha Capital: {norefund}; "
+          f"{nchk} payouts at five firms (250 funded accounts each, synth908y4) whose cash equals the fee applied to the split "
+          f"share plus the refund due with that request ({bad} mismatches {dict(mism)}); refunds paid with the 4th payout at "
+          f"Hola Prime {nref['Hola Prime']}, with the 3rd at Maven {nref['Maven']}")
