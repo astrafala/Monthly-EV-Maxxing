@@ -1,0 +1,198 @@
+{
+ "dll_rel": {
+  "ok": true,
+  "info": "FundingPips at $94,000: allowance $3,760"
+ },
+ "dll_fixed": {
+  "ok": true,
+  "info": "Blue Guardian: $4,000 at any balance"
+ },
+ "dll_min": {
+  "ok": true,
+  "info": "FunderPro: the stricter of the two"
+ },
+ "t_quantile": {
+  "ok": true,
+  "info": "97.5% quantiles for 3, 15, 23, 25 degrees of freedom: 3.182446, 2.131450, 2.068658, 2.059539"
+ },
+ "bridge": {
+  "ok": true,
+  "info": "review's counterexample: exact both-touch 0.0183156389, independent 0.0190631143 (version 8's bound 3.7e-44); closed form against integration: largest relative difference 1.8e-06; exact law minus the strong-Markov bound on 4,000 random bridges: at most 1.1e-16"
+ },
+ "near_floor": {
+  "ok": true,
+  "info": "$100 above the floor, one contract (risk $170 at the plan's stop): result -100.00 (breach), against +255.00 without the floor barrier (version 8)"
+ },
+ "min_lot": {
+  "ok": true,
+  "info": "40,000 trades on 4 paths: mean +0.0092 (path-cluster s.e. 0.0110; version 8's clipped payoff: +0.44), lowest -0.50, 32308 breaches at exactly -$0.50"
+ },
+ "lots": {
+  "ok": true,
+  "info": "3000 gold trades: volumes in 0.01-lot steps, risk at the stop never above the planned risk (0 exceptions)"
+ },
+ "terminal_floor": {
+  "ok": true,
+  "info": "177 phase-1 failures; end P&L between -10000.000000 and -10000.000000 (floor -10000): each a breach of the floor barrier, nothing clipped"
+ },
+ "gap_rule": {
+  "ok": true,
+  "info": "11254 consecutive trades: shortest time from an exit to the next entry 10.0 minutes"
+ },
+ "target_distance": {
+  "ok": true,
+  "info": "11484 trades, 0 with a take-profit closer than 0.6 sd"
+ },
+ "filler_trades": {
+  "ok": true,
+  "info": "70 filler trades: every one 0.01 lot held 3 minutes, 70 with a result in the balance (total -1.87); the review's witness (200 attempts, Random(19017)): 30 filler trades, total result -0.42"
+ },
+ "no_filler": {
+  "ok": true,
+  "info": "13071 trades at Fintokei and Alpha Capital, 0 filler trades"
+ },
+ "hold_bg": {
+  "ok": true,
+  "info": "13442 Blue Guardian trades at a 0.6 sd stop: none under 2 minutes except breaches, shortest 3 minutes; 66 closed at the end of the 3-minute hold"
+ },
+ "brightfunded_day": {
+  "ok": true,
+  "info": "183 BrightFunded phase passes, 0 with fewer than 5 days holding a trade >= 60 s"
+ },
+ "alpha_rule": {
+  "ok": true,
+  "info": "average, majority and half-of-gross-profit conditions on constructed trade lists"
+ },
+ "hola_window": {
+  "ok": true,
+  "info": "profitable days 0, 22, 23: 0 payouts (version 8 paid $1,469.75 on day 23.8); days 15, 22, 23 (inside 14 days): 1"
+ },
+ "fintokei_clock": {
+  "ok": true,
+  "info": "92 later Fintokei requests: shortest time from the previous payout's processing 14.00 days"
+ },
+ "bdays": {
+  "ok": true,
+  "info": "3 working days after Friday 15:00 UTC: 5 calendar days later (Wednesday); 1 working day: Monday"
+ },
+ "wallet": {
+  "ok": true,
+  "info": "6 lives with $10,000 and $30,000 budgets (429 purchases): lowest cash dated by the ledger $51.06"
+ },
+ "exposure": {
+  "ok": true,
+  "info": "10989 trades in one life, 9294 copied a direction: every copy from a position still open at the entry, every uncopied entry with nothing open (0 exceptions), 0 opposite positions"
+ },
+ "payout_clock_alpha_maven": {
+  "ok": true,
+  "info": "195 first payouts checked (clock from the first trade; Alpha's 5 days; Maven's ceiling and 30-day cap by close date): 0 violations {}"
+ },
+ "futures_price": {
+  "ok": true,
+  "info": "contract value x1.169 where the price is x1.169; at the start $62,140 per 100% move"
+ },
+ "streams": {
+  "ok": true,
+  "info": "keys differ; hourly-return correlation -0.030"
+ },
+ "day_limits": {
+  "ok": true,
+  "info": "29,048 account-days of 16 programmes, days from each trade's entry: largest day loss beyond the firm's allowance -200.00, largest day profit beyond the plan's 40% cap +0.00, beyond GFT's day cap -600.00 (all must be <= 0)"
+ },
+ "fxify_best_day": {
+  "ok": true,
+  "info": "101 FXIFY payouts: largest best calendar day beyond 25% of the payout -1.00 (must be <= 0)"
+ },
+ "no_stall": {
+  "ok": true,
+  "info": "0 stalled accounts in 1,900 attempts at settings where small caps meet the minimum target distance"
+ },
+ "lock": {
+  "ok": true,
+  "info": "1720 payouts at Alpha Capital, FundingPips, FXIFY (300 funded accounts each, synth903y4, Random(177), the review's replay): 0 entries between a request and its processing (version 9: 219 of 219 at Alpha)"
+ },
+ "req_wait": {
+  "ok": true,
+  "info": "549 FundingPips requests: shortest time after the last close 15.0 minutes, every one flat (version 9: 7 of 329 under 15 minutes)"
+ },
+ "usdjpy": {
+  "ok": true,
+  "info": "4000 USDJPY trades: engine result minus the exact dollar result of the opposite USDJPY position at the exit rate, largest 7.01e-10; the review's 1% move: a USDJPY long earns $990.0990, a short $1,010.1010, and the engine's position on X = 1/USDJPY that is that long (an X short) earns Q(1 - X_x/X_e) = $990.0990"
+ },
+ "alpha_lots": {
+  "ok": true,
+  "info": "300 funded $200K Alpha accounts: largest position 80.00 lots (3124 positions cut to the limit); the review's case (index at 15,535, $3,500 at 1 sd): 82.31 lots uncapped, 80.00 with the limit"
+ },
+ "maven_rr": {
+  "ok": true,
+  "info": "80225 Maven positions (2,000 attempts, k=2, m=1.25, synth902y4, Random(88), the review's replay; 0 at the smallest position, 3321 terminal): smallest take-profit/stop distance ratio 1.5000 (version 9: 1.266); the review's $1-target case: waits when the cap is $1, else the win is raised to $1.6559 (ratio 1.5000)"
+ },
+ "bg_shield": {
+  "ok": true,
+  "info": "a $2,200 floating loss in the first minute of the hold, recovered by the third: closed by the Shield at -2,000.00 (version 9: +0.00); planned shields on days 2 and 5: the account ends on day 2 (the second shield breaches it)"
+ },
+ "hold_minutes": {
+  "ok": true,
+  "info": "3-minute hold at 12, 60, 240 sub-steps per hour: 5.00, 3.00, 3.00 minutes (version 9: 15, 3, 0.75); filler trades held at least 5.00, 3.00, 3.00"
+ },
+ "unaffordable": {
+  "ok": true,
+  "info": "one micro contract, $2 round trip, $0.50 of room: not opened (result +0.00; version 9 returned -0.50, a clipped cost)"
+ },
+ "joint_bound": {
+  "ok": true,
+  "info": "the review's case (bridge 0.5 to 0.5, nearby barriers 0 and 1 of two accounts): exact 0.2491160758, independent 0.3678794412; the joint bound for that sub-step is 1.000 (no certificate), where the per-bracket bounds sum to 3e-25; P_exact(both) - 2 P_ind on 3,000 random bridges at most 2.6e-15"
+ },
+ "gft_cash": {
+  "ok": true,
+  "info": "GFT chain: cash of each of the first two paid cycles at most the capped payout plus the refund (largest excess +0.00; version 9's table: $5,400 against at most $5,324)"
+ },
+ "refusals": {
+  "ok": true,
+  "info": "4 lives with high refusal rates: 15 refusals, 29 payouts voided; 0 trades or purchases of a firm after its refusal"
+ },
+ "apex_expiry": {
+  "ok": true,
+  "info": "deadline 30 Jan 18:00 New York, hour 719 (bought at 12:00 UTC on 1 Jan: day 30 at 6 p.m.); a trade opened at hour 718 that reaches the target at hour 720: no pass (version 9: pass); at 718.5: pass"
+ },
+ "the5ers_cap": {
+  "ok": true,
+  "info": "560 High Stakes requests (300 funded $100K accounts, synth912y4, Random(7767), the review's replay): largest withdrawal with the refund minus $4,000 +0.00; lowest profit at a request $858.55 (>= $500); lowest share $686.84 (>= $150) (version 9: 124 of 154 above the cap, 2 on $399)"
+ },
+ "the5ers_refund": {
+  "ok": true,
+  "info": "9 funded The5ers accounts in a 36-month slot (synth913y4, seed 8761, the review's replay), 3 bought partly with credit: refund minus 70% of the cash paid, largest 0.0e+00 (version 9: $343.70 on $343.70 paid)"
+ },
+ "topstep_session": {
+  "ok": true,
+  "info": "768 later Topstep requests (1,500 funded accounts, synth911y4, Random(7741), the review's replay): 0 with fewer than five winning Chicago sessions locked between the previous request's session and the request, or outside the payout window (14 pairs across the end of a wrapped path not compared; version 9: 238 of 1,204)"
+ },
+ "topstep_min": {
+  "ok": true,
+  "info": "lowest Topstep payout after the split $125.65; the review's witness (five +$150 days between losses, $200 of profit): 0 payouts (version 9: $90)"
+ },
+ "apex_pending": {
+  "ok": true,
+  "info": "1010 Apex requests (1,500 funded accounts, synth911y4, Random(7741)): 0 with a trade while pending (version 9: 912 of 982); lowest balance at a request $52,604.35"
+ },
+ "apex_today": {
+  "ok": true,
+  "info": "a first payout of $1,500 on day 5, then five +$500 and four -$500 days and +$900 today (best day 64% of the cycle's $1,400): 0 later payouts (version 9: $1,400)"
+ },
+ "filler_target": {
+  "ok": true,
+  "info": "Hola gold, 300 attempts, synth931y4, Random(873) (the review's replay): 300 of 300 attempts identical with and without fillers, 0 fillers executed (version 9: 281 differed with none executed)"
+ },
+ "news": {
+  "ok": true,
+  "info": "19385 trades on stages with a news rule (FTMO funded, Maven, FundedNext funded, FXIFY): 0 open during a bar overlapping a release's window; 549 closed at the open of such a bar"
+ },
+ "gft_void": {
+  "ok": true,
+  "info": "23630 GFT funded trades: 0 wins held under a minute counted (0 voided)"
+ },
+ "cancel": {
+  "ok": true,
+  "info": "2161 payout rows of 600 funded FTMO accounts at a tight setting: 6 cancelled, each by a breach between its request and its processing (0 mismatches)"
+ }
+}

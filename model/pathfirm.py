@@ -15,8 +15,10 @@ import numpy as np
 import acct_mc as A
 import multi
 
-import collections
+import collections, datetime as _dt
 _DATA = collections.OrderedDict()
+EPOCH_TS = __import__("pandas").Timestamp("2030-01-01", tz="UTC")     # bar 0 of every synthetic path (news calendar)
+EPOCH = _dt.datetime(2030, 1, 1, tzinfo=_dt.timezone.utc)
 MAX_CACHE = 8           # paths kept in memory per process (a 12-year path with one-minute sub-steps takes ~150 MB)
 
 def synth_name(data, with_sub=False):
@@ -45,7 +47,7 @@ def _store(key, idx, d):
                       sig=d["sig"], cost=d["cost"], fin=d["fin"],
                       fri_late=((wd == 4) & (hr >= 19)).tolist(), fri_close=((wd == 4) & (hr == 20)).tolist(),
                       T=len(idx), h0=int(hr[0]), hour=hr.tolist(), wd=wd.tolist(), norm=bool(d.get("norm", False)),
-                      instr=key[0])
+                      instr=key[0], dated=bool(idx[0] == EPOCH_TS))
     if "sH" in d: _DATA[key].update(sH=d["sH"], sL=d["sL"], sC=d["sC"], sub=d["sub"])
 
 CORR_NAMES = ["US100", "XAUUSD", "EURUSD", "USDJPY"]
@@ -158,9 +160,63 @@ def bridge_err(r):
     _BE[key] = val
     return val
 
+def joint_bound(M, intervals, c=5.0):
+    """The path generator's error bound for every position on one market path at once (version 10: version 9's bound
+    covered one bracket; for several accounts sharing a path, the per-bracket bounds do not add up to a bound on the joint
+    outcome, review of version 9, finding 9).
+    intervals: (first sub-step, end sub-step, log upper barrier, log lower barrier) of every position, as global sub-step
+    indices of the path. In a sub-step with end points a, b (log prices), let u be the lowest upper barrier and l the
+    highest lower barrier of all positions open in it. Everything the engine decides in the sub-step (which barriers are
+    touched; the order, where a bracket's two barriers are both touched) is a function of the sub-step's maximum and
+    minimum; the generator draws them independently from their exact marginal laws, so the joint law of the decisions
+    differs from the exact one only through the event B that the sub-step touches both u and l. With P_g(B) =
+    P(max >= u) P(min <= l) <= P_ind = exp(-2[(u-a)(u-b) + (a-l)(b-l)]/v) (each factor 1 when an end point is already
+    beyond its barrier) and P_exact(B) <= 2 P_ind (strong Markov property at the first barrier touched), splitting the
+    outcomes into 'nothing touched', 'only upper barriers', 'only lower barriers' and B gives a total variation distance of
+    at most (|P_e - P_g| + 3 (P_e + P_g)) / 2 <= 5 P_ind per sub-step. Coupling the sub-steps one after another, the
+    probability that the simulated outcomes of all positions differ from those of an exact Brownian path through the same
+    sub-step end points is at most the sum over sub-steps of min(1, c P_ind), c = 5. Returns that sum."""
+    if not intervals or not M.get("sub"): return 0.0
+    sub = M["sub"]; v = M["sig"] ** 2 / sub
+    j_lo = min(iv[0] for iv in intervals); j_hi = max(iv[1] for iv in intervals)
+    n = j_hi - j_lo
+    U = np.full(n, np.inf); Lw = np.full(n, -np.inf)
+    for (j0, j1, up, lo) in intervals:
+        a, b = j0 - j_lo, j1 - j_lo
+        np.minimum(U[a:b], up, out=U[a:b]); np.maximum(Lw[a:b], lo, out=Lw[a:b])
+    mask = np.isfinite(U) & np.isfinite(Lw)
+    if not mask.any(): return 0.0
+    idx = np.nonzero(mask)[0] + j_lo
+    sC = np.asarray(M["sC"]); NS = len(sC)
+    b_ = np.log(sC[idx % NS]); a_ = np.log(sC[(idx - 1) % NS])
+    u = U[mask]; l = Lw[mask]
+    pu = np.where(np.maximum(a_, b_) >= u, 1.0, np.exp(-2.0 * np.clip((u - a_) * (u - b_), 0.0, None) / v))
+    pl = np.where(np.minimum(a_, b_) <= l, 1.0, np.exp(-2.0 * np.clip((a_ - l) * (b_ - l), 0.0, None) / v))
+    return float(np.minimum(1.0, c * pu * pl).sum())
+
 GAP_MIN = 10            # minutes between a close and the next entry at every firm (Hola Prime, FundingPips trade ideas)
 SHORT_MIN = 2           # a trade that may have lasted under 2 minutes (Blue Guardian, Alpha Capital duration rules)
 HOLD_MIN = 3            # minimum holding time of the plan where a firm has a duration rule, and of every filler trade
+
+def hold_steps(minutes, sub):
+    """sub-steps that cover at least `minutes` minutes at `sub` sub-steps per hour (version 10: version 9 used the number
+    of minutes as a number of sub-steps, which is a number of minutes only at 60 sub-steps per hour: review of version 9,
+    finding 7)"""
+    if not minutes or not sub: return 0
+    n = int(math.ceil(minutes * sub / 60.0 - 1e-9))
+    assert n <= sub, "a holding time longer than an hour is not supported"
+    return n
+
+def news_bars(M, kind):
+    """the plan's news blocks for a stage's news rule on this market (news_v10): None, or a list over the path's bars,
+    True where the bar overlaps a restricted window. kind: None (the firm and stage have no news rule), "all" (every
+    high-impact release that moves this market), "cpi" (US CPI releases only: Topstep)"""
+    if not kind or not M.get("dated"): return None
+    key = "news_" + kind
+    if key not in M:
+        import news_v10 as NW
+        M[key] = NW.blocked(M["instr"], M["T"], cpi_only=(kind == "cpi")).tolist()
+    return M[key]
 
 class Stats:
     """per-trader record of what the firms' duration rules look at, and of the path generator's error bound"""
@@ -168,62 +224,106 @@ class Stats:
         self.n = 0; self.short = 0; self.minutes = 0.0; self.gross_win = 0.0; self.gross_win_short = 0.0
         self.bridge_eps = 0.0; self.sub2 = 0; self.late = 0; self.contracts = 0.0; self.last_exit = None
         self.breach = 0; self.fillers = 0; self.filler_pnl = 0.0; self.min_lot = 0; self.hold_close = 0
+        self.shield = 0; self.voided = 0; self.news_close = 0; self.unaffordable = 0; self.lots_capped = 0
+        self.hold_over = 0
     def as_dict(self):
         return dict(n=self.n, short=self.short, minutes=self.minutes, gross_win=self.gross_win,
                     gross_win_short=self.gross_win_short, bridge_eps=self.bridge_eps, sub2=self.sub2, late=self.late,
                     breach=self.breach, fillers=self.fillers, filler_pnl=self.filler_pnl, min_lot=self.min_lot,
-                    hold_close=self.hold_close, contracts=self.contracts)
+                    hold_close=self.hold_close, contracts=self.contracts, shield=self.shield, voided=self.voided,
+                    news_close=self.news_close, unaffordable=self.unaffordable, lots_capped=self.lots_capped,
+                    hold_over=self.hold_over)
 
-def resolve(M, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, block=None, st=None, opts=None):
+def plan(M, i, l, w, s, cost, opts=None):
+    """The position the plan places at bar i's open, before the market moves (version 10: one function for the trade
+    itself and for every check the plan makes before placing it, so a check sees the rounded position actually traded).
+    Returns dict(vol, notional, fee, e (entry price), sd, td (relative distances of the adverse barrier and of the
+    take-profit, cost excluded), loss (dollars lost at the adverse barrier, cost included), win (dollars made at the
+    take-profit, net of cost), capped (the volume was cut to a lot limit), afford (the position's cost is below the
+    breach room)).
+    Volume: l / (value of one lot x s), rounded down to the volume step, at least the smallest volume, at most the
+    firm's lot limit (opts max_lots: Alpha Capital's 40 lots per $100K of funded account, version 10: review of version
+    9, finding 4). The adverse barrier is the stop, the account's breach level (opts breach: dollars, cost included) or
+    the firm's floating-loss shield (opts shield: dollars, cost included; Blue Guardian's funded Guardian Shield, version
+    10: review of version 9, finding 6), whichever is nearest."""
+    o = opts or {}
+    e = M["O"][i]; sp = lot_spec(M); uv = unit_value(M, e)
+    kind = o.get("kind", "trade"); breach = o.get("breach"); capped = False
+    if kind == "filler":
+        vol = sp["vmin"]
+    else:
+        vol = math.floor(l / (uv * s) / sp["step"] + 1e-9) * sp["step"]
+        if vol < sp["vmin"] - 1e-12: vol = sp["vmin"]
+        ml = o.get("max_lots")
+        if ml is not None:
+            cap = math.floor(ml / sp["step"] + 1e-9) * sp["step"]
+            if vol > cap + 1e-12: vol = cap; capped = True
+    notional = vol * uv; fee = cost * notional
+    afford = breach is None or breach > fee + 1e-9
+    bd = (breach - fee) / notional if breach is not None else math.inf
+    shd = (o["shield"] - fee) / notional if o.get("shield") else math.inf
+    if kind == "filler":
+        sd = min(bd, shd); td = math.inf
+    elif o.get("terminal"):
+        sd = min(bd, shd); td = (w + fee) / notional
+    else:
+        sd = min(s, bd, shd)
+        if not o.get("keep_w"): w = w * (notional * s) / l
+        td = (w + fee) / notional
+    loss = notional * sd + fee if sd < math.inf else math.inf
+    win = notional * td - fee if td < math.inf else math.inf
+    return dict(vol=vol, notional=notional, fee=fee, e=e, sd=sd, td=td, bd=bd, shd=shd, loss=loss, win=win,
+                capped=capped, afford=afford, uv=uv, s=s, cost=cost, vmin=sp["vmin"], step=sp["step"])
+
+def resolve(M, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, block=None, st=None, opts=None, nb=None):
     """A position opened at bar i's open in direction d. Returns (pnl, hours until the next entry may be considered, info),
     info = dict(exit: hours from the entry to the exit (an upper bound inside its minute), dur: minutes held (a lower
-    bound), breach: the account's breach level was reached, vol: lots or contracts, why: the exit).
+    bound), breach: the account's breach level was reached, vol: lots or contracts, why: the exit, shield: the firm's
+    floating-loss shield closed it, voided: its profit was removed by a minimum-holding rule).
     opts:
       kind      'trade': a bracket, stop s (relative) from the entry for a risk of l, a win netting w after the round-trip
                 cost; 'filler': the smallest position, closed after HOLD_MIN minutes (a minimal trading-day trade)
       breach    the loss (dollars, cost included) at which the account breaches: the nearer of its floor and today's loss
                 limit. It is a barrier of every trade: reaching it ends the account then, whatever the price does later
+      shield    the floating loss (dollars, cost included) at which the firm closes the position (Blue Guardian funded)
       terminal  the stop is the breach level itself (the plan's last trade on an account near its floor)
       keep_w    the win was set by a cap (the target or a rule): rounding the volume down keeps the win (the take-profit is
                 placed for exactly that amount) instead of scaling it with the risk
       hold      minutes before the bracket is placed (accounts with a minimum holding time): until then only the breach
-                level can close the position; at the end of the hold it is closed at once if the price is already beyond
-                the stop or the take-profit
-    Volume: l / (value of one lot x s), rounded down to the volume step, at least the smallest volume. Exits: a barrier
-    touched inside a one-minute sub-step (in time order; a sub-step that touches both barriers is decided by the
-    martingale chance from the sub-step's start, an error bound_err bounds), a gap through a barrier at a bar's open, the
-    daily flat time, a blocked (news) hour, the Friday close on weekend-flat accounts. An exit after minute 50 of a bar
-    delays the next entry by one more hour, so at least 10 minutes pass between a close and the next entry."""
+                level and the shield can close the position; at the end of the hold it is closed at once if the price is
+                already beyond the stop or the take-profit
+      max_lots  the firm's lot limit (plan)
+      void_min  a winning trade held under this many minutes has its profit removed (GFT funded accounts): its result is
+                then minus its cost
+    nb: the plan's news blocks (news_bars) or None. block: hours of the day the plan is flat (the news proxy stress test).
+    A position whose cost alone reaches the breach room is not opened (version 10: version 9 returned minus the breach room,
+    so the cost charged was clipped: review of version 9, finding 8); info why = 'unaffordable', and the plan stops
+    trading the account. Exits: a barrier touched inside a one-minute sub-step (in time order; a sub-step that touches
+    both barriers is decided by the martingale chance from the sub-step's start, an error bound_err bounds), a gap
+    through a barrier at a bar's open, the daily flat time, a blocked (news) bar, the Friday close on weekend-flat
+    accounts. An exit after minute 50 of a bar delays the next entry by one more hour, so at least 10 minutes pass
+    between a close and the next entry."""
     o = opts or {}
-    T = M["T"]; e = M["O"][i]; sp = lot_spec(M); uv = unit_value(M, e)
+    T = M["T"]; sp = lot_spec(M)
     kind = o.get("kind", "trade"); breach = o.get("breach"); sub = M.get("sub")
     sH = M.get("sH"); sL = M.get("sL"); sC = M.get("sC")
-    hold = int(o.get("hold", 0) or 0) if sub else 0
-    if kind == "filler":
-        vol = sp["vmin"]; hold = HOLD_MIN if sub else 0
-    else:
-        vol = math.floor(l / (uv * s) / sp["step"] + 1e-9) * sp["step"]
-        if vol < sp["vmin"] - 1e-12: vol = sp["vmin"]
-    notional = vol * uv; fee = cost * notional
-    info = dict(exit=0.0, dur=0.0, breach=False, vol=vol, why=None)
-    if breach is not None and breach <= fee + 1e-9:          # the smallest position's cost alone reaches the breach level
-        info.update(breach=True, why="breach")
-        if st is not None: st.n += 1; st.breach += 1; st.fillers += kind == "filler"; st.last_exit = (i, 0.0)
-        return -float(breach), 1, info
-    bd = (breach - fee) / notional if breach is not None else math.inf      # breach level, relative to the entry
-    if kind == "filler":
-        sd = bd; td = math.inf
-    elif o.get("terminal"):
-        sd = bd; td = (w + fee) / notional
-    else:
-        sd = s
-        if not o.get("keep_w"): w = w * (notional * s) / l
-        td = (w + fee) / notional
-    brk_low = bd <= sd + 1e-12                            # the nearer adverse barrier is the breach level
-    lo_d = min(sd, bd)
+    P = plan(M, i, l, w, s, cost, o)
+    e = P["e"]; vol = P["vol"]; notional = P["notional"]; fee = P["fee"]
+    hold = hold_steps(HOLD_MIN if kind == "filler" else o.get("hold", 0), sub) if sub else 0
+    info = dict(exit=0.0, dur=0.0, breach=False, vol=vol, why=None, shield=False, voided=False, notional=notional,
+                loss_plan=P["loss"], win_plan=P["win"], capped=P["capped"])
+    if not P["afford"]:                                  # the smallest position's cost alone reaches the breach level
+        info.update(why="unaffordable")
+        if st is not None: st.unaffordable += 1
+        return 0.0, 0, info
+    bd, shd, sd, td = P["bd"], P["shd"], P["sd"], P["td"]
+    lo_d = sd                                             # the nearest adverse barrier (stop, breach level or shield)
+    if kind != "filler" and not o.get("terminal") and s <= min(bd, shd): adv = "stop"
+    else: adv = "breach" if bd <= shd else "shield"
     lo_px = e * (1 - d * lo_d) if lo_d < math.inf else (-math.inf if d > 0 else math.inf)
-    sl_px = e * (1 - d * sd) if sd < math.inf else lo_px
+    sl_px = lo_px
     tp = e * (1 + d * td) if td < math.inf else None
+    hold_d = min(bd, shd)                                 # watched during the hold: the breach level and the shield
     rolls = 0; bars = 0; first = True; last = e; exit_px = None; why = None
     t_ex = 0.0; dur = 0.0; n2 = 0
 
@@ -231,8 +331,8 @@ def resolve(M, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, block=None, s
         """sub-steps j0..j1-1 of the bar whose first sub-step is b0: (j, target first) at the first touch, or None"""
         for j in range(j0, j1):
             lo = sL[b0 + j]; hi = sH[b0 + j]
-            if d > 0: hs = lo <= lo_px; ht = hi >= tp
-            else:     hs = hi >= lo_px; ht = lo <= tp
+            if d > 0: hs = lo <= lo_px; ht = tp is not None and hi >= tp
+            else:     hs = hi >= lo_px; ht = tp is not None and lo <= tp
             if hs or ht:
                 if hs and ht:
                     a = sC[b0 + j - 1] if b0 + j > 0 else e
@@ -249,21 +349,25 @@ def resolve(M, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, block=None, s
                     exit_px = op; why = "gap"; t_ex = float(bars); break
                 if flat_daily is not None and M["hour"][i] == flat_daily: exit_px = op; why = "flat"; t_ex = float(bars); break
                 if block and M["hour"][i] in block: exit_px = op; why = "block"; t_ex = float(bars); break
+                if nb is not None and nb[i]: exit_px = op; why = "news"; t_ex = float(bars); break
             if first and hold:
                 b0 = i * sub; hit = None
-                if bd < math.inf:                        # the holding time: only the breach level is watched
-                    brk_px = e * (1 - d * bd)
+                if hold_d < math.inf:                    # the holding time: only the breach level and the shield
+                    h_px = e * (1 - d * hold_d)
                     for j in range(hold):
-                        if (sL[b0 + j] <= brk_px) if d > 0 else (sH[b0 + j] >= brk_px): hit = j; break
+                        if (sL[b0 + j] <= h_px) if d > 0 else (sH[b0 + j] >= h_px): hit = j; break
                 if hit is not None:
-                    exit_px = brk_px; why = "breach"; t_ex = (hit + 1) / sub; dur = hit * 60.0 / sub; break
+                    exit_px = h_px; why = "breach" if bd <= shd + 1e-15 else "shield"
+                    t_ex = (hit + 1) / sub; dur = hit * 60.0 / sub; break
                 c = sC[b0 + hold - 1]
-                if kind == "filler" or d * (c - sl_px) <= 0 or d * (c - tp) >= 0:
-                    exit_px = c; why = "time" if kind == "filler" else "hold"; t_ex = hold / sub; dur = hold * 60.0 / sub; break
+                if kind == "filler" or d * (c - sl_px) <= 0 or (tp is not None and d * (c - tp) >= 0):
+                    exit_px = c; why = "time" if kind == "filler" else "hold"; t_ex = hold / sub; dur = hold * 60.0 / sub
+                    if kind != "filler" and tp is not None and d * (c - tp) > 0: info["over_target"] = True
+                    break
                 r = scan(b0, hold, sub)
                 if r is not None:
                     j, won = r; n2 += j - hold + 1
-                    exit_px = tp if won else lo_px; why = "target" if won else ("breach" if brk_low else "stop")
+                    exit_px = tp if won else lo_px; why = "target" if won else adv
                     t_ex = (j + 1) / sub; dur = j * 60.0 / sub; break
                 n2 += sub - hold
             else:
@@ -276,7 +380,7 @@ def resolve(M, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, block=None, s
                     else:                                # no sub-steps (real hourly data): a fair chance, the worst minute
                         won = ht if not (hs and ht) else rng.random() < min(max((e - lo_px) / (tp - lo_px), 0.0), 1.0)
                         t_ex = bars + 1.0; dur = bars * 60.0
-                    exit_px = tp if won else lo_px; why = "target" if won else ("breach" if brk_low else "stop")
+                    exit_px = tp if won else lo_px; why = "target" if won else adv
                     break
                 if sub: n2 += sub
             last = M["C"][i]
@@ -285,20 +389,30 @@ def resolve(M, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, block=None, s
         if i >= T: exit_px = last; why = "end"; t_ex = float(bars); dur = t_ex * 60.0; i = T - 1; break
     if why == "breach":
         pnl = -float(breach)
+    elif why == "shield":
+        pnl = -float(o["shield"])
     else:
         pnl = notional * d * (exit_px - e) / e - fee - M["fin"] * notional * rolls
     breached = why == "breach" or (breach is not None and pnl <= -breach + 1e-9)
-    if why in ("gap", "flat", "block", "end"): dur = t_ex * 60.0
+    if not breached and why != "shield" and o.get("shield") and pnl <= -o["shield"] + 1e-9:
+        why = "shield"                                    # a gap through the shield level: the firm's close
+    if why in ("gap", "flat", "block", "news", "end"): dur = t_ex * 60.0
+    vm = o.get("void_min")
+    if vm and pnl > 0 and dur < vm - 1e-9:               # a win held under the firm's minimum: its profit is removed
+        pnl = -fee; info["voided"] = True
     eb = int(math.floor(t_ex - 1e-9)) if t_ex > 0 else 0            # the bar of the exit, counted from the entry bar
     minute = (t_ex - eb) * 60.0
-    late = minute > 60 - GAP_MIN + 1e-9 or (sub is None and why in ("target", "stop", "breach"))
+    late = minute > 60 - GAP_MIN + 1e-9 or (sub is None and why in ("target", "stop", "breach", "shield"))
     hours = eb + 1 + (1 if late else 0)
-    if why in ("gap", "flat", "block", "end"): hours = int(round(t_ex)) + 1; late = False; minute = 0.0
-    info.update(exit=t_ex, dur=dur, breach=breached, why=why, td=td / M["sig"], sd=lo_d / M["sig"], notional=notional)
+    if why in ("gap", "flat", "block", "news", "end"): hours = int(round(t_ex)) + 1; late = False; minute = 0.0
+    info.update(exit=t_ex, dur=dur, breach=breached, why=why, shield=why == "shield", td=td / M["sig"],
+                sd=lo_d / M["sig"], sd_rel=lo_d, td_rel=td, e=e, d=d, lo_px=lo_px, tp=tp)
     if st is not None:
         st.last_exit = (i, minute)
         st.n += 1; st.minutes += dur; st.late += late; st.contracts += vol
-        st.breach += breached; st.hold_close += why == "hold"
+        st.breach += breached; st.hold_close += why == "hold"; st.shield += why == "shield"
+        st.voided += bool(info["voided"]); st.news_close += why == "news"; st.lots_capped += bool(P["capped"])
+        st.hold_over += bool(info.get("over_target"))
         st.min_lot += kind != "filler" and vol <= sp["vmin"] + 1e-12
         if kind == "filler": st.fillers += 1; st.filler_pnl += pnl
         short = dur < SHORT_MIN - 1e-9
@@ -311,14 +425,15 @@ def resolve(M, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, block=None, s
             st.sub2 += n2; st.bridge_eps += n2 * bridge_err(W / sv - 0.5 * sv)     # r less the drift per sub-step (sigma^2/2 per hour, in sd)
     return pnl, hours, info
 
-def entry_index(M, i, flat_weekend, flat_daily, block=None):
+def entry_index(M, i, flat_weekend, flat_daily, block=None, nb=None):
     """the first bar at or after i where the plan may open a position: market open, inside the instrument's entry hours,
     not Friday evening on weekend-flat accounts, before the daily flat cut-off (no entry in the hour before it), and not
-    in or just before a blocked hour (news proxy). Returns (index, bars waited)."""
+    in or just before a blocked hour (news proxy) or a blocked news bar (nb). Returns (index, bars waited)."""
     T = M["T"]; waited = 0
     while (not M["entry"][i] or (flat_weekend and M["fri_late"][i])
            or (flat_daily is not None and M["hour"][i] >= flat_daily - 1)
-           or (block and (M["hour"][i] in block or (M["hour"][i] + 1) in block))):
+           or (block and (M["hour"][i] in block or (M["hour"][i] + 1) in block))
+           or (nb is not None and (nb[i] or nb[(i + 1) % T]))):
         i = (i + 1) % T; waited += 1
     return i, waited
 
@@ -354,14 +469,31 @@ class PathTrader:
         # engine day boundaries (clock = 0 mod 24) fall at 22:00 UTC, the futures/CFD daily reset
         self.base = 24 * rng.randrange(self.M["T"] // 48) + (22 - self.M["h0"]) % 24
         self.trades = 0; self.st = Stats(); self.last_entry = None; self.last_exit = None; self.last_info = None
+        self.news = None                       # the current stage's news rule (set by acct_mc): None, "all" or "cpi"
+
+    @property
+    def nb(self):
+        return news_bars(self.M, self.news)
 
     def _idx(self, clock):
         return (self.base + int(clock)) % self.M["T"]
 
+    def utc(self, clock):
+        """the UTC date and time of the clock on the path's calendar"""
+        return EPOCH + _dt.timedelta(hours=self._idx(clock) + (clock - math.floor(clock)))
+
     def lmin_at(self, clock, flat_weekend=False):
         """the risk of the smallest position (0.01 lot, one micro contract) at the bar where the next trade would open"""
-        i, _ = entry_index(self.M, self._idx(next_bar(clock)), flat_weekend, self.flat_daily)
+        i, _ = entry_index(self.M, self._idx(next_bar(clock)), flat_weekend, self.flat_daily, nb=self.nb)
         return min_risk(self.M, self.M["O"][i], self.s)
+
+    def plan_at(self, clock, l, w, opts=None, flat_weekend=False):
+        """the position the next trade would place (plan): its rounded volume, its loss at the stop and its win at the
+        take-profit, at the next entry's open price"""
+        i, _ = entry_index(self.M, self._idx(next_bar(clock)), flat_weekend, self.flat_daily, nb=self.nb)
+        o = dict(opts or {})
+        if "keep_w" not in o: o["keep_w"] = l > 0 and w < self.k * l * (1 - 1e-9)
+        return plan(self.M, i, l, w, self.s, self.cost, o)
 
     def bdays(self, clock, n):
         return add_bdays(self.M, self._idx, clock, n)
@@ -370,7 +502,7 @@ class PathTrader:
         """the time the next trade would open (as trade() computes it): the open of the first permitted bar that has not
         started before the clock"""
         c0 = next_bar(clock)
-        _, waited = entry_index(self.M, self._idx(c0), flat_weekend, self.flat_daily)
+        _, waited = entry_index(self.M, self._idx(c0), flat_weekend, self.flat_daily, nb=self.nb)
         return float(c0 + waited)
 
     def _direction(self, i):
@@ -393,16 +525,16 @@ class PathTrader:
         clock until the next entry may be considered). last_entry, last_exit (clock) and last_info describe the trade.
         A position opens at a bar's open, so never at a bar that started before the clock (version 9: version 8 opened
         it at the open of the bar containing the clock, up to an hour earlier)"""
-        c0 = next_bar(clock)
-        i, waited = entry_index(self.M, self._idx(c0), flat_weekend, self.flat_daily)
+        c0 = next_bar(clock); nb = self.nb
+        i, waited = entry_index(self.M, self._idx(c0), flat_weekend, self.flat_daily, nb=nb)
         d = self._direction(i)
         o = dict(opts or {})
         if "keep_w" not in o: o["keep_w"] = l > 0 and w < self.k * l * (1 - 1e-9)
         pnl, hours, info = resolve(self.M, i, d, l, w, self.s, self.cost, flat_weekend, self.flat_daily, self.rng,
-                                   st=self.st, opts=o)
+                                   st=self.st, opts=o, nb=nb)
         te = float(c0 + waited)                           # the bar's open, when the position is opened
         self.last_entry = te; self.last_exit = te + info["exit"]; self.last_info = info
-        self.trades += 1
+        if info["why"] != "unaffordable": self.trades += 1
         return pnl, (te - clock) + float(hours)
 
 def attempt(firm, instr, data, m, L, k, X1, X, rng, cost_mult=1.0, dir_rule="random"):
@@ -416,7 +548,8 @@ def attempt(firm, instr, data, m, L, k, X1, X, rng, cost_mult=1.0, dir_rule="ran
         if not ok:
             if firm["monthly"]: fees = firm["fee"] * max(1, math.ceil((clock - t_start) / (30 * A.DAY)))
             return dict(v=-fees + credits, days=(clock - t_start) / A.DAY, t1=None, npay=0, passed=passed,
-                        t_eval=(clock - t_start) / A.DAY, paid=0.0, t_fund=0.0, trades=tr.trades, st=tr.st.as_dict())
+                        t_eval=(clock - t_start) / A.DAY, paid=0.0, t_fund=0.0, trades=tr.trades, st=tr.st.as_dict(),
+                        credit=credits)
         passed += 1
     if firm["monthly"]: fees = firm["fee"] * max(1, math.ceil((clock - t_start) / (30 * A.DAY)))
     fees += firm.get("activation", 0)
@@ -425,7 +558,7 @@ def attempt(firm, instr, data, m, L, k, X1, X, rng, cost_mult=1.0, dir_rule="ran
     return dict(v=paid - fees + credits, days=(clock2 - t_start) / A.DAY,
                 t1=(tfirst - t_start) / A.DAY if tfirst else None, npay=npay, passed=passed,
                 t_eval=t_eval, paid=paid, t_fund=(clock2 - clock) / A.DAY, trades=tr.trades, fees=fees,
-                st=tr.st.as_dict())
+                st=tr.st.as_dict(), credit=credits)
 
 def evaluate(firm, instr="US100", data="synth", m=0.75, L=1500, k=3, X1=1000, X=10000, n=3000, seed=11,
              cost_mult=1.0, dir_rule="random"):

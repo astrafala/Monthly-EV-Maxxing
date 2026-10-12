@@ -13,7 +13,8 @@ INSTR = {
   #       allowed entry hours UTC (None = any), 24/7?
   "EURUSD": ("eurusd_1h.csv", 0.0062, 0.002, (7, 20)),
   "GBPUSD": ("gbpusd_1h.csv", 0.0076, 0.002, (7, 20)),
-  "USDJPY": ("usdjpy_1h.csv", 0.0051, 0.002, (0, 20)),
+  "USDJPY": ("usdjpy_1h.csv", 0.0051, 0.002, (1, 20)),   # version 10: from 01:00 UTC like the others (the routine waits
+                                                          # until after the midnight UTC resets; version 9 entered at 00:00)
   "XAUUSD": ("gold_1h.csv",   0.0108, 0.015, (1, 20)),
   "US100":  ("nq_1h.csv",     0.0064, 0.015, (1, 20)),
   "US500":  ("es_1h.csv",     0.0096, 0.015, (1, 20)),

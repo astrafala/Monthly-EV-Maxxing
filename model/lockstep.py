@@ -33,17 +33,29 @@ g_run_stage, g_run_funded = _ns["g_run_stage"], _ns["g_run_funded"]
 DAY = A.DAY
 
 class _T:      # what the rule engine reads from the trader; the market calendar comes from the life's shared path
-    def __init__(self, L, k, rho=0.0, min_l=0.0, s=1.0, M=None, base=0, flat_daily=None, futures=False, m=1.0):
-        self.L = L; self.k = k; self.rho = rho; self.min_l = min_l; self.s = s
+    def __init__(self, L, k, rho=0.0, min_l=0.0, s=1.0, M=None, base=0, flat_daily=None, futures=False, m=1.0, cost=0.0):
+        self.L = L; self.k = k; self.rho = rho; self.min_l = min_l; self.s = s; self.cost = cost
         self.M = M; self.base = base; self.flat_daily = flat_daily; self.futures = futures
         self.wmin_frac = max(0.0, PF.WMIN_SD / m - rho) if M is not None else 0.0
         self.last_entry = None; self.last_exit = None; self.last_info = None; self.block = None
+        self.news = None                       # the current stage's news rule (set by the rule engine), news_v10
+    @property
+    def nb(self):
+        return PF.news_bars(self.M, self.news) if self.M is not None else None
     def _idx(self, clock): return (self.base + int(clock)) % self.M["T"]
+    def utc(self, clock):
+        return PF.EPOCH + PF._dt.timedelta(hours=self._idx(clock) + (clock - math.floor(clock)))
     def lmin_at(self, clock, flat_weekend=False):
         """the risk of the smallest position (0.01 lot, one micro contract) at the next entry's price"""
         if self.M is None: return self.min_l
-        i, _ = PF.entry_index(self.M, self._idx(PF.next_bar(clock)), flat_weekend, self.flat_daily, self.block)
+        i, _ = PF.entry_index(self.M, self._idx(PF.next_bar(clock)), flat_weekend, self.flat_daily, self.block, nb=self.nb)
         return PF.min_risk(self.M, self.M["O"][i], self.s)
+    def plan_at(self, clock, l, w, opts=None, flat_weekend=False):
+        """the position the next trade would place (pathfirm.plan) at the next entry's open price"""
+        i, _ = PF.entry_index(self.M, self._idx(PF.next_bar(clock)), flat_weekend, self.flat_daily, self.block, nb=self.nb)
+        o = dict(opts or {})
+        if "keep_w" not in o: o["keep_w"] = l > 0 and w < self.k * l * (1 - 1e-9)
+        return PF.plan(self.M, i, l, w, self.s, self.cost, o)
     def bdays(self, clock, n):
         if self.M is None: return clock + n * DAY * 7.0 / 5.0
         return PF.add_bdays(self.M, self._idx, clock, n)
@@ -51,11 +63,11 @@ class _T:      # what the rule engine reads from the trader; the market calendar
         """the time the next trade would open on the life's market (news-blocked hours included), as _push computes it"""
         if self.M is None: return clock
         c0 = PF.next_bar(clock)
-        _, waited = PF.entry_index(self.M, self._idx(c0), flat_weekend, self.flat_daily, self.block)
+        _, waited = PF.entry_index(self.M, self._idx(c0), flat_weekend, self.flat_daily, self.block, nb=self.nb)
         return float(c0 + waited)
 
 def g_slot(sid, firm, L, k, X1, X, rng, t_end, ledger, start=0.0, rho=0.0, min_l=0.0, s=1.0, wallet=None, gap_days=0.0,
-           tr=None):
+           tr=None, ref=None, firm_name=None):
     """one account slot, attempts back to back from `start` until t_end (hours).
     Ledger rows: (time, slot, kind, bank cash, attempt number). Non-cash credits (The5ers) are rows of kind
     'credit_earned' / 'credit_used' with zero cash; a purchase pays only the part of the fee the slot's credit does not cover.
@@ -91,7 +103,11 @@ def g_slot(sid, firm, L, k, X1, X, rng, t_end, ledger, start=0.0, rho=0.0, min_l
         if firm.get("activation"):
             ledger.append((clock, sid, "activation", -firm["activation"], att))
             if wallet is not None: wallet.pay_now(-firm["activation"])
-        fd = copy.deepcopy(firm["funded"]); fd["_paylog"] = _PayLog(ledger, sid, att, wallet)
+        fd = copy.deepcopy(firm["funded"]); fd["_paylog"] = _PayLog(ledger, sid, att, wallet, ref, firm_name)
+        if fd.get("refund") and firm.get("refund_frac") is not None:
+            # the refund is a share of the cash actually paid for this account; fee paid with credit is not refunded
+            # (The5ers; version 10: version 9 refunded 70% of the listed fee, review of version 9, finding 17)
+            fd["refund"] = firm["refund_frac"] * cash_fee
         f2 = dict(firm); f2["funded"] = fd
         paid, clock, tfirst, npay = yield from g_run_funded(fd, tr, rng, f2, clock, X1, X)
         ledger.append((clock, sid, "funded_end", 0.0, att))
@@ -99,15 +115,57 @@ def g_slot(sid, firm, L, k, X1, X, rng, t_end, ledger, start=0.0, rho=0.0, min_l
     if credit > 0: ledger.append((t_end, sid, "credit_left", 0.0, att))
 
 class _PayLog(list):
-    """every payout written to the ledger, and made available to a finite budget, when it is paid (version 8: version 7
-    wrote an account's payouts only when the account ended, so a budget received them late, and an account still open at
-    the end of a life had to be traded to its end before they were recorded)"""
-    def __init__(self, ledger, sid, att, wallet):
+    """every payout written to the ledger, and made available to a finite budget, when it is requested, dated when its cash
+    arrives (version 8: version 7 wrote an account's payouts only when the account ended, so a budget received them late,
+    and an account still open at the end of a life had to be traded to its end before they were recorded). Version 10: a
+    payout cancelled by a breach before it was processed is taken back by a 'payout_cancelled' row on the same date; with
+    refusal scenarios (ref), each request may be refused (Refusals)"""
+    def __init__(self, ledger, sid, att, wallet, ref=None, firm=None):
         super().__init__(); self.ledger = ledger; self.sid = sid; self.att = att; self.wallet = wallet
+        self.ref = ref; self.firm = firm; self.rows = {}
     def append(self, item):
         tc, cash = item[0], item[1]
-        self.ledger.append((tc, self.sid, "payout", cash, self.att))
+        kind = item[3] if len(item) > 3 else "payout"
+        t_req = item[2]; t_proc = item[4] if len(item) > 4 else tc
+        if kind == "payout_cancelled":
+            i = self.rows.pop((round(tc, 9), round(-cash, 9)), None)
+            if i is not None and self.ref is not None and i in self.ref.voided:
+                return                                   # already voided by a refusal: nothing to take back
+            if i is not None and self.ref is not None: self.ref.cancelled.add(i)
+        self.ledger.append((tc, self.sid, kind, cash, self.att))
         if self.wallet is not None: self.wallet.receive(tc, cash)
+        if kind == "payout":
+            i = len(self.ledger) - 1; self.rows[(round(tc, 9), round(cash, 9))] = i
+            if self.ref is not None: self.ref.on_payout(self.firm, self.ledger, i, t_req, t_proc, tc, cash, self.wallet)
+
+class Refusals:
+    """payout refusals drawn inside the event engine (version 10: version 9 removed a refused firm's later cash rows from a
+    finished all-paid ledger, so the firm's open positions still steered the shared direction of the others: review of
+    version 9, finding 12). Each payout request of a firm is refused with the scenario's probability for the firm's tier.
+    A refusal at time t ends the plan's use of the firm then: the refused payout and every payout of the firm not processed
+    by t are not paid (their ledger rows are voided, and a finite budget never receives them), and none of the firm's
+    accounts trades or buys again after t (run_life drops their events), so the other accounts go on with the positions
+    actually open"""
+    def __init__(self, q, seed, tier_of):
+        self.q = q; self.rng = random.Random(seed); self.tier_of = tier_of
+        self.t_ref = {}; self.rows = {}; self.voided = set(); self.cancelled = set(); self.n_refused = 0
+    def _void(self, ledger, i, wallet):
+        if i in self.voided or i in self.cancelled: return
+        tc, sid, kind, cash, att = ledger[i]
+        ledger[i] = (tc, sid, "payout_void", 0.0, att); self.voided.add(i)
+        if wallet is not None: wallet.receive(tc, -cash)          # dated after the refusal: never spent before it
+    def on_payout(self, firm, ledger, i, t_req, t_proc, t_cash, cash, wallet):
+        self.rows.setdefault(firm, []).append((t_req, t_proc, i, wallet))
+        t_r = self.t_ref.get(firm)
+        if t_r is not None and t_proc > t_r:
+            self._void(ledger, i, wallet); return
+        if self.rng.random() < self.q.get(self.tier_of(firm), 0.05):
+            self.n_refused += 1
+            if t_r is None or t_req < t_r:
+                self.t_ref[firm] = t_req
+                for (tq, tp, j, wl) in self.rows[firm]:
+                    if tp > t_req: self._void(ledger, j, wl)
+            self._void(ledger, i, wallet)
 
 class Wallet:
     """a finite cash budget shared by every slot; payouts become spendable when they arrive. take() is called by the event
@@ -134,12 +192,13 @@ class Market:
     def __init__(self, instr, data, news=False):
         self.M = PF.market(instr, data)
         self.block = set(NEWS_HOURS[instr]) if news else set()   # news proxy: flat through these UTC hours every weekday
-    def entry_index(self, i, flat_weekend, flat_daily):
-        return PF.entry_index(self.M, i, flat_weekend, flat_daily, self.block)
-    def resolve(self, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, st=None, opts=None):
+    def entry_index(self, i, flat_weekend, flat_daily, nb=None):
+        return PF.entry_index(self.M, i, flat_weekend, flat_daily, self.block, nb=nb)
+    def resolve(self, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, st=None, opts=None, nb=None):
         """position opened at bar i's open in direction d; returns (pnl, hours until the next entry may be considered,
         info) (pathfirm.resolve: the same code as the single-account engine)"""
-        return PF.resolve(self.M, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, block=self.block, st=st, opts=opts)
+        return PF.resolve(self.M, i, d, l, w, s, cost, flat_weekend, flat_daily, rng, block=self.block, st=st, opts=opts,
+                          nb=nb)
     def rule_direction(self, i, rng, rule):
         if rule == "random": return 1 if rng.random() < 0.5 else -1
         M = self.M; C = M["C"]; ok = M["ok"]; T = M["T"]; closes = []; j = i - 1
@@ -150,7 +209,7 @@ class Market:
         return 1 if closes[0] > closes[-1] else -1
 
 def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stagger_days=0.0, cost_mult=1.0,
-             news=False, budget=None, share=True):
+             news=False, budget=None, share=True, refuse=None, bound=False):
     """slots: list of dict(firm=name, kind=cfd|fut, L, k, X1, X, m, instr, [gap_days, start_day]). Returns the ledger and
     trade/overlap statistics. data: "synthN" (12-year path N shared by many lives), "synthNyY" (a Y-year path for this
     life alone; gold, euro and yen get their own independent random streams of path N) or "corrR_NyY" (all four markets on
@@ -172,7 +231,9 @@ def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stag
     t_end = months * 30.44 * DAY
     assert base + t_end + 60 * DAY < T, "price path too short for this horizon"
     wallet = Wallet(budget) if budget is not None else None
+    ref = Refusals(refuse, seed * 7 + 3, lambda f: F5.TIER.get(f, "B")) if refuse else None
     ledger = []; gens = {}; pend = {}; heap = []; info = {}
+    intervals = {}                 # market group -> [(first sub-step, end sub-step, log upper barrier, log lower barrier)]
     for sid, sp in enumerate(slots):
         F = rules(sp)
         if sp.get("lev"): F["lev"] = sp["lev"]
@@ -182,11 +243,12 @@ def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stag
         s = mm * mk[instr].M["sig"]; cost = mk[instr].M["cost"] * cost_mult
         fut = instr == "MNQ_fut"                                      # whole micro contracts at each entry's price
         tr = _T(sp["L"], sp["k"], cost / s, 0.0, s, M=mk[instr].M, base=base, flat_daily=F.get("flat_daily"),
-                futures=fut, m=mm)
+                futures=fut, m=mm, cost=cost)
         tr.block = mk[instr].block                                    # the news proxy's blocked hours, if any
         g = g_slot(sid, F, sp["L"], sp["k"], sp["X1"], sp["X"], srng, t_end, ledger, sp.get("start_day", 0) * DAY,
-                   wallet=wallet, gap_days=sp.get("gap_days", 0.0), tr=tr)
-        info[sid] = dict(F=F, instr=instr, rng=srng, s=s, cost=cost, flat_daily=F.get("flat_daily"), futures=fut, tr=tr)
+                   wallet=wallet, gap_days=sp.get("gap_days", 0.0), tr=tr, ref=ref, firm_name=F5.firm_of(sp["firm"]))
+        info[sid] = dict(F=F, instr=instr, rng=srng, s=s, cost=cost, flat_daily=F.get("flat_daily"), futures=fut, tr=tr,
+                         firm=F5.firm_of(sp["firm"]))
         gens[sid] = g
         try:
             req = next(g)
@@ -202,6 +264,8 @@ def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stag
         if key - base > t_end + 31 * DAY:
             continue          # past the life's horizon: the account is no longer simulated (version 8: a funded Topstep
                               # account with its floor locked could otherwise trade on, on the wrapped path, for ever)
+        if ref is not None and ref.t_ref.get(info[sid]["firm"]) is not None and key - base >= ref.t_ref[info[sid]["firm"]]:
+            continue          # the firm refused a payout before this event: the plan no longer uses it
         try:
             if req[0] == "buy":                          # a purchase at its own time, from the cash arrived by then
                 req = gens[sid].send(wallet.take(req[1], req[2]))
@@ -222,9 +286,16 @@ def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stag
         else: d = M.rule_direction(e_abs % T, inf["rng"], rule)      # (share=False: diagnostic only, not the plan)
         o = dict(opts or {}); tr_ = inf["tr"]
         if "keep_w" not in o: o["keep_w"] = l > 0 and w < tr_.k * l * (1 - 1e-9)
-        pnl, bars, ex = M.resolve(e_abs % T, d, l, w, inf["s"], inf["cost"], fw, inf["flat_daily"], inf["rng"], st=stats, opts=o)
-        open_pos.append((e_abs, e_abs + ex["exit"], d, grp)); n_trades += 1
-        trade_log.append((e_abs - base, sid, d, e_abs - base + ex["exit"], bool(dirs) and share, grp))
+        pnl, bars, ex = M.resolve(e_abs % T, d, l, w, inf["s"], inf["cost"], fw, inf["flat_daily"], inf["rng"], st=stats, opts=o,
+                                  nb=tr_.nb)
+        if ex["why"] != "unaffordable":                                # (no position is opened then)
+            open_pos.append((e_abs, e_abs + ex["exit"], d, grp)); n_trades += 1
+            trade_log.append((e_abs - base, sid, d, e_abs - base + ex["exit"], bool(dirs) and share, grp))
+            if bound and M.M.get("sub"):                                # the barriers the trade watches, by sub-step
+                sb = M.M["sub"]; j0 = (e_abs % T) * sb; j1 = j0 + int(round(ex["exit"] * sb))
+                up = math.log(ex["tp"]) if (d > 0 and ex.get("tp")) else (math.log(ex["lo_px"]) if d < 0 and ex["lo_px"] < math.inf else math.inf)
+                lo = math.log(ex["lo_px"]) if (d > 0 and ex["lo_px"] > 0) else (math.log(ex["tp"]) if d < 0 and ex.get("tp") else -math.inf)
+                if j1 > j0: intervals.setdefault(grp, []).append((j0, j1, up, lo))
         hours = float(e_abs - base - clock) + float(bars)          # from the clock to the next permitted consideration
         tr_.last_entry = float(e_abs - base); tr_.last_exit = float(e_abs - base) + ex["exit"]; tr_.last_info = ex
         try:
@@ -232,8 +303,13 @@ def run_life(slots, data="synth", months=12, seed=1, rule="trend5", m=0.75, stag
             _push(sid, req, heap, pend, mk, info, base)
         except StopIteration:
             pass
+    jb = None
+    if bound:
+        rep = {"NQ": "US100", "XAU": "XAUUSD", "EUR": "EURUSD", "JPY": "USDJPY"}
+        jb = {g: PF.joint_bound(mk[rep[g]].M, iv) for g, iv in intervals.items()}
     return ledger, dict(trades=n_trades, copied=n_copy, conflicts=conflicts, trade_log=trade_log, stats=stats.as_dict(),
-                        wallet_low=wallet.low if wallet else None, wallet_end=wallet.cash if wallet else None)
+                        wallet_low=wallet.low if wallet else None, wallet_end=wallet.cash if wallet else None,
+                        refusals=dict(ref.t_ref) if ref else None, n_refused=ref.n_refused if ref else 0, joint_bound=jb)
 
 _SEQ = [0]
 def _push(sid, req, heap, pend, mk, info, base):
@@ -244,7 +320,7 @@ def _push(sid, req, heap, pend, mk, info, base):
     inf = info[sid]; M = mk[inf["instr"]]
     i_abs = base + PF.next_bar(clock)
     T = M.M["T"]
-    e, waited = M.entry_index(i_abs % T, fw, inf["flat_daily"])
+    e, waited = M.entry_index(i_abs % T, fw, inf["flat_daily"], nb=inf["tr"].nb)
     e_abs = i_abs + waited
     pend[sid] = (req, waited)
     heapq.heappush(heap, (e_abs, _SEQ[0], sid))
