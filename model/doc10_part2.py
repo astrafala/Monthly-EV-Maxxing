@@ -192,6 +192,8 @@ def model_table(F, prog):
     if fd.get("void_min"): bits.append(f"a winning trade held under {fd['void_min']:g} minute has its profit removed")
     if fd.get("news"): bits.append("flat around " + ("US CPI releases" if fd["news"] == "cpi" else "high-impact releases") + " (6.5)")
     rows.append(["Funded account", "; ".join(bits)])
+    if F.get("no_terminal"):
+        rows.append(["Near the floor", "no last trade to the floor, at either stage (the firm prohibits 'all or nothing' trading): an account whose room above its floor falls below the smallest normal risk is left as it is and its slot buys the next evaluation (5.4)"])
     pp = []
     if fd.get("req_wait"): pp.append(f"a request at least {60 * fd['req_wait']:.0f} minutes after the last close, flat")
     if fd.get("session_tz"): pp.append("made one minute after the 4 p.m. Chicago lock of a qualifying session")

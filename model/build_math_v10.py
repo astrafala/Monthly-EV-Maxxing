@@ -123,7 +123,7 @@ def answer():
     return f"""
 <section class="chapter"><span class="eyebrow">The answer</span><h1>Expected cash per month, one person</h1>
 <div class="big">{usd(s['ev'])} <small>a month in the first year, &plusmn; {usd(s['ci'])} (95%)</small></div>
-<p>That is the expected cash, after the fees modelled (evaluation fees, activation and monthly fees, the fees four firms take from every payout, refunds and credits as each firm's rules give them; not taxes or the costs of a payout method), that one person receives per month in the <em>first year</em> of the recommended plan: {s['acc']} accounts at {nf} prop firms, each traded with zero predictive skill under the rules of the inventory (Appendix [[APP_INV]]: every rule that can change what the plan may do or what it is paid, with the cautious readings and the assumptions it names) and the plan's own policies (flat every evening and around restricted news; no trade and no day above 40% of a target; at least 10 minutes between trades and no target or stop closer than 0.6 hourly standard deviations; one direction per market, and one dollar direction for EURUSD and USDJPY; an account near its floor traded out with a last stop at the floor, so that it ends in a breach that frees its slot). In 90% of simulated first years the total lies between {usd(s['p05'])} and {usd(s['p95'])} (median {usd(s['p50'])}).</p>
+<p>That is the expected cash, after the fees modelled (evaluation fees, activation and monthly fees, the fees five firms take from every payout and Maven's $20 a payout, refunds and credits as each firm's rules give them; not taxes or the costs of a payout method), that one person receives per month in the <em>first year</em> of the recommended plan: {s['acc']} accounts at {nf} prop firms, each traded with zero predictive skill under the rules of the inventory (Appendix [[APP_INV]]: every rule that can change what the plan may do or what it is paid, with the cautious readings and the assumptions it names) and the plan's own policies (flat every evening and around restricted news; no trade and no day above 40% of a target; at least 10 minutes between trades and no target or stop closer than 0.6 hourly standard deviations; one direction per market, and one dollar direction for EURUSD and USDJPY; an account near its floor traded out with a last stop at the floor, so that it ends in a breach that frees its slot). In 90% of simulated first years the total lies between {usd(s['p05'])} and {usd(s['p95'])} (median {usd(s['p50'])}).</p>
 <div class="kpis">{kp1}</div>
 <div class="kpis">{kp2}</div>
 <div class="kpis">{kp3}</div>
@@ -327,7 +327,7 @@ def review_md(rsubs):
     def clean(x):
         for _ in range(3):
             for k, v in rsubs.items(): x = x.replace(f"[[{k}]]", str(v))
-        x = x.replace("[[APP_INV]]", "B").replace("[[CH_RISK]]", str(CH_RISK))
+        x = x.replace("[[APP_INV]]", "B").replace("[[CH_RISK]]", str(CH_RISK)).replace("[[CH_RUN]]", str(CH_RUN))
         x = re.sub(r"</(p|li)>", "\n", x); x = re.sub(r"<li>", "- ", x)
         x = re.sub(r"<[^>]+>", "", x)
         return html.unescape(x).replace("\\(", "").replace("\\)", "").replace("\\text{", "").replace("\\mathbb{E}", "E").replace("\\min", "min").replace("\\ell", "l")

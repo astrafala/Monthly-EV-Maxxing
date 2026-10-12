@@ -51,7 +51,7 @@ def dll_table():
             ["Hola Prime", "previous day's closing balance", "17:00 New York", "5% of that balance", "relative"],
             ["Alpha Capital", "the day's starting balance (close of the daily candle)", "00:00 broker time", "5% of that balance", "relative"],
             ["GFT", "higher of balance and equity", "17:00 New York", "5% of that level", "relative"],
-            ["FunderPro", "the day's starting balance (balance-based)", "00:00 GMT+3", "5%; base not stated", "the stricter of the two"],
+            ["FunderPro", "the day's starting balance (balance-based)", "17:00 New York", "5%; base not stated", "the stricter of the two"],
             ["BrightFunded", "higher of balance and equity at rollover", "rollover, Prague time", "5% of the original size", "fixed"],
             ["Blue Guardian", "higher of balance and equity", "17:00 New York", "4% of the initial balance", "fixed"],
             ["Maven", "higher of equity and balance", "00:00 UTC", "4% of that level (4% of $1,100 in its example)", "relative"]]
@@ -505,9 +505,10 @@ def proc_table():
     """the payout states of every firm (firms_v10.PROC; 6.6)"""
     rows = []
     for f, d in F7.PROC.items():
+        parts = ([f"{d['review_bd']} working day" + ("s" if d["review_bd"] != 1 else "")] if d.get("review_bd") else []) + \
+                ([f"{d['review_h']:g} hour" + ("s" if d["review_h"] != 1 else "")] if d.get("review_h") else [])
         rev = ("deducted and protected at the request" if d.get("protected") else
-               (f"{d['review_h']:g} hour" + ("s" if d["review_h"] != 1 else "") if d.get("review_h") else f"{d.get('review_bd', 0)} working day" + ("s" if d.get("review_bd", 0) != 1 else "")))
-        if d.get("review_bd", 0) == 0 and not d.get("review_h") and not d.get("protected"): rev = "at once (approved automatically)"
+               " and ".join(parts) if parts else "at once (approved automatically)")     # Hola Prime: a review, then an hour
         state = ("account locked by the firm" if d.get("lock_processing") else "the plan pauses the account" if d.get("pause_pending") else
                  "trading continues; the payout is protected" if d.get("protected") else
                  "&ndash;" if d.get("review_bd", 0) == 0 and not d.get("review_h") else "trading continues; a breach cancels the request")

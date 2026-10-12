@@ -553,6 +553,16 @@
    "read": "12 Oct 2026"
   },
   {
+   "firm": "GFT",
+   "area": "prohibited practices",
+   "rule": "exploiting errors or latency; non-public information; front-running; trading that harms GFT's relationship with its broker; 'All-Or-Nothing Trading, where you can lose the account in one trade' (its article of 27 July 2026 defines gambling-style trading as more than 80% of the available margin in one trading idea); hedging in one account, between your own accounts or with other traders; third-party or marketed EAs and strategies (your own EAs allowed); an EA in the assessment and manual trading when funded, or the reverse; martingale and grid recovery; large-volume trading 'without a clear or logical trading strategy'",
+   "model": "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled; no last trade to the floor at GFT (5.4: an account whose room falls below the smallest normal risk is left as it is; version 9 placed that trade); margin at most 60%; every stage traded by hand",
+   "status": "plan",
+   "source": "https://help.goatfundedtrader.com/en/articles/10742118-what-are-prohibited-trading-practices",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
    "firm": "FunderPro",
    "area": "targets and limits",
    "rule": "10% / 5%; daily 5%, computed on the balance at 5 pm New York (base not settled: the stricter of the initial and the day's balance); 10% static; 4 trading days per phase",
@@ -966,7 +976,7 @@
    "firm": "Alpha Capital",
    "area": "prohibited practices",
    "rule": "'all or nothing' strategies (a significant change in lot size against the account's average, unusual trade durations, trades opened just before and closed just after the news window); minimal lots to complete trading days on qualified accounts; position spamming",
-   "model": "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled; no filler trades at Alpha Capital",
+   "model": "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled; no filler trades and no last trade to the floor at Alpha Capital (5.4: an account whose room falls below the smallest normal risk is left as it is; version 9 placed that trade)",
    "status": "plan",
    "source": "https://help.alphacapitalgroup.uk/en/articles/7060909-what-is-alpha-capital-group-s-policy-against-gambling-in-trading",
    "basis": "page",
@@ -1415,7 +1425,7 @@
  ],
  "counts": {
   "modelled": 61,
-  "plan": 48,
+  "plan": 49,
   "cautious": 17,
   "assumption": 3,
   "not binding": 12

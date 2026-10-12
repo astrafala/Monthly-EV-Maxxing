@@ -19,7 +19,7 @@ REC = LP.REC
 PLABEL = {"Tier A": "Tier A only", "Tier A + B": "Tiers A and B", REC: "Recommended (A + B + one account per tier-D firm)",
           "Recommended, FTMO as 2 x 200K": "Recommended, FTMO as 2 &times; 200K",
           "All firms at full caps": "Largest allocation modelled",
-          "All firms at full caps + The5ers small accounts": "Largest allocation + The5ers' small New accounts",
+          "All firms at full caps + The5ers small accounts": "Largest allocation + The5ers' small New accounts (not recommended: [[CH_RISK]].2)",
           "Recommended + futures": "Recommended + futures layer"}
 CFD_FIRMS = [f for f in FIRMS if f not in ("Topstep", "Apex")]
 MAIN0 = 500_000                     # first path number (and seed) of the 12-month lives (lockstep_portfolio_v10 'main')
@@ -95,8 +95,8 @@ def alloc_table():
                  cap="EV per month: each account's continuing-slot rate (8.3: the average cash per month dated in years 2 to 9 of a slot that buys a new evaluation whenever its attempt ends, starting from today's prices), rounded to the dollar and summed; each total is the sum of the figures printed above it. "
                      "A firm whose programme is not worth it under the plan's policies has no accounts. "
                      "'Largest modelled' is the largest allocation the plan models under each firm's limit and copying rule, one account per slot at a time: at FTMO four slots under its $400,000 cap on funded accounts (Challenges themselves are unlimited; running more Challenges in parallel is not modelled, Appendix [[APP_INV]]); "
-                     "at GFT and FundedNext, whose rules forbid duplicated trades between their own funded accounts, a second account on a market of its own (within GFT's $400,000 and FundedNext's $300,000) is not modelled; at Fintokei five 100K accounts use about &euro;444,000 of the &euro;500,000 limit (no smaller ProTrader size is modelled). "
-                     "It includes The5ers' optional small New accounts. Futures (Topstep, Apex) are an optional layer, in neither total.")
+                     "at GFT, FunderPro, BrightFunded and Blue Guardian, which allow a trader's own accounts to trade alike, the limit filled with 100K or 200K accounts, whichever is worth more in all; at FundedNext, which forbids copying between its own accounts, one account (a second on a market of its own, within its $300,000, is not modelled); at Maven one account, because a second would share the trader's $10,000 per 30 days, which the engine does not model across accounts; at Fintokei four 100K accounts fill its 400,000 EUR/USD of funded accounts. "
+                     "It includes The5ers' optional small New accounts, which a literal reading of The5ers' size rule could flag ([[CH_RISK]].2: not recommended). Futures (Topstep, Apex) are an optional layer, in neither total.")
 
 def _pair_rows():
     """for each CFD firm: the plan's programme and market, its 100K and 200K final rows and their continuing rows"""
@@ -126,12 +126,12 @@ def size_table():
 def size_text():
     rows = {f: (p, i, a, b, ca, cb) for f, p, i, a, b, ca, cb in _pair_rows()}
     out = ("<p><strong>The answer, firm by firm.</strong> With the formula of [[CH_ALLOC]].2, one account of size \\(2S\\) beats two of size \\(S\\) exactly when \\(F(2S) &lt; 2F(S)\\), by \\((2F(S) - F(2S))\\big(1 - (1-f)P q_R\\big)\\) per attempt where the refund is the fee paid (the whole saving where there is none), unless a rule fails to scale. "
-           "Where the plan holds one account (FunderPro, whose $200,000 limit allows one 200K; GFT and FundedNext, which forbid duplicated trades between their own funded accounts, so a second account would need a market no other account of the firm trades), the plan uses the size whose continuing-slot rate is higher. ")
+           "Where the recommended plan holds one account (the tier-D firms and FundedNext), it uses the size whose continuing-slot rate is higher. At the full allowance GFT, FunderPro, BrightFunded and Blue Guardian, which allow a trader's own accounts to trade alike, fill their limits with 100K or 200K accounts, whichever is worth more in all; FundedNext, which forbids copying between its own accounts, keeps one (a second would need a market no other account of the firm trades). ")
     if "GFT" in rows:
         p, i, a, b, ca, cb = rows["GFT"]
         d, dci, G = sum_ci([(cb, 1), (ca, -2)]); d1, d1ci, _ = sum_ci([(cb, 1), (ca, -1)])
         out += (f"GFT is the case where the formula fails: at 200K its first two payouts are capped at $10,000 rather than at 6% (which would be $12,000), and its $3,000 day cap binds twice as hard. "
-                f"One 200K account against two 100K accounts: {sgn(r0(cb['rate']) - 2 * r0(ca['rate']))} &plusmn; {usd(dci)} a month ({iv_words(d, dci)}); two GFT accounts on the same trades are not allowed in any case. "
+                f"One 200K account against two 100K accounts: {sgn(r0(cb['rate']) - 2 * r0(ca['rate']))} &plusmn; {usd(dci)} a month ({iv_words(d, dci)}); both are allowed (GFT's prohibited-practices page, updated 6 October 2026, allows copying between a trader's own accounts whenever they were bought; version 9 read the opposite). "
                 f"One 200K account against one 100K account: {sgn(r0(cb['rate']) - r0(ca['rate']))} &plusmn; {usd(d1ci)} ({iv_words(d1, d1ci)}).")
     out += "</p>"
     if "Recommended, FTMO as 2 x 200K" in SLOTS:

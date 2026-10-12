@@ -205,6 +205,14 @@ r("GFT", "Goat Guard (funded)", "a combined floating loss of 2% closes the open 
   "second time the account is breached", "not reached: one position at a time whose stop loss plus cost is at most $1,750 plus "
   "cost per $100K, and the room above the floor caps it when the balance is low (at most 1.97% of the current balance); the "
   "plan holds no position through a gap", "not binding", U + "10742107-what-is-goat-guard", read="4 Oct 2026 (version 9 reading)")
+r("GFT", "prohibited practices", "exploiting errors or latency; non-public information; front-running; trading that harms GFT's "
+  "relationship with its broker; 'All-Or-Nothing Trading, where you can lose the account in one trade' (its article of 27 July "
+  "2026 defines gambling-style trading as more than 80% of the available margin in one trading idea); hedging in one account, "
+  "between your own accounts or with other traders; third-party or marketed EAs and strategies (your own EAs allowed); an EA in "
+  "the assessment and manual trading when funded, or the reverse; martingale and grid recovery; large-volume trading 'without a "
+  "clear or logical trading strategy'", PLANB + "; no last trade to the floor at GFT (5.4: an account whose room falls below "
+  "the smallest normal risk is left as it is; version 9 placed that trade); margin at most 60%; every stage traded by hand",
+  "plan", U + "10742118-what-are-prohibited-trading-practices", read="12 Oct 2026")
 
 # ---------------------------------------------------------------- FunderPro Classic
 U = "https://support.funderpro.com/en/articles/"
@@ -557,7 +565,9 @@ REREAD = {
     "trades", read=D12, source="https://help.alphacapitalgroup.uk/en/articles/15888623-what-is-the-max-risk-rule-and-how-does-it-work"),
  ("Alpha Capital", "prohibited practices"): dict(rule="'all or nothing' strategies (a significant change in lot size against the account's "
     "average, unusual trade durations, trades opened just before and closed just after the news window); minimal lots to complete "
-    "trading days on qualified accounts; position spamming", read=D12,
+    "trading days on qualified accounts; position spamming", model=PLANB + "; no filler trades and no last trade to the floor at "
+    "Alpha Capital (5.4: an account whose room falls below the smallest normal risk is left as it is; version 9 placed that trade)",
+    read=D12,
     source="https://help.alphacapitalgroup.uk/en/articles/7060909-what-is-alpha-capital-group-s-policy-against-gambling-in-trading"),
  ("Alpha Capital", "copying"): dict(read=D12, source="https://help.alphacapitalgroup.uk/en/articles/8786973-is-copy-trading-allowed"),
  ("Alpha Capital", FS): dict(rule="$497 for 100K, $997 for 200K (secondary listings); 'All our evaluation plans are non-refundable' (help "
