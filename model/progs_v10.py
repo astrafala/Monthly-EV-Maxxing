@@ -487,3 +487,22 @@ for _k, _sh in P.items():
     _sh["plan"] = [(_CONC_NEW if x == _CONC_OLD else _FX_NEW if x == _FX_OLD else x) for x in _sh["plan"]]
 assert _n_conc > 0 and not any(x == _CONC_OLD for _sh in P.values() for x in _sh["plan"])
 assert any(x == _FX_NEW for x in P["FXIFY Two Phase Classic"]["plan"])
+
+# the last-trade item, in the order of its clauses (the GFT and Alpha Capital exception belongs to the last trade, not to the closing of
+# an account below the smallest position's cost), with the threshold as acct_mc._risk applies it: a tenth of the normal risk or the
+# smallest position's risk, whichever is larger (one micro contract on futures can be the larger)
+_TERM_OLD = ("positions in whole lots (0.01-lot steps; whole futures contracts), rounded down; risk sized so that the stop loss plus the "
+             "round-trip cost fits the room under the floor and under the day's limit; when the room above the floor is below a tenth of "
+             "the normal risk, one last trade with its stop order at the floor itself: the account recovers or ends in a breach that frees "
+             "its allocation; an account whose room is below even the smallest position's cost is closed on request (not at GFT and Alpha "
+             "Capital, whose all-or-nothing rules rule it out: there the account is closed on request instead)")
+_TERM_FIX = ("positions in whole lots (0.01-lot steps; whole futures contracts), rounded down; risk sized so that the stop loss plus the "
+             "round-trip cost fits the room under the floor and under the day's limit; when the room above the floor is below a tenth of "
+             "the normal risk (or below the smallest position's risk, where that is larger), one last trade with its stop order at the "
+             "floor itself: the account recovers or ends in a breach that frees its allocation (not at GFT and Alpha Capital, whose "
+             "all-or-nothing rules rule it out: there the account is closed on request instead); an account whose room is below even the "
+             "smallest position's cost is closed on request")
+_n_term = sum(1 for _sh in P.values() for x in _sh["plan"] if x == _TERM_OLD)
+for _k, _sh in P.items():
+    _sh["plan"] = [(_TERM_FIX if x == _TERM_OLD else x) for x in _sh["plan"]]
+assert _n_term > 0 and not any(x == _TERM_OLD for _sh in P.values() for x in _sh["plan"])
