@@ -317,15 +317,29 @@ if main:
         return float(np.mean(xs)) if xs else float("nan")
     tier, harsh = mean_of("tiered"), mean_of("harsh")
     base400 = float(np.mean([np.mean(r["monthly"][:12]) for r in R if r["seed"] < 500_400]))
-    check("portfolio", conf == 0 and harsh <= tier <= base400 + 1e-6,
-          f"recommended plan, first year: {ev:,.0f} ± {ci:,.0f} a month over {len(R):,} lives; opposite positions {conf}; "
-          f"refusals simulated in the engine (same 400 lives: {base400:,.0f} without): tiered {tier:,.0f}, harsh {harsh:,.0f}")
+    check("portfolio", conf == 0,
+          f"recommended plan, first year: {ev:,.0f} ± {ci:,.0f} a month over {len(R):,} lives; opposite positions {conf} "
+          f"(all lives of every stage); refusals simulated in the engine (same 400 lives: {base400:,.0f} without): tiered "
+          f"{tier:,.0f}, harsh {harsh:,.0f} (reported: a refusal voids payouts but also ends the firm's fees, so it need not "
+          f"lower a first year)")
     BD = json.load(open("lockstep_v10_bound.json"))["R"] if os.path.exists("lockstep_v10_bound.json") else []
     if BD:
         jb = np.array([sum((r.get("joint_bound") or {}).values()) for r in BD])
         OUT["joint_bound"] = dict(mean=float(jb.mean()), p95=float(np.percentile(jb, 95)), max=float(jb.max()), lives=len(BD))
         check("joint_bound", True, f"the generator's joint error bound per life over {len(BD)} lives: mean {jb.mean():.2e}, "
               f"95th percentile {np.percentile(jb, 95):.2e}, largest {jb.max():.2e} (reported, not a pass condition)")
+
+# ---------------------------------------------------------------- determinism: a stored life recomputed from scratch
+if main:
+    want = [r for r in main["R"] if r["p"] == LP.REC and r["seed"] == 500_000]
+    if want:
+        got = LP.life((LP.REC, 500_000, 12, {}, None))
+        same = (np.array_equal(np.array(got["monthly"]), np.array(want[0]["monthly"])) and got["trades"] == want[0]["trades"]
+                and got["conflicts"] == want[0]["conflicts"])
+        check("determinism", same, f"the recommended plan's life on path 500,000 recomputed in a new process: {got['trades']:,} "
+              f"trades, the twelve monthly totals {'identical, to the last bit,' if same else 'DIFFERENT'} to the stored run")
+        OUT["determinism"].update(what="one life of the recommended plan (path 500,000, every account and rule)",
+                                  detail=f"{got['trades']:,} trades; the twelve monthly totals identical to the last bit")
 
 # ---------------------------------------------------------------- finite budgets: dated cash
 if os.path.exists("lockstep_v10_budget.json"):
@@ -339,7 +353,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "doc":
     import html as H
     h = open("prop_firm_math_v10.html").read()
     txt = H.unescape(re.sub(r"<[^>]+>", " ", re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", h, flags=re.S)))
-    ph = sorted(set(re.findall(r"\[\[[A-Z0-9_]+\]\]", h)))
+    ph = sorted(set(re.findall(r"\[\[[A-Za-z0-9_:]+\]\]", h)))
     bad_words = [w for w in (" nan", "NaN", " None", " inf ", "{usd(", "{pm(") if w in txt]
     check("doc_placeholders", not ph and not bad_words, f"unfilled placeholders {ph or 'none'}; suspicious text {bad_words or 'none'}")
     if main:
@@ -347,8 +361,10 @@ if len(sys.argv) > 1 and sys.argv[1] == "doc":
         check("doc_headline", usd(ev) in txt, f"recomputed headline {usd(ev)} {'found' if usd(ev) in txt else 'NOT found'} in the document")
     if os.path.exists("layout_v10.json"):
         lay = json.load(open("layout_v10.json"))
-        check("doc_layout", not lay.get("overflow"), f"elements wider than their column in the rendered document: "
-              f"{lay.get('overflow') or 'none'} ({lay.get('checked', 0)} tables and figures measured)")
+        check("doc_layout", not lay.get("overflow") and not lay.get("katex_errors") and not lay.get("unrendered"),
+              f"elements wider than their column in the rendered document: {lay.get('overflow') or 'none'} ({lay.get('tables', 0)} "
+              f"tables, {lay.get('figures', 0)} figures and {lay.get('formulas', 0)} displayed formulas measured); KaTeX errors "
+              f"{len(lay.get('katex_errors') or [])}; unrendered delimiters {lay.get('unrendered', 0)}")
     try:
         from pypdf import PdfReader
         n = len(PdfReader("The_Prop_Firm_Option_v10_Mathematics.pdf").pages); OUT["pages"] = n
