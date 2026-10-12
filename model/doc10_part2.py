@@ -95,16 +95,15 @@ for f in FIRMS:
 INV_FIRM = {"FTMO": "FTMO", "FundingPips": "FundingPips", "The5ers": "The5ers", "FXIFY": "FXIFY", "FundedNext": "FundedNext", "Fintokei": "Fintokei",
             "Hola Prime": "Hola Prime", "Alpha Capital": "Alpha Capital", "FunderPro": "FunderPro", "GFT": "GFT", "BrightFunded": "BrightFunded",
             "Blue Guardian": "Blue Guardian", "Maven": "Maven", "Topstep": "Topstep", "Apex": "Apex"}
-SHEET_KEEP = ("Leverage",)          # fees, refunds and splits are inventory rows (version 10)
+SHEET_KEEP = ()                      # fees, refunds, splits and leverage are inventory rows (version 10)
 
 def rules_table(sh, firm):
-    """the firm's rules from the inventory (rules_inventory_v10.json), with the leverage row of the programme sheet; each row
-    with the date its page was read"""
+    """the firm's rules from the inventory (rules_inventory_v10.json), each row with the date its page was read"""
     rows = [[a, b, "4 Oct 2026 (version 9 reading)"] for a, b in sh["rules"] if a in SHEET_KEEP]
     for r in inv_rows(INV_FIRM.get(firm, firm)):
         rows.append([r["area"][0].upper() + r["area"][1:], r["rule"] + (f" <span style='color:var(--muted)'>(model: {r['model']})</span>" if r["status"] in ("cautious", "assumption", "not binding") else ""), r["read"]])
     return table(["Rule", "As published", "Read"], rows, num_from=9, w0="22%",
-                 cap="Rules as published, from the inventory of Appendix B, which gives each rule's page, the basis of the reading (the firm's page read directly, its text as a search engine returned it, or a reviewer's description where no page could be read) and how the model treats it; the leverage row is version 9's reading.")
+                 cap="Rules as published, from the inventory of Appendix B, which gives each rule's page, the basis of the reading (the firm's page read directly, its text as a search engine returned it, or a reviewer's description where no page could be read) and how the model treats it.")
 
 def _fpct(x):
     """a fee in per cent with no needless decimals: 3% or 3.5%"""
@@ -193,7 +192,7 @@ def model_table(F, prog):
     if fd.get("news"): bits.append("flat around " + ("US CPI releases" if fd["news"] == "cpi" else "high-impact releases") + " (6.5)")
     rows.append(["Funded account", "; ".join(bits)])
     if F.get("no_terminal"):
-        rows.append(["Near the floor", "no last trade to the floor, at either stage (the firm prohibits 'all or nothing' trading): an account whose room above its floor falls below the smallest normal risk is left as it is and its slot buys the next evaluation (5.4)"])
+        rows.append(["Near the floor", "no last trade to the floor, at either stage (the firm prohibits 'all or nothing' trading): an account whose room above its floor falls below the smallest normal risk trades no more: the plan asks the firm to close it, and its slot buys the next evaluation (5.4)"])
     pp = []
     if fd.get("req_wait"): pp.append(f"a request at least {60 * fd['req_wait']:.0f} minutes after the last close, flat")
     if fd.get("session_tz"): pp.append("made one minute after the 4 p.m. Chicago lock of a qualifying session")
@@ -310,7 +309,7 @@ def phases_section(sp, ch, F, e):
         out.append(f"<h3 class='sub'>Phase {j + 1}: \\(A = \\${A:,.0f}\\), \\(B = \\${B:,.0f}\\)" + (f"; the engine trades to \\(A' = A + \\${At - A:,.0f} = \\${At:,.0f}\\) (6.3)" if At > A else "") + "</h3>")
         why = [f"every win at most {usd(ph['cap'])}" if ph.get("cap") else ""]
         if st.get("profit_days"): why.append(f"{st['profit_days'][0]} profitable days needed: the engine aims at a daily target (6.4), which the chain leaves out")
-        if st.get("min_days"): why.append(f"{st['min_days']} trading day{'s' if st['min_days'] != 1 else ''} (" + ("ordinary trades only; the 40% policy already needs three winning days" if F.get("no_fillers") else ("one-contract" if sp.get("fut") else "0.01-lot") + " filler trades held 3 minutes in the engine") + ")")
+        if st.get("min_days"): why.append(f"{st['min_days']} trading day{'s' if st['min_days'] != 1 else ''} (" + (("ordinary trades only; the 40% policy already needs three winning days" if st["min_days"] <= 3 else "ordinary trades only, at most one a day, for any day still missing after the target: the 40% policy needs only three winning days") if F.get("no_fillers") else ("one-contract" if sp.get("fut") else "0.01-lot") + " filler trades held 3 minutes in the engine") + ")")
         if st.get("news"): why.append("flat around " + ("US CPI releases" if st["news"] == "cpi" else "high-impact releases") + " in the engine (6.5)")
         (dK,), Ptb = chain(lambda K_: (B - K_) / (At + B), [ph["Ecost"]], [0], out_dec=4)
         tb = (f"textbook \\((B-K)/(A'+B) = ({B:,.0f} - {ph['Ecost']:,.{dK}f})/{At + B:,.0f} = {Ptb:.4f}\\)" if At > A else
@@ -460,7 +459,7 @@ def fut_chapter(num, sp):
            f"<h2>{num}.4 The chosen setting</h2>",
            _calc([f"Plan: \\(k = {ch['k']:g}\\), \\(m = {ch['m']:g}\\), risk \\(\\${ch['L']:,.0f}\\): at the reference level of 31,070 the stop is {T['stop_pts']:.1f} points and one MNQ contract loses \\(\\${2 * T['stop_pts']:,.0f}\\) at the stop, so {contracts} contracts (rounded down), a risk of \\(\\${contracts * 2 * T['stop_pts']:,.0f}\\); the engine recomputes this at every entry from the path's price (10.1).",
                   f"Fresh paths: {pm(ch['EV_month'], ch['CI'])} a month per account as a random-start ratio (pass rate {pct(ch['P'])} &plusmn; {pct(p_ci(ch))}, {ch['days']:.1f} days per attempt)" + (f"; continuing-slot rate, years 2&ndash;9 (price level and calendar carried from attempt to attempt): <strong>{pm(cont(ch)['rate'], cont(ch)['CI'])}</strong>." if cont(ch) else "."),
-                  "Why so little: the funded account's maximum loss trails the balance, payouts are capped per request and (Apex) in number, the evaluation fee recurs monthly (Topstep), Apex's figures assume a discount code (its list price is $550: Appendix B), and whole contracts make the smallest trade large next to a $2,000 allowance. The static withdrawal identity does not apply to these accounts (7.1); the values are the engine's."]),
+                  "Why so little: the funded account's maximum loss trails the balance, payouts are capped per request and (Apex) in number, the evaluation fee recurs monthly (Topstep), Apex's figures assume a discount code (its list price is $490: Appendix B), and whole contracts make the smallest trade large next to a $2,000 allowance. The static withdrawal identity does not apply to these accounts (7.1); the values are the engine's."]),
            f"<h2>{num}.5 How many</h2><p>{ALLOC[sp['firm']]['cap']}: {nfull} accounts, worth {nfull} &times; {usd(r0(acct_row(prog, instr, 50_000)['EV_month']))} = {usd(nfull * r0(acct_row(prog, instr, 50_000)['EV_month']))} a month together. This layer is optional and is not in the recommended plan's headline figure.</p>",
            f"<h2>{num}.6 How the plan meets the rules</h2>", plan_section(sp), "</section>"]
     return "\n".join(out)

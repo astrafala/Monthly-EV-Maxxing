@@ -474,6 +474,43 @@ r("every firm with minimum trading days", "minimal trades", "FTMO, FXIFY, Funded
   "Hola Prime fillers, and this row did not list Hola Prime); the plan is also measured without fillers", "assumption",
   "the firms' trading-day definitions and prohibited-practice pages (programme rows above)", read="12 Oct 2026")
 
+# ---------------------------------------------------------------- leverage (12 October 2026; version 9's table kept it in the
+# programme sheets, unread since 4 October). Where the leverage binds the plan's stop (optimize_v10.m_min above 0.6 hourly sd)
+# it was read on the firm's own page, or the model uses the lowest figure any source gives
+r("FTMO", "leverage", "FTMO Account (Standard): indices 1:50, forex 1:100 (comparison listings; FTMO's symbol pages do not render "
+  "the figures as text)", "1:50 on the Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd) and FTMO's 1% risk", "not binding", "https://ftmo.com/en/symbols/",
+  basis="secondary", read="12 Oct 2026")
+r("FundingPips", "leverage", "2-Step Flex: forex up to 1:100 (the programme's launch notes; the help centre refuses automated "
+  "reading)", "1:100 on USDJPY and EURUSD; at 1:50 the plan's own 60% margin cap would raise EURUSD's stop floor to 0.68 hourly sd "
+  "(USDJPY's would stay below 0.6; FundingPips states no margin rule)", "modelled", "https://fundingpips.com/2-step-flex", basis="secondary", read="12 Oct 2026")
+r("FundedNext", "leverage", "Stellar 2-Step: forex 1:100; gold under the commodities tier, 1:25 in the challenge and 1:15 funded "
+  "(secondary descriptions, which differ)", "EURUSD 1:100; gold 1:10, below every reading, so its stop floor (1.03 hourly sd at "
+  "1.75% risk) is at least as strict as the firm's", "cautious", "https://help.fundednext.com/", basis="secondary", read="12 Oct 2026")
+r("The5ers", "leverage", "High Stakes: forex 1:100, indices and metals 1:25 (the firm's trading-conditions announcement, as "
+  "listed)", "1:25 on the Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd)", "not binding", "https://the5ers.com/high-stakes/", basis="secondary", read="12 Oct 2026")
+r("FXIFY", "leverage", "2-Phase Classic, fixed: FX and gold 30:1, indices 10:1", "as stated: it binds (the Nasdaq stop at least "
+  "1.07 hourly sd at 1.75% risk, USDJPY 0.82)", "modelled", "https://intercom.help/fxify/en/articles/14834680-the-2-phase-classic-account",
+  read="12 Oct 2026")
+r("Fintokei", "leverage", "ProTrader: forex 1:100, indices 1:50 (secondary listings; one gives 1:20 for indices)", "1:50 on the "
+  "Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd)", "not binding", "https://www.fintokei.com/protrader/", basis="secondary", read="12 Oct 2026")
+r("Hola Prime", "leverage", "2-Step Prime: forex 50:1, metals 10:1, indices 10:1, commodities 2:1", "as stated: it binds (EURUSD "
+  "stop at least 0.68 hourly sd, gold 1.03, at 1.75% risk)", "modelled", "https://holaprime.com/forex/forex-trading-rules/", read="12 Oct 2026")
+r("Alpha Capital", "leverage", "Alpha Pro: FX 1:100, metals 1:30, indices 1:20, oil 1:10", "1:20 on the Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd)", "not binding",
+  "https://help.alphacapitalgroup.uk/en/articles/8420429-alpha-pro-8-10", read="12 Oct 2026")
+r("GFT", "leverage", "2-Step Standard: evaluation forex 1:100, indices 1:20; funded forex 1:50, indices 1:10", "as stated: the funded "
+  "1:10 binds (the Nasdaq stop at least 1.07 hourly sd at 1.75% risk)", "modelled",
+  "https://help.goatfundedtrader.com/en/articles/13575169-2-step-standard", read="12 Oct 2026")
+r("FunderPro", "leverage", "challenges and funded: forex 1:100; metals, oil and indices 1:30 (with the funded 20% margin rule, its "
+  "own row)", "as stated: with the 20% rule it binds (the Nasdaq stop at least 1.07 hourly sd at 1.75% risk, USDJPY 0.73)", "modelled",
+  "https://funderpro.com/", read="12 Oct 2026")
+r("BrightFunded", "leverage", "forex 1:100, indices 1:20, the same in challenge and funded (secondary descriptions)", "1:20 on the "
+  "Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd)", "not binding", "https://brightfunded.com/2-step-classic", basis="secondary", read="12 Oct 2026")
+r("Blue Guardian", "leverage", "2-Step indices 1:10 in one listing, 1:20 in another; the firm's pages read state only 'Leverage "
+  "1:30 Max'", "1:10, the lowest reading, so its stop floor (1.07 hourly sd at 1.75% risk) is at least as strict as the firm's",
+  "cautious", "https://blueguardian.com/", basis="secondary", read="12 Oct 2026")
+r("Maven", "leverage", "forex 75:1; commodities, indices and precious metals 20:1", "1:20 on the Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd)", "not binding",
+  "https://maventrading.com/faqs", read="12 Oct 2026")
+
 # ---------------------------------------------------------------- re-read on 12 October 2026
 # The rows above dated 4 October 2026 are version 9's readings, which the first version 10 inventory had carried over.
 # They were read again on 12 October 2026 (pages that refuse automated reading were fetched as a browser would, or read

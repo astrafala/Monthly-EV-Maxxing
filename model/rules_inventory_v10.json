@@ -1421,13 +1421,143 @@
    "source": "the firms' trading-day definitions and prohibited-practice pages (programme rows above)",
    "basis": "page",
    "read": "12 Oct 2026"
+  },
+  {
+   "firm": "FTMO",
+   "area": "leverage",
+   "rule": "FTMO Account (Standard): indices 1:50, forex 1:100 (comparison listings; FTMO's symbol pages do not render the figures as text)",
+   "model": "1:50 on the Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd) and FTMO's 1% risk",
+   "status": "not binding",
+   "source": "https://ftmo.com/en/symbols/",
+   "basis": "secondary",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "FundingPips",
+   "area": "leverage",
+   "rule": "2-Step Flex: forex up to 1:100 (the programme's launch notes; the help centre refuses automated reading)",
+   "model": "1:100 on USDJPY and EURUSD; at 1:50 the plan's own 60% margin cap would raise EURUSD's stop floor to 0.68 hourly sd (USDJPY's would stay below 0.6; FundingPips states no margin rule)",
+   "status": "modelled",
+   "source": "https://fundingpips.com/2-step-flex",
+   "basis": "secondary",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "FundedNext",
+   "area": "leverage",
+   "rule": "Stellar 2-Step: forex 1:100; gold under the commodities tier, 1:25 in the challenge and 1:15 funded (secondary descriptions, which differ)",
+   "model": "EURUSD 1:100; gold 1:10, below every reading, so its stop floor (1.03 hourly sd at 1.75% risk) is at least as strict as the firm's",
+   "status": "cautious",
+   "source": "https://help.fundednext.com/",
+   "basis": "secondary",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "The5ers",
+   "area": "leverage",
+   "rule": "High Stakes: forex 1:100, indices and metals 1:25 (the firm's trading-conditions announcement, as listed)",
+   "model": "1:25 on the Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd)",
+   "status": "not binding",
+   "source": "https://the5ers.com/high-stakes/",
+   "basis": "secondary",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "FXIFY",
+   "area": "leverage",
+   "rule": "2-Phase Classic, fixed: FX and gold 30:1, indices 10:1",
+   "model": "as stated: it binds (the Nasdaq stop at least 1.07 hourly sd at 1.75% risk, USDJPY 0.82)",
+   "status": "modelled",
+   "source": "https://intercom.help/fxify/en/articles/14834680-the-2-phase-classic-account",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "Fintokei",
+   "area": "leverage",
+   "rule": "ProTrader: forex 1:100, indices 1:50 (secondary listings; one gives 1:20 for indices)",
+   "model": "1:50 on the Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd)",
+   "status": "not binding",
+   "source": "https://www.fintokei.com/protrader/",
+   "basis": "secondary",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "Hola Prime",
+   "area": "leverage",
+   "rule": "2-Step Prime: forex 50:1, metals 10:1, indices 10:1, commodities 2:1",
+   "model": "as stated: it binds (EURUSD stop at least 0.68 hourly sd, gold 1.03, at 1.75% risk)",
+   "status": "modelled",
+   "source": "https://holaprime.com/forex/forex-trading-rules/",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "Alpha Capital",
+   "area": "leverage",
+   "rule": "Alpha Pro: FX 1:100, metals 1:30, indices 1:20, oil 1:10",
+   "model": "1:20 on the Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd)",
+   "status": "not binding",
+   "source": "https://help.alphacapitalgroup.uk/en/articles/8420429-alpha-pro-8-10",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "GFT",
+   "area": "leverage",
+   "rule": "2-Step Standard: evaluation forex 1:100, indices 1:20; funded forex 1:50, indices 1:10",
+   "model": "as stated: the funded 1:10 binds (the Nasdaq stop at least 1.07 hourly sd at 1.75% risk)",
+   "status": "modelled",
+   "source": "https://help.goatfundedtrader.com/en/articles/13575169-2-step-standard",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "FunderPro",
+   "area": "leverage",
+   "rule": "challenges and funded: forex 1:100; metals, oil and indices 1:30 (with the funded 20% margin rule, its own row)",
+   "model": "as stated: with the 20% rule it binds (the Nasdaq stop at least 1.07 hourly sd at 1.75% risk, USDJPY 0.73)",
+   "status": "modelled",
+   "source": "https://funderpro.com/",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "BrightFunded",
+   "area": "leverage",
+   "rule": "forex 1:100, indices 1:20, the same in challenge and funded (secondary descriptions)",
+   "model": "1:20 on the Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd)",
+   "status": "not binding",
+   "source": "https://brightfunded.com/2-step-classic",
+   "basis": "secondary",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "Blue Guardian",
+   "area": "leverage",
+   "rule": "2-Step indices 1:10 in one listing, 1:20 in another; the firm's pages read state only 'Leverage 1:30 Max'",
+   "model": "1:10, the lowest reading, so its stop floor (1.07 hourly sd at 1.75% risk) is at least as strict as the firm's",
+   "status": "cautious",
+   "source": "https://blueguardian.com/",
+   "basis": "secondary",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "Maven",
+   "area": "leverage",
+   "rule": "forex 75:1; commodities, indices and precious metals 20:1",
+   "model": "1:20 on the Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd)",
+   "status": "not binding",
+   "source": "https://maventrading.com/faqs",
+   "basis": "page",
+   "read": "12 Oct 2026"
   }
  ],
  "counts": {
-  "modelled": 61,
+  "modelled": 66,
   "plan": 49,
-  "cautious": 17,
+  "cautious": 19,
   "assumption": 3,
-  "not binding": 12
+  "not binding": 18
  }
 }

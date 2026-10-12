@@ -237,7 +237,7 @@ def opt_table():
     return table(["Programme, market", "Chosen L / k / m / X", "Random-start EV/month (95%)", "Continuing-slot rate (95%)", "Pass rate (95%)", "Days per attempt", "Version 9"],
                  rows, cls="small", hl=hl,
                  cap="One 100K account. Random-start: sixteen fresh paths (1121&ndash;1136), 24,000 attempts per setting, the ratio of 8.3 used by the search; continuing-slot rate: 12 slots run back to back on each of 16 new paths (1151&ndash;1166), the average cash per month in years 2&ndash;9 (8.3). 95% intervals: the larger of the attempt-level and the cluster-robust interval (Student t, 15 degrees of freedom), for the pass rate too (8.4). L: risk per trade; X: payout target, both as a share of the account. "
-                     "Shaded: in the recommended plan. Version 9: its chosen setting's random-start value under version 9's engine and rules (payouts paid at once with trading through processing, no news calendar, USDJPY converted at the entry rate, no payout caps at The5ers, no payout fees at GFT, The5ers, FundedNext and Blue Guardian, GFT's fee refunded, no lot limit at Alpha, Blue Guardian's hold in sub-steps without its Shield); not a measure of the same thing.")
+                     "Shaded: in the recommended plan. Version 9: its chosen setting's random-start value under version 9's engine and rules, which differ from version 10's in many places (Appendices A and A2; among them payouts paid at once while the account traded on, no news calendar, USDJPY converted at the entry rate, no payout caps at The5ers, no payout fees, several prices, refunds and minimums, FTMO's risk up to 1.5%, fillers at FunderPro and Hola Prime, last trades to the floor at GFT and Alpha Capital, no lot limit at Alpha, Blue Guardian's hold in sub-steps without its Shield); not a measure of the same thing.")
 
 def risk_text(ch):
     """how many chosen settings sit at the risk ceiling, and for the others the best refined value at the ceiling"""
@@ -283,7 +283,7 @@ def lev_table():
         rows.append([short(r["prog"]), MSHORT[r["instr"]], f"1:{lv[0]} / 1:{lv[1]}" + (f" (20% cap)" if lv[2] < 0.6 else ""), pct(r["L"] / r["size"], 2),
                      f"{mmin_of(r['prog'], r['instr'], r['L'] / r['size']):.3f}", f"{r['m']:g}", usd(T["N"]), pct(T["margin_pct"], 0)])
     return table(["Programme", "Market", "Leverage: evaluation / funded", "Risk", "\\(m_{\\min}\\)", "Plan's \\(m\\)", "Notional per 100K", "Funded margin / start balance"], rows, cls="small",
-                 cap="Leverage as published (optimize_v10.LEV; the readings of 4 October 2026, unchanged by version 10). \\(m_{\\min}\\): the smallest stop whose margin fits 60% of the starting balance at both leverages (FunderPro funded: 20%). "
+                 cap="Leverage as used (optimize_v10.LEV), read on 12 October 2026: on the firm's own page wherever it binds the plan's stop (FXIFY, Hola Prime, GFT, FunderPro), elsewhere from listings, with the lowest figure any source gives where they differ (Blue Guardian, FundedNext's gold; the inventory, Appendix [[APP_INV]], gives each). \\(m_{\\min}\\): the smallest stop whose margin fits 60% of the starting balance at both leverages (FunderPro funded: 20%). "
                      "At every entry the engine also requires margin at most 60% of the current balance, lowering the risk if needed.")
 
 def risk_sens():
