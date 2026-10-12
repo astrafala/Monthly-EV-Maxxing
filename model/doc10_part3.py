@@ -534,7 +534,7 @@ def part4(ch_run, ch_risk):
 <ul>
 <li><strong>Zero skill, zero drift.</strong> If entries are systematically late or fills worse, the edge is negative; the cost stress is the guide. A real trend in a market (the Nasdaq's long-run rise) is left out of the model (3.2); the plan's direction rule is symmetric, but over a given year a trend can favour or hurt it.</li>
 <li><strong>Markets move together.</strong> The baseline gives gold, euro and yen independent paths; Section [[CH_LOCK]].7 measures a correlation of 0.3. Real correlations change and rise in crises.</li>
-<li><strong>Taxes and payment costs</strong> are not modelled.</li>
+<li><strong>Taxes, and the costs of a payout method</strong> (banks, networks, currency conversion), are not modelled; the fees four firms take from every payout are (7.4).</li>
 </ul>
 {price_text()}
 <h2>{ch_risk}.7 What is not allowed, and is not in the plan</h2>

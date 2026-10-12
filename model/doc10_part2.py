@@ -106,10 +106,17 @@ def rules_table(sh, firm):
     return table(["Rule", "As published", "Read"], rows, num_from=9, w0="22%",
                  cap="Rules as published, from the inventory of Appendix B, which gives each rule's page, the basis of the reading (the firm's page read directly, its text as a search engine returned it, or a reviewer's description where no page could be read) and how the model treats it; the leverage row is version 9's reading.")
 
+def _fpct(x):
+    """a fee in per cent with no needless decimals: 3% or 3.5%"""
+    return f"{100 * x:.1f}".rstrip("0").rstrip(".") + "%"
+
 def _split_txt(fd):
-    """the split as the firm states it, with GFT's processing fee (the trader's share alpha = split x 97%)"""
+    """the split, and a firm's fee on every withdrawal (GFT 3%, The5ers 3.5%, FundedNext up to 3.5%, Blue Guardian 3%):
+    the trader keeps alpha = split x (1 - fee) of the profit withdrawn"""
     if fd.get("fee_pct"):
-        return f"{pct(fd['split'] / (1 - fd['fee_pct']), 0)} less a {pct(fd['fee_pct'], 0)} processing fee, \\(\\alpha = {fd['split']:.3f}\\)"
+        a = fd["split"] * (1 - fd["fee_pct"])
+        return (f"{pct(fd['split'], 0)}, less a {_fpct(fd['fee_pct'])} fee on every withdrawal" + (", the refund included" if fd.get("refund") else "")
+                + f" (the trader keeps \\(\\alpha = {a:.4f}\\)".replace("0\\)", "\\)") + " of the profit withdrawn)")
     return pct(fd["split"], 0)
 
 def _dll_txt(st, F):
@@ -138,8 +145,7 @@ def model_table(F, prog):
     fd = F["funded"]
     bits = [f"maximum loss {usd(fd['dd'])}, " + ("trailing the best end-of-day balance" if fd["eod"] else "static"),
             _dll_txt(fd, F) if fd.get("dll") else "no daily loss limit",
-            (f"split {pct(fd['split'] / (1 - fd['fee_pct']), 0)}, less a {pct(fd['fee_pct'], 0)} processing fee on every reward ({pct(fd['split'], 1)} of the profit withdrawn to the trader)"
-             if fd.get("fee_pct") else f"split {pct(fd['split'], 0)}")]
+            f"split {_split_txt(fd)}"]
     if fd.get("refund"):
         if fd.get("refund_split"): bits.append(f"fee returned in {fd['refund_split']} equal parts with the first {fd['refund_split']} payouts")
         elif F.get("refund_frac") is not None and F["refund_frac"] < 1:
@@ -151,7 +157,7 @@ def model_table(F, prog):
     else: bits.append(f"first payout {fd['first_payout']} days after the first funded trade, then every {fd['cycle']} days")
     if fd.get("best_vs_worst"): bits.append("a request needs the best trade to have made more than the worst trade lost, since the last payout and over the account (the firm's rule for accounts bought from 9 October 2026)")
     if fd.get("min_net") or fd.get("min_payout"):
-        bits.append(f"minimum payout {usd(fd.get('min_net') or fd['min_payout'])} on the trader's share after the split (the stricter reading where the firm does not say)")
+        bits.append(f"minimum payout {usd(fd.get('min_net') or fd['min_payout'])} on the trader's share after the split" + (" and the fee" if fd.get("fee_pct") else "") + " (the stricter reading where the firm does not say)")
     if fd.get("caps"):
         cps = [c for c in fd["caps"] if c < 1e9]
         if len(set(cps)) == 1 and len(cps) > 6: bits.append(f"every payout at most {usd(cps[0])}" + (" with the fee refund counted inside it" if fd.get("cap_includes_refund") else "") + ", the rest kept in the account")
@@ -316,7 +322,8 @@ def phases_section(sp, ch, F, e):
     return "".join(out)
 
 def funded_section(sp, ch, F, e):
-    fd = F["funded"]; D = fd["dd"]; a = fd["split"]; R = fd.get("refund", 0) or 0
+    fd = F["funded"]; D = fd["dd"]; g_fee = 1.0 - fd.get("fee_pct", 0.0)
+    a = fd["split"] * g_fee; R = (fd.get("refund", 0) or 0) * g_fee      # the trader's share and refund, net of a payout fee
     X1, X = ch["X1"], ch["X"]
     q1 = e["q1"]; q = e["q"] if e["q"] is not None else q1
     caps = [c for c in (fd.get("caps") or []) if c < 1e9]
@@ -339,7 +346,7 @@ def funded_section(sp, ch, F, e):
     lines.insert(2, (f"A paid cycle withdraws the smaller of its balance at success and the cap: the mean balance at success is \\(\\${e['m1']:,.2f}\\) in the first cycle" if caps else
                      f"A paid cycle pays its balance at success: on average \\(m_1 = \\${e['m1']:,.2f}\\) in the first cycle") + (f" and \\(\\${e['m']:,.2f}\\) later" if e.get("m") else "") + " (7.2), not exactly the target.")
     return _calc(lines) + table(["Paid cycles", "Probability", "Mean cash given that many", "Nominal (targets only)"], rows, cls="small", num_from=1,
-                                cap="Chain values in its model of independent cycles that each start from zero: mean cash given the number of paid cycles, the split times the amounts withdrawn (each the smaller of the balance at success and the cap) plus the refund (7.2). The nominal column (targets only) is for comparison; version 8 printed it as the cash.")
+                                cap="Chain values in its model of independent cycles that each start from zero: mean cash given the number of paid cycles, the split times the amounts withdrawn (each the smaller of the balance at success and the cap) plus the refund, less any fee the firm takes from every payout (7.2, 7.4). The nominal column (targets only) is for comparison; version 8 printed it as the cash.")
 
 def value_section(sp, ch, F, e):
     fee = F["fee"]
