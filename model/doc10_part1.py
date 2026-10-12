@@ -237,7 +237,7 @@ def opt_table():
     return table(["Programme, market", "Chosen L / k / m / X", "Random-start EV/month (95%)", "Continuing-slot rate (95%)", "Pass rate (95%)", "Days per attempt", "Version 9"],
                  rows, cls="small", hl=hl,
                  cap="One 100K account. Random-start: sixteen fresh paths (1121&ndash;1136), 24,000 attempts each, the ratio of 8.3 used by the search; continuing-slot rate: 12 slots run back to back on each of 16 new paths (1151&ndash;1166), the average cash per month in years 2&ndash;9 (8.3). 95% intervals: the larger of the attempt-level and the cluster-robust interval (Student t, 15 degrees of freedom), for the pass rate too (8.4). L: risk per trade; X: payout target, both as a share of the account. "
-                     "Shaded: in the recommended plan. Version 9: its chosen setting's random-start value under version 9's engine and rules (payouts paid at once with trading through processing, no news calendar, USDJPY converted at the entry rate, no payout caps at The5ers, no lot limit at Alpha, Blue Guardian's hold in sub-steps without its Shield); not a measure of the same thing.")
+                     "Shaded: in the recommended plan. Version 9: its chosen setting's random-start value under version 9's engine and rules (payouts paid at once with trading through processing, no news calendar, USDJPY converted at the entry rate, no payout caps at The5ers, no payout fees at GFT, The5ers, FundedNext and Blue Guardian, no lot limit at Alpha, Blue Guardian's hold in sub-steps without its Shield); not a measure of the same thing.")
 
 def risk_text(ch):
     """how many chosen settings sit at the risk ceiling, and for the others the best refined value at the ceiling"""
@@ -289,9 +289,14 @@ def lev_table():
 def risk_sens():
     rs = sorted(sens("risk"), key=lambda r: r["L"])
     if not rs: return ""
-    rows = [[pct(r["L"] / 100_000, 2), pm(r["EV_month"], r["CI"]), usd(r["EV"]), pct(r["P"]), f"{r['days']:.1f}"] for r in rs]
-    return table(["Risk per trade", "EV per month (95%)", "Value of an attempt", "Pass rate", "Days per attempt"], rows, cls="small",
-                 cap=f"FTMO 2-Step 100K at the plan's k = {rs[0]['k']:g}, m = {rs[0]['m']:g}, payout target {rs[0]['X'] / 1000:.0f}K, paths 1201&ndash;1204, 12,000 attempts per row, same random numbers in every row (the rows differ by the risk and by Monte Carlo noise; compare them by the paired differences of [[CH_RISK]].1, not by the separate intervals). Above 1.5% the row breaks FTMO's own guidance, and 2% is shown for reference only.")
+    base = min(rs, key=lambda r: abs(r["L"] - 1_500))           # FTMO's own guidance: at most 1.5%
+    def dcell(r):
+        if r is base: return "&ndash;"
+        d = paired_diff(dict(clu=dict(V=r["Vc"], D=r["Dc"])), dict(clu=dict(V=base["Vc"], D=base["Dc"]))) if r.get("Vc") and base.get("Vc") else None
+        return f"{sgn(d[0])} &plusmn; {usd(d[1])}" if d else "&ndash;"
+    rows = [[pct(r["L"] / 100_000, 2), pm(r["EV_month"], r["CI"]), dcell(r), usd(r["EV"]), pct(r["P"]), f"{r['days']:.1f}"] for r in rs]
+    return table(["Risk per trade", "EV per month (95%)", f"Difference to {pct(base['L'] / 100_000, 2)} (paired, 95%)", "Value of an attempt", "Pass rate", "Days per attempt"], rows, cls="small",
+                 cap=f"FTMO 2-Step 100K at the plan's k = {rs[0]['k']:g}, m = {rs[0]['m']:g}, payout target {rs[0]['X'] / 1000:.0f}K, paths 1201&ndash;1204, 12,000 attempts per row with a coin-flip direction, the same seeds in every row: random-start ratios. The rows differ by the risk and by Monte Carlo noise, so they are compared by the paired differences of the third column (over the four paths, Student t, 3 degrees of freedom), not by their separate intervals. Above 1.5% the row breaks FTMO's own guidance, and 2% is shown for reference only.")
 
 def _tests():
     try: return json.load(open("tests_v10.json"))
@@ -408,7 +413,7 @@ def checks():
         out["CONT_INSIDE"] = str(sum(abs(x) <= 1.96 for x in z))
         zi = max(range(len(z)), key=lambda i: abs(z[i]))
         out["CONT_ZMAX"] = f"{z[zi]:+.1f}, {cr[zi][0]['prog'].split()[0]} on {MSHORT[cr[zi][0]['instr']]}"
-        out["CONT_SUMS"] = f"{usd(sum(c_['rate'] for r, c_ in cr))} against {usd(sum(r['EV_month'] for r, c_ in cr))}"
+        out["CONT_SUMS"] = f"{usd(total([(c_['rate'], 1) for r, c_ in cr]))} against {usd(total([(r['EV_month'], 1) for r, c_ in cr]))} (sums of the printed rates)"
     ck = [(r, cchk(r)) for r in chosen_rows() if cchk(r)]
     out["CONT_TEXT"] = ""
     if ck:
@@ -437,14 +442,14 @@ def checks():
         ratio_sc = float(np.median([sd_rates(x["trend5_V"], x["trend5_D"]) / sd_rates(x["random_V"], x["random_D"]) for r, x in ck
                                     if sd_rates(x["random_V"], x["random_D"]) > 0]))
         g = max(ck, key=lambda t: abs(t[1]["continuing"] - t[1]["random_start_final"]) / math.hypot(t[1]["continuing_CI"], t[1]["random_start_final_CI"]))
-        r0, x0 = g
+        rg, x0 = g
         out["CONT_TEXT"] = (f"<p><strong>Continuing slots against random starts.</strong> The continuing-slot rate and the final run's random-start ratio differ in three ways at once: the measurement (start states, credits, price levels and calendar carried from attempt to attempt), the direction rule (the plan's momentum rule against a coin flip) and the paths (1151&ndash;1166 against 1121&ndash;1136). cont_check_v10.py separates them: on the continuing stage's own paths it runs 1,500 random-start attempts per path for every chosen setting, once with each direction rule. "
                             "Each difference is between the estimators the document reports (the continuing-slot rate, a mean of per-path rates; the random-start ratio, a ratio of totals), with a paired interval from each path's contribution to the difference (version 9 differenced other estimators, so its centres were not the differences of its displayed rates: review of version 9, finding 23). "
                             f"<em>The measurement alone</em> (continuing-slot rate minus the random-start ratio, same paths, same momentum rule): within its 95% interval for {out['CONT_M_INSIDE']} of {len(ck)} settings, largest {out['CONT_M_MAX']} standard errors; summed over the settings, {sgn(sm)} &plusmn; {usd(sm_ci)} a month. "
                             f"<em>The direction rule alone</em> (momentum minus coin flip, random starts, same paths): within its interval for {out['CONT_R_INSIDE']} of {len(ck)}, largest {out['CONT_R_MAX']} standard errors; summed, {sgn(sr)} &plusmn; {usd(sr_ci)}. "
                             "These are measured differences with their uncertainty: no theorem makes either zero (8.1, 8.3), and an interval that contains zero does not show that a difference is zero, only that this measurement cannot tell it from zero. "
                             f"The momentum rule makes attempts that overlap on one path take the same side at the same time, so its per-path figures scatter more, by a median factor of {ratio_sc:.1f} here. "
-                            f"The largest gap between the continuing-slot rate and the final run's figure: {r0['prog'].split()[0]} on {MSHORT[r0['instr']]}, continuing {pm(x0['continuing'], x0['continuing_CI'])} and final random start {pm(x0['random_start_final'], x0['random_start_final_CI'])}; "
+                            f"The largest gap between the continuing-slot rate and the final run's figure: {rg['prog'].split()[0]} on {MSHORT[rg['instr']]}, continuing {pm(x0['continuing'], x0['continuing_CI'])} and final random start {pm(x0['random_start_final'], x0['random_start_final_CI'])}; "
                             f"on the continuing paths the random-start ratio is {pm(x0['trend5'], x0['trend5_CI'])} with the momentum rule and {pm(x0['random'], x0['random_CI'])} with a coin flip. "
                             "Part II reports both figures for every setting; Part III's choices use the continuing-slot rate, which runs the plan as written.</p>")
     gaps = []
