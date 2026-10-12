@@ -464,7 +464,7 @@ for _k, _sh in P.items():
 P["FXIFY Two Phase Classic"]["plan"].append("on the 30-day option an account at its target waits for the payout date and then for FXIFY's "
     "read-only review: the keep-alive position comes first where that wait would pass the 22nd day")
 P["Maven 2-Step"]["plan"].append("Maven's $10,000 per 30 days can stop trading for more than three weeks after two quick payout cycles: "
-    "the keep-alive position then carries a take-profit 1.5 times as far as its emergency stop, and any gain from it above the cap is "
+    "the keep-alive position then carries a take-profit 1.5 times as far as its protective stop, and any gain from it above the cap is "
     "voided; Maven closes an account 'dormant for more than 30 calendar days' and defines inactivity as 'having no executed trades', "
     "but its gambling rules say that 'Trades with vastly smaller lot sizes will NOT count as a trade': that the keep-alive counts is an "
     "assumption (inventory)")
@@ -506,3 +506,16 @@ _n_term = sum(1 for _sh in P.values() for x in _sh["plan"] if x == _TERM_OLD)
 for _k, _sh in P.items():
     _sh["plan"] = [(_TERM_FIX if x == _TERM_OLD else x) for x in _sh["plan"]]
 assert _n_term > 0 and not any(x == _TERM_OLD for _sh in P.values() for x in _sh["plan"])
+
+# fillers and keep-alives carry a protective stop at the plan's stop distance (a stop at the account's breach level, as the first
+# version 10 text said, is no price at all for a 0.01-lot position); the engine closes them after 3 minutes or at the breach level
+_FILL_OLD = ("missing trading days, where the firm counts any opened position, completed with one minimal position a day (0.01 lot; one "
+             "micro contract on futures), opened at the day's first permitted hour and closed at the market after 3 minutes (none at "
+             "Fintokei, Alpha Capital, FunderPro and Hola Prime)")
+_FILL_FIX = ("missing trading days, where the firm counts any opened position, completed with one minimal position a day (0.01 lot; one "
+             "micro contract on futures) with a protective stop at the plan's stop distance, opened at the day's first permitted hour "
+             "and closed at the market after 3 minutes (none at Fintokei, Alpha Capital, FunderPro and Hola Prime)")
+_n_fill = sum(1 for _sh in P.values() for x in _sh["plan"] if x == _FILL_OLD)
+for _k, _sh in P.items():
+    _sh["plan"] = [(_FILL_FIX if x == _FILL_OLD else x) for x in _sh["plan"]]
+assert _n_fill > 0

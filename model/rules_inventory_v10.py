@@ -300,8 +300,8 @@ r("Maven", "consistency above $5,000", "'If your total profit exceeds $5,000, yo
   "from the second cycle and would cut a cycle's profit whenever one 'day' held more than half of it, as a week of daily "
   "trades, one 'day' under that definition, usually would; the model does not apply that)", "plan", U, read="12 Oct 2026")
 r("Maven", "gambling", "large bets at a reward:risk of 1:1.25 or lower", "every position's take-profit at least 1.5 times as far "
-  "as its stop, checked on the position actually placed (a keep-alive position too: its stop at the breach level, its take-profit "
-  "1.5 times as far, closed after 3 minutes)", "plan", U)
+  "as its stop, checked on the position actually placed (a keep-alive position too: a protective stop at the plan's distance and a "
+  "take-profit 1.5 times as far, closed after 3 minutes)", "plan", U)
 r("Maven", "prohibited practices", "copying another individual's trades (both breached); grid and gap trading; reverse or group hedging "
   "(an account betting against another, at Maven or another firm); trading only hedges; EAs on every platform; 'all in' (no stop, "
   "or risk above the drawdown limit: 4% on the 2-Step), funded stage included; excessive scalping (50% or more of trades held "
@@ -474,7 +474,8 @@ r("every firm with minimum trading days", "minimal trades", "FTMO, FXIFY, Funded
   "Topstep and Apex count a day on which a position is opened and state no minimum volume; Fintokei and Alpha Capital object to "
   "minimal trades that complete days, and FunderPro (abrupt lot-size changes) and Hola Prime (unexplained deviations in position "
   "size) to the size jump such a trade makes", "at the first six, a missing day after the target is completed with one minimal "
-  "position (0.01 lot or one micro contract) held 3 minutes; that those firms accept it is an assumption; Fintokei, Alpha "
+  "position (0.01 lot or one micro contract, a protective stop at the plan's distance) held 3 minutes; that those firms accept it is "
+  "an assumption; Fintokei, Alpha "
   "Capital, FunderPro and Hola Prime get no fillers (missing days are ordinary trades, one a day; version 9 gave FunderPro and "
   "Hola Prime fillers, and this row did not list Hola Prime); the plan is also measured without fillers", "assumption",
   "the firms' trading-day definitions and prohibited-practice pages (programme rows above)", read="12 Oct 2026")
