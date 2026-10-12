@@ -120,7 +120,7 @@ def size_table():
         rows.append([short(p), usd(fa, 2), usd(fb, 2), sgn(fb - 2 * fa, 2), usd(2 * r0(ca["rate"])), usd(r0(cb["rate"])), f"{sgn(shown)} &plusmn; {usd(dci)}"])
     return table(["Programme", "100K fee", "200K fee", "200K &minus; 2 &times; 100K fee", "2 &times; 100K: EV/month", "1 &times; 200K: EV/month", "Difference (95%)"], rows, cls="small",
                  cap="Continuing-slot rates (8.3) of the plan's setting at 100K and scaled to 200K, run on the same sixteen paths with the same seeds; the difference is that of the printed rates, its interval computed from the per-path differences (Student t, 15 degrees of freedom). "
-                     "Where every rule scales with the account the difference is the fee and the refund that follows it, up to the rounding of whole lots and the 0.01-lot filler trades, which do not scale (11.1 measures the scaling path by path). "
+                     "Where every rule scales with the account the difference is the fee and the refund that follows it, up to the rounding of whole lots and the 0.01-lot filler and keep-alive positions, which do not scale (11.1 measures the scaling path by path). "
                      "Rules in fixed dollars do not scale: GFT's $3,000 day cap and the $10,000 limit in its first-payout cap min(6%, $10,000), and the minimum payouts.")
 
 def size_text():

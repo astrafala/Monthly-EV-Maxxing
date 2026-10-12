@@ -453,7 +453,8 @@ P["Maven 2-Step"]["sources"] = P["Maven 2-Step"]["sources"].replace(" (read 4 Oc
 
 # keep-alive (n47, 12 October 2026): the plan's 25-day rule on every sheet, as the engine applies it (acct_mc.run_funded)
 _KA = ("never 25 days without a trade: on the day 22 days after the last entry, if nothing has been traded since, one minimal "
-       "keep-alive position (0.01 lot, one contract on futures, closed after 3 minutes) at its first permitted hour, or before a "
+       "keep-alive position (0.01 lot, one contract on futures, with a protective stop at the plan's stop distance, closed after 3 "
+       "minutes) at its first permitted hour, or before a "
        "payout request that would lock the account past that day (most firms close an account after 30 days without a trade; FXIFY "
        "after 60)")
 _KA_NOFILL = ("never 25 days without a trade: no wait for a payout comes near it here (14-day cycles), so no keep-alive position "
@@ -519,3 +520,55 @@ _n_fill = sum(1 for _sh in P.values() for x in _sh["plan"] if x == _FILL_OLD)
 for _k, _sh in P.items():
     _sh["plan"] = [(_FILL_FIX if x == _FILL_OLD else x) for x in _sh["plan"]]
 assert _n_fill > 0
+
+# the 0.6 sd item: the last trade's stop at the floor (5.4) is the one exception the plan makes
+_06_OLD = ("at least 10 minutes between a close and the next entry; no take-profit and no stop closer than 0.6 hourly standard "
+           "deviations to the entry (a plan choice: a bracket with both levels at that distance still closes within 2 minutes about "
+           "0.2% of the time, so a firm's duration rule is met by a holding time where it has one, not by this distance)")
+_06_FIX = ("at least 10 minutes between a close and the next entry; no take-profit and no stop closer than 0.6 hourly standard "
+           "deviations to the entry, a last trade's stop at the floor aside (a plan choice: a bracket with both levels at that distance "
+           "still closes within 2 minutes about 0.2% of the time, so a firm's duration rule is met by a holding time where it has one, "
+           "not by this distance)")
+_n_06 = sum(1 for _sh in P.values() for x in _sh["plan"] if x == _06_OLD)
+for _k, _sh in P.items():
+    _sh["plan"] = [(_06_FIX if x == _06_OLD else x) for x in _sh["plan"]]
+assert _n_06 > 0
+
+# risk statements as the plan's ceiling, not a fixed figure (the chosen risk of every account is in the settings card, [[CH_RUN]].1);
+# Blue Guardian's hold has the emergency stop at the breach level (Part IV), not no stop
+def _swap(sheet, old, new):
+    pl = P[sheet]["plan"]; assert pl.count(old) == 1, (sheet, old)
+    pl[pl.index(old)] = new
+_swap("Fintokei ProTrader", "risk 1.75%, below the 3% limit",
+      "risk at most 1.75% plus cost (each account's chosen risk: [[CH_RUN]].1), below the 3% open-risk limit")
+_swap("Alpha Capital Pro 10%", "Nasdaq, 1.75% risk (below the 2% rule after cost)",
+      "Nasdaq, risk at most 1.75% plus cost, below the 2% rules (each account's chosen risk: [[CH_RUN]].1)")
+_bgx = [x for x in P["Blue Guardian 2-Step"]["plan"] if x.startswith("risk at most 1.75%: a stop-out stays below the 2% Guardian Shield")]
+assert len(_bgx) == 1
+_swap("Blue Guardian 2-Step", _bgx[0], _bgx[0].replace("during the 3-minute hold the position has no stop,",
+      "during the 3-minute hold the position has only its emergency stop at the account's breach level,"))
+
+# Apex at its list price (version 6's sheet said 'negative' without a version 10 figure): the chosen setting's attempt value with the
+# $490 list fee instead of the $55 assumed (activation unchanged at $99), per attempt and per month of the random-start ratio
+try:
+    _AP = [r for r in json.load(open("opt_v10_final.json")) if r["prog"] == "Apex 50K EOD" and r["tag"] == "chosen"]
+except FileNotFoundError:
+    _AP = []
+_AP_OLD = [x for x in P["Apex 50K EOD"]["plan"] if x.startswith("only at 80")]
+assert len(_AP_OLD) == 1
+if _AP:
+    _ev_l = _AP[0]["EV"] - (490 - 55); _evm_l = 30.44 * _ev_l / _AP[0]["days"]
+    _swap("Apex 50K EOD", _AP_OLD[0],
+          f"the figures assume a code taking the $490 list price to about $55 (such codes ran for most of 2026); at the list price the "
+          f"chosen setting's attempt is worth {'&minus;' if _ev_l < 0 else ''}${abs(_ev_l):,.0f} "
+          f"({'&minus;' if _evm_l < 0 else ''}${abs(_evm_l):,.0f} a month per account), so without such a code Apex is "
+          + ("not worth trading" if _ev_l < 0 else "worth less"))
+else:
+    _swap("Apex 50K EOD", _AP_OLD[0], "the figures assume a code taking the $490 list price to about $55 (such codes ran for most of 2026)")
+_swap("Maven 2-Step", "no win placed that could take the profit closed in any 30 days above $10,000",
+      "no win placed that could take the profit closed in any 30 days above $10,000 (a keep-alive position's gain above it, a few cents, is voided)")
+_HP_OLD = [x for x in P["Hola Prime 2-Step Prime"]["plan"] if x.startswith("two accounts: one master and one copier")]
+assert len(_HP_OLD) == 1
+_swap("Hola Prime 2-Step Prime", _HP_OLD[0],
+      "two accounts taking the same entries, each placed by hand: Hola Prime allows trades shared between your own accounts, one master "
+      "and one copier on funded accounts, and two 100K accounts at most")

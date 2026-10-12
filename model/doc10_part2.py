@@ -208,11 +208,11 @@ def model_table(F, prog):
     pp.append(f"cash {fd.get('transfer_bd', 0)} working day" + ("s" if fd.get("transfer_bd", 0) != 1 else "") + " after processing")
     if fd.get("cycle_from_processed"): pp.append("the next cycle counted from the processing")
     rows.append(["Payout processing", "; ".join(pp) + " (6.6)"])
-    if F.get("flat_daily"): rows.append(["Trading hours", f"positions opened at the hourly opens from 01:00 UTC (07:00 on EURUSD) to {F['flat_daily'] - 2}:00 UTC, flat at {F['flat_daily']}:00 UTC every day; flat at weekends; at least 10 minutes between a close and the next entry; no stop or target closer than 0.6 hourly sd"])
+    if F.get("flat_daily"): rows.append(["Trading hours", f"positions opened at the hourly opens from 01:00 UTC (07:00 on EURUSD) to {F['flat_daily'] - 2}:00 UTC, flat at {F['flat_daily']}:00 UTC every day; flat at weekends; at least 10 minutes between a close and the next entry; no stop or target closer than 0.6 hourly sd" + ("" if F.get("no_terminal") else " (a last trade's stop at the floor aside, 5.4)") + ""])
     rows.append(["Positions", ("whole micro contracts, rounded down, never fewer than one" if fut else "whole volume steps of 0.01 lot, rounded down; the smallest position traded only where the rooms allow it") + "; the account's breach level (floor or today's limit, the nearer) is a barrier of every trade; reviews and payout processing in working days"])
     dur = []
     if F.get("hold_min"): dur.append(f"the bracket is placed {F['hold_min']} minutes after the entry (minimum holding time 2 minutes); until then only the breach level" + (" and the Guardian Shield" if F["funded"].get("shield") else "") + " can close the position, and a trade closed in under 2 minutes ends the account in the engine (the cautious reading of 'may be flagged for tick scalping')")
-    if F.get("dur_rule"): dur.append(f"the {F['dur_rule']:g}-minute rule checked on the account's own trades at every phase pass and payout request (average, majority, half of gross profit); failure: phase restarted or profits removed")
+    if F.get("dur_rule"): dur.append(f"the {F['dur_rule']:g}-minute rule checked on the account's own trades at every phase pass and payout request (average, majority, half of gross profit); failure: the evaluation restarts from phase 1, which the engine counts as a failed attempt, or a qualified account's profits are removed")
     if F.get("day_min_minutes"): dur.append(f"a trading day counts only with a trade held at least {60 * F['day_min_minutes']:.0f} seconds")
     if dur: rows.append(["Duration rules", "; ".join(dur)])
     if F.get("lev"):
