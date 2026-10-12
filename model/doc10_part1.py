@@ -244,7 +244,7 @@ def risk_text(ch):
     def ceil_of(r): return O.L_MAX.get(firm_of(r["prog"]), 0.0175)
     top = [r for r in ch if r["L"] / r["size"] >= ceil_of(r) - 1e-9]; low = [r for r in ch if r not in top]
     t = (f"<p><strong>Risk per trade.</strong> With wins capped at 40% of the target, a larger risk mainly makes the account move faster (market time \\(\\propto 1/L^2\\), 8.2) at almost the same pass probability, "
-         f"which favours the largest risk the plan allows: 1.75%, below the 2% rules of the firms that have one, and 1.5% at FTMO (10.5). {len(top)} of {len(ch)} chosen settings use that ceiling.")
+         f"which favours the largest risk the plan allows: 1.75%, below the 2% rules of the firms that have one, and {pct(O.L_MAX['FTMO'], 0)} at FTMO (10.5). {len(top)} of {len(ch)} chosen settings use that ceiling.")
     if low:
         parts = []
         for r in low:
@@ -289,14 +289,14 @@ def lev_table():
 def risk_sens():
     rs = sorted(sens("risk"), key=lambda r: r["L"])
     if not rs: return ""
-    base = min(rs, key=lambda r: abs(r["L"] - 1_500))           # FTMO's own guidance: at most 1.5%
+    base = min(rs, key=lambda r: abs(r["L"] - O.L_MAX["FTMO"] * 100_000))     # FTMO's own guidance: the plan's cap
     def dcell(r):
         if r is base: return "&ndash;"
         d = paired_diff(dict(clu=dict(V=r["Vc"], D=r["Dc"])), dict(clu=dict(V=base["Vc"], D=base["Dc"]))) if r.get("Vc") and base.get("Vc") else None
         return f"{sgn(d[0])} &plusmn; {usd(d[1])}" if d else "&ndash;"
     rows = [[pct(r["L"] / 100_000, 2), pm(r["EV_month"], r["CI"]), dcell(r), usd(r["EV"]), pct(r["P"]), f"{r['days']:.1f}"] for r in rs]
     return table(["Risk per trade", "EV per month (95%)", f"Difference to {pct(base['L'] / 100_000, 2)} (paired, 95%)", "Value of an attempt", "Pass rate", "Days per attempt"], rows, cls="small",
-                 cap=f"FTMO 2-Step 100K at the plan's k = {rs[0]['k']:g}, m = {rs[0]['m']:g}, payout target {rs[0]['X'] / 1000:.0f}K, paths 1201&ndash;1204, 12,000 attempts per row with a coin-flip direction, the same seeds in every row: random-start ratios. The rows differ by the risk and by Monte Carlo noise, so they are compared by the paired differences of the third column (over the four paths, Student t, 3 degrees of freedom), not by their separate intervals. Above 1.5% the row exceeds FTMO's own guidance, and 2% is shown for reference only.")
+                 cap=f"FTMO 2-Step 100K at the plan's k = {rs[0]['k']:g}, m = {rs[0]['m']:g}, payout target {rs[0]['X'] / 1000:.0f}K, paths 1201&ndash;1204, 12,000 attempts per row with a coin-flip direction, the same seeds in every row: random-start ratios. The rows differ by the risk and by Monte Carlo noise, so they are compared by the paired differences of the third column (over the four paths, Student t, 3 degrees of freedom), not by their separate intervals. Above {pct(O.L_MAX['FTMO'], 0)} a row exceeds FTMO's own guidance (at most 1% per trade idea), and is shown for reference only.")
 
 def _tests():
     try: return json.load(open("tests_v10.json"))
@@ -533,6 +533,9 @@ def v10_fills():
                      f"{sum(r['npay'] * r['P'] * r['n'] for r in gft):,.0f} requests" if gft else "&ndash;")
     att = sum(r["n"] for r in ch)
     out["ABANDONED"] = f"{st(ch, 'rule_abandoned'):,.0f} of the {att:,} attempts of every chosen setting's final run"
+    gl = [r for r in ch if r["prog"].startswith(("GFT", "Alpha"))]
+    out["LEFT_FLOOR"] = (f"{st(gl, 'rule_left_at_floor'):,.0f} of the {sum(r['n'] for r in gl):,} attempts of GFT's and Alpha Capital's final runs, "
+                         f"in an evaluation or a funded account" if gl else "&ndash;")
     reqs = sum(r["npay"] * r["P"] * r["n"] for r in ch) + st(ch, "rule_payout_cancelled")
     out["CANCELLED"] = f"{st(ch, 'rule_payout_cancelled'):,.0f} of about {reqs:,.0f} requests in the final runs"
     bg = [r for r in ch if r["prog"].startswith("Blue Guardian")]

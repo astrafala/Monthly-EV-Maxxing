@@ -302,9 +302,11 @@ THE5ERS_SMALL = {25_000: "The5ers High Stakes 25K", 10_000: "The5ers High Stakes
 HAS200 = {"FTMO 2-Step", "FundedNext Stellar 2-Step", "FunderPro Classic", "GFT 2-Step Standard", "Alpha Capital Pro 10%",
           "BrightFunded 2-Step Classic", "Blue Guardian 2-Step", "Fintokei ProTrader"}
 
-# firms whose own guidance sets a lower risk per trade than the plan's 1.75% ceiling: FTMO recommends 1-1.5% of the initial
-# balance and monitors larger risk as possible gambling (ftmo.com/en/blog/how-much-should-you-risk-on-one-trade/)
-L_MAX = {"FTMO": 0.015}
+# firms whose own guidance sets a lower risk per trade than the plan's 1.75% ceiling: FTMO "generally recommends not risking
+# more than 1% per trade idea", with 1-1.5% of the initial balance the most it recommends on one position, and monitors
+# larger risk (ftmo.com/en/blog/how-much-should-you-risk-on-one-trade/, read 12 October 2026). The plan's trade idea is one
+# position, so the stricter figure, 1%, binds (version 9 and the first version 10 draft used 1.5%)
+L_MAX = {"FTMO": 0.010}
 
 def choose(refine):
     by = collections.defaultdict(list)

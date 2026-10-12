@@ -22,7 +22,7 @@ def r(firm, area, rule, model, status, source, basis="page", read="11 Oct 2026")
     R.append(dict(firm=firm, area=area, rule=rule, model=model, status=status, source=source, basis=basis, read=read))
 
 # the plan's own policies against the firms' undefined or judgement-based prohibitions (gambling, overexposure and the like)
-PLANB = "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1.5%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled"
+PLANB = "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled"
 
 # ---------------------------------------------------------------- FTMO 2-Step (FTMO Account, Standard)
 U = "https://ftmo.com/en/"
@@ -222,8 +222,10 @@ r("FunderPro", "payouts", "every 14 days with at least $100 profit; processed wi
   "pending 1 working day, cash 1 later", "modelled", U + "419844", read="4 Oct 2026")
 r("FunderPro", "margin", "funded accounts: at most 20% of the starting balance as margin per asset class", "stop floor in the search",
   "modelled", U + "421458", read="4 Oct 2026")
-r("FunderPro", "news (funded)", "no entry within 2 minutes of a high-impact release without the Swing add-on; challenges free",
-  "flat around releases (funded)", "plan", "https://funderpro.com/terms-conditions/", basis="snippet")
+r("FunderPro", "news (funded)", "funded accounts without the Swing add-on: no 'news trading' (opening or closing a position during a "
+  "restricted economic news event) and no 'news holding' (keeping a position open during one); challenges free (article of 1 "
+  "December 2025); the terms: no entry within 2 minutes of a high-impact release", "flat around releases (funded): no position "
+  "open in any bar overlapping 10 minutes either side", "plan", U + "378023-are-news-holding-and-news-trading-allowed", read="12 Oct 2026")
 r("FunderPro", "lot sizes", "'Abrupt or unjustified changes in lot sizes may be deemed reckless behavior or gambling', for example "
   "'trading one (1) lot followed by ten (10) lots without a clear strategic basis'; lot sizes 'reasonably aligned' with the "
   "strategy and the balance (Trading Consistency and Lot Size Policy, 4 June 2026)", "every position sized by one stated rule "
@@ -481,7 +483,8 @@ D12 = "12 Oct 2026"
 REREAD = {
  ("FTMO", "targets and limits"): dict(read=D12),
  ("FTMO", "risk guidance"): dict(rule="FTMO generally recommends not risking more than 1% per trade idea, and at most 1-1.5% of the initial "
-    "balance on one position, so as not to fall into its high-risk monitoring", read=D12),
+    "balance on one position, so as not to fall into its high-risk monitoring", model="risk at most 1% of the account at FTMO (L_MAX): "
+    "the plan's trade idea is one position, so the stricter figure binds (version 9 and the first version 10 draft: 1.5%)", read=D12),
  ("FTMO", FS): dict(rule="EUR 540 for 100K ($607.82 at 1.1256), EUR 1,080 for 200K ($1,215.65) at list price (a promotion of October 2026 "
     "sells the 100K at EUR 439; the price list does not render as text, the prices are version 9's reading and secondary listings); "
     "the 2-Step fee refunded with the first reward; 80% split (90% with the Scaling Plan or the Premium Programme)", read=D12,
