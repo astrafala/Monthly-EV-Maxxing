@@ -481,7 +481,8 @@ r("FTMO", "leverage", "FTMO Account (Standard): indices 1:50, forex 1:100 (compa
   "the figures as text)", "1:50 on the Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd) and FTMO's 1% risk", "not binding", "https://ftmo.com/en/symbols/",
   basis="secondary", read="12 Oct 2026")
 r("FundingPips", "leverage", "2-Step Flex: forex up to 1:100 (the programme's launch notes; the help centre refuses automated "
-  "reading)", "1:100 on USDJPY and EURUSD; at 1:50 the plan's own 60% margin cap would raise EURUSD's stop floor to 0.68 hourly sd "
+  "reading); indices 1:5 above 0.5 lots in version 9's reading of the help centre (4 October 2026), while listings of October 2026 "
+  "give 1:20 or a leverage falling from 1:50 to 1:5 with the position's size, so the plan does not trade indices there", "1:100 on USDJPY and EURUSD; at 1:50 the plan's own 60% margin cap would raise EURUSD's stop floor to 0.68 hourly sd "
   "(USDJPY's would stay below 0.6; FundingPips states no margin rule)", "modelled", "https://fundingpips.com/2-step-flex", basis="secondary", read="12 Oct 2026")
 r("FundedNext", "leverage", "Stellar 2-Step: forex 1:100; gold under the commodities tier, 1:25 in the challenge and 1:15 funded "
   "(secondary descriptions, which differ)", "EURUSD 1:100; gold 1:10, below every reading, so its stop floor (1.03 hourly sd at "
@@ -615,7 +616,9 @@ REREAD = {
     source="https://help.alphacapitalgroup.uk/en/articles/8420592-is-it-possible-to-receive-a-refund-for-the-evaluation-fees-once-i-have-completed-my-evaluation"),
  ("GFT", "targets and limits"): dict(read=D12),
  ("GFT", "Goat Guard (funded)"): dict(rule="a combined floating loss of 2% of the initial size: the first time the split falls to 50% and "
-    "the positions stay open, the second time the account is breached", read=D12),
+    "the positions stay open, the second time the account is breached", model="not reached: one position at a time whose stop loss "
+    "plus cost (at most $1,750 plus cost per $100K) stays inside 2% of the initial size; the plan holds no position through a gap",
+    read=D12),
  ("GFT", "allocation"): dict(model="the recommended plan holds one; at the full allowance four 100K or two 200K, whichever is worth more in all (copying between a trader's own GFT accounts is allowed: the copying row)", read=D12, source="https://help.goatfundedtrader.com/en/articles/10742191-what-is-the-maximum-simulated-capital-you-can-have-with-goatfundedtrader"),
  ("GFT", "copying"): dict(rule="copying trades between your own accounts allowed, evaluation and funded alike; other traders', signal "
     "providers' and third-party services' trades prohibited", model="the shared direction on every GFT account (version 9 read duplicated "

@@ -546,7 +546,7 @@
    "firm": "GFT",
    "area": "Goat Guard (funded)",
    "rule": "a combined floating loss of 2% of the initial size: the first time the split falls to 50% and the positions stay open, the second time the account is breached",
-   "model": "not reached: one position at a time whose stop loss plus cost is at most $1,750 plus cost per $100K, and the room above the floor caps it when the balance is low (at most 1.97% of the current balance); the plan holds no position through a gap",
+   "model": "not reached: one position at a time whose stop loss plus cost (at most $1,750 plus cost per $100K) stays inside 2% of the initial size; the plan holds no position through a gap",
    "status": "not binding",
    "source": "https://help.goatfundedtrader.com/en/articles/10742107-what-is-goat-guard",
    "basis": "page",
@@ -1435,7 +1435,7 @@
   {
    "firm": "FundingPips",
    "area": "leverage",
-   "rule": "2-Step Flex: forex up to 1:100 (the programme's launch notes; the help centre refuses automated reading)",
+   "rule": "2-Step Flex: forex up to 1:100 (the programme's launch notes; the help centre refuses automated reading); indices 1:5 above 0.5 lots in version 9's reading of the help centre (4 October 2026), while listings of October 2026 give 1:20 or a leverage falling from 1:50 to 1:5 with the position's size, so the plan does not trade indices there",
    "model": "1:100 on USDJPY and EURUSD; at 1:50 the plan's own 60% margin cap would raise EURUSD's stop floor to 0.68 hourly sd (USDJPY's would stay below 0.6; FundingPips states no margin rule)",
    "status": "modelled",
    "source": "https://fundingpips.com/2-step-flex",

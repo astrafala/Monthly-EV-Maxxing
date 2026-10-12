@@ -372,3 +372,80 @@ P["Blue Guardian 2-Step"]["plan"] = [(x.replace("so no trade lasts under 2 minut
                                      for x in P["Blue Guardian 2-Step"]["plan"]]
 P["GFT 2-Step Standard"]["plan"] = [("one open position at a time whose stop loss plus cost stays inside Goat Guard's 2% (at most 1.97% of the balance where the room to the floor limits the risk); no position held through a gap" if x.startswith("one open position at a time, risking at most 1.75% plus cost") else x)
                                     for x in P["GFT 2-Step Standard"]["plan"]]
+
+# ================================================================ version 10, the readings of 12 October 2026 (every inventory row read
+# again: rules_inventory_v10.py; the plan notes below follow the engine's rules in firms_v10 and the portfolio in lockstep_portfolio_v10)
+_TERM = COMMON[4]
+_FILL = COMMON[6]
+_TERM_NEW = _TERM + " (not at GFT and Alpha Capital, whose all-or-nothing rules rule it out: there the account is closed on request instead)"
+_FILL_NEW = _FILL.replace("(none at Fintokei and Alpha Capital)", "(none at Fintokei, Alpha Capital, FunderPro and Hola Prime)")
+for _k, _sh in P.items():
+    _sh["plan"] = [(_TERM_NEW if x == _TERM else _FILL_NEW if x == _FILL else x) for x in _sh["plan"]]
+COMMON[4] = _TERM_NEW; COMMON[6] = _FILL_NEW
+
+def _repl(sheet, startswith, new):
+    """replace the plan item of a sheet that starts with the given text (it must exist once)"""
+    pl = P[sheet]["plan"]; hits = [i for i, x in enumerate(pl) if x.startswith(startswith)]
+    assert len(hits) == 1, (sheet, startswith, hits)
+    pl[hits[0]] = new
+
+def _drop(sheet, x):
+    P[sheet]["plan"] = [y for y in P[sheet]["plan"] if y != x]
+
+# FTMO: its guidance per trade idea (1%) binds the plan's single-position trade idea (optimize_v10.L_MAX)
+_ftmo_rf = min(_rf("FTMO 2-Step", "US100", _O.L_MAX["FTMO"]), _O.L_MAX["FTMO"])
+_repl("FTMO 2-Step", f"{_p(_rf('FTMO 2-Step', 'US100', 0.015))} risk",
+      f"risk {_p(_ftmo_rf)} at most (FTMO 'generally recommends not risking more than 1% per trade idea' and at most 1&ndash;1.5% on one position; the plan's trade idea is one position), with the stop attached at entry")
+# FundingPips: index leverage
+_repl("FundingPips Flex", "USDJPY or EURUSD at 1:100",
+      "USDJPY or EURUSD at 1:100. The Nasdaq is not traded there: version 9 read FundingPips' index leverage as 1:5 above 0.5 lots "
+      "(4 October 2026), at which the plan's Nasdaq position would need about 1:9 even at the widest stop searched (m = 1.25); listings of "
+      "October 2026 differ (1:20, or a leverage falling from 1:50 to 1:5 with the position's size)")
+_repl("FundingPips Flex", "risk at most 1.75% plus cost, below the 2% trade-idea limit",
+      "risk at most 1.75% plus cost, below the trade-idea limit of 2% (3% on some models); at least 10 minutes after any close before the next trade; a payout request at least 15 minutes after the last close, and no trading while the reward is processed")
+P["FundingPips Flex"]["sources"] = P["FundingPips Flex"]["sources"].replace(" (2 Step Flex, read 4 Oct 2026)", " (2 Step Flex)")
+# The5ers
+_repl("The5ers High Stakes", "payout requests of at most $4,000",
+      "payout requests of at most $4,000 on 100K with the fee refund counted inside it, only with at least $500 of profit and $150 after the split and the 3.5% commission; the balance kept under +9.5% so the account does not scale")
+_repl("The5ers High Stakes", "one 100K account; optionally New's small accounts",
+      "one 100K account; optionally New's small accounts (3 &times; 2.5K, 3 &times; 5K, 3 &times; 10K, 1 &times; 25K), each on New's own contract and fee: not recommended, because The5ers' rule on position sizes 'substantially larger or smaller ... compared across your own accounts' could be read against their smaller positions ([[CH_RISK]].2)")
+P["The5ers High Stakes"]["plan"].insert(1, "own entries on each account; The5ers asked in writing, before the first trade, to confirm that this is not the 'copy trading with other traders or accounts' its prohibited-practices page names ([[CH_RUN]].3)")
+# FXIFY
+_repl("FXIFY Two Phase Classic", "one Classic account of each size",
+      "one Classic account of each size: 100K, 50K, 25K, 15K, 10K and 5K (version 9 left out the 15K)")
+P["FXIFY Two Phase Classic"]["plan"].insert(1, "the same trades on several of your accounts only after FXIFY's approval, asked before the first trade (it allows copy trading with prior approval: [[CH_RUN]].3)")
+# FundedNext: the dollar direction is shared with USDJPY when it trades EURUSD (10.3)
+_repl("FundedNext Stellar 2-Step", "its own market (no other account trades it)",
+      "its own market, traded by no other account, so nothing is copied from another firm; on EURUSD its direction follows the dollar direction of any open USDJPY position (10.3), a direction and not a copied trade")
+# Fintokei: 400,000 EUR/USD of funded accounts
+_repl("Fintokei ProTrader", "Nasdaq, shared direction; 5 &times; 100K",
+      "Nasdaq, shared direction; 4 &times; 100K: Fintokei allows 400,000 EUR/USD of funded ProTrader accounts (evaluations not counted), and 100K is cheaper per dollar than 200K ($549 against $1,249)")
+# Hola Prime: no fillers
+P["Hola Prime 2-Step Prime"]["plan"] = [x for x in P["Hola Prime 2-Step Prime"]["plan"] if x != _FILL_NEW]
+P["Hola Prime 2-Step Prime"]["plan"].insert(4, "no filler trades (its prohibited practices name 'unexplained deviations in position size'): a phase's three days come from the 40% policy's three winning days")
+# Alpha Capital: no last trade to the floor
+P["Alpha Capital Pro 10%"]["plan"].insert(4, "no last trade to the floor ('all or nothing' strategies are prohibited): an account whose room falls below the smallest normal risk is closed on request")
+# FunderPro
+_repl("FunderPro Classic", "one account, the larger size if it is worth more",
+      "one account in the recommended plan, the larger size if it is worth more; at the full allowance two 100K or one 200K, whichever is worth more (FunderPro allows copying between your own accounts)")
+_repl("FunderPro Classic", "risk at most 1.75%, below the 2% limit",
+      "risk at most 1.75% (FunderPro's 2% per-trade rule is published for its Instant programme, which the plan does not use)")
+P["FunderPro Classic"]["plan"] = [x for x in P["FunderPro Classic"]["plan"] if x != _FILL_NEW]
+P["FunderPro Classic"]["plan"].insert(3, "no filler trades (its lot-size policy names 'abrupt or unjustified changes in lot sizes'): a phase short of its 4 trading days after the target collects them with ordinary trades, one a day; positions closed 2 hours before any market closure of 2 hours or more ([[CH_RUN]].3)")
+# GFT
+_repl("GFT 2-Step Standard", "one account; Nasdaq with a stop of at least",
+      P["GFT 2-Step Standard"]["plan"][[i for i, x in enumerate(P["GFT 2-Step Standard"]["plan"]) if x.startswith("one account; Nasdaq with a stop of at least")][0]]
+      .replace("one account; ", "one account in the recommended plan, four 100K or two 200K at the full allowance (GFT allows copying between your own accounts); "))
+_repl("GFT 2-Step Standard", "one open position at a time whose stop loss plus cost stays inside Goat Guard's 2%",
+      "one open position at a time whose stop loss plus cost (at most $1,750 plus cost per $100K) stays inside Goat Guard's 2% of the initial size; no position held through a gap")
+P["GFT 2-Step Standard"]["plan"].insert(4, "no last trade to the floor ('All-Or-Nothing Trading, where you can lose the account in one trade', is prohibited): an account whose room falls below the smallest normal risk is closed on request")
+# BrightFunded, Blue Guardian
+_repl("BrightFunded 2-Step Classic", "one account (recommended) or four, Nasdaq",
+      "one account in the recommended plan; at the full allowance $400,000 in 100K or 200K accounts, whichever is worth more; Nasdaq")
+_repl("Blue Guardian 2-Step", "one account, Nasdaq with the stop widened to fit 1:10",
+      "one account in the recommended plan ($400,000 in 100K or 200K accounts at the full allowance), Nasdaq with the stop widened to fit 1:10, the lowest leverage any source gives")
+# Maven
+_repl("Maven 2-Step", "funded profit never above $4,900",
+      "funded profit never above $4,900 (payout targets of 2&ndash;4.9%), $100 under the threshold, so the 50% rule never applies even with a take-profit filled a few points better; 'total profit' read as the profit since the last payout, after which Maven resets the account (the less strict of two readings: inventory)")
+P["Maven 2-Step"]["plan"].insert(3, "one Maven account only: the $10,000 per 30 days is per trader, all accounts together; payouts by Rise at $20 each where bank transfer is not offered")
+P["Maven 2-Step"]["sources"] = P["Maven 2-Step"]["sources"].replace(" (read 4 Oct 2026)", "")
