@@ -602,11 +602,13 @@ def no_terminal_no_filler(check, cfg, Spy, spy_attempts):
 def keepalive(check, cfg, Spy):
     """the plan's 25-day rule (n47): the longest time from one entry to the next, or from the funded account's start to its
     first entry, on 200 funded accounts per firm. FXIFY's 30-day cycle with its read-only review and Maven's $10,000 per
-    rolling 30 days are the waits that need a keep-alive position (version 10's first engine left up to 30.0 and 28.0 days);
+    rolling 30 days are waits that need a keep-alive position (version 10's first engine left up to 30.0 and 28.0 days), and so is
+    BrightFunded's first payout, 30 days after the first funded trade;
     the four firms without fillers get none and never come near; Maven's 30-day windows stay under $10,000, a keep-alive's
     gain above it voided"""
     out = {}
     for prog, firm, instr, x in (("FXIFY Two Phase Classic (100%, 30 days)", "FXIFY", "US100", 0.05), ("Maven 2-Step", "Maven", "US100", 0.049),
+                                 ("BrightFunded 2-Step Classic", "BrightFunded", "US100", 0.05),
                                  ("Hola Prime 2-Step Prime (bi-weekly 80%)", "Hola Prime", "EURUSD", 0.05),
                                  ("Alpha Capital Pro 10%", "Alpha Capital", "US100", 0.05), ("Fintokei ProTrader", "Fintokei", "US100", 0.05),
                                  ("FunderPro Classic", "FunderPro", "US100", 0.05)):
@@ -629,6 +631,7 @@ def keepalive(check, cfg, Spy):
                          voided=A.RULE_HITS["filler_voided"] - h0["filler_voided"], over=over,
                          fillers=sum(1 for r in R for t in r["log"] if t.get("kind") == "filler"))
     ok = (all(v["gap"] <= 25.0 and v["idle"] == 0 for v in out.values()) and out["FXIFY"]["ka"] > 0 and out["Maven"]["ka"] > 0
+          and out["BrightFunded"]["ka"] > 0
           and all(out[f]["fillers"] == 0 and out[f]["ka"] == 0 for f in ("Hola Prime", "Alpha Capital", "Fintokei", "FunderPro"))
           and out["Maven"]["over"] <= 1e-6)
     check("keepalive", ok, "200 funded accounts per firm (synth909y4), longest time from one entry to the next: " +
