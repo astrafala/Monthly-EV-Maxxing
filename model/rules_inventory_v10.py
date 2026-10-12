@@ -366,8 +366,9 @@ r("Apex", "targets and limits", "$3,000 target; $2,000 maximum loss trailing the
   "as stated; flat at 20:00 UTC", "modelled", "https://apextraderfunding.com/help-center/", basis="secondary", read=V9b)
 
 # ---------------------------------------------------------------- per-person limits and copying rules (version 10: added to the
-# inventory; version 9 stated them in its programme chapters and Chapter 27 but no list contained them). Readings of
-# 4-5 October 2026 (version 9), not re-read for version 10 unless marked; source: the firm's help centre.
+# inventory; version 9 stated them in its programme chapters and Chapter 27 but no list contained them). The rows below give
+# version 9's readings of 4-5 October 2026; every one was read again on 11-12 October 2026 (REREAD, at the end of this file,
+# replaces what changed and the date).
 V9 = "4 Oct 2026 (version 9 reading)"
 r("FTMO", "copying", "the same strategy on your own accounts within the $400,000 cap; accounts under other registrations "
   "prohibited", "every FTMO account trades the shared Nasdaq direction", "plan", "https://ftmo.oanda.com/faq/how-many-accounts-can-i-have/",
@@ -407,7 +408,7 @@ r("Apex", "allocation", "20 funded accounts", "twenty 50K (the optional futures 
   "https://apextraderfunding.com/help-center/", basis="secondary", read=V9)
 
 # ---------------------------------------------------------------- fees, refunds and splits (version 10: added to the inventory; version
-# 9 printed them from its programme sheets, read 4-5 October 2026, and they are not re-read here unless marked)
+# 9 printed them from its programme sheets, read 4-5 October 2026; every row below was read again on 11-12 October 2026: REREAD)
 FS = "fee, refund and split"
 r("FTMO", FS, "EUR 540 for 100K ($607.82 at 1.1256), EUR 1,080 for 200K ($1,215.65); fee refunded with the first reward; 80% split "
   "(90% after scaling)", "as stated (scaling not modelled)", "modelled", "https://ftmo.oanda.com/", read=V9)

@@ -329,7 +329,7 @@ def tier_table():
     for tr, desc in (("A", "PropFirmMap A/A+, TrustPilot profile active"), ("B", "PropFirmMap B+, TrustPilot active"), ("D", "TrustPilot rating withheld for fake reviews; PropFirmMap D")):
         firms = [f for f in FIRMS if TIER.get(f) == tr]
         rows.append([tr, desc, ", ".join(firms), pct(TIERP["tiered"][tr], 0), pct(TIERP["harsh"][tr], 0)])
-    return table(["Tier", "Evidence (read 4 October 2026, not re-read for version 10)", "Firms", "Refusal chance per request: tiered", "harsh"], rows, cls="small", num_from=3,
+    return table(["Tier", "Evidence (read 4 October 2026 and again 12 October 2026, unchanged)", "Firms", "Refusal chance per request: tiered", "harsh"], rows, cls="small", num_from=3,
                  cap="Chosen scenarios, not measurements: public ratings do not calibrate refusal rates.")
 
 def _refus(name):
@@ -698,4 +698,4 @@ def appendices(subs):
     return (review_appendix(subs) + audit_appendix(subs) + inventory_appendix() + formula_sheet() + glossary()
             + f'<section class="chapter"><span class="eyebrow">Appendix E</span><h1>How every number was computed</h1>{code}{repro}</section>'
             f'<section class="chapter"><span class="eyebrow">Appendix F</span><h1>Sources</h1>{src}'
-            '<p class="note">Reliability evidence for the tiers: TrustPilot company pages (rating-withheld notices, August&ndash;September 2026) and PropFirmMap safety grades, both read on 4 October 2026 and not re-read for version 10. Rules change; keep dated copies of the pages that apply to each purchase.</p></section>')
+            '<p class="note">Reliability evidence for the tiers: TrustPilot company pages (the tier-D firms' ratings shown as 'unavailable due to a breach of our guidelines', fake reviews removed; the others rated, from 3.7 to 4.8) and PropFirmMap safety grades (tier A: A or A+; tier B: B+; tier D: D), read on 4 October 2026 and again on 12 October 2026, every firm unchanged. Rules change; keep dated copies of the pages that apply to each purchase.</p></section>')
