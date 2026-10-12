@@ -49,7 +49,7 @@
  },
  "no_filler": {
   "ok": true,
-  "info": "13071 trades at Fintokei and Alpha Capital, 0 filler trades"
+  "info": "12396 trades at Fintokei and Alpha Capital, 0 filler trades"
  },
  "hold_bg": {
   "ok": true,
@@ -77,7 +77,7 @@
  },
  "wallet": {
   "ok": true,
-  "info": "6 lives with $10,000 and $30,000 budgets (438 purchases): lowest cash dated by the ledger $51.06"
+  "info": "6 lives with $10,000 and $30,000 budgets (436 purchases): lowest cash dated by the ledger $97.80"
  },
  "exposure": {
   "ok": true,
@@ -85,7 +85,7 @@
  },
  "payout_clock_alpha_maven": {
   "ok": true,
-  "info": "189 first payouts checked (clock from the first trade; Alpha's 5 days; Maven's ceiling and 30-day cap by close date): 0 violations {}"
+  "info": "205 first payouts checked (clock from the first trade; Alpha's 5 days; Maven's ceiling and 30-day cap by close date): 0 violations {}"
  },
  "futures_price": {
   "ok": true,
@@ -97,7 +97,7 @@
  },
  "day_limits": {
   "ok": true,
-  "info": "29,313 account-days of 16 programmes, days from each trade's entry: largest day loss beyond the firm's allowance -200.00, largest day profit beyond the plan's 40% cap +0.00, beyond GFT's day cap -600.00 (all must be <= 0)"
+  "info": "29,200 account-days of 16 programmes, days from each trade's entry: largest day loss beyond the firm's allowance -200.00, largest day profit beyond the plan's 40% cap +0.00, beyond GFT's day cap -600.00 (all must be <= 0)"
  },
  "fxify_best_day": {
   "ok": true,
@@ -109,7 +109,7 @@
  },
  "lock": {
   "ok": true,
-  "info": "1719 payouts at Alpha Capital, FundingPips, FXIFY (300 funded accounts each, synth903y4, Random(177), the review's replay): 0 entries between a request and its processing (version 9: 219 of 219 at Alpha)"
+  "info": "1709 payouts at Alpha Capital, FundingPips, FXIFY (300 funded accounts each, synth903y4, Random(177), the review's replay): 0 entries between a request and its processing (version 9: 219 of 219 at Alpha)"
  },
  "req_wait": {
   "ok": true,
@@ -121,7 +121,7 @@
  },
  "alpha_lots": {
   "ok": true,
-  "info": "300 funded $200K Alpha accounts: largest position 80.00 lots (3124 positions cut to the limit); the review's case (index at 15,535, $3,500 at 1 sd): 82.31 lots uncapped, 80.00 with the limit"
+  "info": "300 funded $200K Alpha accounts: largest position 80.00 lots (3009 positions cut to the limit); the review's case (index at 15,535, $3,500 at 1 sd): 82.31 lots uncapped, 80.00 with the limit"
  },
  "maven_rr": {
   "ok": true,
@@ -185,11 +185,11 @@
  },
  "news": {
   "ok": true,
-  "info": "19385 trades on stages with a news rule (FTMO funded, Maven, FundedNext funded, FXIFY): 0 open during a bar overlapping a release's window; 549 closed at the open of such a bar"
+  "info": "19434 trades on stages with a news rule (FTMO funded, Maven, FundedNext funded, FXIFY): 0 open during a bar overlapping a release's window; 554 closed at the open of such a bar"
  },
  "gft_void": {
   "ok": true,
-  "info": "23630 GFT funded trades: 0 wins held under a minute counted (0 voided)"
+  "info": "22569 GFT funded trades: 0 wins held under a minute counted (0 voided)"
  },
  "cancel": {
   "ok": true,
@@ -197,7 +197,15 @@
  },
  "min_payout": {
   "ok": true,
-  "info": "1400 requests at nine firms (150 funded accounts each, payout target 10%, synth906y4): smallest trader's share less the firm's minimum {'FTMO': 913.32, 'FundingPips': 74.12, 'FXIFY': 7950.0, 'Fintokei': 72.8, 'Alpha Capital': 4.93, 'GFT': 57.59, 'FunderPro': 279.75, 'Blue Guardian': 141.32, 'The5ers': 320.04}; 27 requests under twice the minimum; 9 requests deferred because the share was under the minimum"
+  "info": "1555 requests at 11 firms (150 funded accounts each, payout target 10%, synth906y4): smallest trader's share less the firm's minimum {'FTMO': 913.32, 'FundingPips': 74.12, 'FXIFY': 7950.0, 'Fintokei': 72.8, 'Alpha Capital': 24.93, 'GFT': 57.59, 'FunderPro': 299.75, 'Blue Guardian': 141.32, 'The5ers': 320.04, 'Hola Prime': 50.7, 'FundedNext': 251.93}; 27 requests under twice the minimum; 9 requests deferred because the share was under the minimum; smallest profit before the split less the firm's profit minimum {'FTMO': 1146.66, 'FundingPips': 342.65, 'FXIFY': 9950.0, 'Fintokei': 116.0, 'Alpha Capital': 31.17, 'GFT': 103.08, 'FunderPro': 374.69, 'Blue Guardian': 192.69, 'Hola Prime': 82.13, 'FundedNext': 332.24}"
+ },
+ "payout_fees": {
+  "ok": true,
+  "info": "payout_net: GFT $1,000 -> 970.00; Hola Prime $100 -> 95.00 (the $5 minimum), $1,000 -> 975.00; Maven $1,000 -> 980.00 ($20); FTMO $1,000 -> 1000.00; no refund at GFT, Fintokei, Alpha Capital: True; 3361 payouts at five firms (250 funded accounts each, synth908y4) whose cash equals the fee applied to the split share plus the refund due with that request (0 mismatches {}); refunds paid with the 4th payout at Hola Prime 20, with the 3rd at Maven 124"
+ },
+ "no_terminal_no_filler": {
+  "ok": true,
+  "info": "300 attempts and 200 funded accounts per firm (synth909y4): GFT: 18131 trades, 0 last trades to the floor, 500 accounts left near it, 0 fillers; Alpha Capital: 17791 trades, 0 last trades to the floor, 500 accounts left near it, 0 fillers; FunderPro: 18684 trades, 762 last trades to the floor, 0 accounts left near it, 0 fillers; Hola Prime: 17248 trades, 797 last trades to the floor, 0 accounts left near it, 0 fillers; Fintokei: 18894 trades, 736 last trades to the floor, 0 accounts left near it, 0 fillers; FTMO: 18565 trades, 750 last trades to the floor, 0 accounts left near it, 93 fillers"
  },
  "usd_direction": {
   "ok": true,
@@ -205,6 +213,6 @@
  },
  "gft_rules": {
   "ok": true,
-  "info": "272 GFT requests (150 funded accounts, synth907y4): 0 with the best trade not larger than the worst loss (over the cycle and over the account); trader's share 0.776 of the profit (80% less the 3% processing fee); fee refund 0"
+  "info": "269 GFT requests (150 funded accounts, synth907y4): 0 with the best trade not larger than the worst loss (over the cycle and over the account); trader's share 0.776 of the profit (80% less the 3% processing fee); fee refund 0"
  }
 }
