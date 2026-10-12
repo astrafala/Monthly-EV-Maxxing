@@ -442,7 +442,7 @@ def _variant_rows(tags, labels):
 
 def nofill_rows():
     out = []
-    for x in _variant_rows(("nofill", "nohold"), {"nofill": "ordinary trades instead of fillers (the $20 margin kept)",
+    for x in _variant_rows(("nofill", "nohold"), {"nofill": "ordinary trades instead of fillers (the $20 margin and the keep-alive positions kept)",
                                                  "nohold": "no 3-minute hold (a trade under 2 minutes ends the account)"}):
         b, r, d = x["base"], x["var"], x["d"]
         out.append([short(x["prog"]), MSHORT[x["instr"]], x["label"], usd(b["EV_month"]), usd(r["EV_month"]), (f"{sgn(d[0])} &plusmn; {usd(d[1])}" if d else "&ndash;"),
@@ -549,7 +549,7 @@ def part4(ch_run, ch_risk):
 <h2>{ch_risk}.7 What is not allowed, and is not in the plan</h2>
 <p>No hedging across accounts or firms; no accounts in anyone else's name; no copy-trading services, EAs or other people's signals; no trading in restricted news windows (the plan's blocks, 6.5); no tick scalping, latency or gap arbitrage; no grid or martingale sizing; no deliberately failed accounts. Do not share or sell the plan: several firms treat traders who run the same marketed strategy as a group.</p>
 <h2>{ch_risk}.8 Filler trades and holding times</h2>
-<p>Where a firm counts any day on which a position is opened, the plan completes missing trading days with 0.01-lot trades held 3 minutes (6.3). The firms' day definitions state no minimum volume, but none says in so many words that such a trade is welcome, Fintokei and Alpha Capital object to it, and FunderPro and Hola Prime object to the size change it makes (none is placed at those four); so the plan's value is also measured without fillers at the other firms, missing days traded with ordinary trades of the plan, one a day, everything else unchanged (the phase still stops $20 per $100K above its target). Blue Guardian's 3-minute hold is measured the same way.</p>
+<p>Where a firm counts any day on which a position is opened, the plan completes missing trading days with 0.01-lot trades held 3 minutes (6.3). The firms' day definitions state no minimum volume, but none says in so many words that such a trade is welcome, Fintokei and Alpha Capital object to it, and FunderPro and Hola Prime object to the size change it makes (none is placed at those four); so the plan's value is also measured without fillers at the other firms, missing days traded with ordinary trades of the plan, one a day, everything else unchanged (the phase still stops $20 per $100K above its target, and the keep-alive positions of 6.3 stay). Blue Guardian's 3-minute hold is measured the same way.</p>
 {table(["Programme", "Market", "Variant", "EV/month: plan", "variant", "Paired difference (95%)", "Fillers per attempt: plan", "variant"], nofill_rows(), cls="small", num_from=3,
        cap="One 100K account at the plan's setting with a coin-flip direction, paths 1201&ndash;1204, 3,000 attempts on each, the same seeds in both cells of a row (random-start ratios); the paired difference is over the four paths (Student t, 3 degrees of freedom). Version 9's variant also removed the $20 margin, so two of its rows changed with no filler executed (review of version 9, finding 25).") if nofill_rows() else ""}
 <h2>{ch_risk}.9 What the version 10 rules and readings cost</h2>

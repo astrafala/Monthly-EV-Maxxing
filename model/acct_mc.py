@@ -490,7 +490,7 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
     # the last close, so the lock after a request (FXIFY) or Maven's 30-day profit window could leave an account 28 to 30
     # days without a trade. The four firms without fillers never wait that long (14-day payout cycles): idle_over_25
     # counts every entry more than 25 days after the one before, at every firm
-    ka_max = fd.get("keepalive_days", 25); ka_on = bool(ka_max) and not nofill
+    ka_max = fd.get("keepalive_days", 25); ka_on = bool(ka_max) and not firm.get("no_minimal")
     last_in = t0                                       # the last entry (before the first: the funded account's start)
     f_room = 1e18                                      # Maven: room under the 30-day cap for a keep-alive's gain
     def _end(t_breach):

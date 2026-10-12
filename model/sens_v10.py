@@ -11,7 +11,8 @@ same random numbers across the columns of a table (paired):
   nofill  every programme that uses filler trades run instead with ordinary trades, one a day: what the assumption that
           the firms accept minimal day-completing trades is worth. Version 10: the phase's stopping point ($20 per $100K
           above the target) is the same in both runs, so only the fillers change (version 9 also removed the margin:
-          review of version 9, finding 25)
+          review of version 9, finding 25); the keep-alive positions stay (they follow no_minimal, which the variant leaves
+          unset)
   nohold  Blue Guardian without the 3-minute hold (its bracket placed at entry; a trade closed in under 2 minutes then
           ends the account, the plan's reading of the tick-scalping rule)
   nonews  version 10: every programme whose firm restricts news with the plan trading through the releases (what the news
@@ -43,7 +44,8 @@ def rules(c, tweak=None):
     if tweak == "noflat": F.pop("flat_daily", None)
     if tweak == "dllfixed":
         for st in F["phases"] + [F["funded"]]: st["dll_mode"] = "fixed"
-    if tweak == "nofill": F["no_fillers"] = True                # (the target margin stays: no_target_buffer unchanged)
+    if tweak == "nofill": F["no_fillers"] = True                # (the target margin stays: no_target_buffer unchanged; the
+                                                                # keep-alive positions stay too: they follow no_minimal)
     if tweak == "nohold": F.pop("hold_min", None)
     if tweak == "nonews":
         for st in F["phases"]: st["news"] = None

@@ -118,6 +118,8 @@ def _v10(F, size=None):
             f["no_terminal"] = True
         if f.get("no_fillers"):
             f["no_target_buffer"] = True          # missing days are ordinary trades: no buffer above the target
+            f["no_minimal"] = True                # no minimal position of any kind there, keep-alives included (the no-filler
+                                                  # sensitivity sets no_fillers alone, so its keep-alives stay: sens_v10)
         # a published minimum payout counts on the trader's share after the split (the stricter reading); a request
         # still needs the minimum as profit before the split (min_payout)
         mp = max(float(fd.get("min_payout") or 0.0), MIN_PAYOUT.get(firm, 0.0))
