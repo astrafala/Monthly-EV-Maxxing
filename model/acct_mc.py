@@ -197,7 +197,7 @@ def _win(tr, l, plan_cap, rule_cap, bs, fresh=False, lc=0.0, lv=None):
 RULE_HITS = {"alpha_phase": 0, "alpha_funded": 0, "short_breach": 0,       # rule consequences applied (counts)
              "payout_cancelled": 0, "shield_first": 0, "shield_second": 0, "abandoned": 0, "left_at_floor": 0, "rr_wait": 0, "bw_wait": 0,
              "rr_raised": 0, "rr_lowered": 0, "lots_capped": 0, "min_net_wait": 0, "cap_held": 0, "excluded_day": 0,
-             "expired": 0, "voided": 0, "keepalive": 0}
+             "expired": 0, "voided": 0, "keepalive": 0, "idle_over_25": 0, "filler_voided": 0}
 
 def _dur_ok(m, durs):
     """Alpha Capital's duration rule over the trades of a phase or of the funded account: average duration above m
@@ -482,6 +482,17 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
     excl_day = None                                    # Topstep: the session of a request does not count for the next one
     last_exit = -1e18                                  # the last close (a request waits req_wait hours after it)
     t_act = clock                                      # last trade or payout (stall detector)
+    # keep-alive (version 10, 12 October 2026): never 25 days without a trade (most firms close or breach an account after
+    # 30 days without one, FXIFY after 60: rules_inventory_v10.json). Where a firm accepts minimal positions, one is placed
+    # on the calendar day on which 22 days have passed since the last entry, at its first permitted time (a weekend moves it
+    # to Monday: at most 24 days and a few hours after the last entry), and before a request that would lock or pause the
+    # account until more than 22 days after the last entry; no wait runs past that day. The first version 10 engine placed one only while waiting for a payout date, 25 days after
+    # the last close, so the lock after a request (FXIFY) or Maven's 30-day profit window could leave an account 28 to 30
+    # days without a trade. The four firms without fillers never wait that long (14-day payout cycles): idle_over_25
+    # counts every entry more than 25 days after the one before, at every firm
+    ka_max = fd.get("keepalive_days", 25); ka_on = bool(ka_max) and not nofill
+    last_in = t0                                       # the last entry (before the first: the funded account's start)
+    f_room = 1e18                                      # Maven: room under the 30-day cap for a keep-alive's gain
     def _end(t_breach):
         """the account ends (t_breach: the time of a breach, None otherwise): a payout still pending at a breach is
         cancelled, with a ledger row that takes its cash back on the date it would have arrived"""
@@ -539,7 +550,7 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
         # ---- payout opportunity
         target_now = max(X1 if npay == 0 else X, tgt_up)
         if ceiling: target_now = min(target_now, ceiling)
-        can_pay = False; kind = "trade"
+        can_pay = False; kind = "trade"; ka_trade = False
         if pend is not None:
             pass                                           # one request at a time
         elif fd.get("q_days"):
@@ -570,6 +581,16 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
                     if can_pay and bw and not (tb_c > tw_c + 1e-9 and tb_e > tw_e + 1e-9):
                         can_pay = False; RULE_HITS["bw_wait"] += 1    # trade on until a win is larger than the worst loss
                         if x >= target_now - 0.01: tgt_up = max(tgt_up, x + max(tw_c, tw_e) + 1.0 * bs)
+        # ---- keep-alive: a minimal position on the day 22 days after the last entry, or before a request that would lock or
+        # pause the account past that time (near Maven's or The5ers' ceiling the account waits at most one payout cycle)
+        ka_ok = ka_on and kind == "trade" and not (ceiling and ceiling - x < 5.0 * bs)
+        ka_t = ((last_in + (ka_max - 3) * DAY) // DAY) * DAY     # the start of that calendar day
+        if ka_ok:
+            due = clock >= ka_t
+            if not due and can_pay and (fd.get("lock_processing") or fd.get("pause_pending")):
+                due = _bdays(tr, clock, fd.get("review_bd", fd.get("process", 1))) + fd.get("review_h", 0.0) > last_in + (ka_max - 3) * DAY
+            if due:
+                kind = "filler"; can_pay = False; ka_trade = True
         if can_pay and durm and not _dur_ok(durm, durs):
             # Alpha Capital: the duration rule fails at a request: the profits are removed and the account restarts at
             # its initial balance (the firm's stated consequence on a qualified account)
@@ -630,17 +651,12 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
                 if pend is not None and (fd.get("lock_processing") or fd.get("pause_pending")):
                     clock = pend["t_proc"]; pend = None        # locked (or paused) until processed: nothing can happen
                 continue
-        # ---- reached this cycle's target: wait for the payout date (not while trading days are still being collected);
-        # the account is never left 25 days without a trade (version 10: several firms close or deactivate an account
-        # after 30 days without one, BrightFunded among them): a minimal position held 3 minutes keeps it active
+        # ---- reached this cycle's target: wait for the payout date (not while trading days are still being collected),
+        # or for the keep-alive if it comes first
         if (x >= target_now - 0.01 and not fd.get("q_days") and pdays_ok and not gate and kind == "trade"
                 and next_pay < 1e17):
-            ka = fd.get("keepalive_days", 25)
-            if ka and next_pay > max(last_exit, t0) + ka * DAY and not nofill:
-                clock = max(clock + 0.01, max(last_exit, t0) + ka * DAY); kind = "filler"
-                RULE_HITS["keepalive"] += 1
-            else:
-                clock = max(clock + 0.01, next_pay); continue
+            t_w = min(next_pay, ka_t) if ka_ok else next_pay
+            clock = max(clock + 0.01, t_w); continue
         te0 = _next_entry(tr, clock, fw)
         if int(te0 // DAY) != day:                     # the next entry opens on a later day: decide it there (n12)
             clock = te0; continue
@@ -655,6 +671,12 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
             room_day = (allow - 200.0 * bs) / (1.0 + rho); brk = min(brk, allow)
         if kind == "filler":
             l = w = 0.0; opts = dict(kind="filler", breach=brk)
+            if rcap:                                         # Maven: a gain above its 30-day cap is voided (its rule)
+                run_s = 0.0; top = 0.0
+                for (tc, p) in reversed(closed):
+                    if tc <= clock - rcap[1] * DAY: break
+                    run_s += p; top = max(top, run_s)
+                f_room = max(rcap[0] - top, 0.0)
         else:
             # ---- best-day rule on cycle-based accounts: cap each day's profit
             if best_eff and not fd.get("q_days") and dp >= best_eff * max(target_now, 1.0) - 0.5 * bs:
@@ -738,6 +760,12 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
             RULE_HITS["abandoned"] += 1; return _end(None)
         te, tx, dur, breached = _trade_info(tr, clock, h)
         info = getattr(tr, "last_info", None) or {}
+        if kind == "filler":
+            if rcap and pnl > f_room:
+                RULE_HITS["filler_voided"] += 1; pnl = f_room
+            if ka_trade: RULE_HITS["keepalive"] += 1
+        if ka_max and te > last_in + ka_max * DAY + 1e-9: RULE_HITS["idle_over_25"] += 1
+        last_in = te
         t_act = clock + h; last_exit = tx
         if next_pay > 1e17 and not fd.get("q_days"): next_pay = te + fd["first_payout"] * DAY
         dtr = int(te // DAY)

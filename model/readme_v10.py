@@ -19,10 +19,10 @@ def main():
            f"**Expected cash per month for one person, recommended plan, first year: {usd(s['ev'])} ± {usd(s['ci'])}** "
            f"({s['acc']} accounts at {s['firms']} firms, {s['n']:,} simulated first years, each on its own new price paths; zero predictive skill; "
            "every rule of the inventory (`model/rules_inventory_v10.json`, every row read on 11–12 October 2026) and the plan's policies: "
-           "flat every day by 20:00 UTC and around high-impact releases wherever a firm restricts news, no trade and no day above 40% of a "
-           "target, at least 10 minutes between trades, no target or stop closer than 0.6 hourly standard deviations, whole lots, payout "
+           "flat every day by 20:00 UTC and around high-impact releases wherever a firm restricts news, no day above 40% of a target and no "
+           "evaluation trade either, at least 10 minutes between trades, no target or stop closer than 0.6 hourly standard deviations, whole lots, payout "
            "requests pending until processed, the firms' payout fees, real filler trades only where a firm counts any opened position and "
-           "does not object to them, and a last trade with its stop at the floor when an account is nearly spent, except at GFT and Alpha "
+           "does not object to them, never 25 days without a trade on an account, and a last trade with its stop at the floor when an account is nearly spent, except at GFT and Alpha "
            f"Capital, where the account is closed instead). Months 2–12 average {usd(s['ss'])}"
            + (f"; months 13–36 of 36-month lives average {usd(lr)} a month" if lr is not None else "") + ". "
            f"With payouts refused 2% / 5% / 15% of the time by tier: {usd(s['tiered'])}; at 5% / 10% / 30%: {usd(s['harsh'])}.", "",

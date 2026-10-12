@@ -57,7 +57,7 @@
  },
  "brightfunded_day": {
   "ok": true,
-  "info": "183 BrightFunded phase passes, 0 with fewer than 5 days holding a trade >= 60 s"
+  "info": "191 BrightFunded phase passes, 0 with fewer than 5 days holding a trade >= 60 s"
  },
  "alpha_rule": {
   "ok": true,
@@ -85,7 +85,7 @@
  },
  "payout_clock_alpha_maven": {
   "ok": true,
-  "info": "205 first payouts checked (clock from the first trade; Alpha's 5 days; Maven's ceiling and 30-day cap by close date): 0 violations {}"
+  "info": "214 first payouts checked (clock from the first trade; Alpha's 5 days; Maven's ceiling and 30-day cap by close date): 0 violations {}"
  },
  "futures_price": {
   "ok": true,
@@ -97,11 +97,11 @@
  },
  "day_limits": {
   "ok": true,
-  "info": "29,200 account-days of 16 programmes, days from each trade's entry: largest day loss beyond the firm's allowance -200.00, largest day profit beyond the plan's 40% cap +0.00, beyond GFT's day cap -600.00 (all must be <= 0)"
+  "info": "28,451 account-days of 16 programmes, days from each trade's entry: largest day loss beyond the firm's allowance -200.00, largest day profit beyond the plan's 40% cap +0.00, beyond GFT's day cap -600.00 (all must be <= 0)"
  },
  "fxify_best_day": {
   "ok": true,
-  "info": "101 FXIFY payouts: largest best calendar day beyond 25% of the payout -1.00 (must be <= 0)"
+  "info": "93 FXIFY payouts: largest best calendar day beyond 25% of the payout -0.95 (must be <= 0)"
  },
  "no_stall": {
   "ok": true,
@@ -125,7 +125,7 @@
  },
  "maven_rr": {
   "ok": true,
-  "info": "80225 Maven positions (2,000 attempts, k=2, m=1.25, synth902y4, Random(88), the review's replay; 0 at the smallest position, 3321 terminal): smallest take-profit/stop distance ratio 1.5000 (version 9: 1.266); the review's $1-target case: waits when the cap is $1, else the win is raised to $1.6559 (ratio 1.5000)"
+  "info": "76936 Maven positions (2,000 attempts, k=2, m=1.25, synth902y4, Random(88), the review's replay; 1 at the smallest position, 3263 terminal): smallest take-profit/stop distance ratio 1.5000 (version 9: 1.266); the review's $1-target case: waits when the cap is $1, else the win is raised to $1.6559 (ratio 1.5000)"
  },
  "bg_shield": {
   "ok": true,
@@ -185,7 +185,7 @@
  },
  "news": {
   "ok": true,
-  "info": "19434 trades on stages with a news rule (FTMO funded, Maven, FundedNext funded, FXIFY): 0 open during a bar overlapping a release's window; 554 closed at the open of such a bar"
+  "info": "19145 trades on stages with a news rule (FTMO funded, Maven, FundedNext funded, FXIFY): 0 open during a bar overlapping a release's window; 579 closed at the open of such a bar"
  },
  "gft_void": {
   "ok": true,
@@ -206,6 +206,10 @@
  "no_terminal_no_filler": {
   "ok": true,
   "info": "300 attempts and 200 funded accounts per firm (synth909y4): GFT: 18131 trades, 0 last trades to the floor, 500 accounts left near it, 0 fillers; Alpha Capital: 17791 trades, 0 last trades to the floor, 500 accounts left near it, 0 fillers; FunderPro: 18684 trades, 762 last trades to the floor, 0 accounts left near it, 0 fillers; Hola Prime: 17248 trades, 797 last trades to the floor, 0 accounts left near it, 0 fillers; Fintokei: 18894 trades, 736 last trades to the floor, 0 accounts left near it, 0 fillers; FTMO: 18565 trades, 750 last trades to the floor, 0 accounts left near it, 93 fillers"
+ },
+ "keepalive": {
+  "ok": true,
+  "info": "200 funded accounts per firm (synth909y4), longest time from one entry to the next: FXIFY 24.00 days (107 keep-alive positions); Maven 24.00 days (29 keep-alive positions); Hola Prime 12.33 days (0 keep-alive positions); Alpha Capital 12.71 days (0 keep-alive positions); Fintokei 12.62 days (0 keep-alive positions); FunderPro 13.00 days (0 keep-alive positions); entries more than 25 days apart: 0; Maven: 9 keep-alive gains voided above its 30-day cap, largest 30-day closed profit less $10,000 +0.00 (version 10's first engine: FXIFY 30.00 days, Maven 28.00)"
  },
  "usd_direction": {
   "ok": true,

@@ -498,6 +498,7 @@ def run(check, cfg, spy_attempts, Spy, ctl_market, Planned):
           f"before the split less the firm's profit minimum {({f: round(v, 2) for f, v in low_prof.items()})}")
     payout_fees(check, cfg, Spy)
     no_terminal_no_filler(check, cfg, Spy, spy_attempts)
+    keepalive(check, cfg, Spy)
 
     # ---------------------------------------------------------------- one dollar direction across EURUSD and USDJPY
     def sl_(prog, instr, n, m, k, x, lf=0.015):
@@ -597,3 +598,41 @@ def no_terminal_no_filler(check, cfg, Spy, spy_attempts):
     check("no_terminal_no_filler", ok, "300 attempts and 200 funded accounts per firm (synth909y4): " +
           "; ".join(f"{f}: {v['trades']} trades, {v['terminal']} last trades to the floor, {v['left']} accounts left near it, "
                     f"{v['fillers']} fillers" for f, v in out.items()))
+
+def keepalive(check, cfg, Spy):
+    """the plan's 25-day rule (n47): the longest time from one entry to the next, or from the funded account's start to its
+    first entry, on 200 funded accounts per firm. FXIFY's 30-day cycle with its read-only review and Maven's $10,000 per
+    rolling 30 days are the waits that need a keep-alive position (version 10's first engine left up to 30.0 and 28.0 days);
+    the four firms without fillers get none and never come near; Maven's 30-day windows stay under $10,000, a keep-alive's
+    gain above it voided"""
+    out = {}
+    for prog, firm, instr, x in (("FXIFY Two Phase Classic (100%, 30 days)", "FXIFY", "US100", 0.05), ("Maven 2-Step", "Maven", "US100", 0.049),
+                                 ("Hola Prime 2-Step Prime (bi-weekly 80%)", "Hola Prime", "EURUSD", 0.05),
+                                 ("Alpha Capital Pro 10%", "Alpha Capital", "US100", 0.05), ("Fintokei ProTrader", "Fintokei", "US100", 0.05),
+                                 ("FunderPro Classic", "FunderPro", "US100", 0.05)):
+        c = cfg(prog, firm, instr, 1.0, 2 if firm == "Maven" else 3, x)
+        h0 = dict(A.RULE_HITS)
+        R = funded_replay(c, 200, "synth909y4", 21, Spy)
+        gap = 0.0; over = -1e18
+        for r in R:
+            ins = sorted(t["t_in"] for t in r["log"])
+            if not ins: continue
+            gap = max(gap, (ins[0] - r["t0"]) / A.DAY, max([b - a for a, b in zip(ins, ins[1:])] or [0.0]) / A.DAY)
+            if firm == "Maven":                      # every 30-day window of closes, as the audit measures it
+                cs = sorted((tx, pnl) for (_, te, xb, pnl, tx, k_, dur) in r["tlog"])
+                for b in range(len(cs)):
+                    run = 0.0
+                    for a in range(b, -1, -1):
+                        if cs[b][0] - cs[a][0] >= 30 * A.DAY: break
+                        run += cs[a][1]; over = max(over, run - 10_000.0)
+        out[firm] = dict(gap=gap, ka=A.RULE_HITS["keepalive"] - h0["keepalive"], idle=A.RULE_HITS["idle_over_25"] - h0["idle_over_25"],
+                         voided=A.RULE_HITS["filler_voided"] - h0["filler_voided"], over=over,
+                         fillers=sum(1 for r in R for t in r["log"] if t.get("kind") == "filler"))
+    ok = (all(v["gap"] <= 25.0 and v["idle"] == 0 for v in out.values()) and out["FXIFY"]["ka"] > 0 and out["Maven"]["ka"] > 0
+          and all(out[f]["fillers"] == 0 and out[f]["ka"] == 0 for f in ("Hola Prime", "Alpha Capital", "Fintokei", "FunderPro"))
+          and out["Maven"]["over"] <= 1e-6)
+    check("keepalive", ok, "200 funded accounts per firm (synth909y4), longest time from one entry to the next: " +
+          "; ".join(f"{f} {v['gap']:.2f} days ({v['ka']} keep-alive positions)" for f, v in out.items()) +
+          f"; entries more than 25 days apart: {sum(v['idle'] for v in out.values())}; Maven: {out['Maven']['voided']} keep-alive gains voided above its "
+          f"30-day cap, largest 30-day closed profit less $10,000 {out['Maven']['over']:+,.2f} (version 10's first engine: FXIFY 30.00 days, Maven 28.00)")
+

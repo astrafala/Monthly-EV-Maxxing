@@ -326,15 +326,21 @@ for prog, firm, instr, m, k, x in [("FTMO 2-Step", "FTMO", "US100", 0.75, 8, 0.1
             ddays = {int(t["t_in"] // A.DAY) for t in r["log"] if f["t0"] - 1e-9 <= t["t_in"] < t_req}
             if len(ddays) < 5: bad_("alpha_days")
         if prog == "Maven 2-Step":
+            # the engine's result of each funded trade (its trade log, in the same order): a keep-alive position's gain above
+            # the 30-day cap is voided, as Maven states (version 10, n47), so the market result in the trader's log can
+            # exceed it by that gain (cents)
             fl_ = [t for t in r["log"] if t["t_in"] >= f["t0"] - 1e-9]
+            ftl = [e for e in r["tlog"] if e[0] == "funded"]
+            assert len(fl_) == len(ftl)
+            for t, e in zip(fl_, ftl): t["pnl_engine"] = e[3]
             reqs = [p[2] for p in f["pays"]]
             xx = 0.0; ri = 0
             for t in fl_:
                 while ri < len(reqs) and reqs[ri] <= t["t_in"] + 1e-9: xx = 0.0; ri += 1
-                xx += t["pnl"]
+                xx += t["pnl_engine"]
                 if xx > 4_900 + 1e-6: bad_("maven_ceiling")
             for t in fl_:
-                win = sum(u["pnl"] for u in fl_ if t["t_out"] - 30 * A.DAY < u["t_out"] <= t["t_out"])
+                win = sum(u["pnl_engine"] for u in fl_ if t["t_out"] - 30 * A.DAY < u["t_out"] <= t["t_out"])
                 if win > 10_000 + 1.0: bad_("maven_30d")
 check("payout_clock_alpha_maven", viol == 0, f"{npays} first payouts checked (clock from the first trade; Alpha's 5 days; "
       f"Maven's ceiling and 30-day cap by close date): {viol} violations {vk}")

@@ -6,8 +6,9 @@ Writes audit_v10.json; every check prints PASS or FAIL. Version 10 adds to the t
 every position (the smallest positions and terminal trades included: version 9's audit skipped them, review of version 9,
 finding 5), Alpha Capital's lot limit, the news blocks, the payout states (no trade while a request is locked or paused,
 15 minutes after the last close, The5ers' cap and profit gate, Topstep's $125, cancellations only by a breach before
-processing), GFT's one-minute rule, the longest time without a trade, Apex's expiry; and the document's layout (no table
-wider than its column: review of version 9, finding 14).
+processing), GFT's one-minute rule, the longest time without a trade (at most 25 days, entry to entry, in every stage: the
+plan's rule, n47), Apex's expiry, the daily flat (no entry from 19:00 UTC, nothing open after 20:00 UTC) and FTMO's 1% risk;
+and the document's layout (no table wider than its column: review of version 9, finding 14).
 
   stalls      no account ended by the stall detector in any stage (search, validation, checks, sensitivities, portfolios)
   coverage    the grid holds every setting once; every programme and market has a chosen, validated setting
@@ -17,7 +18,9 @@ wider than its column: review of version 9, finding 14).
               GFT's day cap, Maven's ceiling and 30-day window (by close date), the 10-minute gap from the exit time, the
               take-profit distance, the margin cap at every entry, Maven's 1:1.5, whole volume steps, no balance below a
               static floor, filler trades of 3 minutes, Blue Guardian's 3-minute hold, BrightFunded's counted days, no
-              filler at Fintokei, Alpha Capital, FunderPro or Hola Prime, no last trade to the floor at GFT or Alpha Capital
+              filler at Fintokei, Alpha Capital, FunderPro or Hola Prime, no last trade to the floor at GFT or Alpha Capital,
+              no entry from 19:00 UTC and nothing open after 20:00 UTC, FTMO's 1% risk, never more than 25 days from one
+              entry to the next
   continuing  every final row has a continuing-slot row, with no stall
   continuing_check  every chosen setting run as random starts on the continuing paths with both direction rules, no stall
   budget      the cash dated by the ledger of every finite-budget life never below zero
@@ -195,9 +198,15 @@ def replay(r, n=int(os.environ.get("AUDIT_N", 150)), data="synth901y4", seed=17)
                     worst["filler_where_objected"] = max(worst["filler_where_objected"], 1.0 if t["kind"] == "filler" else 0.0)
                 if F.get("no_terminal"):                   # GFT, Alpha Capital: no trade placed to end at the floor
                     worst["terminal_where_all_or_nothing"] = max(worst["terminal_where_all_or_nothing"], 1.0 if t["terminal"] else 0.0)
+                if c.get("kind", "cfd") == "cfd":            # flat every day by 20:00 UTC, no entry from 19:00 (fillers too)
+                    hr = M["hour"][t["i"] % M["T"]]
+                    worst["entry_after_19utc"] = max(worst["entry_after_19utc"], float(hr >= 19))
+                    worst["open_after_20utc"] = max(worst["open_after_20utc"], hr + t["exit"] - 20.0)
                 if t["kind"] == "filler":
                     if not t["breach"]: worst["filler_not_3_minutes"] = max(worst["filler_not_3_minutes"], abs(t["dur"] - 3.0))
                     continue
+                if firm_of(c["prog"]) in O.L_MAX and not t["terminal"]:   # FTMO: risk at most 1% (its guidance)
+                    worst["risk_over_firm_ceiling"] = max(worst["risk_over_firm_ceiling"], t["l"] - O.L_MAX[firm_of(c["prog"])] * S)
                 if F.get("hold_min") and not t["breach"] and t.get("why") != "shield":
                     worst["blue_guardian_under_3_minutes"] = max(worst["blue_guardian_under_3_minutes"], 3.0 - t["dur"])
                 if c.get("kind", "cfd") == "cfd" and not t["terminal"]:      # the firms' 2% rules are CFD-firm rules
@@ -220,6 +229,7 @@ def replay(r, n=int(os.environ.get("AUDIT_N", 150)), data="synth901y4", seed=17)
                     worst["open_in_news_window"] = max(worst["open_in_news_window"], 1.0 if hit else 0.0)
             for a, b in zip(sl, sl[1:]):
                 worst["gap_short_of_10min"] = max(worst["gap_short_of_10min"], PF.GAP_MIN - (b["t_in"] - a["t_out"]) * 60.0)
+                worst["days_without_trade"] = max(worst["days_without_trade"], (b["t_in"] - a["t_in"]) / A.DAY)   # entry to entry
             if kind == "funded":
                 fdx = st
                 if fdx.get("profit_ceiling") or fdx.get("roll_profit_cap") or fdx.get("best"):
@@ -249,8 +259,8 @@ LIM = {"loss_share_of_account": 0.02 - 1e-9, "day_loss_over_allowance": 0.0, "da
        "balance_below_static_floor": 1e-6, "filler_not_3_minutes": 1e-9, "blue_guardian_under_3_minutes": 1e-9,
        "brightfunded_days_short": 0, "lots_over_limit": 1e-9, "short_win_counted": 1e-9, "open_in_news_window": 0.0,
        "request_within_15min": 1e-6, "trade_while_locked": 0.0, "payout_below_minimum": 1e-6, "the5ers_over_cap": 1e-6,
-       "profit_below_gate": 1e-6, "cancellation_mismatch": 0.0, "days_without_trade": 29.0, "filler_where_objected": 0.0,
-       "terminal_where_all_or_nothing": 0.0}
+       "profit_below_gate": 1e-6, "cancellation_mismatch": 0.0, "days_without_trade": 25.0, "filler_where_objected": 0.0,
+       "terminal_where_all_or_nothing": 0.0, "entry_after_19utc": 0.0, "open_after_20utc": 1e-6, "risk_over_firm_ceiling": 1e-6}
 viol = []; tot_tr = 0; W = {}
 futs = {(r["prog"], r["instr"]): r for r in FIN if r["tag"] == "chosen" and r.get("kind") == "fut"}
 for (p, i), r in sorted(chosen.items()) + sorted(futs.items()):

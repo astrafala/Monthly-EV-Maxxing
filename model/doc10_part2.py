@@ -117,7 +117,7 @@ def _split_txt(fd):
         a = fd["split"] * (1 - fd["fee_pct"])
         return (f"{pct(fd['split'], 0)}, less a {_fpct(fd['fee_pct'])} fee on every withdrawal" + (f" (at least {usd(fd['fee_min'])})" if fd.get("fee_min") else "")
                 + (", the refund included" if fd.get("refund") else "")
-                + f" (the trader keeps \\(\\alpha = {a:.4f}\\)".replace("0\\)", "\\)") + " of the profit withdrawn)")
+                + " (the trader keeps \\(\\alpha = " + f"{a:.4f}".rstrip("0").rstrip(".") + "\\)" + " of the profit withdrawn)")
     if fd.get("fee_min"):
         return (f"{pct(fd['split'], 0)}, less {usd(fd['fee_min'])} from every payout" + (", the one with the refund included" if fd.get("refund") else ""))
     return pct(fd["split"], 0)
@@ -185,7 +185,7 @@ def model_table(F, prog):
     if fd.get("need_profit"): bits.append("each later payout needs net profit since the last")
     if fd.get("max_payouts"): bits.append(f"at most {fd['max_payouts']} payouts")
     if fd.get("buffer"): bits.append(f"buffer {usd(fd['buffer'])} kept in the account")
-    if fd.get("conc"): bits.append(f"plan: no trade and no day above {pct(fd['conc'], 0)} of the payout target")
+    if fd.get("conc"): bits.append(f"plan: no day above {pct(fd['conc'], 0)} of the payout target, net of the day's earlier trades")
     if fd.get("shield"): bits.append(f"Guardian Shield: open trades closed at a floating loss of {usd(fd['shield'])}; the first time the split falls to {pct(fd.get('shield_split', 0.5), 0)}, the second time the account is breached")
     if fd.get("max_lots"): bits.append(f"at most {fd['max_lots']:g} open lots")
     if fd.get("void_min"): bits.append(f"a winning trade held under {fd['void_min']:g} minute has its profit removed")

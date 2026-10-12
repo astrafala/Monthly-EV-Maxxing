@@ -22,7 +22,7 @@ def r(firm, area, rule, model, status, source, basis="page", read="11 Oct 2026")
     R.append(dict(firm=firm, area=area, rule=rule, model=model, status=status, source=source, basis=basis, read=read))
 
 # the plan's own policies against the firms' undefined or judgement-based prohibitions (gambling, overexposure and the like)
-PLANB = "the plan's policies: no trade and no day above 40% of a target, risk at most 1.75% plus cost (FTMO 1%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled"
+PLANB = "the plan's policies: no day above 40% of a target and no evaluation trade above 40% of its phase target, risk at most 1.75% plus cost (FTMO 1%), margin at most 60%, every account traded the same way, no account sacrificed; the firm's judgement is not modelled"
 
 # ---------------------------------------------------------------- FTMO 2-Step (FTMO Account, Standard)
 U = "https://ftmo.com/en/"
@@ -115,8 +115,10 @@ r("The5ers", "scaling", "the account scales up on each 10% target with 3 profita
   "reached and the account keeps its purchased rules", "plan", "https://the5ers.com/high-stakes/")
 r("The5ers", "accounts", "New: three each of 2.5K, 5K, 10K, one 25K, one 50K or 100K (shared with Classic)", "as stated",
   "modelled", U + "how-many-high-stakes-accounts-can-i-have/", read="4 Oct 2026")
-r("The5ers", "inactivity", "30 days (evaluation), 60 days (funded)", "never 25 days without a trade", "plan",
-  U + "what-are-the-general-rules-for-the-high-stakes-program/")
+r("The5ers", "inactivity", "30 consecutive days for evaluation accounts, counted from registration, and 60 for funded accounts (the "
+  "general rules page); the High Stakes programme page: 'Accounts that show no activity for more than 30 consecutive days will be "
+  "set to expire', counted from the day the account is registered", "never 25 days without a trade, which meets either reading",
+  "plan", U + "what-are-the-general-rules-for-the-high-stakes-program/", read="12 Oct 2026")
 
 # ---------------------------------------------------------------- FXIFY Two Phase Classic
 U = "https://intercom.help/fxify/en/articles/"
@@ -146,7 +148,7 @@ r("Fintokei", "payouts", "14 days from the last processed payout or the first tr
   "JPY 20,000, CZK 2,000; 120 on 400K ProTrader); all trades closed; approved automatically, sent "
   "within one business day", "next request 14 days after processing; cash one working day later", "modelled", U + "11904545", basis="snippet")
 r("Fintokei", "news", "allowed on every programme", "no news block", "modelled", "https://www.fintokei.com/protrader/", basis="snippet")
-r("Fintokei", "open risk", "open risk per setup at most 3%", "1.5% per trade", "not binding", "https://www.fintokei.com/protrader/", basis="snippet")
+r("Fintokei", "open risk", "open risk per setup at most 3%", "one position at a time, risking at most 1.75% plus cost (the first version 10 draft: '1.5% per trade', a stale figure)", "not binding", "https://www.fintokei.com/protrader/", basis="snippet")
 
 # ---------------------------------------------------------------- Hola Prime 2-Step Prime
 U = "https://holaprime.com/forex/faq/hola-prime-challenges/hola-prime-2-step-prime-challenge/"
@@ -211,7 +213,7 @@ r("GFT", "prohibited practices", "exploiting errors or latency; non-public infor
   "between your own accounts or with other traders; third-party or marketed EAs and strategies (your own EAs allowed); an EA in "
   "the assessment and manual trading when funded, or the reverse; martingale and grid recovery; large-volume trading 'without a "
   "clear or logical trading strategy'", PLANB + "; no last trade to the floor at GFT (5.4: an account whose room falls below "
-  "the smallest normal risk is left as it is; version 9 placed that trade); margin at most 60%; every stage traded by hand",
+  "the smallest normal risk is not traded further and is closed on request; version 9 placed that trade); margin at most 60%; every stage traded by hand",
   "plan", U + "10742118-what-are-prohibited-trading-practices", read="12 Oct 2026")
 
 # ---------------------------------------------------------------- FunderPro Classic
@@ -298,7 +300,8 @@ r("Maven", "consistency above $5,000", "'If your total profit exceeds $5,000, yo
   "from the second cycle and would cut a cycle's profit whenever one 'day' held more than half of it, as a week of daily "
   "trades, one 'day' under that definition, usually would; the model does not apply that)", "plan", U, read="12 Oct 2026")
 r("Maven", "gambling", "large bets at a reward:risk of 1:1.25 or lower", "every position's take-profit at least 1.5 times as far "
-  "as its stop, checked on the position actually placed", "plan", U)
+  "as its stop, checked on the position actually placed (a keep-alive position too: its stop at the breach level, its take-profit "
+  "1.5 times as far, closed after 3 minutes)", "plan", U)
 r("Maven", "prohibited practices", "copying another individual's trades (both breached); grid and gap trading; reverse or group hedging "
   "(an account betting against another, at Maven or another firm); trading only hedges; EAs on every platform; 'all in' (no stop, "
   "or risk above the drawdown limit: 4% on the 2-Step), funded stage included; excessive scalping (50% or more of trades held "
@@ -314,10 +317,12 @@ r("Maven", "risk interview", "above $5,000 of payouts a risk interview; risking 
 # ---------------------------------------------------------------- Topstep 50K
 U = "https://help.topstep.com/en/articles/8284233-topstep-payout-policy"
 r("Topstep", "payouts", "Standard path: 5 winning days of $150+ net (days lock at 4 pm CT); positive net profit since the last "
-  "payout; at most 50% of the balance up to $2,000 per request; minimum $125; 90%; the request's session does not count toward "
-  "the next five; requests Sunday 5 pm to Friday 5 pm CT; deducted at once, trading may continue, a deducted payout is "
-  "protected from a later breach", "as stated; requests one minute after the 4 pm CT lock; $125 read after the split",
-  "modelled", U)
+  "payout; at most 50% of the balance up to $2,000 per request at 50K (a limited-time option, a Daily Loss Limit added at the "
+  "Combine's checkout, raises it to $4,000); minimum $125; 90%; the request's session does not count toward the next five; "
+  "requests Sunday 5 pm to Friday 5 pm CT; deducted at once, trading may continue, a deducted payout is protected from a later "
+  "breach; $30 by ACH or wire, no Topstep fee by Aeropay or Wise", "as stated, by Wise or Aeropay; requests one minute after the "
+  "4 pm CT lock; $125 read after the split; the $4,000 option not taken", "modelled",
+  "https://help.topstep.com/en/articles/8284233-topstep-payout-policy", read="12 Oct 2026")
 r("Topstep", "news", "new positions in equity index futures restricted ahead of CPI releases", "flat around US CPI releases",
   "plan", "https://help.topstep.com/en/articles/13613539-risk-adjustments-high-risk-high-volatility", basis="snippet")
 r("Topstep", "consistency path", "alternative path: 3 trading days, largest day at most 40% of net profit, $3,000 cap at 50K",
@@ -341,7 +346,7 @@ V9b = "4 Oct 2026 (version 9 reading)"
 r("FTMO", "prohibited practices", "overleveraging, overexposure, one-sided bets and account rolling (none defined on the page); simulated trades for manipulative purposes, including opposite positions across connected accounts or accounts with other providers; gap trading; exploiting platform errors", PLANB, "plan",
   "https://ftmo.oanda.com/forbidden-trading-practices/", read="12 Oct 2026")
 r("FundingPips", "profit concentration", "evaluations bought from 27 June 2026, $25K and up: if one trade idea makes more than 60% of a phase target, the funded account needs 4 profitable days (+0.5%) before every reward request, permanently",
-  "not reached: no trade and no day above 40% of a target", "not binding", "https://help.fundingpips.com/hc/en-us/articles/48174287980177-Risk-Per-Trade-Idea", read=V9b)
+  "not reached: no evaluation trade above 40% of its phase target", "not binding", "https://help.fundingpips.com/hc/en-us/articles/48174287980177-Risk-Per-Trade-Idea", read=V9b)
 r("FundedNext", "monitored as gambling", "one-sided betting (remedy: a 1% risk limit), account rolling, breaching several accounts in a short span, losses exceeding gains (remedies: 40% consistency on on-demand rewards or a lower split)",
   PLANB + "; the remedies are measured as scenarios (Chapter 28.7)", "plan", "https://help.fundednext.com/", read=V9b)
 r("The5ers", "prohibited practices", "one-trade target attainment (permanent ban)", "no single trade can reach a target (40% cap)", "plan", "https://the5ers.com/high-stakes/", read=V9b)
@@ -512,6 +517,37 @@ r("Blue Guardian", "leverage", "2-Step indices 1:10 in one listing, 1:20 in anot
 r("Maven", "leverage", "forex 75:1; commodities, indices and precious metals 20:1", "1:20 on the Nasdaq; not binding: at the plan's risk, any leverage of 1:20 or more lets 60% of the balance carry a position at the plan's tightest stop (0.6 hourly sd)", "not binding",
   "https://maventrading.com/faqs", read="12 Oct 2026")
 
+# ---------------------------------------------------------------- inactivity (12 October 2026): the firms whose rows above had
+# none. The plan's own rule (never 25 days without a trade; acct_mc's keep-alive) is stricter than every limit found;
+# FundingPips, Fintokei and Apex state none on the pages read (FundingPips' help centre and Apex's site refuse automated
+# reading). The rows above (FTMO, The5ers, FXIFY, FunderPro, BrightFunded) say "never 25 days without a trade" too
+NOFILL_KA = ("never 25 days without a trade: no wait comes near it there (14-day payout cycles, no minimal positions); the audit "
+             "measures the longest time without a trade")
+KA = ("never 25 days without a trade: a minimal position held 3 minutes on the day 22 days after the last entry if nothing has been "
+      "traded since, or before a payout request that would lock the account past that day")
+r("FundedNext", "inactivity", "an account on which no trade is placed for 30 consecutive calendar days, weekends and holidays "
+  "included, is deactivated (article of 27 July 2026)", KA, "plan",
+  "https://help.fundednext.com/en/articles/8019664-is-there-an-inactivity-period-for-my-accounts-in-fundednext-cfd", read="12 Oct 2026")
+r("Hola Prime", "inactivity", "any account, challenge or funded, inactive for 30 consecutive calendar days is permanently suspended; "
+  "only opening a trade counts ('If your last trade was opened on January 1st, you must open a new position by January 30th')",
+  NOFILL_KA, "plan", "https://holaprime.com/forex/faq/hola-prime-challenges/hola-prime-2-step-prime-challenge/", read="12 Oct 2026")
+r("Alpha Capital", "inactivity", "all accounts at every stage: an account not traded for more than 30 consecutive days is deactivated "
+  "for good; activity is a trade that changes the balance, not a login (article of 6 July 2026)", NOFILL_KA, "plan",
+  "https://help.alphacapitalgroup.uk/en/articles/8420080-inactivity", read="12 Oct 2026")
+r("GFT", "inactivity", "evaluation and funded accounts: breached if no trade is placed for 30 consecutive days, with no reinstatement "
+  "(article of 27 July 2026)", KA, "plan",
+  "https://help.goatfundedtrader.com/en/articles/10742197-is-there-any-inactivity-limit", read="12 Oct 2026")
+r("Blue Guardian", "inactivity", "'At least one trade every 30 days is required to keep the account active'; otherwise the account is "
+  "breached (article of 25 June 2026); the clock starts when the account is created (its general-information rules)", KA, "plan",
+  "https://help.blueguardian.com/en/articles/9661512-prohibited-trading-practices-account-policies", read="12 Oct 2026")
+r("Maven", "inactivity", "'Accounts must not be dormant for more than 30 calendar days. Inactivity is defined as having no executed "
+  "trades.' Its gambling rules add: 'Trades with vastly smaller lot sizes will NOT count as a trade'", KA + "; needed only when the "
+  "$10,000 per 30 days stops trading for more than three weeks. That the dormancy rule counts the minimal position (an executed trade) "
+  "is an assumption; a gain from it above the 30-day cap is voided, as Maven states", "assumption", "https://maventrading.com/faqs",
+  read="12 Oct 2026")
+r("Topstep", "inactivity", "'XFAs with no trading activity for more than 30 days may be closed. XFAs can't be put on hold.'", KA,
+  "plan", "https://help.topstep.com/en/articles/8284215", read="12 Oct 2026")
+
 # ---------------------------------------------------------------- re-read on 12 October 2026
 # The rows above dated 4 October 2026 are version 9's readings, which the first version 10 inventory had carried over.
 # They were read again on 12 October 2026 (pages that refuse automated reading were fetched as a browser would, or read
@@ -575,8 +611,9 @@ REREAD = {
     "return; the Japanese plan pages return the fee 'via the Scaling Dojo', which the English FAQ says was retired on 21 January 2026 "
     "(a secondary review describes a return after 20 trading days and two payout requests)", model="no fee return, the cautious "
     "reading (version 9: the fee with the first payout)", status="cautious", read=D12, source="https://www.fintokei.com/protrader/"),
- ("Hola Prime", "targets and limits"): dict(rule="8% / 5%; daily loss 5% of the previous day's closing balance (reset 17:00 New York); 10% "
-    "static; 3 trading days per phase (4% and 8% at 200K)", read=D12),
+ ("Hola Prime", "targets and limits"): dict(rule="8% / 5%; daily loss 5% of the previous day's closing balance (4% at 200K; reset 17:00 "
+    "New York); maximum loss 10% of the initial balance, static (8% at 200K); 3 trading days per phase", model="as stated at 100K, "
+    "the only size the plan holds there", read=D12),
  ("Hola Prime", "payouts"): dict(rule="bi-weekly 80% with 3 profitable days (closed profit of at least 0.5% of the initial balance) within "
     "14 days; an account review of up to 24 business hours, then paid within one hour; minimum $50 by bank wire or crypto ($500 by Rise); "
     "'A 2.5% payout processing fee applies to all payment methods, subject to a minimum fee of $25 for Rise and Bank Wire and $5 for "
@@ -607,7 +644,7 @@ REREAD = {
  ("Alpha Capital", "prohibited practices"): dict(rule="'all or nothing' strategies (a significant change in lot size against the account's "
     "average, unusual trade durations, trades opened just before and closed just after the news window); minimal lots to complete "
     "trading days on qualified accounts; position spamming", model=PLANB + "; no filler trades and no last trade to the floor at "
-    "Alpha Capital (5.4: an account whose room falls below the smallest normal risk is left as it is; version 9 placed that trade)",
+    "Alpha Capital (5.4: an account whose room falls below the smallest normal risk is not traded further and is closed on request; version 9 placed that trade)",
     read=D12,
     source="https://help.alphacapitalgroup.uk/en/articles/7060909-what-is-alpha-capital-group-s-policy-against-gambling-in-trading"),
  ("Alpha Capital", "copying"): dict(read=D12, source="https://help.alphacapitalgroup.uk/en/articles/8786973-is-copy-trading-allowed"),
@@ -644,8 +681,9 @@ REREAD = {
     "positions across accounts prohibited", read=D12, basis="snippet",
     source="https://help.brightfunded.com/en/articles/9241709-is-copy-trading-allowed"),
  ("BrightFunded", FS): dict(rule="EUR 497 for 100K ($559.42 at 1.1256), EUR 997 for 200K ($1,122.22) (2-Step Classic page); refund only with "
-    "a paid add-on; up to 90%; a 15% evaluation profit reward added to the next funded account after 10% growth", model="no refund "
-    "(the add-on is not bought); the evaluation profit reward left out", read=D12, source="https://brightfunded.com/2-step-classic"),
+    "a paid add-on; payout ratio 'up to 90%', 90% being a paid add-on (80% without it, version 9's reading); a 15% evaluation profit "
+    "reward ($2,250 at 100K) added to the next funded account after 10% growth", model="80%, no refund (no add-on is bought); the "
+    "evaluation profit reward left out", read=D12, source="https://brightfunded.com/2-step-classic"),
  ("Blue Guardian", "prohibited practices"): dict(read=D12, basis="snippet"),
  ("Blue Guardian", "copying"): dict(rule="allowed between your own accounts (evaluation, funded and external)", read=D12, basis="snippet"),
  ("Blue Guardian", FS): dict(rule="$463 for 100K, $930 for 200K at list price (the 2 Step Standard product list on blueguardian.com; a code "
@@ -665,11 +703,14 @@ REREAD = {
  ("The5ers", "prohibited practices"): dict(rule="bulk trading (several trades open at once, 'clearly showing a trader is not behind the "
     "strategy'); 'Trade coordination or copy trading with other traders or accounts'; one-sided bets ('consistently takes positions in "
     "one single direction'); tick scalping; hedge and reverse arbitrage; coordinated trading across firms for manipulative purposes "
-    "(opposite positions); profit spread artificially across days; 'position sizes or a number of positions that are substantially "
+    "(opposite positions); strategies that 'artificially distribute profit across multiple days without proportionally distributing "
+    "market risk' (opposing positions, or one trade idea partly closed across days); 'position sizes or a number of positions that are substantially "
     "larger or smaller than your typical trading activity, whether compared across your own accounts or between your evaluation and "
     "funded account stages'; overleveraging, concentrated speculative exposure and gambling-like positions; no order executed 2 "
     "minutes either side of high-impact news", model=PLANB + "; one position per account at a time; the direction follows the "
-    "trend rule, so it changes with the market; the same risk share and stop rule in both stages; flat around releases. The optional "
+    "trend rule, so it changes with the market; the same risk share and stop rule in both stages; flat around releases; flat every "
+    "evening, so each day's profit comes from that day's own trades at the full risk (no position held, split or hedged across days: the "
+    "40% day cap ends a day's trading, it does not move profit to another day). The optional "
     "portfolio with The5ers' small accounts holds positions far smaller in dollars than the 100K account's (the same share of each "
     "account): whether The5ers compares sizes in proportion to the account is not stated, so that portfolio is not recommended",
     read=D12, source="https://the5ers.com/faqs/prohibited-trading-practices/"),

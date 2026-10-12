@@ -394,6 +394,7 @@ def _drop(sheet, x):
 
 # FTMO: its guidance per trade idea (1%) binds the plan's single-position trade idea (optimize_v10.L_MAX)
 _ftmo_rf = min(_rf("FTMO 2-Step", "US100", _O.L_MAX["FTMO"]), _O.L_MAX["FTMO"])
+setrule("FTMO 2-Step", "Risk guidance", "FTMO 'generally recommends not risking more than 1% per trade idea', and at most 1&ndash;1.5% of the initial balance on one position; larger risk can trigger its risk monitoring (guidance, which the plan treats as a rule)")
 _repl("FTMO 2-Step", f"{_p(_rf('FTMO 2-Step', 'US100', 0.015))} risk",
       f"risk {_p(_ftmo_rf)} at most (FTMO 'generally recommends not risking more than 1% per trade idea' and at most 1&ndash;1.5% on one position; the plan's trade idea is one position), with the stop attached at entry")
 # FundingPips: index leverage
@@ -449,3 +450,40 @@ _repl("Maven 2-Step", "funded profit never above $4,900",
       "funded profit never above $4,900 (payout targets of 2&ndash;4.9%), $100 under the threshold, so the 50% rule never applies even with a take-profit filled a few points better; 'total profit' read as the profit since the last payout, after which Maven resets the account (the less strict of two readings: inventory)")
 P["Maven 2-Step"]["plan"].insert(3, "one Maven account only: the $10,000 per 30 days is per trader, all accounts together; payouts by Rise at $20 each where bank transfer is not offered")
 P["Maven 2-Step"]["sources"] = P["Maven 2-Step"]["sources"].replace(" (read 4 Oct 2026)", "")
+
+# keep-alive (n47, 12 October 2026): the plan's 25-day rule on every sheet, as the engine applies it (acct_mc.run_funded)
+_KA = ("never 25 days without a trade: on the day 22 days after the last entry, if nothing has been traded since, one minimal "
+       "keep-alive position (0.01 lot, one contract on futures, closed after 3 minutes) at its first permitted hour, or before a "
+       "payout request that would lock the account past that day (most firms close an account after 30 days without a trade; FXIFY "
+       "after 60)")
+_KA_NOFILL = ("never 25 days without a trade: no wait for a payout comes near it here (14-day cycles), so no keep-alive position "
+              "is needed, and none would be placed (no minimal positions at this firm)")
+for _k, _sh in P.items():
+    _nofill = _k.startswith(("Fintokei", "Alpha Capital", "FunderPro", "Hola Prime"))
+    _sh["plan"].append(_KA_NOFILL if _nofill else _KA)
+P["FXIFY Two Phase Classic"]["plan"].append("on the 30-day option an account at its target waits for the payout date and then for FXIFY's "
+    "read-only review: the keep-alive position comes first where that wait would pass the 22nd day")
+P["Maven 2-Step"]["plan"].append("Maven's $10,000 per 30 days can stop trading for more than three weeks after two quick payout cycles: "
+    "the keep-alive position then carries a take-profit 1.5 times as far as its emergency stop, and any gain from it above the cap is "
+    "voided; Maven closes an account 'dormant for more than 30 calendar days' and defines inactivity as 'having no executed trades', "
+    "but its gambling rules say that 'Trades with vastly smaller lot sizes will NOT count as a trade': that the keep-alive counts is an "
+    "assumption (inventory)")
+
+# the 40% policy as the engine applies it (12 October 2026): every trade and every day of an evaluation, every day (net) of a funded
+# cycle; acct_mc.run_stage caps a win at 40% of the phase target, run_funded caps the day's net profit only (the firms' funded rules
+# limit days, not single trades)
+_CONC_OLD = ("concentration policy: no trade and no day makes more than 40% of the current phase or payout target, so every phase takes "
+             "at least three winning days")
+_CONC_NEW = ("concentration policy: no day makes more than 40% of the current phase or payout target, net of its earlier trades, and in "
+             "an evaluation no single trade either, so every phase takes at least three winning days")
+_FX_OLD = ("each day's take-profit capped at 25% of the cycle target less $1 per $100K (and 40% per trade), and a payout requested only "
+           "when the account's best day ever is at most 25% of the request's profit; no trading until the withdrawal is approved")
+_FX_NEW = ("each day's profit capped at 25% of the cycle target less $1 per $100K, net of the day's earlier trades (each take-profit "
+           "placed so that the day cannot end above it), and a payout requested only when the account's best day ever is at most 25% of "
+           "the request's profit; no trading until the withdrawal is approved")
+_n_conc = 0
+for _k, _sh in P.items():
+    _n_conc += sum(1 for x in _sh["plan"] if x == _CONC_OLD)
+    _sh["plan"] = [(_CONC_NEW if x == _CONC_OLD else _FX_NEW if x == _FX_OLD else x) for x in _sh["plan"]]
+assert _n_conc > 0 and not any(x == _CONC_OLD for _sh in P.values() for x in _sh["plan"])
+assert any(x == _FX_NEW for x in P["FXIFY Two Phase Classic"]["plan"])
