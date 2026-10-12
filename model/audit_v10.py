@@ -27,6 +27,8 @@ and the document's layout (no table wider than its column: review of version 9, 
   chain       the accounting identity of every chain solved for the document, and the cost-free checks against it
   chain_engine  the engine with the chain's rules against the chain: no systematic difference, no outlier
   portfolio   the first-year figures recomputed from the lives; no two accounts ever opposite; refusals never add cash
+  determinism one stored life of the recommended plan recomputed in a new process; two grid rows of every programme
+              recomputed with the code as published (the grid was written in segments), each identical to the last bit
   document    no unfilled placeholder, no nan / None in the text, the headline equal to the recomputed figure
 """
 import json, math, random, sys, collections, glob, re, os
@@ -356,6 +358,21 @@ if main:
               f"trades, the twelve monthly totals {'identical, to the last bit,' if same else 'DIFFERENT'} to the stored run")
         OUT["determinism"].update(what="one life of the recommended plan (path 500,000, every account and rule)",
                                   detail=f"{got['trades']:,} trades; the twelve monthly totals identical to the last bit")
+
+# ---------------------------------------------------------------- determinism of the search: grid rows recomputed
+# The grid was written in segments (an interrupted run resumes where it stopped), and its rows must equal what the code as
+# published computes: two rows of every programme (its largest payout target and one drawn at random) are recomputed
+_rg = random.Random(29); _pick = []
+for _prog in sorted({r["prog"] for r in GRID}):
+    _rs = sorted([r for r in GRID if r["prog"] == _prog], key=lambda r: (-r["X"], r["instr"], r["m"], r["k"], r["L"]))
+    _pick += [_rs[0], _rg.choice(_rs)]
+_keys = ("prog", "firm", "instr", "m", "k", "X1", "X", "L", "size")
+from multiprocessing import Pool
+with Pool(4) as _p:
+    _again = _p.map(O.job, [({k: r[k] for k in _keys}, O.GRID_PATHS, (1, 2, 3, 4), 500) for r in _pick], chunksize=1)
+_diff = [(a["prog"], a["instr"]) for a, b in zip(_pick, _again) if a["EV"] != b["EV"] or a["days"] != b["days"]]
+check("determinism_grid", not _diff, f"{len(_pick)} grid rows (two of every programme) recomputed with the code as published: "
+      f"{len(_pick) - len(_diff)} identical to the last bit" + (f"; different: {_diff}" if _diff else ""))
 
 # ---------------------------------------------------------------- finite budgets: dated cash
 if os.path.exists("lockstep_v10_budget.json"):
