@@ -581,12 +581,13 @@ def run_funded(fd, tr, rng, firm, clock, X1, X):
                 if fd.get("cap_includes_refund"): cap = cap - rnow   # The5ers: the refund counted inside the cap (cautious)
                 if amt > cap + 1e-9: RULE_HITS["cap_held"] += 1     # the rest stays in the account
                 amt = min(amt, cap)
-            if amt > 0 and split * amt < fd.get("min_net", 0.0) - 1e-9:
+            g_fee = 1.0 - fd.get("fee_pct", 0.0)               # a firm's fee on every withdrawal (GFT 3%, The5ers 3.5%)
+            if amt > 0 and g_fee * split * amt < fd.get("min_net", 0.0) - 1e-9:
                 RULE_HITS["min_net_wait"] += 1; amt = 0.0       # under the firm's minimum payout: not requested yet
             if amt > 0:
-                cash = split * amt + rnow
+                cash = g_fee * (split * amt + rnow)
                 if npay == 0 and fd.get("eval_share"):
-                    cash += fd["eval_share"] * sum(s["target"] for s in firm["phases"])
+                    cash += g_fee * fd["eval_share"] * sum(s["target"] for s in firm["phases"])
                 if rnow and not rsplit: refunded = True
                 t_req = max(clock, last_exit + fd.get("req_wait", 0.25))   # at least 15 minutes after the last close
                 sday = None

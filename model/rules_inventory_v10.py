@@ -74,8 +74,11 @@ U = "https://help.fundednext.com/en/articles/"
 r("FundedNext", "targets and limits", "8% / 5%; daily loss 5% and maximum loss 10% of the initial balance; 5 trading days per "
   "phase", "as stated (dll fixed)", "modelled", U + "9430123", read="4 Oct 2026")
 r("FundedNext", "payouts", "first reward 21 days after the funded account opens, then every 14 days; 80%; fee refunded with the "
-  "first reward; paid within 24 hours of the request (99.99%)", "pending 1 working day; cash then", "modelled",
-  U + "8569879-what-is-the-timeframe-for-fundednext-to-process-performance-rewards", basis="snippet")
+  "first reward; processed within 24 hours of the request; 'a processing fee is applied to all Performance Reward requests', "
+  "'up to 3.5%' by RiseWorks and by other methods, set by the payment provider; no request under $20 (USDT, USDC; Rise from $50, "
+  "bank transfer from $1,000)", "pending 1 working day; cash then; every reward, the refund included, less 3.5% (the upper end; "
+  "version 10: version 9 had no fee); $20 minimum after the split and the fee", "cautious",
+  U + "12673935-what-is-the-minimum-performance-reward-limit-for-fundednext", read="12 Oct 2026")
 r("FundedNext", "news (funded)", "trades opened or closed (take-profit and stop-loss included) within 5 minutes before or after "
   "a listed high-impact release count 40% of their profit; holding through is allowed; evaluations free",
   "flat in every bar overlapping 10 minutes either side (funded)", "plan", U + "10701447-is-news-trading-allowed-at-fundednext", basis="snippet")
@@ -93,10 +96,12 @@ r("The5ers", "payout cap", "$4,000 per payout for the $100K account, $3,000 for 
   U + "what-are-the-general-rules-for-the-high-stakes-program/")
 r("The5ers", "profit gate", "minimum P&L for a payout $500 ($100K), $300 ($50K)", "a request needs that profit; below $50K 0.6% "
   "of the size", "modelled", U + "payout-policy-and-hub-credit-in-the-high-stakes-program/")
-r("The5ers", "payouts", "first payout after the funded account has been active 14 days; then every 2 weeks from the last approved "
-  "withdrawal; minimum $150 after the split; review 24-48 business hours, processing up to 3 business days",
-  "pending 2 working days, cash 3 working days later, next request 14 days after approval", "modelled",
-  U + "withdrawals-everything-you-need-to-know/", basis="snippet")
+r("The5ers", "payouts", "first withdrawal 14 days after the funded account is activated; then every 2 weeks from the last approved "
+  "withdrawal; a withdrawal from $150 of profit ($150 after the split on the High Stakes payout page); review 24-48 business "
+  "hours, processing up to 3 business days; 'Commission: 3.5% per withdrawal' by Rise, crypto (at most $1,500 a withdrawal) or "
+  "bank transfer, none on hub credits; all trades closed", "pending 2 working days, cash 3 working days later, next request 14 "
+  "days after approval; every cash withdrawal, the refund included, less 3.5% (version 10: version 9 had no commission); the "
+  "$150 applied after the split and the commission", "modelled", U + "withdrawals-everything-you-need-to-know/", read="12 Oct 2026")
 r("The5ers", "fee refund and hub credit", "10% of the fee as hub credit after phase 1, 20% after phase 2 (for a new challenge); 70% "
   "of the fee paid with external funds refunded with the first payout (credit-paid fee not refunded)", "credit spent on the "
   "next purchase; each account's refund 70% of the cash paid for it", "modelled", U + "payout-policy-and-hub-credit-in-the-high-stakes-program/")
@@ -156,8 +161,9 @@ r("Alpha Capital", "targets and limits", "10% / 5%; daily loss 5% of the day's s
   "modelled", U + "8420429-alpha-pro-8-10", basis="snippet", read="4 Oct 2026")
 r("Alpha Capital", "payouts", "bi-weekly: first request 14 days after the first funded trade, 5 trading days; all trades closed "
   "before a request; paid within 2 business days; the account locked until the balance is reset; at least $100 of profit "
-  "(version 8 reading; not stated on the page read on 11 October)", "locked 2 working days; $100 applied to the trader's share",
-  "modelled", U + "6933755-how-do-i-get-paid-performance-fees")
+  "(version 8 reading; not stated on the page read on 11 October); a 'performance fee bonus' added on the 4th successful "
+  "withdrawal (amount not stated); no payout fee stated", "locked 2 working days; $100 applied to the trader's share; the bonus "
+  "not modelled (the cautious side)", "modelled", U + "6933755-how-do-i-get-paid-performance-fees")
 r("Alpha Capital", "lot limit", "qualified accounts: at most 40 open lots per $100K (80 at $200K), aggregate; first breach: "
   "the profit from the excess not paid; second: account deactivated", "every funded position at most the limit (one position "
   "per account at a time); index lots counted at 1 unit a lot (the most lots any common contract size gives)", "modelled",
@@ -228,8 +234,12 @@ r("Blue Guardian", "Guardian Shield (funded)", "open trades closed at a 2% float
   "modelled", U)
 r("Blue Guardian", "news (funded)", "no opening or closing 5 minutes before and after red-folder news (FOMC included)",
   "flat around releases (funded)", "plan", U)
-r("Blue Guardian", "payouts", "85% every 14 days; minimum $100; processed within 24 business hours; positions closed; fee back "
-  "after the fourth payout", "pending 1 working day", "modelled", U)
+r("Blue Guardian", "payouts", "85% (90% with an add-on); after the first payout, every 14 days from the previous request; minimum $100 "
+  "by crypto (under $5,000), $500 by Rise; processed within 24 business hours; 'Trading can resume once the payout has been "
+  "approved'; account flat and above its starting balance; 'All payouts are subject to a 3% processing fee'; fee back after the "
+  "fourth payout (version 9 reading; the payouts page does not mention it)", "locked until processed (1 working day); every "
+  "payout, the refund included, less 3% (version 10: version 9 had neither the lock nor the fee); $100 after the split and the "
+  "fee", "modelled", "https://help.blueguardian.com/en/articles/9660857-how-do-payouts-work", read="12 Oct 2026")
 r("Blue Guardian", "allocation", "$400,000 across funded accounts", "four 100K accounts", "modelled",
   "https://blueguardian.com/blogs/complete-scaling-path-for-funded-traders", basis="page")
 
@@ -386,6 +396,17 @@ r("every firm", "minimum payouts", "FTMO $20 (bank transfer); FundingPips 1% of 
   "BrightFunded and Maven state none on the pages read", "each applied to the trader's share after the split, the stricter "
   "reading where a page does not say (and stricter than a minimum stated as profit), and as profit before the split; none "
   "where none is stated (version 10: version 9 had no FTMO minimum)", "cautious", "the firms' payout pages (rows above)")
+
+r("every firm", "payout fees", "firm fees on every payout: GFT 3% after the split (rewards page, 9 October 2026), The5ers 3.5% per "
+  "cash withdrawal (24 August 2026), FundedNext up to 3.5% on every request (29 September 2026), Blue Guardian 3% (31 August "
+  "2026); stated as none: FXIFY (its blog), BrightFunded ('no additional fees'; banks or networks may take $5-$50), FTMO (bank "
+  "and network costs only), Fintokei (the firm covers withdrawal fees, except 2.5% plus EUR 10-20 on crypto), Hola Prime (bank "
+  "wire and crypto; $25 by Rise); not stated on the pages read: FundingPips (crypto rewards carry service, exchange and network "
+  "charges; Rise and bank from $500), Alpha Capital, FunderPro, Maven ($20 by Rise; bank transfer where available), Topstep "
+  "($30 by ACH or wire; Wise and Aeropay free), Apex (a third-party claim of 15% on the first payout and 4% after, not found "
+  "on its pages)", "the four firm fees are modelled on every withdrawal, the refund included, with minimums checked after "
+  "them; where a firm offers a method without a charge the plan uses it, and method costs (banks, networks, currency "
+  "conversion) are not modelled", "cautious", "the firms' payout pages (rows above)", read="12 Oct 2026")
 
 # ---------------------------------------------------------------- every firm
 r("every firm", "conflicting positions", "no hedging across accounts or firms", "one direction per market group across all "

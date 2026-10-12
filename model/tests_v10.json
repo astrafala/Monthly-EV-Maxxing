@@ -53,7 +53,7 @@
  },
  "hold_bg": {
   "ok": true,
-  "info": "13442 Blue Guardian trades at a 0.6 sd stop: none under 2 minutes except breaches, shortest 3 minutes; 66 closed at the end of the 3-minute hold"
+  "info": "13910 Blue Guardian trades at a 0.6 sd stop: none under 2 minutes except breaches, shortest 3 minutes; 78 closed at the end of the 3-minute hold"
  },
  "brightfunded_day": {
   "ok": true,
@@ -77,15 +77,15 @@
  },
  "wallet": {
   "ok": true,
-  "info": "6 lives with $10,000 and $30,000 budgets (429 purchases): lowest cash dated by the ledger $51.06"
+  "info": "6 lives with $10,000 and $30,000 budgets (438 purchases): lowest cash dated by the ledger $51.06"
  },
  "exposure": {
   "ok": true,
-  "info": "10989 trades in one life, 9294 copied a direction: every copy from a position still open at the entry, every uncopied entry with nothing open (0 exceptions), 0 opposite positions"
+  "info": "10977 trades in one life, 9297 copied a direction: every copy from a position still open at the entry, every uncopied entry with nothing open (0 exceptions), 0 opposite positions"
  },
  "payout_clock_alpha_maven": {
   "ok": true,
-  "info": "195 first payouts checked (clock from the first trade; Alpha's 5 days; Maven's ceiling and 30-day cap by close date): 0 violations {}"
+  "info": "189 first payouts checked (clock from the first trade; Alpha's 5 days; Maven's ceiling and 30-day cap by close date): 0 violations {}"
  },
  "futures_price": {
   "ok": true,
@@ -97,7 +97,7 @@
  },
  "day_limits": {
   "ok": true,
-  "info": "29,048 account-days of 16 programmes, days from each trade's entry: largest day loss beyond the firm's allowance -200.00, largest day profit beyond the plan's 40% cap +0.00, beyond GFT's day cap -600.00 (all must be <= 0)"
+  "info": "29,313 account-days of 16 programmes, days from each trade's entry: largest day loss beyond the firm's allowance -200.00, largest day profit beyond the plan's 40% cap +0.00, beyond GFT's day cap -600.00 (all must be <= 0)"
  },
  "fxify_best_day": {
   "ok": true,
@@ -109,11 +109,11 @@
  },
  "lock": {
   "ok": true,
-  "info": "1720 payouts at Alpha Capital, FundingPips, FXIFY (300 funded accounts each, synth903y4, Random(177), the review's replay): 0 entries between a request and its processing (version 9: 219 of 219 at Alpha)"
+  "info": "1719 payouts at Alpha Capital, FundingPips, FXIFY (300 funded accounts each, synth903y4, Random(177), the review's replay): 0 entries between a request and its processing (version 9: 219 of 219 at Alpha)"
  },
  "req_wait": {
   "ok": true,
-  "info": "549 FundingPips requests: shortest time after the last close 15.0 minutes, every one flat (version 9: 7 of 329 under 15 minutes)"
+  "info": "548 FundingPips requests: shortest time after the last close 15.0 minutes, every one flat (version 9: 7 of 329 under 15 minutes)"
  },
  "usdjpy": {
   "ok": true,
@@ -145,11 +145,11 @@
  },
  "gft_cash": {
   "ok": true,
-  "info": "GFT chain: cash of each of the first two paid cycles at most the capped payout plus the refund (largest excess +0.00; version 9's table: $5,400 against at most $5,324)"
+  "info": "GFT chain: cash of each of the first two paid cycles at most the capped payout plus the refund (largest excess -144.00; version 9's table: $5,400 against at most $5,324)"
  },
  "refusals": {
   "ok": true,
-  "info": "4 lives with high refusal rates: 15 refusals, 29 payouts voided; 0 trades or purchases of a firm after its refusal"
+  "info": "4 lives with high refusal rates: 16 refusals, 31 payouts voided; 0 trades or purchases of a firm after its refusal"
  },
  "apex_expiry": {
   "ok": true,
@@ -157,7 +157,7 @@
  },
  "the5ers_cap": {
   "ok": true,
-  "info": "560 High Stakes requests (300 funded $100K accounts, synth912y4, Random(7767), the review's replay): largest withdrawal with the refund minus $4,000 +0.00; lowest profit at a request $858.55 (>= $500); lowest share $686.84 (>= $150) (version 9: 124 of 154 above the cap, 2 on $399)"
+  "info": "560 High Stakes requests (300 funded $100K accounts, synth912y4, Random(7767), the review's replay): largest withdrawal with the refund minus $4,000 +0.00; lowest profit at a request $858.55 (>= $500); lowest share $662.80 (>= $150) (version 9: 124 of 154 above the cap, 2 on $399)"
  },
  "the5ers_refund": {
   "ok": true,
@@ -193,6 +193,18 @@
  },
  "cancel": {
   "ok": true,
-  "info": "2161 payout rows of 600 funded FTMO accounts at a tight setting: 6 cancelled, each by a breach between its request and its processing (0 mismatches)"
+  "info": "2147 payout rows of 600 funded FTMO accounts at a tight setting: 6 cancelled, each by a breach between its request and its processing (0 mismatches)"
+ },
+ "min_payout": {
+  "ok": true,
+  "info": "1400 requests at nine firms (150 funded accounts each, payout target 10%, synth906y4): smallest trader's share less the firm's minimum {'FTMO': 913.32, 'FundingPips': 74.12, 'FXIFY': 7950.0, 'Fintokei': 72.8, 'Alpha Capital': 4.93, 'GFT': 57.59, 'FunderPro': 279.75, 'Blue Guardian': 141.32, 'The5ers': 320.04}; 27 requests under twice the minimum; 9 requests deferred because the share was under the minimum"
+ },
+ "usd_direction": {
+  "ok": true,
+  "info": "2 lives, 6304 trades: 1796 pairs of overlapping USDJPY and EURUSD positions, 0 with opposite dollar exposure (the engine's prices are the euro and the yen in dollars: the same engine direction is the same dollar exposure); 0 opposite positions"
+ },
+ "gft_rules": {
+  "ok": true,
+  "info": "272 GFT requests (150 funded accounts, synth907y4): 0 with the best trade not larger than the worst loss (over the cycle and over the account); trader's share 0.776 of the profit (80% less the 3% processing fee); fee refund 0"
  }
 }

@@ -198,9 +198,10 @@ def programme(prog, instr, m, k, X1, X, L=1500, size=100_000, F=None, cost_mult=
         if fd.get("cap_includes_refund") and ref0 and not fd.get("refund_split") and i == fd.get("refund_after", 1) - 1: c -= ref0
         return c
     wdr = [min(xs_, capi(i)) if capi(i) is not None else xs_ for i, xs_ in enumerate(succ)]
-    pay = [split * w_ for w_ in wdr]
+    g_fee = 1.0 - fd.get("fee_pct", 0.0)               # a firm's fee on every withdrawal, the refund included (GFT, The5ers)
+    pay = [g_fee * split * w_ for w_ in wdr]
     cash = sum(x * q for x, q in zip(pay, pr))
-    ref = fd.get("refund", 0) or 0
+    ref = g_fee * (fd.get("refund", 0) or 0)
     if fd.get("refund_split"): cash += ref / fd["refund_split"] * sum(pr[:fd["refund_split"]])
     elif ref: cash += ref * pr[fd.get("refund_after", 1) - 1]
     # the funded account's accounting identity: E[withdrawn] = -E[P&L at the end] - E[total cost]

@@ -105,7 +105,7 @@ class Spy(PF.PathTrader):
 
 def _refund_part(fd, j):
     """the fee refund paid with the j-th payout request of an account (0-based), as acct_mc.run_funded pays it"""
-    ref = fd.get("refund", 0) or 0
+    ref = (fd.get("refund", 0) or 0) * (1.0 - fd.get("fee_pct", 0.0))     # paid net of any withdrawal fee
     if not ref: return 0.0
     rs = fd.get("refund_split")
     if rs: return ref / rs if j < rs else 0.0
@@ -127,7 +127,7 @@ def pay_checks(F, fd, sl, pays, tl, t0, worst, tr):
     if fd.get("caps") and fd.get("cap_includes_refund"):           # The5ers: the withdrawal with the refund inside the cap
         for j, p in enumerate(req):
             ref = fd["refund"] if j == 0 else 0.0
-            amt = (p[1] - ref) / fd["split"]
+            amt = (p[1] / (1.0 - fd.get("fee_pct", 0.0)) - ref) / fd["split"]
             worst["the5ers_over_cap"] = max(worst["the5ers_over_cap"], amt + ref - fd["caps"][min(j, len(fd["caps"]) - 1)])
     if fd.get("min_profit"):
         for p in req:

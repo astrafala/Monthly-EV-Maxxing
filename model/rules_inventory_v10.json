@@ -155,12 +155,12 @@
   {
    "firm": "FundedNext",
    "area": "payouts",
-   "rule": "first reward 21 days after the funded account opens, then every 14 days; 80%; fee refunded with the first reward; paid within 24 hours of the request (99.99%)",
-   "model": "pending 1 working day; cash then",
-   "status": "modelled",
-   "source": "https://help.fundednext.com/en/articles/8569879-what-is-the-timeframe-for-fundednext-to-process-performance-rewards",
-   "basis": "snippet",
-   "read": "11 Oct 2026"
+   "rule": "first reward 21 days after the funded account opens, then every 14 days; 80%; fee refunded with the first reward; processed within 24 hours of the request; 'a processing fee is applied to all Performance Reward requests', 'up to 3.5%' by RiseWorks and by other methods, set by the payment provider; no request under $20 (USDT, USDC; Rise from $50, bank transfer from $1,000)",
+   "model": "pending 1 working day; cash then; every reward, the refund included, less 3.5% (the upper end; version 10: version 9 had no fee); $20 minimum after the split and the fee",
+   "status": "cautious",
+   "source": "https://help.fundednext.com/en/articles/12673935-what-is-the-minimum-performance-reward-limit-for-fundednext",
+   "basis": "page",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "FundedNext",
@@ -225,12 +225,12 @@
   {
    "firm": "The5ers",
    "area": "payouts",
-   "rule": "first payout after the funded account has been active 14 days; then every 2 weeks from the last approved withdrawal; minimum $150 after the split; review 24-48 business hours, processing up to 3 business days",
-   "model": "pending 2 working days, cash 3 working days later, next request 14 days after approval",
+   "rule": "first withdrawal 14 days after the funded account is activated; then every 2 weeks from the last approved withdrawal; a withdrawal from $150 of profit ($150 after the split on the High Stakes payout page); review 24-48 business hours, processing up to 3 business days; 'Commission: 3.5% per withdrawal' by Rise, crypto (at most $1,500 a withdrawal) or bank transfer, none on hub credits; all trades closed",
+   "model": "pending 2 working days, cash 3 working days later, next request 14 days after approval; every cash withdrawal, the refund included, less 3.5% (version 10: version 9 had no commission); the $150 applied after the split and the commission",
    "status": "modelled",
    "source": "https://the5ers.com/faqs/withdrawals-everything-you-need-to-know/",
-   "basis": "snippet",
-   "read": "11 Oct 2026"
+   "basis": "page",
+   "read": "12 Oct 2026"
   },
   {
    "firm": "The5ers",
@@ -445,8 +445,8 @@
   {
    "firm": "Alpha Capital",
    "area": "payouts",
-   "rule": "bi-weekly: first request 14 days after the first funded trade, 5 trading days; all trades closed before a request; paid within 2 business days; the account locked until the balance is reset; at least $100 of profit (version 8 reading; not stated on the page read on 11 October)",
-   "model": "locked 2 working days; $100 applied to the trader's share",
+   "rule": "bi-weekly: first request 14 days after the first funded trade, 5 trading days; all trades closed before a request; paid within 2 business days; the account locked until the balance is reset; at least $100 of profit (version 8 reading; not stated on the page read on 11 October); a 'performance fee bonus' added on the 4th successful withdrawal (amount not stated); no payout fee stated",
+   "model": "locked 2 working days; $100 applied to the trader's share; the bonus not modelled (the cautious side)",
    "status": "modelled",
    "source": "https://help.alphacapitalgroup.uk/en/articles/6933755-how-do-i-get-paid-performance-fees",
    "basis": "page",
@@ -685,12 +685,12 @@
   {
    "firm": "Blue Guardian",
    "area": "payouts",
-   "rule": "85% every 14 days; minimum $100; processed within 24 business hours; positions closed; fee back after the fourth payout",
-   "model": "pending 1 working day",
+   "rule": "85% (90% with an add-on); after the first payout, every 14 days from the previous request; minimum $100 by crypto (under $5,000), $500 by Rise; processed within 24 business hours; 'Trading can resume once the payout has been approved'; account flat and above its starting balance; 'All payouts are subject to a 3% processing fee'; fee back after the fourth payout (version 9 reading; the payouts page does not mention it)",
+   "model": "locked until processed (1 working day); every payout, the refund included, less 3% (version 10: version 9 had neither the lock nor the fee); $100 after the split and the fee",
    "status": "modelled",
-   "source": "https://help.blueguardian.com/en/articles/14062291-2-step-standard-rules",
+   "source": "https://help.blueguardian.com/en/articles/9660857-how-do-payouts-work",
    "basis": "page",
-   "read": "11 Oct 2026"
+   "read": "12 Oct 2026"
   },
   {
    "firm": "Blue Guardian",
@@ -1304,6 +1304,16 @@
   },
   {
    "firm": "every firm",
+   "area": "payout fees",
+   "rule": "firm fees on every payout: GFT 3% after the split (rewards page, 9 October 2026), The5ers 3.5% per cash withdrawal (24 August 2026), FundedNext up to 3.5% on every request (29 September 2026), Blue Guardian 3% (31 August 2026); stated as none: FXIFY (its blog), BrightFunded ('no additional fees'; banks or networks may take $5-$50), FTMO (bank and network costs only), Fintokei (the firm covers withdrawal fees, except 2.5% plus EUR 10-20 on crypto), Hola Prime (bank wire and crypto; $25 by Rise); not stated on the pages read: FundingPips (crypto rewards carry service, exchange and network charges; Rise and bank from $500), Alpha Capital, FunderPro, Maven ($20 by Rise; bank transfer where available), Topstep ($30 by ACH or wire; Wise and Aeropay free), Apex (a third-party claim of 15% on the first payout and 4% after, not found on its pages)",
+   "model": "the four firm fees are modelled on every withdrawal, the refund included, with minimums checked after them; where a firm offers a method without a charge the plan uses it, and method costs (banks, networks, currency conversion) are not modelled",
+   "status": "cautious",
+   "source": "the firms' payout pages (rows above)",
+   "basis": "page",
+   "read": "12 Oct 2026"
+  },
+  {
+   "firm": "every firm",
    "area": "conflicting positions",
    "rule": "no hedging across accounts or firms",
    "model": "one direction per market group across all accounts (shared-direction rule)",
@@ -1334,9 +1344,9 @@
   }
  ],
  "counts": {
-  "modelled": 63,
+  "modelled": 62,
   "plan": 44,
-  "cautious": 11,
+  "cautious": 13,
   "assumption": 3,
   "not binding": 12
  }

@@ -294,8 +294,9 @@ def run(check, cfg, spy_attempts, Spy, ctl_market, Planned):
         for p in r["pays"]:
             if p[3] != "payout": continue
             ref_ = fd["refund"] if first else 0.0; first = False
-            amt = (p[1] - ref_) / fd["split"]
-            worst = max(worst, amt + ref_ - 4000.0); low_net = min(low_net, fd["split"] * amt); nreq += 1
+            g = 1.0 - fd.get("fee_pct", 0.0)                 # The5ers' 3.5% commission on the whole withdrawal
+            amt = (p[1] / g - ref_) / fd["split"]
+            worst = max(worst, amt + ref_ - 4000.0); low_net = min(low_net, g * fd["split"] * amt); nreq += 1
             xb = [t for t in r["tlog"] if t[4] <= p[2] + 1e-9]
             prof = (xb[-1][2] + xb[-1][3]) if xb else 0.0
             low = min(low, prof)
@@ -458,8 +459,9 @@ def run(check, cfg, spy_attempts, Spy, ctl_market, Planned):
         """the fee refund paid with the j-th request (0-based): with the refund_after-th payout, or in equal parts with
         the first refund_split payouts (Hola Prime)"""
         if not fd.get("refund"): return 0.0
-        if fd.get("refund_split"): return fd["refund"] / fd["refund_split"] if j < fd["refund_split"] else 0.0
-        return fd["refund"] if j == fd.get("refund_after", 1) - 1 else 0.0
+        g = 1.0 - fd.get("fee_pct", 0.0)               # the refund is paid net of a withdrawal fee too
+        if fd.get("refund_split"): return g * fd["refund"] / fd["refund_split"] if j < fd["refund_split"] else 0.0
+        return g * fd["refund"] if j == fd.get("refund_after", 1) - 1 else 0.0
     low = {}; nreq = 0; small = 0; w0 = A.RULE_HITS.get("min_net_wait", 0)
     for prog, firm, instr in (("FTMO 2-Step", "FTMO", "US100"), ("FundingPips 2-Step Flex (80%)", "FundingPips", "USDJPY"),
                               ("FXIFY Two Phase Classic (80%)", "FXIFY", "US100"), ("Fintokei ProTrader", "Fintokei", "US100"),
@@ -513,9 +515,9 @@ def run(check, cfg, spy_attempts, Spy, ctl_market, Planned):
             life = [t["pnl"] for t in r["log"] if t["t_out"] <= p[2] + 1e-9]
             okc = max(cyc + [0.0]) > max([-v for v in cyc] + [0.0]); oke = max(life + [0.0]) > max([-v for v in life] + [0.0])
             nreq += 1; badbw += not (okc and oke); prev = p[2]
-            worst_share = max(worst_share, abs(fd["split"] - 0.8 * 0.97))
+            worst_share = max(worst_share, abs(fd["split"] * (1 - fd.get("fee_pct", 0.0)) - 0.8 * 0.97))
     check("gft_rules", nreq > 100 and badbw == 0 and worst_share < 1e-12 and R[0]["F"]["funded"]["refund"] == 0,
           f"{nreq} GFT requests (150 funded accounts, synth907y4): {badbw} with the best trade not larger than the worst loss "
-          f"(over the cycle and over the account); trader's share {R[0]['F']['funded']['split']:.3f} of the profit (80% less the 3% "
-          f"processing fee); fee refund {R[0]['F']['funded']['refund']:.0f}")
+          f"(over the cycle and over the account); trader's share {R[0]['F']['funded']['split'] * (1 - R[0]['F']['funded']['fee_pct']):.3f} "
+          f"of the profit (80% less the 3% processing fee); fee refund {R[0]['F']['funded']['refund']:.0f}")
     return {}

@@ -106,6 +106,12 @@ def rules_table(sh, firm):
     return table(["Rule", "As published", "Read"], rows, num_from=9, w0="22%",
                  cap="Rules as published, from the inventory of Appendix B, which gives each rule's page, the basis of the reading (the firm's page read directly, its text as a search engine returned it, or a reviewer's description where no page could be read) and how the model treats it; the leverage row is version 9's reading.")
 
+def _split_txt(fd):
+    """the split as the firm states it, with GFT's processing fee (the trader's share alpha = split x 97%)"""
+    if fd.get("fee_pct"):
+        return f"{pct(fd['split'] / (1 - fd['fee_pct']), 0)} less a {pct(fd['fee_pct'], 0)} processing fee, \\(\\alpha = {fd['split']:.3f}\\)"
+    return pct(fd["split"], 0)
+
 def _dll_txt(st, F):
     md = st.get("dll_mode") or ("rel" if st.get("dll_rel") else "fixed"); pc = pct(st["dll"] / F["size"], 0)
     return {"fixed": f"daily loss {usd(st['dll'])} ({pc} of the initial balance) below the day's reference",
@@ -315,7 +321,7 @@ def funded_section(sp, ch, F, e):
     q1 = e["q1"]; q = e["q"] if e["q"] is not None else q1
     caps = [c for c in (fd.get("caps") or []) if c < 1e9]
     (dx, dco), W2 = chain(lambda x_, c_: x_ - c_, [-e["x_end"], e["cost_funded"]], [0, 0], out_dec=0)
-    lines = [f"Allowance \\(D = \\${D:,.0f}\\); payout targets \\(X_1 = \\${X1:,.0f}\\)" + (f", \\(X = \\${X:,.0f}\\)" if abs(X - X1) > 1 else "") + f"; split {pct(a, 0)}; per-trade cap \\(\\${AN.caps_funded(fd, X):,.0f}\\).",
+    lines = [f"Allowance \\(D = \\${D:,.0f}\\); payout targets \\(X_1 = \\${X1:,.0f}\\)" + (f", \\(X = \\${X:,.0f}\\)" if abs(X - X1) > 1 else "") + f"; split {_split_txt(fd)}; per-trade cap \\(\\${AN.caps_funded(fd, X):,.0f}\\).",
              f"Cycle success chances in the chain: \\(q_1 = {q1:.4f}\\)" + (f", later \\(q = {q:.4f}\\)" if abs(q - q1) > 1e-6 else "") + f"; expected paid cycles {e['n_paid']:.4f}; expected balance taken out of the account at successes \\(\\${e['withdrawn']:,.0f}\\).",
              f"Identity (7.1): \\(-\\mathbb{{E}}[X_\\text{{end}}] - \\mathbb{{E}}[\\text{{cost}}] = {-e['x_end']:,.{dx}f} - {e['cost_funded']:,.{dco}f} = \\${W2:,.0f}\\) (the solver's gap {e['identity_gap']:+.2f}).",
              f"Cash (chain): \\(\\${e['cash_funded']:,.0f}\\) per funded account" + (f", of which the refund term \\(\\${R * (sum(e['pr'][:fd['refund_split']]) / fd['refund_split'] if fd.get('refund_split') else e['pr'][fd.get('refund_after', 1) - 1]):,.0f}\\)." if R else "."),

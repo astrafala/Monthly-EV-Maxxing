@@ -31,6 +31,10 @@ treats it). Changes from version 9:
                        18, 19)
   Apex                 the evaluation expires at 6 p.m. New York time on its 30th day (review of version 9, finding 13);
                        the best day of the cycle, today's included, must stay under 50% of the cycle's profit (finding 21)
+  withdrawal fees      (12 October 2026) GFT takes a 3% processing fee on every reward after the split, The5ers a 3.5%
+                       commission on every cash withdrawal, FundedNext a processing fee of up to 3.5% on every request
+                       (3.5% modelled; $20 minimum), Blue Guardian a 3% processing fee on every payout (fee_pct; minimums
+                       are checked after it); Blue Guardian's account is locked until a payout is approved
   GFT                  (12 October 2026) a 3% processing fee on every reward, after the split; the best trade must have
                        made more than the worst trade lost (accounts bought from 9 October 2026); no fee refund (the pages
                        read state none; third-party descriptions conflict)
@@ -62,7 +66,8 @@ PROC = {
     "GFT":           dict(review_bd=2, transfer_bd=0),            # processed within 2 business days
     "FunderPro":     dict(review_bd=1, transfer_bd=1),            # approval, then within 1 working day
     "BrightFunded":  dict(review_bd=1, transfer_bd=1),            # processed within a day
-    "Blue Guardian": dict(review_bd=1, transfer_bd=0),            # 24 business hours
+    "Blue Guardian": dict(review_bd=1, transfer_bd=0, lock_processing=True),   # 24 business hours; "Trading can resume once
+                                                                  # the payout has been approved" (payouts page, 31 August 2026)
     "Maven":         dict(review_bd=3, transfer_bd=0),            # not stated: three working days assumed
     "Topstep":       dict(protected=True, review_bd=0, transfer_bd=6),  # deducted at the request; approval and ACH 1-3 each
     "Apex":          dict(pause_pending=True, review_bd=2, transfer_bd=1),  # automated, 24-48 hours; the plan pauses
@@ -94,13 +99,23 @@ def _v10(F, size=None):
         if mp > 0: fd["min_net"] = max(float(fd.get("min_net") or 0.0), mp)
         sz = f.get("size", size or 100_000)
         if firm == "The5ers":
+            # The5ers' withdrawals page (updated 24 August 2026): "Commission: 3.5% per withdrawal" by Rise, crypto or bank
+            # transfer (hub credits, which only buy evaluations, carry none): every cash withdrawal, the refund included
+            fd["fee_pct"] = 0.035
             fd["caps"] = [THE5ERS_CAP.get(sz, 0.04 * sz)] * 100
             fd["cap_includes_refund"] = True
             fd["min_profit"] = THE5ERS_MIN_PROFIT.get(sz, 0.006 * sz)
             fd["min_net"] = 150.0; fd["min_payout"] = 0.0
             fd["profit_ceiling"] = 0.095 * sz
+        if firm == "FundedNext":
+            # FundedNext's help centre (29 September 2026): "a processing fee is applied to all Performance Reward requests",
+            # "up to 3.5%" by RiseWorks and by every other method (set by the payment provider): 3.5%, the cautious reading;
+            # a reward under $20 cannot be requested
+            fd["fee_pct"] = 0.035
+            fd["min_payout"] = max(float(fd.get("min_payout") or 0.0), 20.0); fd["min_net"] = max(float(fd.get("min_net") or 0.0), 20.0)
         if firm == "Blue Guardian":
             fd["shield"] = 0.02 * sz; fd["shield_split"] = 0.50
+            fd["fee_pct"] = 0.03       # "All payouts are subject to a 3% processing fee" (payouts page, 31 August 2026)
         if firm == "Alpha Capital":
             fd["max_lots"] = 40.0 * sz / 100_000
         if firm == "GFT":
@@ -109,7 +124,7 @@ def _v10(F, size=None):
             # the reward after the split: the trader keeps 97% of the 80%; accounts bought from 9 October 2026: "your most
             # profitable trade must have made more profit than your worst trade lost"; no fee refund is stated on the
             # pages read on 12 October 2026 (third-party descriptions conflict): none modelled, the cautious reading
-            fd["split"] = round(fd["split"] * 0.97, 10); fd["fee_pct"] = 0.03
+            fd["fee_pct"] = 0.03
             fd["best_vs_worst"] = True
             fd["refund"] = 0.0
         if firm == "Topstep":
